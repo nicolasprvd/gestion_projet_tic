@@ -121,4 +121,13 @@ export class ProjetComponent implements OnInit, OnDestroy {
     }
     return false;
   }
+
+  isAdmin(): boolean {
+    for (const droit of this.authorities!) {
+      if (Authority.ADMIN === droit) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
