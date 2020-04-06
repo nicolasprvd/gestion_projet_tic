@@ -17,16 +17,20 @@
       "detail": {
         "title": "Projet"
       },
-      "nom": "Nom",
+      "bouton": {
+        "choisir": "Postuler"
+      },
+      "nom": "Nom du projet",
       "descriptionPDF": "Description PDF",
-      "descriptionTexte": "Description Texte",
-      "nbEtudiant": "Nb Etudiant",
+      "descriptionTexte": "Description texte",
+      "nbEtudiant": "Nb etudiant",
       "automatique": "Automatique",
       "archive": "Archive",
+      "groupe": "Groupe",
+      "userExtra": "User Extra",
       "document": "Document",
-      "groupe": "Groupe",
-      "groupe": "Groupe",
-      "userExtra": "User Extra"
+      "client": "Client",
+      "email": "Email"
     }
   }
 }
