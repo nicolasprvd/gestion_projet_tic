@@ -7,7 +7,9 @@
       "lastname": "Nom",
       "lastname.placeholder": "Votre nom",
       "language": "Langue",
-      "button": "Sauvegarder"
+      "button": "Sauvegarder",
+      "modifierinfos": "Modifier mes informations",
+      "role": "Rôle"
     },
     "messages": {
       "error": {
