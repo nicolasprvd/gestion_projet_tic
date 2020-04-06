@@ -1,0 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="projet">
+            <h2><span jhiTranslate="projetticApp.projet.detail.title">Projet</span> {{ projet.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="projetticApp.projet.nom">Nom</span></dt>
+                <dd>
+                    <span>{{ projet.nom }}</span>
+                </dd>
+                <dt><span jhiTranslate="projetticApp.projet.descriptionPDF">Description PDF</span></dt>
+                <dd>
+                    <div *ngIf="projet.descriptionPDF">
+                        <a (click)="openFile(projet?.descriptionPDFContentType!, projet?.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
+                        {{ projet.descriptionPDFContentType }}, {{ byteSize(projet.descriptionPDF) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="projetticApp.projet.descriptionTexte">Description Texte</span></dt>
+                <dd>
+                    <span>{{ projet.descriptionTexte }}</span>
+                </dd>
+                <dt><span jhiTranslate="projetticApp.projet.nbEtudiant">Nb Etudiant</span></dt>
+                <dd>
+                    <span>{{ projet.nbEtudiant }}</span>
+                </dd>
+                <dt><span jhiTranslate="projetticApp.projet.automatique">Automatique</span></dt>
+                <dd>
+                    <span>{{ projet.automatique }}</span>
+                </dd>
+                <dt><span jhiTranslate="projetticApp.projet.archive">Archive</span></dt>
+                <dd>
+                    <span>{{ projet.archive }}</span>
+                </dd>
+                <dt><span jhiTranslate="projetticApp.projet.groupe">Groupe</span></dt>
+                <dd>
+                    <div *ngIf="projet.groupeId">
+                        <a [routerLink]="['/groupe', projet.groupeId, 'view']">{{ projet.groupeId }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="projetticApp.projet.userExtra">User Extra</span></dt>
+                <dd>
+                    <div *ngIf="projet.userExtraId">
+                        <a [routerLink]="['/user-extra', projet.userExtraId, 'view']">{{ projet.userExtraId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/projet', projet.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+{
+    "name": "Groupe",
+    "fields": [
+        {
+            "fieldName": "valide",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "projet",
+            "otherEntityRelationshipName": "groupe",
+            "relationshipName": "projet"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "userExtra",
+            "otherEntityRelationshipName": "groupe",
+            "relationshipName": "userExtra"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "userExtra",
+            "otherEntityRelationshipName": "groupe",
+            "relationshipName": "userExtra",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "projet",
+            "otherEntityRelationshipName": "groupe",
+            "relationshipName": "projet",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200406101200",
+    "entityTableName": "groupe",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

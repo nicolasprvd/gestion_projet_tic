@@ -1,0 +1,61 @@
+{
+    "name": "UserExtra",
+    "fields": [
+        {
+            "fieldName": "actif",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "typeUtilisateur",
+            "fieldType": "TypeUtilisateur",
+            "fieldValues": "ETUDIANT,CLIENT"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "userExtra",
+            "relationshipName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "groupe",
+            "otherEntityRelationshipName": "userExtra",
+            "relationshipName": "groupe"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "projet",
+            "otherEntityRelationshipName": "userExtra",
+            "relationshipName": "projet"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "evaluation",
+            "otherEntityRelationshipName": "userExtra",
+            "relationshipName": "evaluation",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "groupe",
+            "otherEntityRelationshipName": "userExtra",
+            "relationshipName": "groupe",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200406100900",
+    "entityTableName": "user_extra",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

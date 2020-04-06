@@ -1,0 +1,59 @@
+entity Evaluation {
+	noteCDC Double required,
+    noteSoutenance Double required,
+    noteRendu Double required,
+    noteFinale Double required
+}
+
+entity UserExtra {
+	actif Boolean,
+	typeUtilisateur TypeUtilisateur
+}
+
+entity Document {
+	doc Blob required,
+    typeDocument TypeDocument required
+}
+
+entity Projet {
+	nom String required,
+    descriptionPDF Blob,
+    descriptionTexte String,
+    nbEtudiant Integer,
+    automatique Boolean,
+    archive Boolean
+}
+
+entity Groupe {
+	valide Boolean required
+}
+
+enum TypeDocument {
+	CDC, RF, GANTT
+}
+
+enum Langage {
+    FRANCAIS, ANGLAIS
+}
+
+enum TypeUtilisateur {
+	ETUDIANT, CLIENT
+}
+
+relationship OneToOne {
+	UserExtra{user} to User,
+}
+
+relationship OneToMany {
+	Projet{document} to Document{projet},
+	Evaluation{userExtra} to UserExtra,
+	UserExtra{groupe} to Groupe,
+	Projet{groupe} to Groupe,
+	Groupe{projet} to Projet,
+    Groupe{userExtra} to UserExtra{groupe}
+	UserExtra{projet} to Projet
+}
+
+
+service * with serviceImpl
+dto * with mapstruct

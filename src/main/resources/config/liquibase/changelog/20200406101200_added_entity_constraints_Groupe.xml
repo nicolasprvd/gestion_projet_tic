@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <!--
+        Added the constraints for entity Groupe.
+    -->
+    <changeSet id="20200406101200-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_extra_id"
+                                 baseTableName="groupe"
+                                 constraintName="fk_groupe_user_extra_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_extra"/>
+
+        <addForeignKeyConstraint baseColumnNames="projet_id"
+                                 baseTableName="groupe"
+                                 constraintName="fk_groupe_projet_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="projet"/>
+
+    </changeSet>
+</databaseChangeLog>

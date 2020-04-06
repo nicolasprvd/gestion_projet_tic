@@ -1,0 +1,74 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-document-heading" jhiTranslate="projetticApp.document.home.createOrEditLabel">Create or edit a Document</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.document.doc" for="field_doc">Doc</label>
+                    <div>
+                        <div *ngIf="editForm.get('doc')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(editForm.get('docContentType')!.value, editForm.get('doc')!.value)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{ editForm.get('docContentType')!.value }}, {{ byteSize(editForm.get('doc')!.value) }}</span>
+                            <button type="button" (click)="editForm.patchValue({doc: null});editForm.patchValue({docContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_doc" (change)="setFileData($event, 'doc', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="doc" id="field_doc"
+                           formControlName="doc"/>
+                    <input type="hidden" class="form-control" name="docContentType" id="field_docContentType"
+                           formControlName="docContentType" />
+                    <div *ngIf="editForm.get('doc')!.invalid && (editForm.get('doc')!.dirty || editForm.get('doc')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('doc')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.document.typeDocument" for="field_typeDocument">Type Document</label>
+                    <select class="form-control" name="typeDocument" formControlName="typeDocument" id="field_typeDocument">
+                        <option value="CDC">{{ 'projetticApp.TypeDocument.CDC' | translate }}</option>
+                        <option value="RF">{{ 'projetticApp.TypeDocument.RF' | translate }}</option>
+                        <option value="GANTT">{{ 'projetticApp.TypeDocument.GANTT' | translate }}</option>
+                    </select>
+                    <div *ngIf="editForm.get('typeDocument')!.invalid && (editForm.get('typeDocument')!.dirty || editForm.get('typeDocument')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('typeDocument')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.document.projet" for="field_projet">Projet</label>
+                    <select class="form-control" id="field_projet" name="projet" formControlName="projetId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="projetOption.id" *ngFor="let projetOption of projets; trackBy: trackById">{{ projetOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

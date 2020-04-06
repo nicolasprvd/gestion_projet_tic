@@ -1,0 +1,11 @@
+id;actif;type_utilisateur
+1;false;ETUDIANT
+2;true;ETUDIANT
+3;true;CLIENT
+4;false;ETUDIANT
+5;false;ETUDIANT
+6;false;CLIENT
+7;false;CLIENT
+8;false;ETUDIANT
+9;true;CLIENT
+10;false;ETUDIANT

@@ -1,0 +1,9 @@
+{
+  "projetticApp": {
+    "TypeUtilisateur": {
+      "null": "",
+      "ETUDIANT": "ETUDIANT",
+      "CLIENT": "CLIENT"
+    }
+  }
+}

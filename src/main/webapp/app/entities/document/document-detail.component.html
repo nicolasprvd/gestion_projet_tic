@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="document">
+            <h2><span jhiTranslate="projetticApp.document.detail.title">Document</span> {{ document.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="projetticApp.document.doc">Doc</span></dt>
+                <dd>
+                    <div *ngIf="document.doc">
+                        <a (click)="openFile(document?.docContentType!, document?.doc)" jhiTranslate="entity.action.open">open</a>
+                        {{ document.docContentType }}, {{ byteSize(document.doc) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="projetticApp.document.typeDocument">Type Document</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'projetticApp.TypeDocument.' + document.typeDocument }}">{{ document.typeDocument }}</span>
+                </dd>
+                <dt><span jhiTranslate="projetticApp.document.projet">Projet</span></dt>
+                <dd>
+                    <div *ngIf="document.projetId">
+                        <a [routerLink]="['/projet', document.projetId, 'view']">{{ document.projetId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/document', document.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

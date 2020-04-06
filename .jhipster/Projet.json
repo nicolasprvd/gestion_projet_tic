@@ -1,0 +1,72 @@
+{
+    "name": "Projet",
+    "fields": [
+        {
+            "fieldName": "nom",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "descriptionPDF",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "descriptionTexte",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "nbEtudiant",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "automatique",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "archive",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "document",
+            "otherEntityRelationshipName": "projet",
+            "relationshipName": "document"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "groupe",
+            "otherEntityRelationshipName": "projet",
+            "relationshipName": "groupe"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "groupe",
+            "otherEntityRelationshipName": "projet",
+            "relationshipName": "groupe",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "userExtra",
+            "otherEntityRelationshipName": "projet",
+            "relationshipName": "userExtra",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200406101100",
+    "entityTableName": "projet",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}
