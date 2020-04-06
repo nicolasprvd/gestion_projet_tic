@@ -42,8 +42,8 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/projettic;DB_CLOSE_DELAY=-1
-    username: projettic
+    url: jdbc:mysql://localhost:3306/projettic?useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
     password:
     hikari:
       poolName: Hikari
@@ -52,6 +52,8 @@ spring:
     console:
       enabled: false
   jpa:
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+    database: MYSQL
     show-sql: true
     properties:
       hibernate.id.new_generator_mappings: true
