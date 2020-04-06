@@ -139,6 +139,7 @@ public class UserService {
         UserExtra newUserExtra = new UserExtra();
         newUserExtra.setUser(newUser);
         newUserExtra.setTypeUtilisateur(typeUtilisateur);
+        newUserExtra.setActif(true);
         userExtraRepository.save(newUserExtra);
         log.debug("Created Information for UserExtra: {}", newUserExtra);
 
