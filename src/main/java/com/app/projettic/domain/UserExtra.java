@@ -34,6 +34,7 @@ public class UserExtra implements Serializable {
     private TypeUtilisateur typeUtilisateur;
 
     @OneToOne
+    @MapsId
     @JoinColumn(unique = true)
     private User user;
 
