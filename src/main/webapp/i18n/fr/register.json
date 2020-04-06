@@ -2,7 +2,16 @@
   "register": {
     "title": "Création de compte utilisateur",
     "form": {
-      "button": "Enregistrement"
+      "button": "Enregistrement",
+      "label": {
+        "status": "Statut",
+        "firstname": "Prénom",
+        "lastname": "Nom"
+      },
+      "placeholder": {
+        "firstname": "Votre prénom",
+        "lastname": "Votre nom"
+      }
     },
     "messages": {
       "validate": {
@@ -11,6 +20,14 @@
           "minlength": "Votre nom d'utilisateur doit contenir plus d'un caractère.",
           "maxlength": "Votre nom d'utilisateur ne peut pas contenir plus de 50 caractères.",
           "pattern": "Votre nom d'utilisateur ne peut contenir que des lettres minuscules ou des nombres."
+        },
+        "firstname": {
+          "required": "Votre prénom est obligatoire.",
+          "minlength": "Votre prénom doit contenir plus d'un caractère."
+        },
+        "lastname": {
+          "required": "Votre nom est obligatoire.",
+          "minlength": "Votre nom doit contenir plus d'un caractère."
         }
       },
       "success": "<strong>Compte enregistré !</strong> Merci de vérifier votre email de confirmation.",

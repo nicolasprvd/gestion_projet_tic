@@ -1,19 +1,19 @@
-import { TypeDocument } from 'app/shared/model/enumerations/type-document.model';
+import { Projet } from 'app/shared/model/projet.model';
+
+export enum TypeDocument {
+  GANTT,
+  RF,
+  CDC
+}
 
 export interface IDocument {
-  id?: number;
-  docContentType?: string;
-  doc?: any;
+  id?: any;
+  doc?: Blob;
   typeDocument?: TypeDocument;
-  projetId?: number;
+  projetId?: bigint;
+  projet?: Projet;
 }
 
 export class Document implements IDocument {
-  constructor(
-    public id?: number,
-    public docContentType?: string,
-    public doc?: any,
-    public typeDocument?: TypeDocument,
-    public projetId?: number
-  ) {}
+  constructor(public id?: any, public doc?: Blob, public typeDocument?: TypeDocument, public projetId?: bigint, public projet?: Projet) {}
 }

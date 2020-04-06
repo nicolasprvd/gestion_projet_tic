@@ -1,37 +1,34 @@
-import { IDocument } from 'app/shared/model/document.model';
-import { IGroupe } from 'app/shared/model/groupe.model';
+import { Groupe } from 'app/shared/model/groupe.model';
+import { User } from 'app/core/user/user.model';
 
 export interface IProjet {
-  id?: number;
+  id?: any;
   nom?: string;
-  descriptionPDFContentType?: string;
-  descriptionPDF?: any;
+  descriptionPdf?: Blob;
   descriptionTexte?: string;
-  nbEtudiant?: number;
+  nbEtudiant?: bigint;
   automatique?: boolean;
   archive?: boolean;
-  documents?: IDocument[];
-  groupes?: IGroupe[];
-  groupeId?: number;
-  userExtraId?: number;
+  authorities?: string[];
+  groupeId?: bigint;
+  groupe?: Groupe;
+  client_id?: bigint;
+  user?: User;
 }
 
 export class Projet implements IProjet {
   constructor(
-    public id?: number,
+    public id?: any,
     public nom?: string,
-    public descriptionPDFContentType?: string,
-    public descriptionPDF?: any,
+    public descriptionPdf?: Blob,
     public descriptionTexte?: string,
-    public nbEtudiant?: number,
+    public nbEtudiant?: bigint,
     public automatique?: boolean,
     public archive?: boolean,
-    public documents?: IDocument[],
-    public groupes?: IGroupe[],
-    public groupeId?: number,
-    public userExtraId?: number
-  ) {
-    this.automatique = this.automatique || false;
-    this.archive = this.archive || false;
-  }
+    public authorities?: string[],
+    public groupeId?: bigint,
+    public groupe?: Groupe,
+    public client_id?: bigint,
+    public client?: User
+  ) {}
 }

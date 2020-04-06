@@ -1,19 +1,26 @@
 {
   "home": {
-    "title": "Bienvenue, Java Hipster !",
-    "subtitle": "Ceci est votre page d'accueil",
-    "logged": {
-      "message": "Vous êtes connecté en tant que \"{{username}}\"."
+    "title": "Bienvenue sur votre application de gestion de vos projets TIC",
+    "subtitle": "Ce site vous permettra, selon votre profil :",
+    "admin": {
+      "role": "Si vous êtes l'administrateur de l'application :",
+      "one": "Avoir accès aux mêmes fonctionnalités que les clients",
+      "two": "Attribuer automatiquement les projets",
+      "three": "Historiser la base de donnée d’une année sur l’autre"
     },
-    "question": "Si vous avez des questions à propos de JHipster :",
-    "link": {
-      "homepage": "Page d'accueil de JHipster",
-      "stackoverflow": "JHipster sur Stack Overflow",
-      "bugtracker": "JHipster bug tracker",
-      "chat": "JHipster public chat room",
-      "follow": "Suivez @jhipster sur Twitter"
+    "student": {
+      "role": "Si vous êtes un étudiant :",
+      "one": "Visualiser les projets proposés par les différents clients",
+      "two": "Se positioner sur un ou plusieurs projet (et renseigner les membres du groupe)",
+      "three": "Visualiser son projet une fois ce dernier attribué, ainsi que déposer les documents demandés"
     },
-    "like": "Si vous aimez JHipster, donnez nous une étoile sur",
-    "github": "GitHub "
+    "client": {
+      "role": "Si vous êtes un client :",
+      "one": "Ajouter un ou plusieurs nouveau(x) projet(s)",
+      "two": "Attribuer manuellement un projet",
+      "three": "Visualiser le ou les projets proposés",
+      "four": "Visualiser les informations sur le groupe attribué au projet, ainsi que les documents déposés par ce dernier",
+      "five": "Noter les groupes"
+    }
   }
 }

@@ -1,3 +1,12 @@
+import { Groupe } from 'app/shared/model/groupe.model';
+import { Evaluation } from 'app/shared/model/evaluation.model';
+import { Moment } from 'moment';
+
+export enum TypeUtilisateur {
+  CLIENT,
+  ETUDIANT
+}
+
 export interface IUser {
   id?: any;
   login?: string;
@@ -8,10 +17,16 @@ export interface IUser {
   langKey?: string;
   authorities?: string[];
   createdBy?: string;
-  createdDate?: Date;
+  createdDate?: Moment;
   lastModifiedBy?: string;
-  lastModifiedDate?: Date;
+  lastModifiedDate?: Moment;
   password?: string;
+  actif?: boolean;
+  typeUtilisateur?: TypeUtilisateur;
+  groupeId?: bigint;
+  groupe?: Groupe;
+  evaluationId?: bigint;
+  evaluation?: Evaluation;
 }
 
 export class User implements IUser {
@@ -25,9 +40,15 @@ export class User implements IUser {
     public langKey?: string,
     public authorities?: string[],
     public createdBy?: string,
-    public createdDate?: Date,
+    public createdDate?: Moment,
     public lastModifiedBy?: string,
-    public lastModifiedDate?: Date,
-    public password?: string
+    public lastModifiedDate?: Moment,
+    public password?: string,
+    public actif?: boolean,
+    public typeUtilisateur?: TypeUtilisateur,
+    public groupeId?: bigint,
+    public groupe?: Groupe,
+    public evaluationId?: bigint,
+    public evaluation?: Evaluation
   ) {}
 }

@@ -2,7 +2,16 @@
   "register": {
     "title": "Registration",
     "form": {
-      "button": "Register"
+      "button": "Register",
+      "label": {
+        "status": "Status",
+        "firstname": "Firstname",
+        "lastname": "Lastname"
+      },
+      "placeholder": {
+        "firstname": "Your firstname",
+        "lastname": "Your lastname"
+      }
     },
     "messages": {
       "validate": {
@@ -11,6 +20,14 @@
           "minlength": "Your username is required to be at least 1 character.",
           "maxlength": "Your username cannot be longer than 50 characters.",
           "pattern": "Your username can only contain letters and digits."
+        },
+        "firstname": {
+          "required": "Your firstname is required.",
+          "minlength": "Your firstname is required to be at least 1 character."
+        },
+        "lastname": {
+          "required": "Your lastname is required.",
+          "minlength": "Your lastname is required to be at least 1 character."
         }
       },
       "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",

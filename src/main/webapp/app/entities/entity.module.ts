@@ -1,31 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { projetRoutes } from 'app/entities/projet/projet.route';
+import { ProjetReadComponent } from 'app/entities/projet/read/projet-read.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  imports: [
-    RouterModule.forChild([
-      {
-        path: 'evaluation',
-        loadChildren: () => import('./evaluation/evaluation.module').then(m => m.ProjetticEvaluationModule)
-      },
-      {
-        path: 'user-extra',
-        loadChildren: () => import('./user-extra/user-extra.module').then(m => m.ProjetticUserExtraModule)
-      },
-      {
-        path: 'document',
-        loadChildren: () => import('./document/document.module').then(m => m.ProjetticDocumentModule)
-      },
-      {
-        path: 'projet',
-        loadChildren: () => import('./projet/projet.module').then(m => m.ProjetticProjetModule)
-      },
-      {
-        path: 'groupe',
-        loadChildren: () => import('./groupe/groupe.module').then(m => m.ProjetticGroupeModule)
-      }
-      /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
-    ])
-  ]
+  imports: [RouterModule.forChild([projetRoutes]), CommonModule],
+  declarations: [ProjetReadComponent]
+  /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 })
 export class ProjetticEntityModule {}

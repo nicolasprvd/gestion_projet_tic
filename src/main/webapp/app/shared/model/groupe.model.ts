@@ -1,24 +1,22 @@
-import { IProjet } from 'app/shared/model/projet.model';
-import { IUserExtra } from 'app/shared/model/user-extra.model';
+import { User } from 'app/core/user/user.model';
+import { Projet } from 'app/shared/model/projet.model';
 
 export interface IGroupe {
-  id?: number;
+  id?: any;
   valide?: boolean;
-  projets?: IProjet[];
-  userExtras?: IUserExtra[];
-  userExtraId?: number;
-  projetId?: number;
+  chefId?: bigint;
+  chef?: User;
+  projetId?: bigint;
+  projet?: Projet;
 }
 
 export class Groupe implements IGroupe {
   constructor(
-    public id?: number,
+    public id?: any,
     public valide?: boolean,
-    public projets?: IProjet[],
-    public userExtras?: IUserExtra[],
-    public userExtraId?: number,
-    public projetId?: number
-  ) {
-    this.valide = this.valide || false;
-  }
+    public chefId?: bigint,
+    public chef?: User,
+    public projetId?: bigint,
+    public projet?: Projet
+  ) {}
 }
