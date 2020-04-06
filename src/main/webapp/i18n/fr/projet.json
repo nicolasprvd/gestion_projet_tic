@@ -17,11 +17,11 @@
       "detail": {
         "title": "Projet"
       },
-      "nom": "Nom",
-      "descriptionPDF": "Description PDF",
-      "descriptionTexte": "Description Texte",
-      "nbEtudiant": "Nb Etudiant",
-      "automatique": "Automatique",
+      "nom": "Titre :",
+      "descriptionPDF": "Description PDF :",
+      "descriptionTexte": "Description :",
+      "nbEtudiant": "Nombre d'étudiant :",
+      "automatique": "Attribution automatique :",
       "archive": "Archive",
       "document": "Document",
       "groupe": "Groupe",

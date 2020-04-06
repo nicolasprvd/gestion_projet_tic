@@ -24,6 +24,12 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionTexte" for="field_descriptionTexte">Description Texte</label>
+                    <input type="text" class="form-control" name="descriptionTexte" id="field_descriptionTexte"
+                           formControlName="descriptionTexte"/>
+                </div>
+
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionPDF" for="field_descriptionPDF">Description PDF</label>
                     <div>
                         <div *ngIf="editForm.get('descriptionPDF')!.value" class="form-text text-danger clearfix">
@@ -43,16 +49,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionTexte" for="field_descriptionTexte">Description Texte</label>
-                    <input type="text" class="form-control" name="descriptionTexte" id="field_descriptionTexte"
-                           formControlName="descriptionTexte"/>
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.nbEtudiant" for="field_nbEtudiant">Nb Etudiant</label>
+                    <input id="field_nbEtudiant" type="number" class="form-control" name="nbEtudiant" value="4" min="2" max="10"
+                           formControlName="nbEtudiant" >
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.nbEtudiant" for="field_nbEtudiant">Nb Etudiant</label>
-                    <input type="number" class="form-control" name="nbEtudiant" id="field_nbEtudiant"
-                           formControlName="nbEtudiant"/>
-                </div>
+
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.automatique" for="field_automatique">Automatique</label>
@@ -66,21 +68,6 @@
                            formControlName="archive"/>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.groupe" for="field_groupe">Groupe</label>
-                    <select class="form-control" id="field_groupe" name="groupe" formControlName="groupeId">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="groupeOption.id" *ngFor="let groupeOption of groupes; trackBy: trackById">{{ groupeOption.id }}</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.userExtra" for="field_userExtra">User Extra</label>
-                    <select class="form-control" id="field_userExtra" name="userExtra" formControlName="userExtraId">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="userExtraOption.id" *ngFor="let userExtraOption of userextras; trackBy: trackById">{{ userExtraOption.id }}</option>
-                    </select>
-                </div>
             </div>
 
             <div>
