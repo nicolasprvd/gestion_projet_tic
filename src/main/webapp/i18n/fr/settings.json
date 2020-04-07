@@ -6,9 +6,10 @@
       "firstname.placeholder": "Votre prénom",
       "lastname": "Nom",
       "lastname.placeholder": "Votre nom",
-      "role": "Rôle",
-      "modifierInfos": "Modifier mes informations",
-      "button": "Sauvegarder"
+      "language": "Langue",
+      "button": "Sauvegarder",
+      "modifierinfos": "Modifier mes informations",
+      "role": "Rôle"
     },
     "messages": {
       "error": {

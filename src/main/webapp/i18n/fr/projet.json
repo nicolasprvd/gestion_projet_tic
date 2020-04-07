@@ -1,0 +1,39 @@
+{
+  "projetticApp": {
+    "projet": {
+      "home": {
+        "title": "Projets",
+        "createLabel": "Créer un nouveau projet",
+        "create": "Créer un projet",
+        "edit": "Editer un projet",
+        "search": "Recherche pour Projet",
+        "notFound": "Aucun Projet trouvé"
+      },
+      "created": "Un nouveau Projet a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Projet avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Projet avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Projet {{ id }} ?"
+      },
+      "detail": {
+        "title": "Projet"
+      },
+      "bouton": {
+        "choisir": "Postuler"
+      },
+      "nom": "Nom du projet",
+      "nomObligatoire": "Nom du projet *",
+      "descriptionPDF": "Description PDF",
+      "descriptionTexte": "Description texte",
+      "nbEtudiant": "Nombre d'etudiant",
+      "nbEtudiantObligatoire": "Nombre d'etudiant *",
+      "automatique": "Attribution automatique",
+      "archive": "Archive",
+      "groupe": "Groupe",
+      "userExtra": "User Extra",
+      "document": "Document",
+      "client": "Client",
+      "email": "Email"
+    }
+  }
+}

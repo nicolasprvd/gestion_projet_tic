@@ -1,0 +1,39 @@
+{
+  "projetticApp": {
+    "projet": {
+      "home": {
+        "title": "Projects",
+        "createLabel": "Create a new project",
+        "create": "Create a project",
+        "edit": "Edit a project",
+        "search": "Search for Project",
+        "notFound": "No Projects found"
+      },
+      "created": "A new Project is created with identifier {{ param }}",
+      "updated": "A Project is updated with identifier {{ param }}",
+      "deleted": "A Project is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Project {{ id }}?"
+      },
+      "detail": {
+        "title": "Project"
+      },
+      "bouton": {
+        "choisir": "Apply"
+      },
+      "nom": "Project's name",
+      "nomObligatoire": "Project's name *",
+      "descriptionPDF": "PDF description",
+      "descriptionTexte": "Textual description",
+      "nbEtudiant": "Team size",
+      "nbEtudiantObligatoire": "Team size *",
+      "automatique": "Automatic allocation",
+      "archive": "Archive",
+      "groupe": "Group",
+      "userExtra": "User Extra",
+      "document": "Document",
+      "client": "Customer",
+      "email": "Email"
+    }
+  }
+}

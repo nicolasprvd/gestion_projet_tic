@@ -1,0 +1,95 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <div *ngIf="editForm.get('nom')!.invalid">
+                <h2 jhiTranslate="projetticApp.projet.home.create"></h2>
+            </div>
+            <div *ngIf="editForm.get('nom')!.valid ">
+                <h2  jhiTranslate="projetticApp.projet.home.edit"></h2>
+            </div>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <!--
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+                -->
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.nomObligatoire" for="field_nom"></label>
+                    <input type="text" class="form-control" name="nom" id="field_nom"
+                           formControlName="nom"/>
+                    <div *ngIf="editForm.get('nom')!.invalid && (editForm.get('nom')!.dirty || editForm.get('nom')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('nom')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionTexte" for="field_descriptionTexte"></label>
+                    <textarea id="field_descriptionTexte" class="form-control"  formControlName="descriptionTexte" name="descriptionTexte" rows="5" cols="33"> </textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionPDF" for="field_descriptionPDF"></label>
+                    <div>
+                        <div *ngIf="editForm.get('descriptionPDF')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(editForm.get('descriptionPDFContentType')!.value, editForm.get('descriptionPDF')!.value)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{ editForm.get('descriptionPDFContentType')!.value }}, {{ byteSize(editForm.get('descriptionPDF')!.value) }}</span>
+                            <button type="button" (click)="editForm.patchValue({descriptionPDF: null});editForm.patchValue({descriptionPDFContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_descriptionPDF" (change)="setFileData($event, 'descriptionPDF', false)" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="descriptionPDF" id="field_descriptionPDF"
+                           formControlName="descriptionPDF"/>
+                    <input type="hidden" class="form-control" name="descriptionPDFContentType" id="field_descriptionPDFContentType"
+                           formControlName="descriptionPDFContentType" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.nbEtudiantObligatoire" for="field_nbEtudiant"></label>
+                    <select id="field_nbEtudiant" class="form-control" name="nbEtudiant"  formControlName="nbEtudiant" >
+                        <option> 2 </option>
+                        <option> 3 </option>
+                        <option> 4 </option>
+                        <option> 5 </option>
+                        <option> 6 </option>
+                        <option> 7 </option>
+                        <option> 8 </option>
+                        <option> 9 </option>
+                        <option> 10 </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.automatique" for="field_automatique">Automatique</label>
+                    <input type="checkbox" class="form-control" name="automatique" id="field_automatique"
+                           formControlName="automatique"/>
+                </div>
+
+                <div *ngIf="editForm.get('nom')!.valid ">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.archive" for="field_archive"></label>
+                    <input type="checkbox" class="form-control" name="archive" id="field_archive"
+                           formControlName="archive"/>
+                </div>
+
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel"></span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

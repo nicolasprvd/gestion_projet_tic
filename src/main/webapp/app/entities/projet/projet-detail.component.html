@@ -1,0 +1,64 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="projet">
+            <h2>{{ projet.nom }}</h2>
+
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><label class="form-control-label" for="client" jhiTranslate="projetticApp.projet.client"></label></dt>
+                <dd>
+                    <input type="text" class="form-control" id="client" name="client" disabled="disabled" value="{{ client?.firstName }} {{ client?.lastName }}">
+                </dd>
+                <dt><label class="form-control-label" for="email" jhiTranslate="projetticApp.projet.email"></label></dt>
+                <dd>
+                    <input type="text" class="form-control" id="email" name="email" disabled="disabled" value="{{ client?.email }}">
+                </dd>
+                <dt><label class="form-control-label" for="nbetu" jhiTranslate="projetticApp.projet.nbEtudiant"></label></dt>
+                <dd>
+                    <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled" value="{{ projet.nbEtudiant }}">
+                </dd>
+                <dt *ngIf="isClient()"><label class="form-control-label" for="auto" jhiTranslate="projetticApp.projet.automatique"></label></dt>
+                <dd *ngIf="isClient()">
+                    <input type="text" class="form-control" id="auto" name="auto" disabled="disabled" value="{{ projet.automatique }}">
+                </dd>
+                <dt *ngIf="isClient()"><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label></dt>
+                <dd *ngIf="isClient()">
+                    <div *ngIf="projet.groupeId">
+                        <a [routerLink]="['/groupe', projet.groupeId, 'view']">{{ projet.groupeId }}</a>
+                    </div>
+                </dd>
+                <dt><label class="form-control-label" for="desctxt" jhiTranslate="projetticApp.projet.descriptionTexte"></label></dt>
+                <dd>
+                    <input type="text" class="form-control" id="desctxt" name="desctxt" disabled="disabled" value="{{ projet.descriptionTexte }}">
+                </dd>
+                <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionPDF"></label></dt>
+                <dd>
+                    <div *ngIf="projet.descriptionPDF">
+                        <a id="ouvrirpdf" (click)="openFile(projet?.descriptionPDFContentType!, projet?.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
+                        {{ byteSize(projet.descriptionPDF) }}
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button *ngIf="isClient()" type="button"
+                    [routerLink]="['/projet', projet.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+
+            <button *ngIf="!isClient()" type="button"
+                    (click)="postuler()"
+                    class="btn btn-primary">
+                <fa-icon icon="book"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.bouton.choisir">Apply</span>
+            </button>
+        </div>
+    </div>
+</div>
