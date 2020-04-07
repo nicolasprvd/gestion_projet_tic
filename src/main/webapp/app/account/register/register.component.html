@@ -1,11 +1,7 @@
 <div>
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1 jhiTranslate="register.title">Registration</h1>
-
-            <div class="alert alert-success" *ngIf="success" jhiTranslate="register.messages.success">
-                <strong>Registration saved!</strong> Please check your email for confirmation.
-            </div>
+            <h1 *ngIf="!success" jhiTranslate="register.title"></h1>
 
             <div class="alert alert-danger" *ngIf="error" jhiTranslate="register.messages.error.fail">
                 <strong>Registration failed!</strong> Please try again later.
@@ -28,6 +24,8 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
+
+                <!-- LOGIN -->
                 <div class="form-group">
                     <label class="form-control-label" for="login" jhiTranslate="global.form.username.label">Username</label>
                     <input type="text" class="form-control" id="login" name="login" placeholder="{{ 'global.form.username.placeholder' | translate }}"
@@ -60,6 +58,65 @@
                     </div>
                 </div>
 
+                <!-- NOM -->
+                <div class="form-group">
+                    <label class="form-control-label" for="lastName" jhiTranslate="register.form.label.lastName"></label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="{{ 'register.form.placeholder.lastName' | translate }}"
+                           formControlName="lastName">
+
+                    <div *ngIf="registerForm.get('lastName')!.invalid && (registerForm.get('lastName')!.dirty || registerForm.get('lastName')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="registerForm.get('lastName')?.errors?.required"
+                               jhiTranslate="register.messages.validate.lastName.required">
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="registerForm.get('lastName')?.errors?.minlength"
+                               jhiTranslate="register.messages.validate.lastName.minlength">
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="registerForm.get('lastName')?.errors?.maxlength"
+                               jhiTranslate="register.messages.validate.lastName.maxlength">
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="registerForm.get('lastName')?.errors?.pattern"
+                               jhiTranslate="register.messages.validate.lastName.pattern">
+                        </small>
+                    </div>
+                </div>
+
+                <!-- PRENOM -->
+                <div class="form-group">
+                    <label class="form-control-label" for="firstName" jhiTranslate="register.form.label.firstName"></label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="{{ 'register.form.placeholder.firstName' | translate }}"
+                           formControlName="firstName">
+
+                    <div *ngIf="registerForm.get('firstName')!.invalid && (registerForm.get('firstName')!.dirty || registerForm.get('firstName')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="registerForm.get('firstName')?.errors?.required"
+                               jhiTranslate="register.messages.validate.firstName.required">
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="registerForm.get('firstName')?.errors?.minlength"
+                               jhiTranslate="register.messages.validate.firstName.minlength">
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="registerForm.get('firstName')?.errors?.maxlength"
+                               jhiTranslate="register.messages.validate.firstName.maxlength">
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="registerForm.get('firstName')?.errors?.pattern"
+                               jhiTranslate="register.messages.validate.firstName.pattern">
+                        </small>
+                    </div>
+                </div>
+
+                <!-- EMAIL -->
                 <div class="form-group">
                     <label class="form-control-label" for="email" jhiTranslate="global.form.email.label">Email</label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="{{ 'global.form.email.placeholder' | translate }}"
@@ -92,8 +149,19 @@
                     </div>
                 </div>
 
+                <!-- STATUT -->
                 <div class="form-group">
-                    <label class="form-control-label" for="password" jhiTranslate="global.form.newpassword.label">New password</label>
+                    <label class="form-control-label" for="typeUtilisateur" jhiTranslate="register.form.label.typeUtilisateur"></label>
+
+                    <select name="typeUtilisateur" id="typeUtilisateur" class="form-control" formControlName="typeUtilisateur" [(ngModel)]="typeUtilisateurDefault">
+                        <option *ngFor="let statut of typeUtilisateurs" [value]="statut">{{ statut }}</option>
+                    </select>
+
+                </div>
+
+                <!-- MOT DE PASSE -->
+                <div class="form-group">
+                    <label class="form-control-label" for="password" jhiTranslate="global.form.newpassword.label"></label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="{{ 'global.form.newpassword.placeholder' | translate }}"
                             formControlName="password">
 
@@ -120,6 +188,7 @@
                     <jhi-password-strength-bar [passwordToCheck]="registerForm.get('password')!.value"></jhi-password-strength-bar>
                 </div>
 
+                <!-- CONFIRMATION MOT DE PASSE -->
                 <div class="form-group">
                     <label class="form-control-label" for="confirmPassword" jhiTranslate="global.form.confirmpassword.label">New password confirmation</label>
                     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="{{ 'global.form.confirmpassword.placeholder' | translate }}"
@@ -148,11 +217,6 @@
 
                 <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary" jhiTranslate="register.form.button">Register</button>
             </form>
-
-            <div class="mt-3 alert alert-warning">
-                <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
-                <a class="alert-link" (click)="openLogin()" jhiTranslate="global.messages.info.authenticated.link">sign in</a><span jhiTranslate="global.messages.info.authenticated.suffix">, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
-            </div>
         </div>
     </div>
 </div>

@@ -33,8 +33,8 @@ public class UserExtra implements Serializable {
     @Column(name = "type_utilisateur")
     private TypeUtilisateur typeUtilisateur;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @MapsId
     private User user;
 
     @OneToMany(mappedBy = "userExtra")

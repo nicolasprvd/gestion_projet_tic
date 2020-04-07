@@ -60,6 +60,7 @@ public class Projet implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("projets")
+    @JoinColumn(name = "user_extra_id")
     private UserExtra userExtra;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
