@@ -1,50 +1,43 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="projet">
-            <h2><span jhiTranslate="projetticApp.projet.detail.title">Projet</span> {{ projet.id }}</h2>
+            <h2>{{ projet.nom }}</h2>
 
             <hr>
-
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="projetticApp.projet.nom">Nom</span></dt>
+                <dt><label class="form-control-label" for="client" jhiTranslate="projetticApp.projet.client"></label></dt>
                 <dd>
-                    <span>{{ projet.nom }}</span>
+                    <input type="text" class="form-control" id="client" name="client" disabled="disabled" value="{{ client?.firstName }} {{ client?.lastName }}">
                 </dd>
-                <dt><span jhiTranslate="projetticApp.projet.descriptionPDF">Description PDF</span></dt>
+                <dt><label class="form-control-label" for="email" jhiTranslate="projetticApp.projet.email"></label></dt>
                 <dd>
-                    <div *ngIf="projet.descriptionPDF">
-                        <a (click)="openFile(projet?.descriptionPDFContentType!, projet?.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
-                        {{ projet.descriptionPDFContentType }}, {{ byteSize(projet.descriptionPDF) }}
-                    </div>
+                    <input type="text" class="form-control" id="email" name="email" disabled="disabled" value="{{ client?.email }}">
                 </dd>
-                <dt><span jhiTranslate="projetticApp.projet.descriptionTexte">Description Texte</span></dt>
+                <dt><label class="form-control-label" for="nbetu" jhiTranslate="projetticApp.projet.nbEtudiant"></label></dt>
                 <dd>
-                    <span>{{ projet.descriptionTexte }}</span>
+                    <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled" value="{{ projet.nbEtudiant }}">
                 </dd>
-                <dt><span jhiTranslate="projetticApp.projet.nbEtudiant">Nb Etudiant</span></dt>
-                <dd>
-                    <span>{{ projet.nbEtudiant }}</span>
+                <dt *ngIf="isClient()"><label class="form-control-label" for="auto" jhiTranslate="projetticApp.projet.automatique"></label></dt>
+                <dd *ngIf="isClient()">
+                    <input type="text" class="form-control" id="auto" name="auto" disabled="disabled" value="{{ projet.automatique }}">
                 </dd>
-                <dt><span jhiTranslate="projetticApp.projet.automatique">Automatique</span></dt>
-                <dd>
-                    <span>{{ projet.automatique }}</span>
-                </dd>
-                <dt><span jhiTranslate="projetticApp.projet.archive">Archive</span></dt>
-                <dd>
-                    <span>{{ projet.archive }}</span>
-                </dd>
-                <dt><span jhiTranslate="projetticApp.projet.groupe">Groupe</span></dt>
-                <dd>
+                <dt *ngIf="isClient()"><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label></dt>
+                <dd *ngIf="isClient()">
                     <div *ngIf="projet.groupeId">
                         <a [routerLink]="['/groupe', projet.groupeId, 'view']">{{ projet.groupeId }}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="projetticApp.projet.userExtra">User Extra</span></dt>
+                <dt><label class="form-control-label" for="desctxt" jhiTranslate="projetticApp.projet.descriptionTexte"></label></dt>
                 <dd>
-                    <div *ngIf="projet.userExtraId">
-                        <a [routerLink]="['/user-extra', projet.userExtraId, 'view']">{{ projet.userExtraId }}</a>
+                    <input type="text" class="form-control" id="desctxt" name="desctxt" disabled="disabled" value="{{ projet.descriptionTexte }}">
+                </dd>
+                <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionPDF"></label></dt>
+                <dd>
+                    <div *ngIf="projet.descriptionPDF">
+                        <a id="ouvrirpdf" (click)="openFile(projet?.descriptionPDFContentType!, projet?.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
+                        {{ byteSize(projet.descriptionPDF) }}
                     </div>
                 </dd>
             </dl>
@@ -55,10 +48,16 @@
                 <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
-            <button type="button"
+            <button *ngIf="isClient()" type="button"
                     [routerLink]="['/projet', projet.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+
+            <button *ngIf="!isClient()" type="button"
+                    (click)="postuler()"
+                    class="btn btn-primary">
+                <fa-icon icon="book"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.bouton.choisir">Apply</span>
             </button>
         </div>
     </div>
