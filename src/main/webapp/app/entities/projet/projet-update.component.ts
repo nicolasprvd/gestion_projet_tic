@@ -13,6 +13,8 @@ import { IGroupe } from 'app/shared/model/groupe.model';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { IUserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
 
 type SelectableEntity = IGroupe | IUserExtra;
 
@@ -24,6 +26,7 @@ export class ProjetUpdateComponent implements OnInit {
   isSaving = false;
   groupes: IGroupe[] = [];
   userextras: IUserExtra[] = [];
+  account!: Account | null;
 
   editForm = this.fb.group({
     id: [],
@@ -31,7 +34,7 @@ export class ProjetUpdateComponent implements OnInit {
     descriptionPDF: [],
     descriptionPDFContentType: [],
     descriptionTexte: [],
-    nbEtudiant: [],
+    nbEtudiant: [null, [Validators.required]],
     automatique: [],
     archive: [],
     groupeId: [],
@@ -45,7 +48,8 @@ export class ProjetUpdateComponent implements OnInit {
     protected groupeService: GroupeService,
     protected userExtraService: UserExtraService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +59,10 @@ export class ProjetUpdateComponent implements OnInit {
       this.groupeService.query().subscribe((res: HttpResponse<IGroupe[]>) => (this.groupes = res.body || []));
 
       this.userExtraService.query().subscribe((res: HttpResponse<IUserExtra[]>) => (this.userextras = res.body || []));
+
+      this.accountService.getAuthenticationState().subscribe(account => {
+        this.account = account;
+      });
     });
   }
 
@@ -69,7 +77,7 @@ export class ProjetUpdateComponent implements OnInit {
       automatique: projet.automatique,
       archive: projet.archive,
       groupeId: projet.groupeId,
-      userExtraId: projet.userExtraId
+      userExtraId: this.account?.id
     });
   }
 
@@ -115,7 +123,7 @@ export class ProjetUpdateComponent implements OnInit {
       automatique: this.editForm.get(['automatique'])!.value,
       archive: this.editForm.get(['archive'])!.value,
       groupeId: this.editForm.get(['groupeId'])!.value,
-      userExtraId: this.editForm.get(['userExtraId'])!.value
+      userExtraId: this.account?.id
     };
   }
 

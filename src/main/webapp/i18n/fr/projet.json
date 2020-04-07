@@ -3,8 +3,9 @@
     "projet": {
       "home": {
         "title": "Projets",
-        "createLabel": "Créer un nouveau Projet",
-        "createOrEditLabel": "Créer ou éditer un Projet",
+        "createLabel": "Créer un nouveau projet",
+        "create": "Créer un projet",
+        "edit": "Editer un projet",
         "search": "Recherche pour Projet",
         "notFound": "Aucun Projet trouvé"
       },
@@ -29,9 +30,11 @@
         "choisir": "Postuler"
       },
       "nom": "Nom du projet",
+      "nomObligatoire": "Nom du projet *",
       "descriptionPDF": "Description PDF",
       "descriptionTexte": "Description texte",
-      "nbEtudiant": "Nb etudiant",
+      "nbEtudiant": "Nombre d'etudiant",
+      "nbEtudiantObligatoire": "Nombre d'etudiant *",
       "automatique": "Attribution automatique",
       "archive": "Archive",
       "groupe": "Groupe",
