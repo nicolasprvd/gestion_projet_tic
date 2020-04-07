@@ -1,19 +1,26 @@
 {
   "home": {
-    "title": "Welcome, Java Hipster!",
-    "subtitle": "This is your homepage",
-    "logged": {
-      "message": "You are logged in as user \"{{username}}\"."
+    "title": "Welcome on your TIC's project application manager",
+    "subtitle": "This site will allow you to : ",
+    "admin": {
+      "role": "If you are the administrator :",
+      "one" : "Have access to the same functionalities as customers",
+      "two" : "Automatically assign projects",
+      "three" : "Historizing the database from one year to the next"
     },
-    "question": "If you have any question on JHipster:",
-    "link": {
-      "homepage": "JHipster homepage",
-      "stackoverflow": "JHipster on Stack Overflow",
-      "bugtracker": "JHipster bug tracker",
-      "chat": "JHipster public chat room",
-      "follow": "follow @jhipster on Twitter"
+    "student": {
+      "role": "If you are a student :",
+      "one": "View the projects proposed by the different customers",
+      "two": "Take a position on one or more projects (and inform the members of the group)",
+      "three": "View your project once it has been assigned, and submit the required documents."
     },
-    "like": "If you like JHipster, don't forget to give us a star on",
-    "github": "GitHub"
+    "client": {
+      "role": "If you are a client :",
+      "one": "Add one or more project(s)",
+      "two": "Manually assign a project",
+      "three": "View the proposed project(s)",
+      "four": "View information on the group assigned to the project, as well as the documents filed by the latter",
+      "five": "Rate the groups"
+    }
   }
 }
