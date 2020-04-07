@@ -15,25 +15,25 @@
                 <dd>
                     <input type="text" class="form-control" id="email" name="email" disabled="disabled" value="{{ client?.email }}">
                 </dd>
-                <dt><label class="form-control-label" for="nbetu" jhiTranslate="projetticApp.projet.nbEtudiant"></dt>
+                <dt><label class="form-control-label" for="nbetu" jhiTranslate="projetticApp.projet.nbEtudiant"></label></dt>
                 <dd>
                     <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled" value="{{ projet.nbEtudiant }}">
                 </dd>
-                <dt *ngIf="isClient()"><label class="form-control-label" for="auto" jhiTranslate="projetticApp.projet.automatique"></dt>
+                <dt *ngIf="isClient()"><label class="form-control-label" for="auto" jhiTranslate="projetticApp.projet.automatique"></label></dt>
                 <dd *ngIf="isClient()">
                     <input type="text" class="form-control" id="auto" name="auto" disabled="disabled" value="{{ projet.automatique }}">
                 </dd>
-                <dt *ngIf="isClient()"><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></dt>
+                <dt *ngIf="isClient()"><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label></dt>
                 <dd *ngIf="isClient()">
                     <div *ngIf="projet.groupeId">
                         <a [routerLink]="['/groupe', projet.groupeId, 'view']">{{ projet.groupeId }}</a>
                     </div>
                 </dd>
-                <dt><label class="form-control-label" for="desctxt" jhiTranslate="projetticApp.projet.descriptionTexte"></dt>
+                <dt><label class="form-control-label" for="desctxt" jhiTranslate="projetticApp.projet.descriptionTexte"></label></dt>
                 <dd>
                     <input type="text" class="form-control" id="desctxt" name="desctxt" disabled="disabled" value="{{ projet.descriptionTexte }}">
                 </dd>
-                <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionPDF"></dt>
+                <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionPDF"></label></dt>
                 <dd>
                     <div *ngIf="projet.descriptionPDF">
                         <a id="ouvrirpdf" (click)="openFile(projet?.descriptionPDFContentType!, projet?.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
