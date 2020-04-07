@@ -10,12 +10,6 @@
 
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <!--
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
-                    <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
-                </div>
-                -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.nomObligatoire" for="field_nom"></label>
                     <input type="text" class="form-control" name="nom" id="field_nom"
@@ -55,15 +49,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.nbEtudiantObligatoire" for="field_nbEtudiant"></label>
                     <select id="field_nbEtudiant" class="form-control" name="nbEtudiant"  formControlName="nbEtudiant" >
-                        <option> 2 </option>
-                        <option> 3 </option>
-                        <option> 4 </option>
-                        <option> 5 </option>
-                        <option> 6 </option>
-                        <option> 7 </option>
-                        <option> 8 </option>
-                        <option> 9 </option>
-                        <option> 10 </option>
+                        <option *ngFor="let index of [2,3,4,5,6,7,8,9,10]">{{ index }} </option>
                     </select>
                 </div>
 
