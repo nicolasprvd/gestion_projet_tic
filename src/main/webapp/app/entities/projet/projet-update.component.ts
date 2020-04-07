@@ -4,7 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import {JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent} from 'ng-jhipster';
 
 import { IProjet, Projet } from 'app/shared/model/projet.model';
 import { ProjetService } from './projet.service';
@@ -141,9 +141,5 @@ export class ProjetUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
-  }
-
-  trackById(index: number, item: SelectableEntity): any {
-    return item.id;
   }
 }
