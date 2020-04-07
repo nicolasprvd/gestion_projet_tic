@@ -3,8 +3,9 @@
     "projet": {
       "home": {
         "title": "Projects",
-        "createLabel": "Create a new Project",
-        "createOrEditLabel": "Create or edit a Project",
+        "createLabel": "Create a new project",
+        "create": "Create a project",
+        "edit": "Edit a project",
         "search": "Search for Project",
         "notFound": "No Projects found"
       },
@@ -21,10 +22,12 @@
         "choisir": "Apply"
       },
       "nom": "Project's name",
+      "nomObligatoire": "Project's name *",
       "descriptionPDF": "PDF description",
       "descriptionTexte": "Textual description",
       "nbEtudiant": "Team size",
-      "automatique": "Automatic",
+      "nbEtudiantObligatoire": "Team size *",
+      "automatique": "Automatic allocation",
       "archive": "Archive",
       "groupe": "Group",
       "userExtra": "User Extra",
