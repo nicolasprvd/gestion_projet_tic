@@ -11,6 +11,7 @@ import { ProjetService } from './projet.service';
 import { ProjetComponent } from './projet.component';
 import { ProjetDetailComponent } from './projet-detail.component';
 import { ProjetUpdateComponent } from './projet-update.component';
+import { ProjetPostulerComponent } from 'app/entities/projet/postuler/projet-postuler.component';
 
 @Injectable({ providedIn: 'root' })
 export class ProjetResolve implements Resolve<IProjet> {
@@ -77,6 +78,18 @@ export const projetRoute: Routes = [
     data: {
       authorities: [Authority.USER],
       pageTitle: 'projetticApp.projet.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/postuler',
+    component: ProjetPostulerComponent,
+    resolve: {
+      projet: ProjetResolve
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'projetticApp.projet.apply.postuler'
     },
     canActivate: [UserRouteAccessService]
   }

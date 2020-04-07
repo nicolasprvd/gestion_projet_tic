@@ -89,7 +89,7 @@
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                             </button>
 
-                            <button *ngIf="!isClient()" type="submit" (click)="postuler()"
+                            <button *ngIf="!isClient()" type="submit" [routerLink]="['/projet', projet.id, 'postuler']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="book"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.bouton.choisir"></span>

@@ -17,6 +17,14 @@
       "detail": {
         "title": "Projet"
       },
+
+      "apply": {
+        "postuler": "Postuler",
+        "chef": "Chef",
+        "etudiants": "Étudiants",
+        "boutonValidation": "Valider",
+        "description": "Vous pouvez vous positionner sur plusieurs sujets, votre affectation sur ce projet se fera aléatoirement.<br>Afin de vous positionner sur ce sujet, veuillez constituer votre groupe à partir des éléments ci-dessous.<br><br>Ce projet nécessite {{ nb }} étudiants."
+      },
       "bouton": {
         "choisir": "Postuler"
       },
@@ -24,7 +32,7 @@
       "descriptionPDF": "Description PDF",
       "descriptionTexte": "Description texte",
       "nbEtudiant": "Nb etudiant",
-      "automatique": "Automatique",
+      "automatique": "Attribution automatique",
       "archive": "Archive",
       "groupe": "Groupe",
       "userExtra": "User Extra",
