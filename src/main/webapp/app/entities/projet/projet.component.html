@@ -2,7 +2,7 @@
     <h2 id="page-heading">
         <span jhiTranslate="projetticApp.projet.home.title">Projets</span>
 
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-projet" [routerLink]="['/projet/new']">
+        <button *ngIf="isClient()" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-projet" [routerLink]="['/projet/new']">
             <fa-icon icon="plus"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="projetticApp.projet.home.createLabel">
             Create a new Projet
@@ -39,41 +39,34 @@
     <div class="table-responsive" id="entities" *ngIf="projets?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr>
-                    <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                    <th scope="col" ><span jhiTranslate="projetticApp.projet.nom">Nom</span></th>
-                    <th scope="col" ><span jhiTranslate="projetticApp.projet.descriptionPDF">Description PDF</span></th>
-                    <th scope="col" ><span jhiTranslate="projetticApp.projet.descriptionTexte">Description Texte</span></th>
-                    <th scope="col" ><span jhiTranslate="projetticApp.projet.nbEtudiant">Nb Etudiant</span></th>
-                    <th scope="col" ><span jhiTranslate="projetticApp.projet.automatique">Automatique</span></th>
-                    <th scope="col" ><span jhiTranslate="projetticApp.projet.archive">Archive</span></th>
-                    <th scope="col" ><span jhiTranslate="projetticApp.projet.groupe">Groupe</span></th>
-                    <th scope="col" ><span jhiTranslate="projetticApp.projet.userExtra">User Extra</span></th>
-                    <th scope="col"></th>
-                </tr>
+            <tr>
+                <th scope="col" ><span jhiTranslate="projetticApp.projet.nom">Nom</span></th>
+                <th scope="col" ><span jhiTranslate="projetticApp.projet.descriptionPDF">Description PDF</span></th>
+                <th scope="col" ><span jhiTranslate="projetticApp.projet.descriptionTexte">Description Texte</span></th>
+                <th scope="col" ><span jhiTranslate="projetticApp.projet.nbEtudiant">Nb Etudiant</span></th>
+                <th *ngIf="isClient()" scope="col" ><span jhiTranslate="projetticApp.projet.automatique">Automatique</span></th>
+                <th *ngIf="isClient()" scope="col" ><span jhiTranslate="projetticApp.projet.groupe">Groupe</span></th>
+                <th scope="col"></th>
+            </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let projet of projets ;trackBy: trackId">
-                    <td><a [routerLink]="['/projet', projet.id, 'view']">{{ projet.id }}</a></td>
+            <ng-container *ngFor="let projet of projets ;trackBy: trackId">
+                <tr *ngIf="!projet.archive || isAdmin()">
                     <td>{{ projet.nom }}</td>
                     <td>
-                        <a *ngIf="projet.descriptionPDF" (click)="openFile(projet.descriptionPDFContentType, projet.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
-                        <span *ngIf="projet.descriptionPDF">{{ projet.descriptionPDFContentType }}, {{ byteSize(projet.descriptionPDF) }}</span>
+                        <a id="ouvrirpdf" *ngIf="projet.descriptionPDF" (click)="openFile(projet.descriptionPDFContentType, projet.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
+                        <span *ngIf="projet.descriptionPDF">{{ byteSize(projet.descriptionPDF) }}</span>
                     </td>
                     <td>{{ projet.descriptionTexte }}</td>
                     <td>{{ projet.nbEtudiant }}</td>
-                    <td>{{ projet.automatique }}</td>
-                    <td>{{ projet.archive }}</td>
-                    <td>
+                    <td *ngIf="isClient()">{{ projet.automatique }}</td>
+
+                    <td *ngIf="isClient()">
                         <div *ngIf="projet.groupeId">
                             <a [routerLink]="['/groupe', projet.groupeId , 'view']" >{{ projet.groupeId }}</a>
                         </div>
                     </td>
-                    <td>
-                        <div *ngIf="projet.userExtraId">
-                            <a [routerLink]="['/user-extra', projet.userExtraId , 'view']" >{{ projet.userExtraId }}</a>
-                        </div>
-                    </td>
+
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
@@ -83,21 +76,28 @@
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
 
-                            <button type="submit"
+                            <button *ngIf="isAutorise(projet)" type="submit"
                                     [routerLink]="['/projet', projet.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                             </button>
 
-                            <button type="submit" (click)="delete(projet)"
+                            <button *ngIf="isAutorise(projet)" type="submit" (click)="delete(projet)"
                                     class="btn btn-danger btn-sm">
                                 <fa-icon icon="times"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                             </button>
+
+                            <button *ngIf="!isClient()" type="submit" (click)="postuler()"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="book"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.bouton.choisir"></span>
+                            </button>
                         </div>
                     </td>
                 </tr>
+            </ng-container>
             </tbody>
         </table>
     </div>

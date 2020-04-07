@@ -2,31 +2,38 @@
   "projetticApp": {
     "projet": {
       "home": {
-        "title": "Projets",
-        "createLabel": "Create a new Projet",
-        "createOrEditLabel": "Create or edit a Projet",
-        "search": "Search for Projet",
-        "notFound": "No Projets found"
+        "title": "Projects",
+        "createLabel": "Create a new project",
+        "create": "Create a project",
+        "edit": "Edit a project",
+        "search": "Search for Project",
+        "notFound": "No Projects found"
       },
-      "created": "A new Projet is created with identifier {{ param }}",
-      "updated": "A Projet is updated with identifier {{ param }}",
-      "deleted": "A Projet is deleted with identifier {{ param }}",
+      "created": "A new Project is created with identifier {{ param }}",
+      "updated": "A Project is updated with identifier {{ param }}",
+      "deleted": "A Project is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Projet {{ id }}?"
+        "question": "Are you sure you want to delete Project {{ id }}?"
       },
       "detail": {
-        "title": "Projet"
+        "title": "Project"
       },
-      "nom": "Nom",
-      "descriptionPDF": "Description PDF",
-      "descriptionTexte": "Description Texte",
-      "nbEtudiant": "Nb Etudiant",
-      "automatique": "Automatique",
+      "bouton": {
+        "choisir": "Apply"
+      },
+      "nom": "Project's name",
+      "nomObligatoire": "Project's name *",
+      "descriptionPDF": "PDF description",
+      "descriptionTexte": "Textual description",
+      "nbEtudiant": "Team size",
+      "nbEtudiantObligatoire": "Team size *",
+      "automatique": "Automatic allocation",
       "archive": "Archive",
+      "groupe": "Group",
+      "userExtra": "User Extra",
       "document": "Document",
-      "groupe": "Groupe",
-      "groupe": "Groupe",
-      "userExtra": "User Extra"
+      "client": "Customer",
+      "email": "Email"
     }
   }
 }

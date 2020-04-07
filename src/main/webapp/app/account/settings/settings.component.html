@@ -1,6 +1,6 @@
 <div>
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-sm-6">
             <h2 jhiTranslate="settings.title" [translateValues]="{ username: account.login }" *ngIf="account">User settings for [<b>{{ account.login }}</b>]</h2>
 
             <div class="alert alert-success" *ngIf="success" jhiTranslate="settings.messages.success">
@@ -63,6 +63,11 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-control-label" for="authorities" jhiTranslate="settings.form.role"></label>
+                    <input type="text" class="form-control" id="authorities" name="authorities" disabled="disabled" formControlName="authorities">
+                </div>
+
+                <div class="form-group">
                     <label class="form-control-label" for="email" jhiTranslate="global.form.email.label">Email</label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="{{ 'global.form.email.placeholder' | translate }}"
                            formControlName="email">
@@ -94,15 +99,9 @@
                     </div>
                 </div>
 
-                <div class="form-group" *ngIf="languages && languages.length > 0">
-                    <label for="langKey" jhiTranslate="settings.form.language">Language</label>
-                    <select class="form-control" id="langKey" name="langKey" formControlName="langKey">
-                        <option *ngFor="let language of languages" [value]="language">{{ language | findLanguageFromKey }}</option>
-                    </select>
-                </div>
-
-                <button type="submit" [disabled]="settingsForm.invalid" class="btn btn-primary" jhiTranslate="settings.form.button">Save</button>
+                <button type="submit" [disabled]="settingsForm.invalid" class="btn btn-primary" jhiTranslate="settings.form.modifierinfos"></button>
             </form>
         </div>
+        <jhi-password class="col-sm-6" id="colsm6mdp"></jhi-password>
     </div>
 </div>

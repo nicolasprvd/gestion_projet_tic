@@ -182,6 +182,18 @@ public class UserResource {
     }
 
     /**
+     * {@code GET  /users/:id} : get the "id" users.
+     *
+     * @param id the id of the userDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/users/{id}")
+    public Optional<User> getUserById(@PathVariable Long id) {
+        log.debug("REST request to get user : {}", id);
+        return userRepository.findOneById(id);
+    }
+
+    /**
      * {@code DELETE /users/:login} : delete the "login" User.
      *
      * @param login the login of the user to delete.

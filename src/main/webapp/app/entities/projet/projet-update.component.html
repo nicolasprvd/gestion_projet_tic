@@ -1,18 +1,23 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-projet-heading" jhiTranslate="projetticApp.projet.home.createOrEditLabel">Create or edit a Projet</h2>
+            <div *ngIf="editForm.get('nom')!.invalid">
+                <h2 jhiTranslate="projetticApp.projet.home.create"></h2>
+            </div>
+            <div *ngIf="editForm.get('nom')!.valid ">
+                <h2  jhiTranslate="projetticApp.projet.home.edit"></h2>
+            </div>
 
             <div>
                 <jhi-alert-error></jhi-alert-error>
-
+                <!--
                 <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
-
+                -->
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.nom" for="field_nom">Nom</label>
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.nomObligatoire" for="field_nom"></label>
                     <input type="text" class="form-control" name="nom" id="field_nom"
                            formControlName="nom"/>
                     <div *ngIf="editForm.get('nom')!.invalid && (editForm.get('nom')!.dirty || editForm.get('nom')!.touched)">
@@ -24,7 +29,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionPDF" for="field_descriptionPDF">Description PDF</label>
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionTexte" for="field_descriptionTexte"></label>
+                    <textarea id="field_descriptionTexte" class="form-control"  formControlName="descriptionTexte" name="descriptionTexte" rows="5" cols="33"> </textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionPDF" for="field_descriptionPDF"></label>
                     <div>
                         <div *ngIf="editForm.get('descriptionPDF')!.value" class="form-text text-danger clearfix">
                             <a class="pull-left" (click)="openFile(editForm.get('descriptionPDFContentType')!.value, editForm.get('descriptionPDF')!.value)" jhiTranslate="entity.action.open">open</a><br>
@@ -43,15 +53,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionTexte" for="field_descriptionTexte">Description Texte</label>
-                    <input type="text" class="form-control" name="descriptionTexte" id="field_descriptionTexte"
-                           formControlName="descriptionTexte"/>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.nbEtudiant" for="field_nbEtudiant">Nb Etudiant</label>
-                    <input type="number" class="form-control" name="nbEtudiant" id="field_nbEtudiant"
-                           formControlName="nbEtudiant"/>
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.nbEtudiantObligatoire" for="field_nbEtudiant"></label>
+                    <select id="field_nbEtudiant" class="form-control" name="nbEtudiant"  formControlName="nbEtudiant" >
+                        <option> 2 </option>
+                        <option> 3 </option>
+                        <option> 4 </option>
+                        <option> 5 </option>
+                        <option> 6 </option>
+                        <option> 7 </option>
+                        <option> 8 </option>
+                        <option> 9 </option>
+                        <option> 10 </option>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -60,36 +73,21 @@
                            formControlName="automatique"/>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.archive" for="field_archive">Archive</label>
+                <div *ngIf="editForm.get('nom')!.valid ">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.archive" for="field_archive"></label>
                     <input type="checkbox" class="form-control" name="archive" id="field_archive"
                            formControlName="archive"/>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.groupe" for="field_groupe">Groupe</label>
-                    <select class="form-control" id="field_groupe" name="groupe" formControlName="groupeId">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="groupeOption.id" *ngFor="let groupeOption of groupes; trackBy: trackById">{{ groupeOption.id }}</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.userExtra" for="field_userExtra">User Extra</label>
-                    <select class="form-control" id="field_userExtra" name="userExtra" formControlName="userExtraId">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="userExtraOption.id" *ngFor="let userExtraOption of userextras; trackBy: trackById">{{ userExtraOption.id }}</option>
-                    </select>
-                </div>
             </div>
 
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel"></span>
                 </button>
 
                 <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save"></span>
                 </button>
             </div>
         </form>
