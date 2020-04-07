@@ -37,6 +37,7 @@ public class Groupe implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("groupes")
+    @JoinColumn(name = "user_extra_id")
     private UserExtra userExtra;
 
     @ManyToOne
