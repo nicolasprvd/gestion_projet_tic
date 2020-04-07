@@ -6,6 +6,11 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { User } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
+import { FormBuilder } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { Groupe, IGroupe } from 'app/shared/model/groupe.model';
+import { GroupeService } from 'app/entities/groupe/groupe.service';
 
 @Component({
   selector: 'jhi-projet-postuler',
@@ -13,16 +18,22 @@ import { UserService } from 'app/core/user/user.service';
   styleUrls: ['./projet-postuler.scss']
 })
 export class ProjetPostulerComponent implements OnInit, OnDestroy {
+  isSaving = false;
   projet!: IProjet;
   account!: Account | null;
   users: User[] = [];
   nbEtuArray: (number | undefined)[] | undefined;
+  registerForm = this.fb.group({
+    formulaireGroupe: ['']
+  });
 
   constructor(
     protected dataUtils: JhiDataUtils,
     protected activatedRoute: ActivatedRoute,
     private accountService: AccountService,
-    private userService: UserService
+    private userService: UserService,
+    private fb: FormBuilder,
+    private groupeService: GroupeService
   ) {}
 
   ngOnInit(): void {
@@ -49,13 +60,54 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       });
     });
     this.nbEtuArray = Array(this.projet.nbEtudiant! - 1);
+    let i: number;
+    for (i = 0; i < this.nbEtuArray.length; i++) {
+      this.nbEtuArray[i] = i;
+    }
   }
 
   ngOnDestroy(): void {}
 
-  postuler(): void {}
+  postuler(): void {
+    this.isSaving = true;
+    const groupe = this.createGroupe();
+    this.subscribeToSaveResponse(this.groupeService.create(groupe));
+    let i: number;
+    for (i = 0; i < this.nbEtuArray!.length; i++) {
+      const etu = this.registerForm.get(['etu' + this.nbEtuArray![i]])!.value;
+      console.error(etu.toString());
+    }
+  }
 
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IProjet>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
+  }
+
+  protected onSaveSuccess(): void {
+    this.isSaving = false;
+    this.previousState();
+  }
+
+  protected onSaveError(): void {
+    this.isSaving = false;
+  }
+
+  /**
+   * Return to the previous page
+   */
   previousState(): void {
     window.history.back();
+  }
+
+  private createGroupe(): IGroupe {
+    return {
+      ...new Groupe(),
+      valide: false,
+      userExtraId: this.account!.id,
+      projetId: this.projet.id
+    };
   }
 }

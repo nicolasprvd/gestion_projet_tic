@@ -104,12 +104,18 @@ export class ProjetComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.projet = projet;
   }
 
+  /**
+   * Return true if the current user is a CLIENT
+   */
   isClient(): boolean {
     return this.typeUtilisateur === TypeUtilisateur.CLIENT;
   }
 
-  postuler(): void {}
-
+  /**
+   * Return true if :
+   * - the current user is an administrator
+   * - the project was created by the current user
+   */
   isAutorise(projet: IProjet): boolean {
     for (const droit of this.authorities!) {
       if (Authority.ADMIN === droit) {
@@ -122,6 +128,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  /**
+   * Return true if the current user is an administrator
+   */
   isAdmin(): boolean {
     for (const droit of this.authorities!) {
       if (Authority.ADMIN === droit) {

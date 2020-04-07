@@ -9,6 +9,7 @@ import { UserService } from 'app/core/user/user.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { Account } from 'app/core/user/account.model';
 import { IUser } from 'app/core/user/user.model';
+import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -18,10 +19,12 @@ import { IUser } from 'app/core/user/user.model';
 export class ProjetDetailComponent implements OnInit {
   projet!: IProjet;
   account!: Account | null;
+  authorities!: string[] | undefined;
   user!: IUser;
   client!: IUser;
   typeUtilisateur?: TypeUtilisateur;
   login!: string | undefined;
+  accountExtraId!: number;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -35,6 +38,7 @@ export class ProjetDetailComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
+      this.authorities = account?.authorities;
     });
     this.userExtraService.find(this.account!.id).subscribe(userExtra => {
       this.typeUtilisateur = userExtra.body?.typeUtilisateur;
@@ -55,13 +59,34 @@ export class ProjetDetailComponent implements OnInit {
     this.dataUtils.openFile(contentType, base64String);
   }
 
+  /**
+   * Return to the previous page
+   */
   previousState(): void {
     window.history.back();
   }
 
+  /**
+   * Return true if the current user is a CLIENT
+   */
   isClient(): boolean {
     return this.typeUtilisateur === TypeUtilisateur.CLIENT;
   }
 
-  postuler(): void {}
+  /**
+   * Return true if :
+   * - the current user is an administrator
+   * - the project was created by the current user
+   */
+  isAutorise(projet: IProjet): boolean {
+    for (const droit of this.authorities!) {
+      if (Authority.ADMIN === droit) {
+        return true;
+      }
+    }
+    if (this.isClient()) {
+      return projet.userExtraId === this.account!.id;
+    }
+    return false;
+  }
 }
