@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { Groupe, IGroupe } from 'app/shared/model/groupe.model';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
+import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 
 @Component({
   selector: 'jhi-projet-postuler',
@@ -23,15 +24,13 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   account!: Account | null;
   users: User[] = [];
   nbEtuArray: (number | undefined)[] | undefined;
-  registerForm = this.fb.group({
-    formulaireGroupe: ['']
-  });
 
   constructor(
     protected dataUtils: JhiDataUtils,
     protected activatedRoute: ActivatedRoute,
     private accountService: AccountService,
     private userService: UserService,
+    private userExtraService: UserExtraService,
     private fb: FormBuilder,
     private groupeService: GroupeService
   ) {}
@@ -50,19 +49,19 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
         }
       }
       this.users.sort((n1: User, n2: User) => {
-        if (n1.firstName! > n2.firstName!) {
+        if (n1.firstName > n2.firstName) {
           return 1;
         }
-        if (n1.firstName! < n2.firstName!) {
+        if (n1.firstName < n2.firstName) {
           return -1;
         }
         return 0;
       });
     });
-    this.nbEtuArray = Array(this.projet.nbEtudiant! - 1);
+    this.nbEtuArray = Array(this.projet.nbEtudiant - 1);
     let i: number;
     for (i = 0; i < this.nbEtuArray.length; i++) {
-      this.nbEtuArray[i] = i;
+      this.nbEtuArray[i] = i + 1;
     }
   }
 
@@ -70,16 +69,19 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
 
   postuler(): void {
     this.isSaving = true;
-    const groupe = this.createGroupe();
+    const groupe: IGroupe = this.createGroupe();
     this.subscribeToSaveResponse(this.groupeService.create(groupe));
     let i: number;
-    for (i = 0; i < this.nbEtuArray!.length; i++) {
-      const etu = this.registerForm.get(['etu' + this.nbEtuArray![i]])!.value;
-      console.error(etu.toString());
+    for (i = 0; i < this.nbEtuArray.length; i++) {
+      const etuId = 'etu' + this.nbEtuArray[i];
+      const etu = (document.getElementById(etuId) as HTMLInputElement).value;
+      this.userExtraService.find(etu).subscribe(user => {
+        user.this.subscribeToSaveResponse(this.userService.update(groupe));
+      });
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IProjet>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IGroupe>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError()
@@ -95,9 +97,6 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     this.isSaving = false;
   }
 
-  /**
-   * Return to the previous page
-   */
   previousState(): void {
     window.history.back();
   }
@@ -106,7 +105,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     return {
       ...new Groupe(),
       valide: false,
-      userExtraId: this.account!.id,
+      userExtraId: this.account.id,
       projetId: this.projet.id
     };
   }

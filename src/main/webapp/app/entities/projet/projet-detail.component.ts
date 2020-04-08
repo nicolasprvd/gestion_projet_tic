@@ -40,12 +40,12 @@ export class ProjetDetailComponent implements OnInit {
       this.account = account;
       this.authorities = account?.authorities;
     });
-    this.userExtraService.find(this.account!.id).subscribe(userExtra => {
+    this.userExtraService.find(this.account.id).subscribe(userExtra => {
       this.typeUtilisateur = userExtra.body?.typeUtilisateur;
     });
 
-    this.userExtraService.find(this.projet?.userExtraId!).subscribe(userExtra => {
-      this.userService.findById(userExtra.body?.userId!).subscribe(client => {
+    this.userExtraService.find(this.projet?.userExtraId).subscribe(userExtra => {
+      this.userService.findById(userExtra.body?.userId).subscribe(client => {
         this.client = client;
       });
     });
@@ -79,13 +79,13 @@ export class ProjetDetailComponent implements OnInit {
    * - the project was created by the current user
    */
   isAutorise(projet: IProjet): boolean {
-    for (const droit of this.authorities!) {
+    for (const droit of this.authorities) {
       if (Authority.ADMIN === droit) {
         return true;
       }
     }
     if (this.isClient()) {
-      return projet.userExtraId === this.account!.id;
+      return projet.userExtraId === this.account.id;
     }
     return false;
   }
