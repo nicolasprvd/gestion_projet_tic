@@ -7,8 +7,6 @@ import { Account } from 'app/core/user/account.model';
 import { User } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
 import { FormBuilder } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
 import { Groupe, IGroupe } from 'app/shared/model/groupe.model';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
@@ -20,10 +18,11 @@ import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 })
 export class ProjetPostulerComponent implements OnInit, OnDestroy {
   isSaving = false;
-  projet!: IProjet;
-  account!: Account | null;
+  projet: IProjet;
+  account: Account | null;
   users: User[] = [];
   nbEtuArray: (number | undefined)[] | undefined;
+  groupeCree: number;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -69,21 +68,24 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
 
   postuler(): void {
     this.isSaving = true;
-    const groupe: IGroupe = this.createGroupe();
-    this.subscribeToSaveResponse(this.groupeService.create(groupe));
-    let i: number;
-    for (i = 0; i < this.nbEtuArray.length; i++) {
-      const etuId = 'etu' + this.nbEtuArray[i];
-      const etu = (document.getElementById(etuId) as HTMLInputElement).value;
-      this.userExtraService.find(etu).subscribe(user => {
-        user.this.subscribeToSaveResponse(this.userService.update(groupe));
-      });
-    }
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IGroupe>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
+    const nouveauGroupe = this.createGroupe();
+    this.groupeService.create(nouveauGroupe).subscribe(
+      groupe => {
+        let i: number;
+        for (i = 0; i < this.nbEtuArray.length; i++) {
+          const etuId = 'etu' + this.nbEtuArray[i];
+          const etu = (document.getElementById(etuId) as HTMLInputElement).value;
+          this.userExtraService.find(+etu).subscribe(userExtra => {
+            userExtra.body.groupeId = groupe.body.id;
+            this.userExtraService.update(userExtra.body).subscribe();
+          });
+        }
+        this.userExtraService.find(this.account.id).subscribe(userExtra => {
+          userExtra.body.groupeId = groupe.body.id;
+          this.userExtraService.update(userExtra.body).subscribe();
+        });
+        this.onSaveSuccess();
+      },
       () => this.onSaveError()
     );
   }

@@ -1,10 +1,12 @@
 package com.app.projettic.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.Objects;
@@ -56,6 +58,7 @@ public class Projet implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("projets")
+    @JsonBackReference
     private Groupe groupe;
 
     @ManyToOne
