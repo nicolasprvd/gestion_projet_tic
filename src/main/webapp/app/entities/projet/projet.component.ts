@@ -70,9 +70,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
       this.account = account;
       this.authorities = account?.authorities;
     });
-    this.userExtraService.find(this.account!.id).subscribe(userExtra => {
+    this.userExtraService.find(this.account.id).subscribe(userExtra => {
       this.typeUtilisateur = userExtra.body?.typeUtilisateur;
-      this.accountExtraId = userExtra.body?.id!;
+      this.accountExtraId = userExtra.body?.id;
     });
   }
 
@@ -111,7 +111,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   postuler(): void {}
 
   isAutorise(projet: IProjet): boolean {
-    for (const droit of this.authorities!) {
+    for (const droit of this.authorities) {
       if (Authority.ADMIN === droit) {
         return true;
       }
@@ -123,7 +123,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   isAdmin(): boolean {
-    for (const droit of this.authorities!) {
+    for (const droit of this.authorities) {
       if (Authority.ADMIN === droit) {
         return true;
       }

@@ -36,12 +36,12 @@ export class ProjetDetailComponent implements OnInit {
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
     });
-    this.userExtraService.find(this.account!.id).subscribe(userExtra => {
+    this.userExtraService.find(this.account.id).subscribe(userExtra => {
       this.typeUtilisateur = userExtra.body?.typeUtilisateur;
     });
 
-    this.userExtraService.find(this.projet?.userExtraId!).subscribe(userExtra => {
-      this.userService.findById(userExtra.body?.userId!).subscribe(client => {
+    this.userExtraService.find(this.projet?.userExtraId).subscribe(userExtra => {
+      this.userService.findById(userExtra.body?.userId).subscribe(client => {
         this.client = client;
       });
     });
