@@ -1,0 +1,43 @@
+#footer-faq {
+  display: block;
+  color: black;
+  padding-top: 1%;
+}
+
+#footer-faq:hover {
+  text-decoration: none;
+}
+
+.page-footer {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+  padding-left: 7%;
+}
+
+.page-footer img {
+  width: 35%;
+  height: auto;
+}
+
+#miage {
+  margin-top: 3%;
+}
+
+@media (max-width: 576px) {
+  .page-footer {
+    padding-left: 2%;
+  }
+
+  .page-footer img {
+    width: 90%;
+  }
+
+  #miage {
+    margin-top: 7%;
+  }
+
+  .page-footer a {
+    font-size: 12px;
+  }
+}
