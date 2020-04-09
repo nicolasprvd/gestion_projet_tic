@@ -22,7 +22,7 @@ export class NavbarComponent implements OnInit {
   languages = LANGUAGES;
   swaggerEnabled?: boolean;
   version: string;
-  account!: Account | null;
+  account: Account;
 
   constructor(
     private loginService: LoginService,
@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
       this.inProduction = profileInfo.inProduction;
       this.swaggerEnabled = profileInfo.swaggerEnabled;
       if (this.isAuthenticated()) {
-        this.accountService.identity().subscribe(account => {
+        this.accountService.getAuthenticationState().subscribe(account => {
           this.account = account;
         });
       }
