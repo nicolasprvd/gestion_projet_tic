@@ -43,7 +43,9 @@ Generic styles
 .jh-card {
   padding: 1.5%;
   margin-top: 20px;
-  border: none;
+  background: #f1f1f1;
+  color: black;
+  border: 1px solid #cccccc;
 }
 
 .error {
@@ -171,6 +173,10 @@ ui bootstrap tweaks
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
+html,
+body {
+  background-color: #cbe3ed;
+}
 
 body,
 h1,
@@ -204,13 +210,6 @@ Generic styles
 ========================================================================== */
 
 /* other generic styles */
-
-.jh-card {
-  padding: 1.5%;
-  margin-top: 20px;
-  border: none;
-}
-
 .error {
   color: white;
   background-color: red;
@@ -432,4 +431,20 @@ Margin-right
 
 .mrl {
   margin-right: 15px;
+}
+
+fa-icon {
+  margin-right: 3px;
+}
+
+.hoverable {
+  tranform: translateZ(0);
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+
+.hoverable:hover,
+[aria-expanded='true'] {
+  transform: translateY(-5px);
+  font-weight: bold;
 }
