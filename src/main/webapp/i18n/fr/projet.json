@@ -24,10 +24,11 @@
         "chef": "Chef",
         "etudiants": "Étudiants",
         "boutonValidation": "Valider",
-        "description": "Vous pouvez vous positionner sur plusieurs sujets, votre affectation sur ce projet se fera aléatoirement.<br>Afin de vous positionner sur ce sujet, veuillez constituer votre groupe à partir des éléments ci-dessous.<br><br>Ce projet nécessite {{ nb }} étudiants."
+        "description": "Afin de vous positionner sur ce sujet, veuillez constituer votre groupe à partir des éléments ci-dessous.<br>Ce projet nécessite {{ nb }} étudiants."
       },
       "bouton": {
-        "choisir": "Postuler"
+        "choisir": "Postuler",
+        "etatCandidature": "Postulé"
       },
       "nom": "Nom du projet",
       "nomObligatoire": "Nom du projet *",

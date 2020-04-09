@@ -26,7 +26,8 @@
         "description": "You can position yourself on several subjects, your assignment will be made randomly on this project.<br>In order to apply for this subject, please constitute your group from the elements below.<br><br>This project requires {{ nb }} students."
       },
       "bouton": {
-        "choisir": "Apply"
+        "choisir": "Apply",
+        "etatCandidature": "Applied"
       },
       "nom": "Project's name",
       "nomObligatoire": "Project's name *",

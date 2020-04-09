@@ -14,6 +14,7 @@ import { UserService } from 'app/core/user/user.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { Authority } from 'app/shared/constants/authority.constants';
+import { GroupeService } from 'app/entities/groupe/groupe.service';
 
 @Component({
   selector: 'jhi-projet',
@@ -21,11 +22,13 @@ import { Authority } from 'app/shared/constants/authority.constants';
   styleUrls: ['./projet.scss']
 })
 export class ProjetComponent implements OnInit, OnDestroy {
-  account!: Account | null;
-  typeUtilisateur?: TypeUtilisateur;
-  projets?: IProjet[];
-  authorities!: string[] | undefined;
-  eventSubscriber?: Subscription;
+  account: Account | null;
+  typeUtilisateur: TypeUtilisateur;
+  projets: IProjet[];
+  authorities: string[] | undefined;
+  groupeId: number;
+  projetChoisiId: number;
+  eventSubscriber: Subscription;
   currentSearch: string;
   accountExtraId!: number;
 
@@ -37,7 +40,8 @@ export class ProjetComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     private accountService: AccountService,
     private userService: UserService,
-    private userExtraService: UserExtraService
+    private userExtraService: UserExtraService,
+    private groupeService: GroupeService
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -68,11 +72,17 @@ export class ProjetComponent implements OnInit, OnDestroy {
     this.registerChangeInProjets();
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
-      this.authorities = account?.authorities;
+      this.authorities = account.authorities;
     });
     this.userExtraService.find(this.account.id).subscribe(userExtra => {
-      this.typeUtilisateur = userExtra.body?.typeUtilisateur;
-      this.accountExtraId = userExtra.body?.id;
+      this.typeUtilisateur = userExtra.body.typeUtilisateur;
+      this.accountExtraId = userExtra.body.id;
+      this.groupeId = userExtra.body.groupeId;
+      if (this.groupeId != null) {
+        this.groupeService.find(this.groupeId).subscribe(groupe => {
+          this.projetChoisiId = groupe.body.projetId;
+        });
+      }
     });
   }
 
@@ -138,5 +148,13 @@ export class ProjetComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+
+  aDejaUnGroupe(): boolean {
+    return this.groupeId !== null;
+  }
+
+  isMonProjetChoisi(projet: IProjet): boolean {
+    return projet.id === this.projetChoisiId;
   }
 }
