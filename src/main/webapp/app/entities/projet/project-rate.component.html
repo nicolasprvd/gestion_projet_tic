@@ -1,0 +1,55 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+
+
+        <div *ngIf="project">
+            <h2>{{ project.nom }}</h2>
+        </div>
+
+        <div class="row"> <!-- Cahier des charges -->
+            <div class="col-sm-6">
+                <label jhiTranslate="projetticApp.projet.rate.downloadSpec"></label>
+                <a (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)">open</a>
+            </div>
+            <div class="col-sm-6">
+                <label for="specRate" jhiTranslate="projetticApp.projet.rate.rateSpec"></label>
+                <input id="specRate" type="number">
+            </div>
+        </div>
+        <div class="row"> <!-- GANTT -->
+            <div class="col-sm-6">
+                <label jhiTranslate="projetticApp.projet.rate.downloadGANTT"></label>
+                <a (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)">open</a>
+            </div>
+            <div class="col-sm-6">
+                <label for ="GANTTRate" jhiTranslate="projetticApp.projet.rate.rateGANTT"></label>
+                <input id="GANTTRate" type="number">
+            </div>
+        </div>
+        <div class="row"> <!-- Rendu final -->
+            <div class="col-sm-6">
+                <label jhiTranslate="projetticApp.projet.rate.downloadOutput"></label>
+                <a (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)">open</a>
+            </div>
+            <div class="col-sm-6">
+                <label for="outputRate" jhiTranslate="projetticApp.projet.rate.rateOutput"></label>
+                <input id="outputRate" type="number">
+            </div>
+        </div>
+
+        <p> Note finale (calculée automatiquement) : {{ finalRate }} </p>
+
+        <div class="row"> <!-- Buttons -->
+            <button type="submit"
+                    [routerLink]="['/projet']"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+            <button  type="submit" (click)="tmp()"
+                     class="btn btn-info btn-sm">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.rate"></span>
+            </button>
+        </div>
+    </div>
+</div>

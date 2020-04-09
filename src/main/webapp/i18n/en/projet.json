@@ -18,6 +18,21 @@
       "detail": {
         "title": "Project"
       },
+      "apply": {
+        "postuler": "Apply",
+        "chef": "Chief",
+        "etudiants": "Students",
+        "boutonValidation": "Validate",
+        "description": "You can position yourself on several subjects, your assignment will be made randomly on this project.<br>In order to apply for this subject, please constitute your group from the elements below.<br><br>This project requires {{ nb }} students."
+      },
+      "rate": {
+        "downloadSpec": "Download the specifications notebook :",
+        "downloadGANTT": "Download the GANTT planning :",
+        "downloadOutput": "Download the final output :",
+        "rateSpec": "specifications notebook's rate :",
+        "rateGANTT": "GANTT's rate :",
+        "rateOutput": "final output's rate :"
+      },
       "bouton": {
         "choisir": "Apply"
       },
