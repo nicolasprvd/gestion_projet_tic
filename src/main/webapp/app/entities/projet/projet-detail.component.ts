@@ -12,6 +12,7 @@ import { IUser } from 'app/core/user/user.model';
 import { Authority } from 'app/shared/constants/authority.constants';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { ProjetService } from 'app/entities/projet/projet.service';
+import { IUserExtra } from 'app/shared/model/user-extra.model';
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -25,7 +26,9 @@ export class ProjetDetailComponent implements OnInit {
   authorities: string[] | undefined;
   groupeId: number;
   user: IUser;
+  users: IUser[];
   client: IUser;
+  userExtras: IUserExtra[];
   typeUtilisateur: TypeUtilisateur;
   login: string | undefined;
   monProjetId: number;
@@ -47,19 +50,27 @@ export class ProjetDetailComponent implements OnInit {
       this.account = account;
       this.authorities = account?.authorities;
     });
-    this.userExtraService.find(this.account.id).subscribe(userExtra => {
-      this.typeUtilisateur = userExtra.body.typeUtilisateur;
-      this.groupeId = userExtra.body.groupeId;
-      if (this.groupeId !== null && this.groupeId !== undefined) {
-        this.groupeService.find(this.groupeId).subscribe(groupe => {
-          this.monProjetId = groupe.body.projetId;
-        });
+    this.userExtraService.findAll().subscribe(userExtras => {
+      this.userExtras = userExtras;
+      for (const userExtra of userExtras) {
+        if (this.account.id === userExtra.id) {
+          this.typeUtilisateur = userExtra.typeUtilisateur;
+          this.groupeId = userExtra.groupeId;
+          if (this.groupeId !== null && this.groupeId !== undefined) {
+            this.groupeService.find(this.groupeId).subscribe(groupe => {
+              this.monProjetId = groupe.body.projetId;
+            });
+          }
+        }
+        if (userExtra.id === this.projet?.userExtraId) {
+          this.userService.findById(userExtra.userId).subscribe(client => {
+            this.client = client;
+          });
+        }
       }
     });
-    this.userExtraService.find(this.projet?.userExtraId).subscribe(userExtra => {
-      this.userService.findById(userExtra.body.userId).subscribe(client => {
-        this.client = client;
-      });
+    this.userService.findAll().subscribe(users => {
+      this.users = users;
     });
   }
 
@@ -161,5 +172,19 @@ export class ProjetDetailComponent implements OnInit {
 
   isDescriptionPDF(projet: IProjet): boolean {
     return projet.descriptionPDF !== null;
+  }
+
+  getNomPrenomUser(extra: IUserExtra): string {
+    for (const usr of this.users) {
+      if (usr.id === extra.id) {
+        return this.formatNom(usr.firstName) + ' ' + this.formatNom(usr.lastName);
+      }
+    }
+    return '';
+  }
+
+  formatNom(str: string): string {
+    str = str.toLowerCase();
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 }

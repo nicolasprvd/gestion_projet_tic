@@ -19,13 +19,15 @@
                 <dd>
                     <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled" value="{{ projet.nbEtudiant }}">
                 </dd>
-                <dt *ngIf="isClient()"><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label></dt>
-                <dd *ngIf="isClient()">
-                    <div *ngIf="projet.groupeId">
-                        <a [routerLink]="['/groupe', projet.groupeId, 'view']">{{ projet.groupeId }}</a>
-                    </div>
-                </dd>
-                <dt *ngIf="isDescriptionTexte(projet)"><label class="form-control-label" for="desctxt" jhiTranslate="projetticApp.projet.descriptionTexte"></label></dt>
+                <dt *ngIf="projet.groupeId !== null"><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label></dt>
+                <ng-container *ngIf="projet.groupeId !== null">
+                    <dd *ngFor="let extra of userExtras">
+                        <div *ngIf="extra.groupeId === projet.groupeId">
+                            <span [textContent]="getNomPrenomUser(extra)"></span>
+                        </div>
+                    </dd>
+                </ng-container>
+                <dt id="description" *ngIf="isDescriptionTexte(projet)"><label class="form-control-label" for="desctxt" jhiTranslate="projetticApp.projet.descriptionTexte"></label></dt>
                 <dd *ngIf="isDescriptionTexte(projet)">
                     <input type="text" class="form-control" id="desctxt" name="desctxt" disabled="disabled" value="{{ projet.descriptionTexte }}">
                 </dd>

@@ -209,4 +209,14 @@ export class ProjetComponent implements OnInit, OnDestroy {
   previousState(): void {
     window.location.reload();
   }
+
+  isAffiche(projet: IProjet): boolean {
+    if (this.isAdmin()) {
+      return true;
+    }
+    if (!projet.archive) {
+      return !projet.groupeId;
+    }
+    return false;
+  }
 }
