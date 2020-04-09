@@ -7,7 +7,6 @@ import { ProjetticCoreModule } from 'app/core/core.module';
 import { ProjetticAppRoutingModule } from './app-routing.module';
 import { ProjetticHomeModule } from './home/home.module';
 import { ProjetticEntityModule } from './entities/entity.module';
-import { ProjetticFAQModule } from './faq/faq.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { MainComponent } from './layouts/main/main.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
@@ -25,8 +24,7 @@ import { HeaderComponent } from 'app/layouts/header/header.component';
     ProjetticHomeModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     ProjetticEntityModule,
-    ProjetticAppRoutingModule,
-    ProjetticFAQModule
+    ProjetticAppRoutingModule
   ],
   declarations: [
     MainComponent,
