@@ -103,6 +103,11 @@
                                     class="btn btn-success btn-sm" disabled="disabled">
                                 <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.bouton.etatCandidature"></span>
                             </button>
+
+                            <button *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet)"
+                                    class="btn btn-danger btn-sm" (click)="retractation()">
+                                <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.bouton.retractation"></span>
+                            </button>
                         </div>
                     </td>
                 </tr>

@@ -47,7 +47,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       this.userExtras = userExtras;
       this.userService.findAll().subscribe(users => {
         for (const u of users) {
-          if (u.id !== this.account?.id && this.isEtudiant(u.id) && !this.aDejaUnGroupe(u.id)) {
+          if (u.id !== this.account?.id && this.isEtudiantActif(u.id) && !this.aDejaUnGroupe(u.id)) {
             u.firstName = u.firstName?.toLowerCase();
             u.lastName = u.lastName?.toLowerCase();
             this.users.push(u);
@@ -73,6 +73,11 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {}
 
+  /**
+   * If the group is valid, make the basic entries:
+   * - create a row in the group table
+   * - modify the group id of each user (extra)
+   */
   postuler(): void {
     if (this.validationGroupe()) {
       this.isSaving = true;
@@ -110,6 +115,9 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     this.router.navigate(['/projet']);
   }
 
+  /**
+   * Create a group
+   */
   private createGroupe(): IGroupe {
     return {
       ...new Groupe(),
@@ -119,6 +127,10 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     };
   }
 
+  /**
+   * Return true if the param user already has a group
+   * @param utilisateur
+   */
   private aDejaUnGroupe(utilisateur: number): boolean {
     for (const extra of this.userExtras) {
       if (extra.id === utilisateur) {
@@ -128,6 +140,10 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  /**
+   * get the user extra of the user param
+   * @param utilisateur
+   */
   private getUserExtra(utilisateur: number): IUserExtra {
     for (const extra of this.userExtras) {
       if (extra.id === utilisateur) {
@@ -137,15 +153,25 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  private isEtudiant(utilisateur: number): boolean {
+  /**
+   * Return true if the user param is a student and is active
+   * @param utilisateur
+   */
+  private isEtudiantActif(utilisateur: number): boolean {
     for (const extra of this.userExtras) {
       if (extra.id === utilisateur) {
-        return extra.typeUtilisateur === TypeUtilisateur.ETUDIANT;
+        return extra.typeUtilisateur === TypeUtilisateur.ETUDIANT && extra.actif;
       }
     }
     return false;
   }
 
+  /**
+   * Check if the group has the requested number of students
+   * Return false and colors the select in red if:
+   * - a select is empty
+   * - there is 2 times or more the same person
+   */
   validationGroupe(): boolean {
     const ids: number[] = [];
     let valide = true;
