@@ -44,13 +44,13 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
                       this.users.push(u);
                     }
                   }
-                }); /** Fin userService*/
+                }); // Fin userService
               }
             }
-          }); /** Fin userExtraService*/
+          }); // Fin userExtraService
         }
       }
-    }); /** Fin groupeService*/
+    }); // Fin groupeService
   }
 
   /**
