@@ -31,7 +31,8 @@
         "titre": "Choix d'un groupe pour votre projet : {{ titre }}",
         "noGroupe": "Personne n'a choisi votre sujet pour le moment.. Revenez plus tard !",
         "chefPro": "Chef de projet",
-        "attribGroupe": "Attribuer à ce groupe"
+        "attribGroupe": "Attribuer à ce groupe",
+        "etudiant": "Etudiant(s)"
       },
       "bouton": {
         "choisir": "Postuler",

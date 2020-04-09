@@ -7,73 +7,48 @@
                 <span jhiTranslate="projetticApp.projet.attribuate.noGroupe"></span>
             </div>
 
+            <br>
+
             <div class="table-responsive" id="entities" *ngIf="groupes?.length > 0">
 
                 <table class="table table-striped" aria-describedby="page-heading">
                     <thead>
                     <tr>
-                        <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
-                        <th scope="col" ><span jhiTranslate="projetticApp.groupe.valide">Valide</span></th>
-                        <th scope="col" ><span jhiTranslate="projetticApp.groupe.userExtra">User Extra</span></th>
-                        <th scope="col" ><span jhiTranslate="projetticApp.groupe.projet">Projet</span></th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let groupe of groupes ;">
-                        <td><a [routerLink]="['/groupe', groupe.id, 'view']">{{ groupe.id }}</a></td>
-                        <td>{{ groupe.valide }}</td>
-                        <td>
-                            <div *ngIf="groupe.userExtraId">
-                                <a [routerLink]="['/user-extra', groupe.userExtraId , 'view']" >{{ groupe.userExtraId }}</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div *ngIf="groupe.projetId">
-                                <a [routerLink]="['/projet', groupe.projetId , 'view']" >{{ groupe.projetId }}</a>
-                            </div>
-                        </td>
-                        <td class="text-right">
-                            <div class="btn-group">
-                                <button type="submit"
-                                        [routerLink]="['/groupe', groupe.id, 'view']"
-                                        class="btn btn-info btn-sm">
-                                    <fa-icon icon="eye"></fa-icon>
-                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                                </button>
-
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <span> Préparation de la table </span>
-
-            <div class="table-responsive" id="entities2" *ngIf="groupes?.length > 0">
-
-                <table class="table table-striped" aria-describedby="page-heading">
-                    <thead>
-                    <tr>
                         <th scope="col" ><span jhiTranslate="projetticApp.projet.attribuate.chefPro"></span></th>
+                        <th scope="col" ><span jhiTranslate="projetticApp.projet.attribuate.etudiant"></span></th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let groupe of groupes ;">
+
                         <td>
-                            <div *ngIf="groupe.userExtraId">
-                                <a [routerLink]="['/user-extra', groupe.userExtraId , 'view']" >{{ groupe.userExtraId }}</a>
+                            <div *ngFor="let u of users">
+                                <div *ngIf="u.id === groupe.userExtraId">
+                                    <span> {{ u.firstName }} {{ u.lastName }} </span>
+                                </div>
                             </div>
                         </td>
+
+                        <td>
+                        <div *ngFor="let ue of usersExtra">
+                            <div *ngIf="ue.groupeId === groupe.id && ue.userId != groupe.userExtraId">
+                                <div *ngFor="let u of users">
+                                    <div *ngIf="u.id === ue.id">
+                                        <span> {{ u.firstName }} {{ u.lastName }}<br> </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </td>
+
                         <td class="text-right">
                             <div class="btn-group">
                                 <button type="button"
                                         [routerLink]="['/groupe', groupe.id, 'view']"
                                         class="btn btn-info btn-sm">
                                     <fa-icon icon="eye"></fa-icon>
-                                    <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.attribuate.attribGroupe">View</span>
+                                    <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.attribuate.attribGroupe"></span>
                                 </button>
 
                             </div>
@@ -83,14 +58,9 @@
                 </table>
             </div>
 
-
-
-
-
             <button type="submit" (click)="previousState()" class="btn btn-info">
                 <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
-
 
         </div>
     </div>

@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProjetService } from 'app/entities/projet/projet.service';
 import { IProjet } from 'app/shared/model/projet.model';
 import { ActivatedRoute } from '@angular/router';
 import { Groupe } from 'app/shared/model/groupe.model';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.model';
+import { UserExtra } from 'app/shared/model/user-extra.model';
+import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 
 @Component({
   selector: 'jhi-projet-attribuer',
@@ -13,8 +16,15 @@ import { GroupeService } from 'app/entities/groupe/groupe.service';
 export class ProjetAttribuerComponent implements OnInit, OnDestroy {
   projet?: IProjet;
   groupes: Groupe[] = [];
+  usersExtra: UserExtra[] = [];
+  users: User[] = [];
 
-  constructor(protected projetService: ProjetService, protected activatedRoute: ActivatedRoute, protected groupeService: GroupeService) {}
+  constructor(
+    protected activatedRoute: ActivatedRoute,
+    protected groupeService: GroupeService,
+    protected userService: UserService,
+    protected userExtraService: UserExtraService
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
@@ -22,9 +32,25 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
       for (const g of groupes) {
         if (g.projetId === this.projet.id) {
           this.groupes.push(g);
+
+          this.userExtraService.findAll().subscribe(usersExtra => {
+            for (const ue of usersExtra) {
+              if (ue.groupeId === g.id) {
+                this.usersExtra.push(ue);
+
+                this.userService.findAll().subscribe(users => {
+                  for (const u of users) {
+                    if (u.id === ue.userId) {
+                      this.users.push(u);
+                    }
+                  }
+                }); /** Fin userService*/
+              }
+            }
+          }); /** Fin userExtraService*/
         }
       }
-    });
+    }); /** Fin groupeService*/
   }
 
   /**
