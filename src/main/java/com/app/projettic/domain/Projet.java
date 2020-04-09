@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.Instant;
+import java.util.*;
 
 /**
  * A Projet.
@@ -17,6 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "projet")
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "projet")
+@SQLDelete(sql = "UPDATE projet SET archive = true WHERE id = ?")
 public class Projet implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +49,9 @@ public class Projet implements Serializable {
 
     @Column(name = "archive")
     private Boolean archive;
+
+    @Column(name = "date_creation")
+    private Instant dateCreation;
 
     @OneToMany(mappedBy = "projet")
     private Set<Document> documents = new HashSet<>();
@@ -163,6 +168,14 @@ public class Projet implements Serializable {
         this.archive = archive;
     }
 
+    public Instant getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Instant dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
     public Set<Document> getDocuments() {
         return documents;
     }
@@ -267,6 +280,7 @@ public class Projet implements Serializable {
             ", nbEtudiant=" + getNbEtudiant() +
             ", automatique='" + isAutomatique() + "'" +
             ", archive='" + isArchive() + "'" +
+            ", dateCreation=" + getDateCreation() +
             "}";
     }
 }
