@@ -7,10 +7,6 @@
   margin-top: 20px !important;
 }
 
-#navigateur {
-  border-bottom: 1px solid #cccccc;
-}
-
 #navigateur,
 #navigateur .dropdown-menu {
   background-color: #f1f1f1;
@@ -32,12 +28,28 @@
   padding-left: 5%;
 }
 
+#navigateur fa-icon {
+  margin-right: 3%;
+}
+
+.hoverable {
+  tranform: translateZ(0);
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+
+.hoverable:hover,
+[aria-expanded='true'] {
+  transform: translateY(-5px);
+  font-weight: bold;
+}
+
 .dropdown-item.active,
 .dropdown-item:hover {
   color: white !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 760px) {
   #navigateur a {
     font-size: 12px;
   }
