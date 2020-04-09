@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,6 +15,8 @@ import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { Authority } from 'app/shared/constants/authority.constants';
 import * as moment from "moment";
+import { GroupeService } from 'app/entities/groupe/groupe.service';
+import { UserExtra } from 'app/shared/model/user-extra.model';
 
 @Component({
   selector: 'jhi-projet',
@@ -22,16 +24,21 @@ import * as moment from "moment";
   styleUrls: ['./projet.scss']
 })
 export class ProjetComponent implements OnInit, OnDestroy {
-  account!: Account | null;
-  typeUtilisateur?: TypeUtilisateur;
-  projets?: IProjet[];
+
   allProjets?: IProjet[];
-  authorities!: string[] | undefined;
-  eventSubscriber?: Subscription;
-  currentSearch: string;
   accountExtraId!: number;
   datesArchive: number[];
   isReset: boolean;
+  isSaving = false;
+  account: Account | null;
+  typeUtilisateur: TypeUtilisateur;
+  projets: IProjet[];
+  authorities: string[] | undefined;
+  groupeId: number;
+  projetChoisiId: number;
+  eventSubscriber: Subscription;
+  currentSearch: string;
+  accountExtra: UserExtra;
 
   constructor(
     protected projetService: ProjetService,
@@ -42,6 +49,8 @@ export class ProjetComponent implements OnInit, OnDestroy {
     private accountService: AccountService,
     private userService: UserService,
     private userExtraService: UserExtraService,
+    private groupeService: GroupeService,
+    private router: Router
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -108,11 +117,17 @@ export class ProjetComponent implements OnInit, OnDestroy {
     this.registerChangeInProjets();
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
-      this.authorities = account?.authorities;
+      this.authorities = account.authorities;
     });
     this.userExtraService.find(this.account.id).subscribe(userExtra => {
-      this.typeUtilisateur = userExtra.body?.typeUtilisateur;
-      this.accountExtraId = userExtra.body?.id;
+      this.typeUtilisateur = userExtra.body.typeUtilisateur;
+      this.accountExtra = userExtra.body;
+      this.groupeId = userExtra.body.groupeId;
+      if (this.groupeId != null) {
+        this.groupeService.find(this.groupeId).subscribe(groupe => {
+          this.projetChoisiId = groupe.body.projetId;
+        });
+      }
     });
   }
 
@@ -144,12 +159,18 @@ export class ProjetComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.projet = projet;
   }
 
+  /**
+   * Return true if the current user is a CLIENT
+   */
   isClient(): boolean {
     return this.typeUtilisateur === TypeUtilisateur.CLIENT;
   }
 
-  postuler(): void {}
-
+  /**
+   * Return true if :
+   * - the current user is an administrator
+   * - the project was created by the current user
+   */
   isAutorise(projet: IProjet): boolean {
     for (const droit of this.authorities) {
       if (Authority.ADMIN === droit) {
@@ -157,11 +178,14 @@ export class ProjetComponent implements OnInit, OnDestroy {
       }
     }
     if (this.isClient()) {
-      return projet.userExtraId === this.accountExtraId;
+      return projet.userExtraId === this.accountExtra.id;
     }
     return false;
   }
 
+  /**
+   * Return true if the current user is an administrator
+   */
   isAdmin(): boolean {
     for (const droit of this.authorities) {
       if (Authority.ADMIN === droit) {
@@ -169,5 +193,62 @@ export class ProjetComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+
+  /**
+   * Return true if the current user have a group
+   */
+  aDejaUnGroupe(): boolean {
+    return this.groupeId !== null;
+  }
+
+  /**
+   * Return true if the param project is the current user's project
+   * @param projet
+   */
+  isMonProjetChoisi(projet: IProjet): boolean {
+    return projet.id === this.projetChoisiId;
+  }
+
+  /**
+   * Allows a group to retract from a project
+   * - deletion of the group in the Group table
+   * - modify the group id of each user (extra) to set it to null
+   */
+  retractation(): void {
+    this.projetService.find(this.projetChoisiId).subscribe(projet => {
+      let compteur = projet.body.nbEtudiant;
+      const idMonGroupe: number = this.accountExtra.groupeId;
+      this.userExtraService.findAll().subscribe(
+        userextras => {
+          this.groupeService.delete(idMonGroupe).subscribe();
+          for (const userextra of userextras) {
+            if (userextra.groupeId === idMonGroupe) {
+              userextra.groupeId = null;
+              compteur--;
+              this.userExtraService.update(userextra).subscribe(() => {
+                if (compteur === 0) {
+                  this.onSaveSuccess();
+                }
+              });
+            }
+          }
+        },
+        () => this.onSaveError()
+      );
+    });
+  }
+
+  protected onSaveSuccess(): void {
+    this.isSaving = false;
+    this.previousState();
+  }
+
+  protected onSaveError(): void {
+    this.isSaving = false;
+  }
+
+  previousState(): void {
+    window.location.reload();
   }
 }

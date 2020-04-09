@@ -4,7 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import {JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent} from 'ng-jhipster';
+import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
 import { IProjet, Projet } from 'app/shared/model/projet.model';
 import { ProjetService } from './projet.service';
@@ -27,6 +27,7 @@ export class ProjetUpdateComponent implements OnInit {
   groupes: IGroupe[] = [];
   userextras: IUserExtra[] = [];
   account!: Account | null;
+  nbEtudiantDefault: number;
 
   editForm = this.fb.group({
     id: [],
@@ -50,7 +51,9 @@ export class ProjetUpdateComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private accountService: AccountService
-  ) {}
+  ) {
+    this.nbEtudiantDefault = 2;
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ projet }) => {

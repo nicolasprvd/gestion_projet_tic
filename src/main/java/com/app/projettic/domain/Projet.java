@@ -1,13 +1,10 @@
 package com.app.projettic.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;
@@ -61,6 +58,7 @@ public class Projet implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("projets")
+    @JsonBackReference
     private Groupe groupe;
 
     @ManyToOne
