@@ -1,12 +1,12 @@
 <!-- Navigation -->
-<nav id="navigateur" class="navbar navbar-expand-xl fixed-top">
+<nav id="navigateur" class="navbar navbar-expand-lg fixed-top">
     <!-- Logo -->
     <div id="logo">
         <img src="../../../content/images/logo.PNG" alt="logo"/>
     </div>
 
     <!-- Menu smartphone -->
-    <a class="navbar-toggler" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
+    <a class="navbar-toggler d-lg-none" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
         <fa-icon icon="bars"></fa-icon>
     </a>
 
@@ -141,8 +141,7 @@
                 <a class="nav-link dropdown-toggle hoverable upper" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                     <span *ngIf="!getImageUrl()">
                         <fa-icon icon="user"></fa-icon>
-                        <span *ngIf="isAuthenticated()">{{ this.account.login }}</span>
-                        <span *ngIf="!isAuthenticated()" jhiTranslate="global.menu.account.main">Account</span>
+                        <span jhiTranslate="global.menu.account.main">Account</span>
                     </span>
                     <span *ngIf="getImageUrl()">
                         <img [src]="getImageUrl()" class="profile-image rounded-circle" alt="Avatar">
