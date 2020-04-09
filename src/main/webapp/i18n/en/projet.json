@@ -35,7 +35,8 @@
       },
       "bouton": {
         "choisir": "Apply",
-        "etatCandidature": "Applied"
+        "etatCandidature": "Applied",
+        "retractation": "Retract"
       },
       "nom": "Project's name",
       "nomObligatoire": "Project's name *",

@@ -36,7 +36,8 @@
       },
       "bouton": {
         "choisir": "Postuler",
-        "etatCandidature": "Postulé"
+        "etatCandidature": "Postulé",
+        "retractation": "Se rétracter"
       },
       "nom": "Nom du projet",
       "nomObligatoire": "Nom du projet *",

@@ -28,10 +28,6 @@ export class GroupeService {
     return this.http.get<IGroupe>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  findByProjectID(projetId?: number): Observable<IGroupe[]> {
-    return this.http.get<IGroupe[]>(`${this.resourceUrl}/${projetId}`);
-  }
-
   findAll(): Observable<IGroupe[]> {
     return this.http.get<IGroupe[]>(`${this.resourceUrl}`);
   }
