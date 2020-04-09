@@ -54,7 +54,7 @@
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
 
-            <button *ngIf="!isClient()" type="button"
+            <button *ngIf="!isClient() && !aDejaUnGroupe()" type="button"
                     [routerLink]="['/projet', projet.id, 'postuler']"
                     class="btn btn-primary">
                 <fa-icon icon="book"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.bouton.choisir">Apply</span>

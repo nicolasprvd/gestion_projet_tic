@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IProjet } from 'app/shared/model/projet.model';
 import { JhiDataUtils } from 'ng-jhipster';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { User } from 'app/core/user/user.model';
@@ -34,7 +34,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private userExtraService: UserExtraService,
     private fb: FormBuilder,
-    private groupeService: GroupeService
+    private groupeService: GroupeService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -87,8 +88,9 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
           }
           const userExtraCourant = this.getUserExtra(this.account.id);
           userExtraCourant.groupeId = groupe.body.id;
-          this.userExtraService.update(userExtraCourant).subscribe();
-          this.onSaveSuccess();
+          this.userExtraService.update(userExtraCourant).subscribe(() => {
+            this.onSaveSuccess();
+          });
         },
         () => this.onSaveError()
       );
@@ -105,7 +107,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   }
 
   previousState(): void {
-    window.history.back();
+    this.router.navigate(['/projet']);
   }
 
   private createGroupe(): IGroupe {

@@ -13,14 +13,16 @@
         <div id="divSelectBox" class="col-sm-7">
             <label jhiTranslate="projetticApp.projet.apply.etudiants"></label>
         </div>
-        <div class="col-sm-8" *ngFor="let i of nbEtuArray">
-            <label for="etu{{i}}">
-                <select id="etu{{i}}" name="etu{{i}}" ngModel="etu{{i}}">
-                    <ng-container *ngFor="let utilisateur of users">
-                        <option value="{{utilisateur.id}}">{{utilisateur.firstName}} {{utilisateur.lastName}}</option>
-                    </ng-container>
-                </select>
-            </label>
+        <div class="col-sm-12" *ngFor="let i of nbEtuArray">
+            <div class="form-group">
+                <label class="form-control-label" for="etu{{i}}">
+                    <select class="form-control" id="etu{{i}}" name="etu{{i}}" ngModel="etu{{i}}">
+                        <ng-container *ngFor="let utilisateur of users">
+                            <option value="{{utilisateur.id}}">{{utilisateur.firstName}} {{utilisateur.lastName}}</option>
+                        </ng-container>
+                    </select>
+                </label>
+            </div>
         </div>
     </div>
     <div class="col-sm-7" id="boutonValidation">
