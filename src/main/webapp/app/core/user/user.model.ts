@@ -1,4 +1,4 @@
-import {TypeUtilisateur} from "app/shared/model/enumerations/type-utilisateur.model";
+import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 
 export interface IUser {
   id?: any;

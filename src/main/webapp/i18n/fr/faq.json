@@ -1,0 +1,56 @@
+{
+  "faq": {
+    "title": "Foire aux questions",
+    "general": {
+      "role": "Général :",
+      "one": {
+        "question": "Quel est l'objectif de ce site ?",
+        "answer": ""
+      },
+      "two": {
+        "question": "Comment obtenir mes identifiants ?",
+        "answer": ""
+      },
+      "three": {
+        "question": "J'ai oublié mes identifiants, que faire ?",
+        "answer": ""
+      }
+    },
+
+    "client": {
+      "role": "Client :",
+      "one": {
+        "question": "Comment créer un projet ?",
+        "answer": ""
+      },
+      "two": {
+        "question": "Peut-on créer plusieurs projets ?",
+        "answer": ""
+      }
+    },
+
+    "student": {
+      "role": "Étudiant :",
+      "one": {
+        "question": "Comment postuler à un projet avec d'autres étudiants ?",
+        "answer": ""
+      },
+      "two": {
+        "question": "Peut-on postuler à plusieurs projets ?",
+        "answer": ""
+      },
+      "three": {
+        "question": "Par quels moyens va-t-on connaître notre affectation ?",
+        "answer": ""
+      },
+      "four": {
+        "question": "Que se passe-t-il si le projet choisi est attribué à un autre grouoe ?",
+        "answer": ""
+      },
+      "five": {
+        "question": "Comment transfèrer les documents demandés ?",
+        "answer": ""
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { UserService } from 'app/core/user/user.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { Authority } from 'app/shared/constants/authority.constants';
-import * as moment from "moment";
+import * as moment from 'moment';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtra } from 'app/shared/model/user-extra.model';
 
@@ -24,7 +24,6 @@ import { UserExtra } from 'app/shared/model/user-extra.model';
   styleUrls: ['./projet.scss']
 })
 export class ProjetComponent implements OnInit, OnDestroy {
-
   allProjets?: IProjet[];
   accountExtraId!: number;
   datesArchive: number[];
@@ -75,14 +74,14 @@ export class ProjetComponent implements OnInit, OnDestroy {
       res.body.forEach(projet => {
         const date = moment(projet.dateCreation);
         const archive = projet.archive;
-        if((date.year() === moment().year()) && !archive) {
+        if (date.year() === moment().year() && !archive) {
           this.projets.push(projet);
         }
         this.datesArchive.push(date.year());
       });
 
-      this.datesArchive = [... new Set(this.datesArchive)];
-      this.datesArchive = this.datesArchive.sort((a,b) => (a > b ? -1 : 1));
+      this.datesArchive = [...new Set(this.datesArchive)];
+      this.datesArchive = this.datesArchive.sort((a, b) => (a > b ? -1 : 1));
     });
   }
 
@@ -94,11 +93,10 @@ export class ProjetComponent implements OnInit, OnDestroy {
       let date = 0;
       this.allProjets.forEach(projet => {
         date = +moment(projet.dateCreation).year();
-        if((date === annee) && (projet.archive)) {
+        if (date === annee && projet.archive) {
           this.projets.push(projet);
         }
       });
-
     });
   }
 
