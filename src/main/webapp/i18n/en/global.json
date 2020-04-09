@@ -43,10 +43,10 @@
       "username.placeholder": "Your username",
       "currentpassword.label": "Current password",
       "currentpassword.placeholder": "Current password",
-      "newpassword.label": "New password",
-      "newpassword.placeholder": "New password",
-      "confirmpassword.label": "New password confirmation",
-      "confirmpassword.placeholder": "Confirm the new password",
+      "newpassword.label": "Password",
+      "newpassword.placeholder": "Password",
+      "confirmpassword.label": "Password confirmation",
+      "confirmpassword.placeholder": "Confirm the password",
       "email.label": "Email",
       "email.placeholder": "Your email"
     },
@@ -103,7 +103,8 @@
       "edit": "Edit",
       "open": "Open",
       "save": "Save",
-      "view": "View"
+      "view": "View",
+      "rate": "Rate"
     },
     "detail": {
       "field": "Field",

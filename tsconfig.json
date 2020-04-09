@@ -18,7 +18,8 @@
     "paths": {
       "app/*": ["src/main/webapp/app/*"]
     },
-    "importHelpers": true
+    "importHelpers": true,
+    "strictNullChecks": false
   },
   "angularCompilerOptions": {
     "genDir": "target/classes/aot",

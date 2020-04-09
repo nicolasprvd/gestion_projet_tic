@@ -1,10 +1,12 @@
 package com.app.projettic.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.Objects;
@@ -37,10 +39,13 @@ public class Groupe implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("groupes")
+    @JoinColumn(name = "user_extra_id")
+    @JsonManagedReference
     private UserExtra userExtra;
 
     @ManyToOne
     @JsonIgnoreProperties("groupes")
+    @JsonManagedReference
     private Projet projet;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

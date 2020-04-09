@@ -28,6 +28,10 @@ export class UserExtraService {
     return this.http.get<IUserExtra>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  findAll(): Observable<IUserExtra[]> {
+    return this.http.get<IUserExtra[]>(`${this.resourceUrl}`);
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IUserExtra[]>(this.resourceUrl, { params: options, observe: 'response' });

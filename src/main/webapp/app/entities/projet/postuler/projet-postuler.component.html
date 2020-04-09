@@ -1,0 +1,34 @@
+<div>
+    <div class="row justify-content">
+        <div class="col-sm-12">
+            <h2>{{ projet.nom }}</h2>
+            <div jhiTranslate="projetticApp.projet.apply.description" [translateValues]="{nb: projet.nbEtudiant}"></div>
+            <div id="formulaireGroupe" class="row justify-content">
+                <div class="col-sm-8">
+                    <label class="form-control-label" for="chef" jhiTranslate="projetticApp.projet.apply.chef"></label>
+                    <input type="text" class="form-control" id="chef" name="chef" disabled="disabled" value="{{ account?.firstName }} {{ account?.lastName }}">
+                </div>
+                <div id="divSelectBox" class="col-sm-7">
+                    <label jhiTranslate="projetticApp.projet.apply.etudiants"></label>
+                </div>
+                <div class="col-sm-12" *ngFor="let i of nbEtuArray">
+                    <div class="form-group">
+                        <label class="form-control-label" for="etu{{i}}">
+                            <select class="form-control" id="etu{{i}}" name="etu{{i}}" ngModel="etu{{i}}">
+                                <ng-container *ngFor="let utilisateur of users">
+                                    <option value="{{utilisateur.id}}">{{utilisateur.firstName}} {{utilisateur.lastName}}</option>
+                                </ng-container>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7" id="boutonValidation">
+                <button type="submit" (click)="previousState()" class="btn btn-info">
+                    <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+                </button>
+                <button type="submit" class="btn btn-primary" jhiTranslate="projetticApp.projet.apply.boutonValidation" (click)="postuler()"></button>
+            </div>
+        </div>
+    </div>
+</div>

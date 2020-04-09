@@ -28,6 +28,10 @@ export class GroupeService {
     return this.http.get<IGroupe>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  findAll(): Observable<IGroupe[]> {
+    return this.http.get<IGroupe[]>(`${this.resourceUrl}`);
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IGroupe[]>(this.resourceUrl, { params: options, observe: 'response' });

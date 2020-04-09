@@ -27,6 +27,7 @@ export class ProjetUpdateComponent implements OnInit {
   groupes: IGroupe[] = [];
   userextras: IUserExtra[] = [];
   account!: Account | null;
+  nbEtudiantDefault: number;
 
   editForm = this.fb.group({
     id: [],
@@ -50,7 +51,9 @@ export class ProjetUpdateComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private accountService: AccountService
-  ) {}
+  ) {
+    this.nbEtudiantDefault = 2;
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ projet }) => {
@@ -141,9 +144,5 @@ export class ProjetUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
-  }
-
-  trackById(index: number, item: SelectableEntity): any {
-    return item.id;
   }
 }

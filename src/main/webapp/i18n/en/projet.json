@@ -1,6 +1,11 @@
 {
   "projetticApp": {
     "projet": {
+      "form": {
+        "label": {
+          "dateArchive": "Archives"
+        }
+      },
       "home": {
         "title": "Projects",
         "createLabel": "Create a new project",
@@ -18,8 +23,17 @@
       "detail": {
         "title": "Project"
       },
+      "apply": {
+        "postuler": "Apply",
+        "chef": "Chief",
+        "etudiants": "Students",
+        "boutonValidation": "Validate",
+        "description": "You can position yourself on several subjects, your assignment will be made randomly on this project.<br>In order to apply for this subject, please constitute your group from the elements below.<br><br>This project requires {{ nb }} students."
+      },
       "bouton": {
-        "choisir": "Apply"
+        "choisir": "Apply",
+        "etatCandidature": "Applied",
+        "retractation": "Retract"
       },
       "nom": "Project's name",
       "nomObligatoire": "Project's name *",

@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Objects;
 import com.app.projettic.domain.enumeration.TypeUtilisateur;
 
+import javax.persistence.Embeddable;
+
 /**
  * A DTO for the {@link com.app.projettic.domain.UserExtra} entity.
  */
 public class UserExtraDTO implements Serializable {
-    
+
     private Long id;
 
     private Boolean actif;
@@ -21,7 +23,7 @@ public class UserExtraDTO implements Serializable {
     private Long evaluationId;
 
     private Long groupeId;
-    
+
     public Long getId() {
         return id;
     }

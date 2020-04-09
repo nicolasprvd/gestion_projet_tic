@@ -1,9 +1,11 @@
 package com.app.projettic.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
 import java.util.Objects;
@@ -33,8 +35,8 @@ public class UserExtra implements Serializable {
     @Column(name = "type_utilisateur")
     private TypeUtilisateur typeUtilisateur;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @MapsId
     private User user;
 
     @OneToMany(mappedBy = "userExtra")
@@ -49,6 +51,7 @@ public class UserExtra implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("userExtras")
+    @JsonBackReference
     private Groupe groupe;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

@@ -1,5 +1,6 @@
 import { IDocument } from 'app/shared/model/document.model';
 import { IGroupe } from 'app/shared/model/groupe.model';
+import { Moment } from 'moment';
 
 export interface IProjet {
   id?: number;
@@ -14,6 +15,7 @@ export interface IProjet {
   groupes?: IGroupe[];
   groupeId?: number;
   userExtraId?: number;
+  dateCreation?: Moment;
 }
 
 export class Projet implements IProjet {
@@ -29,7 +31,8 @@ export class Projet implements IProjet {
     public documents?: IDocument[],
     public groupes?: IGroupe[],
     public groupeId?: number,
-    public userExtraId?: number
+    public userExtraId?: number,
+    public dateCreation?: Moment
   ) {
     this.automatique = this.automatique || false;
     this.archive = this.archive || false;

@@ -1,15 +1,13 @@
 package com.app.projettic.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.hibernate.annotations.SQLDelete;
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.Instant;
+import java.util.*;
 
 /**
  * A Projet.
@@ -17,6 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "projet")
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "projet")
+@SQLDelete(sql = "UPDATE projet SET archive = true WHERE id = ?")
 public class Projet implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,6 +47,9 @@ public class Projet implements Serializable {
     @Column(name = "archive")
     private Boolean archive;
 
+    @Column(name = "date_creation")
+    private Instant dateCreation;
+
     @OneToMany(mappedBy = "projet")
     private Set<Document> documents = new HashSet<>();
 
@@ -56,10 +58,12 @@ public class Projet implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties("projets")
+    @JsonBackReference
     private Groupe groupe;
 
     @ManyToOne
     @JsonIgnoreProperties("projets")
+    @JoinColumn(name = "user_extra_id")
     private UserExtra userExtra;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -160,6 +164,14 @@ public class Projet implements Serializable {
 
     public void setArchive(Boolean archive) {
         this.archive = archive;
+    }
+
+    public Instant getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Instant dateCreation) {
+        this.dateCreation = dateCreation;
     }
 
     public Set<Document> getDocuments() {
@@ -266,6 +278,7 @@ public class Projet implements Serializable {
             ", nbEtudiant=" + getNbEtudiant() +
             ", automatique='" + isAutomatique() + "'" +
             ", archive='" + isArchive() + "'" +
+            ", dateCreation=" + getDateCreation() +
             "}";
     }
 }

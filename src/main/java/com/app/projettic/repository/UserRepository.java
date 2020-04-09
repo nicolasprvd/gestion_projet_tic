@@ -50,4 +50,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findAllByLoginNot(Pageable pageable, String login);
 
     Optional<User> findOneById(Long id);
+
+    List<User> findAll();
 }
