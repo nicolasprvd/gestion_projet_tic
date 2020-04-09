@@ -114,8 +114,6 @@ export class ProjetDetailComponent implements OnInit {
    * @param projet
    */
   isMonProjetChoisi(projet: IProjet): boolean {
-    console.error(this.monProjetId);
-    console.error(projet.id);
     return projet.id === this.monProjetId;
   }
 
@@ -155,5 +153,13 @@ export class ProjetDetailComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  isDescriptionTexte(projet: IProjet): boolean {
+    return projet.descriptionTexte !== null && projet.descriptionTexte !== '';
+  }
+
+  isDescriptionPDF(projet: IProjet): boolean {
+    return projet.descriptionPDF !== null;
   }
 }
