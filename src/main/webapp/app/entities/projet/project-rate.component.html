@@ -1,0 +1,19 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="project">
+            <h2>{{ project.nom }}</h2>
+        </div>
+
+
+        Mettre le lien des 3 documents
+
+        <label for="CDCRate"> Note du cahier des charges :</label>
+        <input id="CDCRate" type="number">
+        <label for="soutenanceRate"> Note de la soutenance :</label>
+        <input id="soutenanceRate" type="number">
+        <label for="renduRate"> Note du rendu : </label>
+        <input id="renduRate" type="number">
+
+        Note finale (calculée automatiquement) : {{ finalRate }}
+    </div>
+</div>
