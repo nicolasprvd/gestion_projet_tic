@@ -25,6 +25,13 @@
         "boutonValidation": "Validate",
         "description": "You can position yourself on several subjects, your assignment will be made randomly on this project.<br>In order to apply for this subject, please constitute your group from the elements below.<br><br>This project requires {{ nb }} students."
       },
+      "attribuate": {
+        "attribuer": "Assign",
+        "titre": "Choice of a group for your project : {{ titre }} ",
+        "noGroupe": "No one has chosen your topic yet. Check back later !",
+        "chefPro": "Project manager",
+        "attribGroupe": "Assign to this group"
+      },
       "bouton": {
         "choisir": "Apply"
       },

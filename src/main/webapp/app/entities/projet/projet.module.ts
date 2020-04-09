@@ -8,10 +8,18 @@ import { ProjetUpdateComponent } from './projet-update.component';
 import { ProjetDeleteDialogComponent } from './projet-delete-dialog.component';
 import { projetRoute } from './projet.route';
 import { ProjetPostulerComponent } from 'app/entities/projet/postuler/projet-postuler.component';
+import { ProjetAttribuerComponent } from 'app/entities/projet/attribuer/projet-attribuer.component';
 
 @NgModule({
   imports: [ProjetticSharedModule, RouterModule.forChild(projetRoute)],
-  declarations: [ProjetComponent, ProjetDetailComponent, ProjetUpdateComponent, ProjetDeleteDialogComponent, ProjetPostulerComponent],
+  declarations: [
+    ProjetComponent,
+    ProjetDetailComponent,
+    ProjetUpdateComponent,
+    ProjetDeleteDialogComponent,
+    ProjetPostulerComponent,
+    ProjetAttribuerComponent
+  ],
   entryComponents: [ProjetDeleteDialogComponent]
 })
 export class ProjetticProjetModule {}

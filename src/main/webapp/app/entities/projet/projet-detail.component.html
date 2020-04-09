@@ -54,6 +54,12 @@
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>
 
+            <button *ngIf="isAutorise(projet)" type="button"
+                    [routerLink]="['/projet', projet.id, 'attribuer']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.attribuate">Attribuer</span>
+            </button>
+
             <button *ngIf="!isClient()" type="button"
                     [routerLink]="['/projet', projet.id, 'postuler']"
                     class="btn btn-primary">

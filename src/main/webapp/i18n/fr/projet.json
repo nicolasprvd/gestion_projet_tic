@@ -26,6 +26,13 @@
         "boutonValidation": "Valider",
         "description": "Vous pouvez vous positionner sur plusieurs sujets, votre affectation sur ce projet se fera aléatoirement.<br>Afin de vous positionner sur ce sujet, veuillez constituer votre groupe à partir des éléments ci-dessous.<br><br>Ce projet nécessite {{ nb }} étudiants."
       },
+      "attribuate": {
+        "attribuer": "Attribuer",
+        "titre": "Choix d'un groupe pour votre projet : {{ titre }}",
+        "noGroupe": "Personne n'a choisi votre sujet pour le moment.. Revenez plus tard !",
+        "chefPro": "Chef de projet",
+        "attribGroupe": "Attribuer à ce groupe"
+      },
       "bouton": {
         "choisir": "Postuler"
       },
