@@ -104,7 +104,8 @@
       "open": "Open",
       "save": "Save",
       "view": "View",
-      "attribuate": "Assign"
+      "attribuate": "Assign",
+      "rate": "Rate"
     },
     "detail": {
       "field": "Field",

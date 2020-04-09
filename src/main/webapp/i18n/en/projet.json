@@ -33,7 +33,8 @@
         "attribGroupe": "Assign to this group"
       },
       "bouton": {
-        "choisir": "Apply"
+        "choisir": "Apply",
+        "etatCandidature": "Applied"
       },
       "nom": "Project's name",
       "nomObligatoire": "Project's name *",

@@ -17,14 +17,15 @@ import { Authority } from 'app/shared/constants/authority.constants';
   styleUrls: ['./projet.scss']
 })
 export class ProjetDetailComponent implements OnInit {
-  projet!: IProjet;
-  account!: Account | null;
-  authorities!: string[] | undefined;
-  user!: IUser;
-  client!: IUser;
-  typeUtilisateur?: TypeUtilisateur;
-  login!: string | undefined;
-  accountExtraId!: number;
+  projet: IProjet;
+  account: Account | null;
+  authorities: string[] | undefined;
+  groupeId: number;
+  user: IUser;
+  client: IUser;
+  typeUtilisateur: TypeUtilisateur;
+  login: string | undefined;
+  accountExtraId: number;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -41,11 +42,12 @@ export class ProjetDetailComponent implements OnInit {
       this.authorities = account?.authorities;
     });
     this.userExtraService.find(this.account.id).subscribe(userExtra => {
-      this.typeUtilisateur = userExtra.body?.typeUtilisateur;
+      this.typeUtilisateur = userExtra.body.typeUtilisateur;
+      this.groupeId = userExtra.body.groupeId;
     });
 
     this.userExtraService.find(this.projet?.userExtraId).subscribe(userExtra => {
-      this.userService.findById(userExtra.body?.userId).subscribe(client => {
+      this.userService.findById(userExtra.body.userId).subscribe(client => {
         this.client = client;
       });
     });
@@ -88,5 +90,9 @@ export class ProjetDetailComponent implements OnInit {
       return projet.userExtraId === this.account.id;
     }
     return false;
+  }
+
+  aDejaUnGroupe(): boolean {
+    return this.groupeId !== null;
   }
 }
