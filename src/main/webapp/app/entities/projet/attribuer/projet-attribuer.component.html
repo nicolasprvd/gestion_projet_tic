@@ -45,9 +45,9 @@
                         <td class="text-right">
                             <div class="btn-group">
                                 <button type="button"
-                                        [routerLink]="['/projet', projet.id, 'view']"
+                                        (click)="attribution(groupe.id)"
                                         class="btn btn-info btn-sm">
-                                    <fa-icon icon="hands-helping"></fa-icon>
+                                    <fa-icon icon="pencil-alt"></fa-icon>
                                     <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.attribuate.attribGroupe"></span>
                                 </button>
 

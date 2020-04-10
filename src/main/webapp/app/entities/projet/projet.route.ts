@@ -103,7 +103,7 @@ export const projetRoute: Routes = [
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'projetticApp.projet.attribute.attribuer'
+      pageTitle: 'projetticApp.projet.home.title'
     },
     canActivate: [UserRouteAccessService]
   },
