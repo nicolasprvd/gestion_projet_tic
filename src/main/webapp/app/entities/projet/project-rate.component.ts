@@ -81,10 +81,13 @@ export class ProjectRateComponent implements OnInit {
     return this.typeUtilisateur === TypeUtilisateur.CLIENT;
   }
 
+  calculateFinaleRate() {
+    this.finalRate = (this.ganttsRate + this.outputRate + this.specsRate) / 3;
+  }
+
   createEvaluation() {
     let tmp = this;
     console.log(this.project.documents);
-    this.finalRate = (this.ganttsRate + this.outputRate + this.specsRate) / 3;
     this.evaluation = new (class implements IEvaluation {
       id: any;
       noteCdc = tmp.specsRate;
