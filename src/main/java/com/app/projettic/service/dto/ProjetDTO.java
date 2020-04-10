@@ -2,6 +2,7 @@ package com.app.projettic.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 import javax.persistence.Lob;
 
@@ -9,7 +10,7 @@ import javax.persistence.Lob;
  * A DTO for the {@link com.app.projettic.domain.Projet} entity.
  */
 public class ProjetDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -27,11 +28,12 @@ public class ProjetDTO implements Serializable {
 
     private Boolean archive;
 
+    private Instant dateCreation;
 
     private Long groupeId;
 
     private Long userExtraId;
-    
+
     public Long getId() {
         return id;
     }
@@ -112,6 +114,14 @@ public class ProjetDTO implements Serializable {
         this.userExtraId = userExtraId;
     }
 
+    public Instant getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Instant dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -143,6 +153,7 @@ public class ProjetDTO implements Serializable {
             ", nbEtudiant=" + getNbEtudiant() +
             ", automatique='" + isAutomatique() + "'" +
             ", archive='" + isArchive() + "'" +
+            ", dateCreation=" + getDateCreation() +
             ", groupeId=" + getGroupeId() +
             ", userExtraId=" + getUserExtraId() +
             "}";

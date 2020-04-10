@@ -2,7 +2,7 @@
 <nav id="navigateur" class="navbar navbar-expand-lg fixed-top">
     <!-- Logo -->
     <div id="logo">
-        <img src="./images/logo.png" onclick="window.open('https://www.u-bordeaux.fr/')" alt="logo"/>
+        <img src="../../../content/images/logo.PNG" alt="logo"/>
     </div>
 
     <!-- Menu smartphone -->
@@ -22,8 +22,8 @@
                 </a>
             </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <a class="nav-link dropdown-toggle upper" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
+            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer mls" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link dropdown-toggle hoverable upper" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
                     <span>
                         <fa-icon icon="th-list"></fa-icon>
                         <span jhiTranslate="global.menu.entities.main">
@@ -141,8 +141,7 @@
                 <a class="nav-link dropdown-toggle hoverable upper" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                     <span *ngIf="!getImageUrl()">
                         <fa-icon icon="user"></fa-icon>
-                        <span *ngIf="isAuthenticated()">{{ this.account?.login }}</span>
-                        <span *ngIf="!isAuthenticated()" jhiTranslate="global.menu.account.main">Account</span>
+                        <span jhiTranslate="global.menu.account.main">Account</span>
                     </span>
                     <span *ngIf="getImageUrl()">
                         <img [src]="getImageUrl()" class="profile-image rounded-circle" alt="Avatar">

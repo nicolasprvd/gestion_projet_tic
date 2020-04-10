@@ -14,6 +14,7 @@ import { UserService } from 'app/core/user/user.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { Authority } from 'app/shared/constants/authority.constants';
+import * as moment from 'moment';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtra } from 'app/shared/model/user-extra.model';
 
@@ -23,6 +24,10 @@ import { UserExtra } from 'app/shared/model/user-extra.model';
   styleUrls: ['./projet.scss']
 })
 export class ProjetComponent implements OnInit, OnDestroy {
+  allProjets?: IProjet[];
+  accountExtraId!: number;
+  datesArchive: number[];
+  isReset: boolean;
   isSaving = false;
   account: Account | null;
   typeUtilisateur: TypeUtilisateur;
@@ -53,6 +58,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   loadAll(): void {
+    this.isReset = false;
     if (this.currentSearch) {
       this.projetService
         .search({
@@ -62,7 +68,40 @@ export class ProjetComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => (this.projets = res.body || []));
+    this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
+      this.datesArchive = [];
+      this.projets = [];
+      res.body.forEach(projet => {
+        const date = moment(projet.dateCreation);
+        const archive = projet.archive;
+        if (date.year() === moment().year() && !archive) {
+          this.projets.push(projet);
+        }
+        this.datesArchive.push(date.year());
+      });
+
+      this.datesArchive = [...new Set(this.datesArchive)];
+      this.datesArchive = this.datesArchive.sort((a, b) => (a > b ? -1 : 1));
+    });
+  }
+
+  changeProjets(value: number): void {
+    this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
+      this.projets = [];
+      this.allProjets = res.body;
+      const annee: number = +value;
+      let date = 0;
+      this.allProjets.forEach(projet => {
+        date = +moment(projet.dateCreation).year();
+        if (date === annee && projet.archive) {
+          this.projets.push(projet);
+        }
+      });
+    });
+  }
+
+  reset(): void {
+    this.isReset = true;
   }
 
   search(query: string): void {
@@ -72,6 +111,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadAll();
+
     this.registerChangeInProjets();
     this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;

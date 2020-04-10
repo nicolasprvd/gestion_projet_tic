@@ -1,6 +1,11 @@
 {
   "projetticApp": {
     "projet": {
+      "form": {
+        "label": {
+          "dateArchive": "Archives"
+        }
+      },
       "home": {
         "title": "Projets",
         "createLabel": "Créer un nouveau projet",
