@@ -1,6 +1,6 @@
 import { IDocument } from 'app/shared/model/document.model';
 import { IGroupe } from 'app/shared/model/groupe.model';
-import {Moment} from "moment";
+import { Moment } from 'moment';
 
 export interface IProjet {
   id?: number;

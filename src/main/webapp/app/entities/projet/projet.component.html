@@ -65,7 +65,7 @@
             </thead>
             <tbody>
             <ng-container *ngFor="let projet of projets ;trackBy: trackId">
-                <tr *ngIf="!projet.archive || isAdmin()">
+                <tr *ngIf="isAffiche(projet)">
                     <td>{{ projet.nom }}</td>
                     <td>
                         <a id="ouvrirpdf" *ngIf="projet.descriptionPDF" (click)="openFile(projet.descriptionPDFContentType, projet.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
@@ -76,7 +76,10 @@
 
                     <td *ngIf="isClient()">
                         <div *ngIf="projet.groupeId">
-                            <a [routerLink]="['/groupe', projet.groupeId , 'view']" >{{ projet.groupeId }}</a>
+                            <span>✓</span>
+                        </div>
+                        <div *ngIf="!projet.groupeId">
+                            <span>-</span>
                         </div>
                     </td>
 

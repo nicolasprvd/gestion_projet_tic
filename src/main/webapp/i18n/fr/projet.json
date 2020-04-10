@@ -44,7 +44,7 @@
       "nomObligatoire": "Nom du projet *",
       "descriptionPDF": "Description PDF",
       "descriptionTexte": "Description texte",
-      "nbEtudiant": "Nombre d'etudiant",
+      "nbEtudiant": "Nombre d'etudiants",
       "nbEtudiantObligatoire": "Nombre d'etudiant *",
       "automatique": "Attribution automatique",
       "archive": "Archive",

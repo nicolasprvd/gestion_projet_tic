@@ -1,13 +1,13 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
-import {JhiLanguageService} from 'ng-jhipster';
-import {EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE} from 'app/shared/constants/error.constants';
-import {LoginModalService} from 'app/core/login/login-modal.service';
-import {RegisterService} from './register.service';
-import {TypeUtilisateur} from "app/shared/model/enumerations/type-utilisateur.model";
-import {LoginService} from "app/core/login/login.service";
-import {Router} from "@angular/router";
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { JhiLanguageService } from 'ng-jhipster';
+import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared/constants/error.constants';
+import { LoginModalService } from 'app/core/login/login-modal.service';
+import { RegisterService } from './register.service';
+import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
+import { LoginService } from 'app/core/login/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-register',
@@ -22,7 +22,7 @@ export class RegisterComponent implements AfterViewInit {
   errorEmailExists = false;
   errorUserExists = false;
   success = false;
-  typeUtilisateurs : string[];
+  typeUtilisateurs: string[];
   typeUtilisateurDefault: TypeUtilisateur;
 
   registerForm = this.fb.group({
@@ -43,12 +43,8 @@ export class RegisterComponent implements AfterViewInit {
     private loginService: LoginService,
     private router: Router
   ) {
-    this.typeUtilisateurs = [
-      TypeUtilisateur.ETUDIANT,
-      TypeUtilisateur.CLIENT
-    ];
+    this.typeUtilisateurs = [TypeUtilisateur.ETUDIANT, TypeUtilisateur.CLIENT];
     this.typeUtilisateurDefault = TypeUtilisateur.ETUDIANT;
-
   }
 
   ngAfterViewInit(): void {
@@ -111,5 +107,4 @@ export class RegisterComponent implements AfterViewInit {
       this.error = true;
     }
   }
-
 }
