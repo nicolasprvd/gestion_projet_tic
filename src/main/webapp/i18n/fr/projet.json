@@ -3,7 +3,11 @@
     "projet": {
       "form": {
         "label": {
-          "dateArchive" : "Archives"
+          "dateArchive" : "Archives",
+          "dateArchiveSelect": "Sélectionner une date"
+        },
+        "button": {
+          "reprise": "Reprendre"
         }
       },
       "home": {

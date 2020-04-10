@@ -26,7 +26,6 @@ import { UserExtra } from 'app/shared/model/user-extra.model';
 export class ProjetComponent implements OnInit, OnDestroy {
 
   allProjets?: IProjet[];
-  accountExtraId!: number;
   datesArchive: number[];
   isReset: boolean;
   isSaving = false;
@@ -86,6 +85,10 @@ export class ProjetComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Load projects list from date
+   * @param value
+   */
   changeProjets(value: number): void {
     this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
       this.projets = [];
@@ -102,6 +105,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Reset select list date
+   */
   reset(): void {
     this.isReset = true;
   }
@@ -237,6 +243,23 @@ export class ProjetComponent implements OnInit, OnDestroy {
         () => this.onSaveError()
       );
     });
+  }
+
+  /**
+   * Take over archive project
+   * @param projet
+   */
+  reprise(projet: IProjet): void {
+    this.reset();
+    projet.archive = false;
+    projet.dateCreation = moment();
+    projet.groupeId = null;
+    projet.documents = [];
+    this.projetService.update(projet).subscribe(() => {
+      this.loadAll();
+    },
+      () => (this.onSaveError())
+    );
   }
 
   protected onSaveSuccess(): void {

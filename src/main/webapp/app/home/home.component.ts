@@ -14,18 +14,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
   authSubscription?: Subscription;
 
-  constructor(private accountService: AccountService, private loginModalService: LoginModalService) {}
+  constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
-  }
-
-  isAuthenticated(): boolean {
-    return this.accountService.isAuthenticated();
-  }
-
-  login(): void {
-    this.loginModalService.open();
   }
 
   ngOnDestroy(): void {

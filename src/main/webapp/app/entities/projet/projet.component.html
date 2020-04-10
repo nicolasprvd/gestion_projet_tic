@@ -19,7 +19,7 @@
             <form name="archiveForm" class="form-inline" (ngSubmit)="loadAll()">
                 <label class="form-control-label label-projet-archive" for="dateArchive" jhiTranslate="projetticApp.projet.form.label.dateArchive"></label>
                 <select name="dateArchive" id="dateArchive" class="form-control" (change)="changeProjets($event.target.value)">
-                    <option [selected]="isReset === false" disabled>Selectionner une année</option>
+                    <option [selected]="isReset === false" disabled jhiTranslate="projetticApp.projet.form.label.dateArchiveSelect" >Selectionner une année</option>
                     <option *ngFor="let date of datesArchive" [value]="date" >{{ date }}</option>
                 </select>
                 <button class="input-group-append btn btn-danger" (click)="reset()">
@@ -100,6 +100,12 @@
                                     class="btn btn-danger btn-sm">
                                 <fa-icon icon="times"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+
+                            <button *ngIf="isAutorise(projet) && (projet.archive)" type="submit" (click)="reprise(projet)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.form.button.reprise"></span>
                             </button>
 
                             <button *ngIf="isAutorise(projet)" type="submit"
