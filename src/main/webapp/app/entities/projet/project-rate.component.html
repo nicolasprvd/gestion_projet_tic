@@ -12,8 +12,8 @@
                 <a (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)">open</a>
             </div>
             <div class="col-sm-6">
-                <label for="specRate" jhiTranslate="projetticApp.projet.rate.rateSpec"></label>
-                <input id="specRate" type="number">
+                <label for="specRate"  jhiTranslate="projetticApp.projet.rate.rateSpec"></label>
+                <input id="specRate" ng-model="specsRate" type="number">
             </div>
         </div>
         <div class="row"> <!-- GANTT -->
@@ -23,7 +23,7 @@
             </div>
             <div class="col-sm-6">
                 <label for ="GANTTRate" jhiTranslate="projetticApp.projet.rate.rateGANTT"></label>
-                <input id="GANTTRate" type="number">
+                <input id="GANTTRate" ng-model="ganttsRate" type="number">
             </div>
         </div>
         <div class="row"> <!-- Rendu final -->
@@ -33,7 +33,7 @@
             </div>
             <div class="col-sm-6">
                 <label for="outputRate" jhiTranslate="projetticApp.projet.rate.rateOutput"></label>
-                <input id="outputRate" type="number">
+                <input id="outputRate" ng-model="outputRate" type="number">
             </div>
         </div>
 
@@ -51,5 +51,6 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.rate"></span>
             </button>
         </div>
+        TESTER SI LES LES VALEURS DES INPUTS ONT DES POINTS OU VIRGULES POUR DELIMITER LES DECIMALES
     </div>
 </div>
