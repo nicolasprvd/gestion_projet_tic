@@ -67,7 +67,10 @@
 
                     <td *ngIf="isClient()">
                         <div *ngIf="projet.groupeId">
-                            <a [routerLink]="['/groupe', projet.groupeId , 'view']" >{{ projet.groupeId }}</a>
+                            <span>✓</span>
+                        </div>
+                        <div *ngIf="!projet.groupeId">
+                            <span>-</span>
                         </div>
                     </td>
 
