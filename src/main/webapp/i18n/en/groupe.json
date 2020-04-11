@@ -21,7 +21,9 @@
       "projet": "Project",
       "userExtra": "User Extra",
       "chef": "Chief",
-      "membres": "Members"
+      "membres": "Members",
+      "exporter": "Export",
+      "client": "Customer"
     }
   }
 }

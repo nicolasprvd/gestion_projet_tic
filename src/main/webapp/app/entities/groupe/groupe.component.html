@@ -16,11 +16,12 @@
             <thead>
                 <tr>
                     <th scope="col" ><span jhiTranslate="projetticApp.groupe.projet"></span></th>
+                    <th scope="col" ><span jhiTranslate="projetticApp.groupe.client"></span></th>
                     <th scope="col" ><span jhiTranslate="projetticApp.groupe.chef"></span></th>
                     <th scope="col" ><span jhiTranslate="projetticApp.groupe.membres"></span></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="data">
                 <ng-container *ngFor="let groupe of groupes">
                     <tr *ngIf="groupe.valide">
                         <td>
@@ -29,20 +30,29 @@
                             </div>
                         </td>
                         <td>
+                            <div>
+                                <span [textContent]="getClient(groupe.projetId)"></span>
+                            </div>
+                        </td>
+                        <td>
                             <div *ngIf="groupe.userExtraId">
                                 <span [textContent]="getChefProjet(groupe.userExtraId)"></span>
                             </div>
                         </td>
-                        <!--
                         <td>
                             <div *ngFor="let extra of userExtras">
                                 <ng-container *ngIf="isMembreGroupe(extra, groupe) && !isChef(extra, groupe)">
-                                    <div [textContent]="getMembreProjet(extra)"></div>
+                                    <span [textContent]="getMembreProjet(extra)"></span>
                                 </ng-container>
                             </div>
-                        </td>-->
+                        </td>
                     </tr>
                 </ng-container>
+                <div class="col-sm-7" id="boutonExport">
+                    <button type="submit" (click)="exporter()" class="btn btn-success">
+                        <fa-icon icon="book"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
+                    </button>
+                </div>
             </tbody>
         </table>
     </div>

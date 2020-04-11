@@ -14,18 +14,20 @@ import { UserService } from 'app/core/user/user.service';
 import { IUser } from 'app/core/user/user.model';
 import { IUserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-groupe',
-  templateUrl: './groupe.component.html'
+  templateUrl: './groupe.component.html',
+  styleUrls: ['./groupe.scss']
 })
 export class GroupeComponent implements OnInit, OnDestroy {
   groupes?: IGroupe[];
   eventSubscriber?: Subscription;
   currentSearch: string;
-  projets: IProjet[];
-  users: IUser[];
-  userExtras: IUserExtra[];
+  projets: IProjet[] = [];
+  users: IUser[] = [];
+  userExtras: IUserExtra[] = [];
 
   constructor(
     protected groupeService: GroupeService,
@@ -34,7 +36,8 @@ export class GroupeComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected projetService: ProjetService,
     protected userService: UserService,
-    protected userExtraService: UserExtraService
+    protected userExtraService: UserExtraService,
+    protected translate: TranslateService
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -80,11 +83,6 @@ export class GroupeComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: IGroupe): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    return item.id!;
-  }
-
   registerChangeInGroupes(): void {
     this.eventSubscriber = this.eventManager.subscribe('groupeListModification', () => this.loadAll());
   }
@@ -126,11 +124,72 @@ export class GroupeComponent implements OnInit, OnDestroy {
     return '';
   }
 
+  getClient(projetId: number): string {
+    for (const projet of this.projets) {
+      if (projetId === projet.id) {
+        for (const usr of this.users) {
+          if (usr.id === projet.userExtraId) {
+            return this.formatNom(usr.firstName) + ' ' + this.formatNom(usr.lastName);
+          }
+        }
+      }
+    }
+    return '';
+  }
+
   isMembreGroupe(extra: IUserExtra, groupe: IGroupe): boolean {
-    return groupe.id === extra.groupeId;
+    return groupe.id === extra?.groupeId;
   }
 
   isChef(extra: IUserExtra, groupe: IGroupe): boolean {
     return groupe.userExtraId === extra.id;
+  }
+
+  exporter(): void {
+    const table = document.getElementById('data') as HTMLTableElement;
+    let donnees = '';
+    let nomFichier = '';
+    if (this.translate.currentLang === this.translate.getLangs()[0]) {
+      donnees = 'Projet,Client,Chef,Membres';
+      nomFichier = 'groupes_projet_tic.csv';
+    } else {
+      donnees = 'Project,Customer,Chief,Members';
+      nomFichier = 'groups_tic_project.csv';
+    }
+    const rows = table.rows;
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const membres = this.retraitEspaces(row.cells[3].textContent);
+      donnees =
+        donnees +
+        '\r\n' +
+        row.cells[0].textContent.trim() +
+        ',' +
+        row.cells[1].textContent.trim() +
+        ',' +
+        row.cells[2].textContent.trim() +
+        ',' +
+        membres;
+    }
+    console.error(donnees);
+    const blob = new Blob([donnees], { type: 'type/txt' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = nomFichier;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }
+
+  retraitEspaces(str: string): string {
+    let retraitEspace = true;
+    str = str.trim();
+    while (retraitEspace) {
+      str = str.replace(/[ \t]{2,}/, ' + ');
+      retraitEspace = str.includes('  ');
+    }
+    return str;
   }
 }
