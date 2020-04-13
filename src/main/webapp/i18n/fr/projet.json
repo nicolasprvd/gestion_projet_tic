@@ -26,7 +26,7 @@
 
       "apply": {
         "postuler": "Postuler",
-        "chef": "Chef",
+        "chef": "Chef de projet",
         "etudiants": "Étudiants",
         "boutonValidation": "Valider",
         "description": "Afin de vous positionner sur ce sujet, veuillez constituer votre groupe à partir des éléments ci-dessous.<br>Ce projet nécessite {{ nb }} étudiants."
@@ -47,7 +47,7 @@
       "nomObligatoire": "Nom du projet *",
       "descriptionPDF": "Description PDF",
       "descriptionTexte": "Description texte",
-      "nbEtudiant": "Nombre d'etudiant",
+      "nbEtudiant": "Nombre d'etudiants",
       "nbEtudiantObligatoire": "Nombre d'etudiant *",
       "automatique": "Attribution automatique",
       "archive": "Archive",

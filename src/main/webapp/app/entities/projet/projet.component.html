@@ -59,13 +59,13 @@
                 <th scope="col" ><span jhiTranslate="projetticApp.projet.descriptionPDF">Description PDF</span></th>
                 <th scope="col" ><span jhiTranslate="projetticApp.projet.descriptionTexte">Description Texte</span></th>
                 <th scope="col" ><span jhiTranslate="projetticApp.projet.nbEtudiant">Nb Etudiant</span></th>
-                <th *ngIf="isClient()" scope="col" ><span jhiTranslate="projetticApp.projet.groupe">Groupe</span></th>
+                <th *ngIf="isAdmin()" scope="col" ><span jhiTranslate="projetticApp.projet.groupe">Groupe</span></th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <ng-container *ngFor="let projet of projets ;trackBy: trackId">
-                <tr *ngIf="!projet.archive || isAdmin()">
+                <tr *ngIf="isAffiche(projet)">
                     <td>{{ projet.nom }}</td>
                     <td>
                         <a id="ouvrirpdf" *ngIf="projet.descriptionPDF" (click)="openFile(projet.descriptionPDFContentType, projet.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
@@ -74,9 +74,12 @@
                     <td>{{ projet.descriptionTexte }}</td>
                     <td>{{ projet.nbEtudiant }}</td>
 
-                    <td *ngIf="isClient()">
+                    <td *ngIf="isAdmin()">
                         <div *ngIf="projet.groupeId">
-                            <a [routerLink]="['/groupe', projet.groupeId , 'view']" >{{ projet.groupeId }}</a>
+                            <span>✓</span>
+                        </div>
+                        <div *ngIf="!projet.groupeId">
+                            <span>-</span>
                         </div>
                     </td>
 
