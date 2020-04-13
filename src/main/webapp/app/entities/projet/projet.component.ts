@@ -169,6 +169,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
     return this.typeUtilisateur === TypeUtilisateur.CLIENT;
   }
 
+  /**
+   * Return true studients have apply to this project
+   */
   isChoisi(idProjet: number): boolean {
     for (const g of this.groupes) {
       if (g.projetId === idProjet) {
