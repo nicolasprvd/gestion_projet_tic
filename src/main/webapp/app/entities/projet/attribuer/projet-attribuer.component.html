@@ -3,10 +3,6 @@
         <div *ngIf="projet">
             <h2 jhiTranslate="projetticApp.projet.attribuate.titre" [translateValues]="{titre: projet.nom}"> Attribution </h2>
 
-            <div class="text" id="no-result" *ngIf="groupes?.length === 0">
-                <span jhiTranslate="projetticApp.projet.attribuate.noGroupe"></span>
-            </div>
-
             <br>
 
             <div class="table-responsive" id="entities" *ngIf="groupes?.length > 0">

@@ -33,7 +33,6 @@
       "attribuate": {
         "attribuer": "Assign",
         "titre": "Assign a group to your project : {{ titre }} ",
-        "noGroupe": "No one has chosen your topic yet. Check back later !",
         "chefPro": "Project manager",
         "attribGroupe": "Assign to this group",
         "etudiant": "Student(s)"

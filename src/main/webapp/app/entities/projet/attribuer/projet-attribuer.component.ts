@@ -97,10 +97,10 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
 
     // 4) modify the group id in the projet table with the idGroupeChoisit
     this.projet.groupeId = idGroupeChoisit;
-    this.projetService.update(this.projet).subscribe();
-
-    // Return project page
-    this.router.navigate(['/projet']);
+    this.projetService.update(this.projet).subscribe(() => {
+      // Return project page
+      this.router.navigate(['/projet']);
+    });
   }
 
   ngOnDestroy(): void {}

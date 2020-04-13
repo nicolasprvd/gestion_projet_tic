@@ -12,6 +12,7 @@ import { IUser } from 'app/core/user/user.model';
 import { Authority } from 'app/shared/constants/authority.constants';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { ProjetService } from 'app/entities/projet/projet.service';
+import { Groupe } from 'app/shared/model/groupe.model';
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -29,6 +30,7 @@ export class ProjetDetailComponent implements OnInit {
   typeUtilisateur: TypeUtilisateur;
   login: string | undefined;
   monProjetId: number;
+  groupes: Groupe[] = [];
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -61,6 +63,9 @@ export class ProjetDetailComponent implements OnInit {
         this.client = client;
       });
     });
+    this.groupeService.findAll().subscribe(groupes => {
+      this.groupes = groupes;
+    });
   }
 
   byteSize(base64String: string): string {
@@ -83,6 +88,15 @@ export class ProjetDetailComponent implements OnInit {
    */
   isClient(): boolean {
     return this.typeUtilisateur === TypeUtilisateur.CLIENT;
+  }
+
+  isChoisi(idProjet: number): boolean {
+    for (const g of this.groupes) {
+      if (g.projetId === idProjet) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
