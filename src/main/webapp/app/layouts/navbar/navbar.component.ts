@@ -79,13 +79,4 @@ export class NavbarComponent implements OnInit {
   getImageUrl(): string {
     return this.isAuthenticated() ? this.accountService.getImageUrl() : '';
   }
-
-  isAdmin(): boolean {
-    for (const droit of this.account.authorities) {
-      if (Authority.ADMIN === droit) {
-        return true;
-      }
-    }
-    return false;
-  }
 }
