@@ -276,12 +276,13 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   isAffiche(projet: IProjet): boolean {
-    if (this.isAdmin()) {
+    if (this.isAdmin() || (this.isClient() && projet.archive)) {
       return true;
     }
     if (!projet.archive) {
       return !projet.groupeId;
     }
+
     return false;
   }
 }

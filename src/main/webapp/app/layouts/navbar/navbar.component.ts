@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
+import {JhiLanguageService} from 'ng-jhipster';
 import { SessionStorageService } from 'ngx-webstorage';
 
 import { VERSION } from 'app/app.constants';
@@ -10,6 +10,7 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { LoginService } from 'app/core/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { Account } from 'app/core/user/account.model';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'jhi-navbar',
@@ -23,6 +24,7 @@ export class NavbarComponent implements OnInit {
   swaggerEnabled?: boolean;
   version: string;
   account: Account;
+  authSubscription: Subscription;
 
   constructor(
     private loginService: LoginService,
@@ -40,12 +42,12 @@ export class NavbarComponent implements OnInit {
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction = profileInfo.inProduction;
       this.swaggerEnabled = profileInfo.swaggerEnabled;
-      if (this.isAuthenticated()) {
-        this.accountService.getAuthenticationState().subscribe(account => {
-          this.account = account;
-        });
-      }
     });
+
+    this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => {
+      this.account = account
+    });
+
   }
 
   changeLanguage(languageKey: string): void {
