@@ -9,6 +9,7 @@ import { ProjetDeleteDialogComponent } from './projet-delete-dialog.component';
 import { ProjectRateComponent } from 'app/entities/projet/project-rate.component';
 import { projetRoute } from './projet.route';
 import { ProjetPostulerComponent } from 'app/entities/projet/postuler/projet-postuler.component';
+import { ProjetAttribuerComponent } from 'app/entities/projet/attribuer/projet-attribuer.component';
 
 @NgModule({
   imports: [ProjetticSharedModule, RouterModule.forChild(projetRoute)],
@@ -18,6 +19,7 @@ import { ProjetPostulerComponent } from 'app/entities/projet/postuler/projet-pos
     ProjetUpdateComponent,
     ProjetDeleteDialogComponent,
     ProjetPostulerComponent,
+    ProjetAttribuerComponent,
     ProjectRateComponent
   ],
   entryComponents: [ProjetDeleteDialogComponent]

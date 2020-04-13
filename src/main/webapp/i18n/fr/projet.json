@@ -30,10 +30,17 @@
 
       "apply": {
         "postuler": "Postuler",
-        "chef": "Chef",
+        "chef": "Chef de projet",
         "etudiants": "Étudiants",
         "boutonValidation": "Valider",
         "description": "Afin de vous positionner sur ce sujet, veuillez constituer votre groupe à partir des éléments ci-dessous.<br>Ce projet nécessite {{ nb }} étudiants."
+      },
+      "attribuate": {
+        "attribuer": "Attribuer",
+        "titre": "Choix d'un groupe pour votre projet : {{ titre }}",
+        "chefPro": "Chef de projet",
+        "attribGroupe": "Attribuer à ce groupe",
+        "etudiant": "Etudiant(s)"
       },
       "bouton": {
         "choisir": "Postuler",
