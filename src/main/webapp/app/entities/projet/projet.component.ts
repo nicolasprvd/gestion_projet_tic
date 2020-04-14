@@ -17,6 +17,7 @@ import { Authority } from 'app/shared/constants/authority.constants';
 import * as moment from 'moment';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtra } from 'app/shared/model/user-extra.model';
+import { Groupe } from 'app/shared/model/groupe.model';
 
 @Component({
   selector: 'jhi-projet',
@@ -38,6 +39,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   eventSubscriber: Subscription;
   currentSearch: string;
   accountExtra: UserExtra;
+  groupes: Groupe[] = [];
 
   constructor(
     protected projetService: ProjetService,
@@ -127,6 +129,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
         });
       }
     });
+    this.groupeService.findAll().subscribe(groupes => {
+      this.groupes = groupes;
+    });
   }
 
   ngOnDestroy(): void {
@@ -162,6 +167,18 @@ export class ProjetComponent implements OnInit, OnDestroy {
    */
   isClient(): boolean {
     return this.typeUtilisateur === TypeUtilisateur.CLIENT;
+  }
+
+  /**
+   * Return true studients have apply to this project
+   */
+  isChoisi(idProjet: number): boolean {
+    for (const g of this.groupes) {
+      if (g.projetId === idProjet) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
