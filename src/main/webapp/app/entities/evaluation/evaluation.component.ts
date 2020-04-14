@@ -28,6 +28,12 @@ export class EvaluationComponent implements OnInit, OnDestroy {
   users: IUser[] = [];
   extras: IUserExtra[] = [];
   projets: IProjet[] = [];
+  noteCDC: string;
+  noteSoutenance: string;
+  noteRendu: string;
+  noteFinale: string;
+  projetActuelId: number;
+  projetActuelNom: string;
 
   constructor(
     protected evaluationService: EvaluationService,
@@ -97,26 +103,67 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.evaluation = evaluation;
   }
 
-  isEtudiantActif(id: number): boolean {
-    for (const extra of this.extras) {
-      if (extra !== null && extra.evaluationId === id) {
-        return extra.actif && extra.typeUtilisateur === TypeUtilisateur.ETUDIANT;
-      }
+  isEtudiantActif(extra: IUserExtra): boolean {
+    if (extra !== null) {
+      return extra.actif && extra.typeUtilisateur === TypeUtilisateur.ETUDIANT;
     }
     return false;
   }
 
-  getEtudiant(id: number): string {
-    for (const extra of this.extras) {
-      if (extra !== null && extra.evaluationId === id) {
-        for (const user of this.users) {
-          if (user.id === extra.id) {
-            return this.formatNom(user.firstName) + ' ' + this.formatNom(user.lastName);
-          }
+  getEtudiant(extra: IUserExtra): string {
+    if (extra !== null) {
+      for (const user of this.users) {
+        if (user.id === extra.id) {
+          this.getEvaluation(extra.evaluationId);
+          return this.formatNom(user.firstName) + ' ' + this.formatNom(user.lastName);
         }
       }
     }
     return '';
+  }
+
+  getEvaluation(evaluation: number): void {
+    this.noteCDC = null;
+    this.noteSoutenance = null;
+    this.noteRendu = null;
+    this.noteFinale = null;
+    for (const eva of this.evaluations) {
+      if (eva.id === evaluation) {
+        this.noteCDC = eva.noteCDC.toString();
+        this.noteSoutenance = eva.noteSoutenance.toString();
+        this.noteRendu = eva.noteRendu.toString();
+        this.noteFinale = eva.noteFinale.toString();
+        return;
+      }
+    }
+  }
+
+  getNoteCDC(): string {
+    if (this.noteCDC) {
+      return this.noteCDC;
+    }
+    return '-';
+  }
+
+  getNoteSoutenance(): string {
+    if (this.noteSoutenance) {
+      return this.noteSoutenance;
+    }
+    return '-';
+  }
+
+  getNoteRendu(): string {
+    if (this.noteRendu) {
+      return this.noteRendu;
+    }
+    return '-';
+  }
+
+  getNoteFinale(): string {
+    if (this.noteFinale) {
+      return this.noteFinale;
+    }
+    return '-';
   }
 
   formatNom(str: string): string {
@@ -124,20 +171,24 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  getProjet(id: number): string {
-    for (const extra of this.extras) {
-      if (extra !== null && extra.evaluationId === id) {
-        for (const projet of this.projets) {
-          if (projet.groupeId === extra.groupeId) {
-            if (projet.nom === null || projet.nom === '') {
-              return '-';
-            }
-            return projet.nom;
+  getProjet(groupe: number): boolean {
+    this.projetActuelId = null;
+    this.projetActuelNom = null;
+    if (groupe !== null) {
+      for (const projet of this.projets) {
+        if (projet.groupeId === groupe) {
+          if (projet.nom === null || projet.nom === '') {
+            this.projetActuelNom = '-';
+            return true;
           }
+          this.projetActuelId = projet.id;
+          this.projetActuelNom = projet.nom;
+          return true;
         }
       }
     }
-    return '';
+    this.projetActuelNom = '-';
+    return true;
   }
 
   exporter(): void {
@@ -169,7 +220,6 @@ export class EvaluationComponent implements OnInit, OnDestroy {
         ',' +
         row.cells[5].textContent.trim();
     }
-    console.error(donnees);
     const blob = new Blob([donnees], { type: 'type/txt' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');

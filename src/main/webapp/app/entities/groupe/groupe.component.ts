@@ -171,7 +171,6 @@ export class GroupeComponent implements OnInit, OnDestroy {
         ',' +
         membres;
     }
-    console.error(donnees);
     const blob = new Blob([donnees], { type: 'type/txt' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');

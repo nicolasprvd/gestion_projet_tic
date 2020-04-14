@@ -24,14 +24,17 @@
                 </tr>
             </thead>
             <tbody id="data">
-                <ng-container *ngFor="let evaluation of evaluations ;trackBy: trackId">
-                    <tr *ngIf="isEtudiantActif(evaluation.id)">
-                        <td [textContent]="getEtudiant(evaluation.id)"></td>
-                        <td [textContent]="getProjet(evaluation.id)"></td>
-                        <td>{{ evaluation.noteCDC }}</td>
-                        <td>{{ evaluation.noteSoutenance }}</td>
-                        <td>{{ evaluation.noteRendu }}</td>
-                        <td>{{ evaluation.noteFinale }}</td>
+                <ng-container *ngFor="let extra of extras">
+                    <tr *ngIf="isEtudiantActif(extra)">
+                        <td [textContent]="getEtudiant(extra)"></td>
+                        <td *ngIf="getProjet(extra.groupeId)">
+                            <a *ngIf="projetActuelId !== null" [textContent]="projetActuelNom" [routerLink]="['/projet', projetActuelId , 'view']"></a>
+                            <span *ngIf="projetActuelId === null" [textContent]="projetActuelNom"></span>
+                        </td>
+                        <td [textContent]="getNoteCDC()"></td>
+                        <td [textContent]="getNoteSoutenance()"></td>
+                        <td [textContent]="getNoteRendu()"></td>
+                        <td [textContent]="getNoteFinale()"></td>
                     </tr>
                 </ng-container>
                 <div class="col-sm-7" id="boutonExport">
