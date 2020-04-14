@@ -29,7 +29,7 @@
                 </ng-container>
                 <dt id="description" *ngIf="isDescriptionTexte(projet)"><label class="form-control-label" for="desctxt" jhiTranslate="projetticApp.projet.descriptionTexte"></label></dt>
                 <dd *ngIf="isDescriptionTexte(projet)">
-                    <input type="text" class="form-control" id="desctxt" name="desctxt" disabled="disabled" value="{{ projet.descriptionTexte }}">
+                    <textarea class="form-control" id="desctxt" name="desctxt" disabled="disabled" cols="5" rows="5">{{ projet.descriptionTexte }}</textarea>
                 </dd>
                 <dt *ngIf="isDescriptionPDF(projet)"><label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionPDF"></label></dt>
                 <dd *ngIf="isDescriptionPDF(projet)">
