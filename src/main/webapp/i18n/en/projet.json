@@ -25,10 +25,17 @@
       },
       "apply": {
         "postuler": "Apply",
-        "chef": "Chief",
+        "chef": "Project manager",
         "etudiants": "Students",
         "boutonValidation": "Validate",
         "description": "You can position yourself on several subjects, your assignment will be made randomly on this project.<br>In order to apply for this subject, please constitute your group from the elements below.<br><br>This project requires {{ nb }} students."
+      },
+      "attribuate": {
+        "attribuer": "Assign",
+        "titre": "Assign a group to your project : {{ titre }} ",
+        "chefPro": "Project manager",
+        "attribGroupe": "Assign to this group",
+        "etudiant": "Student(s)"
       },
       "bouton": {
         "choisir": "Apply",

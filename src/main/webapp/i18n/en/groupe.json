@@ -2,26 +2,28 @@
   "projetticApp": {
     "groupe": {
       "home": {
-        "title": "Groupes",
-        "createLabel": "Create a new Groupe",
-        "createOrEditLabel": "Create or edit a Groupe",
-        "search": "Search for Groupe",
-        "notFound": "No Groupes found"
+        "title": "Groups",
+        "createLabel": "Create a new Group",
+        "createOrEditLabel": "Create or edit a Group",
+        "search": "Search for Group",
+        "notFound": "No Groups found"
       },
-      "created": "A new Groupe is created with identifier {{ param }}",
-      "updated": "A Groupe is updated with identifier {{ param }}",
-      "deleted": "A Groupe is deleted with identifier {{ param }}",
+      "created": "A new Group is created with identifier {{ param }}",
+      "updated": "A Group is updated with identifier {{ param }}",
+      "deleted": "A Group is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Groupe {{ id }}?"
+        "question": "Are you sure you want to delete Group {{ id }}?"
       },
       "detail": {
-        "title": "Groupe"
+        "title": "Group"
       },
-      "valide": "Valide",
-      "projet": "Projet",
+      "valide": "Valid",
+      "projet": "Project",
       "userExtra": "User Extra",
-      "userExtra": "User Extra",
-      "projet": "Projet"
+      "chef": "Project manager",
+      "membres": "Members",
+      "exporter": "Export",
+      "client": "Customer"
     }
   }
 }
