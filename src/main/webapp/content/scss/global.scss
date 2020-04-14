@@ -7,12 +7,9 @@
 Bootstrap tweaks
 ===============================================================*/
 
-body,
 h1,
-h2,
-h3,
-h4 {
-  font-weight: 300;
+h2 {
+  font-weight: bold;
 }
 
 a:hover {
@@ -43,7 +40,9 @@ Generic styles
 .jh-card {
   padding: 1.5%;
   margin-top: 20px;
-  border: none;
+  background: #f1f1f1;
+  color: black;
+  border: 1px solid #cccccc;
 }
 
 .error {
@@ -171,13 +170,9 @@ ui bootstrap tweaks
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
-
-body,
-h1,
-h2,
-h3,
-h4 {
-  font-weight: 300;
+html,
+body {
+  background-color: #cbe3ed;
 }
 
 a:hover {
@@ -204,13 +199,6 @@ Generic styles
 ========================================================================== */
 
 /* other generic styles */
-
-.jh-card {
-  padding: 1.5%;
-  margin-top: 20px;
-  border: none;
-}
-
 .error {
   color: white;
   background-color: red;
@@ -335,6 +323,10 @@ Text
   text-transform: uppercase;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -432,4 +424,71 @@ Margin-right
 
 .mrl {
   margin-right: 15px;
+}
+
+/* ==========================================================================
+Hoverable Menu Navbar
+========================================================================== */
+.hoverable {
+  tranform: translateZ(0);
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+
+.hoverable:hover,
+[aria-expanded='true'] {
+  transform: translateY(-5px);
+  font-weight: bold;
+}
+
+/* ==========================================================================
+Elements Margin
+========================================================================== */
+.input-group {
+  margin-bottom: 2%;
+}
+
+fa-icon {
+  margin-right: 3px;
+}
+
+/* ==========================================================================
+Labels design
+========================================================================== */
+label.form-control-label {
+  text-decoration: underline;
+}
+label.form-control-label:after {
+  content: ' :';
+  white-space: pre;
+}
+
+/* ==========================================================================
+Tables design
+========================================================================== */
+table {
+  background: black;
+  border-radius: 0.25rem;
+  color: #f1f1f1 !important;
+}
+
+th {
+  border: 1px solid #444 !important;
+  border-bottom: 4px solid #444 !important;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+td {
+  border: 1px solid #444 !important;
+  vertical-align: middle !important;
+}
+
+table a {
+  color: #f1f1f1;
+  text-align: center;
+}
+
+td:nth-child(1) {
+  text-align: center;
 }

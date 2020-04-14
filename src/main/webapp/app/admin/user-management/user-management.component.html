@@ -77,11 +77,11 @@
     </div>
 
     <div *ngIf="users">
-        <div class="row justify-content-center">
+        <div class="row">
             <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
 
-        <div class="row justify-content-center">
+        <div class="row">
             <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
         </div>
     </div>
