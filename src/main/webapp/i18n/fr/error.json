@@ -1,10 +1,10 @@
 {
   "error": {
-    "title": "Page d'erreur !",
+    "title": "Houston, nous avons un problème !",
     "http": {
       "400": "Mauvaise requête.",
       "403": "Vous n'avez pas les droits pour accéder à cette page.",
-      "404": "La page n'existe pas.",
+      "404": "On nous informe que la page demandée n'a jamais existé, nous en sommes navrés :(",
       "405": "Le verbe HTTP que vous avez utilisé n'est pas reconnu par cet URL.",
       "500": "Erreur interne du serveur."
     },

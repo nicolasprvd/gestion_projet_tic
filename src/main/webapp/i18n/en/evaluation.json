@@ -2,26 +2,28 @@
   "projetticApp": {
     "evaluation": {
       "home": {
-        "title": "Evaluations",
-        "createLabel": "Create a new Evaluation",
-        "createOrEditLabel": "Create or edit a Evaluation",
-        "search": "Search for Evaluation",
-        "notFound": "No Evaluations found"
+        "title": "Rating",
+        "createLabel": "Create a new rating",
+        "createOrEditLabel": "Create or edit a rating",
+        "search": "Search for rating",
+        "notFound": "No rating found"
       },
-      "created": "A new Evaluation is created with identifier {{ param }}",
-      "updated": "A Evaluation is updated with identifier {{ param }}",
-      "deleted": "A Evaluation is deleted with identifier {{ param }}",
+      "created": "A new rating is created with identifier {{ param }}",
+      "updated": "A rating is updated with identifier {{ param }}",
+      "deleted": "A rating is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Evaluation {{ id }}?"
+        "question": "Are you sure you want to delete rating {{ id }}?"
       },
       "detail": {
-        "title": "Evaluation"
+        "title": "Rating"
       },
-      "noteCDC": "Note CDC",
-      "noteSoutenance": "Note Soutenance",
-      "noteRendu": "Note Rendu",
-      "noteFinale": "Note Finale",
-      "userExtra": "User Extra"
+      "noteCDC": "Specification mark",
+      "noteSoutenance": "Defense mark",
+      "noteRendu": "Rendering mark",
+      "noteFinale": "Final mark",
+      "userExtra": "User Extra",
+      "etudiant": "Student",
+      "projet": "Project"
     }
   }
 }
