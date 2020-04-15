@@ -28,6 +28,10 @@ export class ProjetService {
     return this.http.get<IProjet>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  findAll(): Observable<IProjet[]> {
+    return this.http.get<IProjet[]>(`${this.resourceUrl}`);
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IProjet[]>(this.resourceUrl, { params: options, observe: 'response' });
