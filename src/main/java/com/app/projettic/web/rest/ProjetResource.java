@@ -135,11 +135,15 @@ public class ProjetResource {
         return projetService.search(query);
     }
 
+    /**
+     * {@code SEND EMAIL  /projets/:to/:subject/:content} : send email to "to" with the subject "subject" and the content "content"
+     *
+     * @param to the mail of the recipient of the email
+     * @param subject the subject of the email
+     * @param content the content of the mail
+     */
     @PostMapping("/projets/mail/{to}/{subject}/{content}")
     public void sendMail(@PathVariable String to, @PathVariable String subject, @PathVariable String content){
-         // String to = u.getEmail();
-         // String subject = "Réponse positive attribution du projet";
-         // String content = "Le projet " + nameProject +  " a bien été attribué à votre groupe";
         this.mailService.sendEmail(to, subject, content, false, false);
     }
 }
