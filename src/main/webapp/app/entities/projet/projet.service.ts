@@ -45,4 +45,8 @@ export class ProjetService {
     const options = createRequestOption(req);
     return this.http.get<IProjet[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
+
+  sendMail(to: String, subject: String, content: String): Observable<{}> {
+    return this.http.post(`${this.resourceUrl}/mail/${to}/${subject}/${content}`, { observe: 'response' });
+  }
 }
