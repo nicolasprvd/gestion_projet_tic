@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
 import { IProjet } from 'app/shared/model/projet.model';
@@ -7,15 +7,14 @@ import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.
 import { AccountService } from 'app/core/auth/account.service';
 import { UserService } from 'app/core/user/user.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
-import { IDocument } from 'app/shared/model/document.model';
 import { DocumentService } from 'app/entities/document/document.service';
 import { Account } from 'app/core/user/account.model';
 import { IUser } from 'app/core/user/user.model';
-import { IEvaluation } from 'app/shared/model/evaluation.model';
+import { Evaluation, IEvaluation } from 'app/shared/model/evaluation.model';
 import { SERVER_API_URL } from 'app/app.constants';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { UserExtra } from 'app/shared/model/user-extra.model';
+import { EvaluationService } from 'app/entities/evaluation/evaluation.service';
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -35,13 +34,11 @@ export class ProjectRateComponent implements OnInit {
   client!: IUser;
   typeUtilisateur?: TypeUtilisateur;
   login!: string | undefined;
-
-  spec: IDocument;
+  finalRate = 0;
   specsRate = 0;
   ganttsRate = 0;
   outputRate = 0;
-  finalRate = (this.specsRate + this.ganttsRate + this.outputRate) / 3;
-  evaluation: IEvaluation;
+  isSaving = false;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -50,7 +47,9 @@ export class ProjectRateComponent implements OnInit {
     private userService: UserService,
     private userExtraService: UserExtraService,
     private documentService: DocumentService,
-    private http: HttpClient
+    private http: HttpClient,
+    private evaluationService: EvaluationService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -59,69 +58,68 @@ export class ProjectRateComponent implements OnInit {
       this.account = account;
       this.authorities = account?.authorities;
     });
-    // getting the group's ID and the user's type
-    this.userExtraService.find(this.account.id).subscribe(userExtra => {
-      this.typeUtilisateur = userExtra.body.typeUtilisateur;
-      this.groupId = userExtra.body.groupeId;
-    });
-    this.userExtraService.find(this.project?.userExtraId).subscribe(userExtra => {
-      this.userService.findById(userExtra.body.userId).subscribe(client => {
-        this.client = client;
-      });
-    });
-    // getting all the students and separating those in the group
     this.userExtraService.findAll().subscribe(userExtras => {
+      this.groupId = this.project.groupeId;
       this.allUsers = userExtras;
-      this.allUsers.forEach(user => {
-        if (user.groupeId === this.groupId) {
-          this.groupUsers.push(user);
+      for (const extra of userExtras) {
+        if (extra.groupeId === this.groupId) {
+          this.groupUsers.push(extra);
         }
-      });
+      }
     });
     // getting the documents of the project
-    this.project.documents.forEach();
+    // this.project.documents.forEach();
   }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
 
-  previousState(): void {
-    window.history.back();
-  }
-
   openFile(contentType: string, base64String: string): void {
     this.dataUtils.openFile(contentType, base64String);
   }
 
-  isClient(): boolean {
-    return this.typeUtilisateur === TypeUtilisateur.CLIENT;
+  calculateFinalRate(): void {
+    this.specsRate = +(document.getElementById('specsRate') as HTMLInputElement).value;
+    this.ganttsRate = +(document.getElementById('ganttsRate') as HTMLInputElement).value;
+    this.outputRate = +(document.getElementById('outputRate') as HTMLInputElement).value;
+    this.finalRate = (this.specsRate + this.ganttsRate + this.outputRate) / 3;
   }
 
-  calculateFinaleRate(): void {
-    this.finalRate = (this.ganttsRate + this.outputRate + this.specsRate) / 3;
+  evaluate(): void {
+    this.isSaving = true;
+    const newEvaluation = this.createEvaluation();
+    this.evaluationService.create(newEvaluation).subscribe(
+      evaluation => {
+        for (const usr of this.groupUsers) {
+          usr.evaluationId = evaluation.body.id;
+          this.userExtraService.update(usr).subscribe();
+        }
+      },
+      () => this.onSaveError()
+    );
   }
 
-  createEvaluation(): void {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const source = this;
-    this.evaluation = new (class implements IEvaluation {
-      id: any;
-      noteCdc = source.specsRate;
-      noteFinale = source.finalRate;
-      noteRendu = source.outputRate;
-      noteSoutenance = source.ganttsRate;
-    })();
-
-    this.create(this.evaluation).subscribe(evaluation => {
-      this.groupUsers.forEach(user => {
-        user.evaluationId = evaluation.id;
-        source.userExtraService.update(user);
-      });
-    });
+  private createEvaluation(): IEvaluation {
+    return {
+      ...new Evaluation(),
+      noteCDC: this.specsRate,
+      noteRendu: this.outputRate,
+      noteSoutenance: this.ganttsRate,
+      noteFinale: this.finalRate
+    };
   }
 
-  create(evaluation: IEvaluation): Observable<IEvaluation> {
-    return this.http.post<IEvaluation>(this.resourceUrl, evaluation);
+  protected onSaveSuccess(): void {
+    this.isSaving = false;
+    this.previousState();
+  }
+
+  protected onSaveError(): void {
+    this.isSaving = false;
+  }
+
+  previousState(): void {
+    window.history.back();
   }
 }

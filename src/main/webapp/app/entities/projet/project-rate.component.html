@@ -1,52 +1,42 @@
 <div class="row justify-content-center">
-    <div class="row">
-        <h2>{{ project.nom }}</h2>
-    </div>
+    <div class="col-8">
+            <h2 >Notation</h2>
 
+            <div>
+                <label >Document 1</label>
+                <a (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)">open</a>
+                <label >Document 1</label>
+                <a (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)">open</a>
+                <label >Document 1</label>
+                <a (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)">open</a>
+            </div>
 
-    <div class="row"> <!-- Cahier des charges -->
-        <div class="col-sm-6">
-            <label jhiTranslate="projetticApp.projet.rate.downloadSpec"></label>
-            <a (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)">open</a>
-        </div>
-        <div class="col-sm-6">
-            <label for="specRate"  jhiTranslate="projetticApp.projet.rate.rateSpec"></label>
-            <input id="specRate" (change)="calculateFinaleRate()" ng-model="specsRate" type="number">
-        </div>
-    </div>
-    <div class="row"> <!-- GANTT -->
-        <div class="col-sm-6">
-            <label jhiTranslate="projetticApp.projet.rate.downloadGANTT"></label>
-            <a (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)">open</a>
-        </div>
-        <div class="col-sm-6">
-            <label for ="GANTTRate" jhiTranslate="projetticApp.projet.rate.rateGANTT"></label>
-            <input id="GANTTRate" (change)="calculateFinaleRate()" ng-model="ganttsRate" type="number">
-        </div>
-    </div>
-    <div class="row"> <!-- Rendu final -->
-        <div class="col-sm-6">
-            <label jhiTranslate="projetticApp.projet.rate.downloadOutput"></label>
-            <a (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)">open</a>
-        </div>
-        <div class="col-sm-6">
-            <label for="outputRate" jhiTranslate="projetticApp.projet.rate.rateOutput"></label>
-            <input id="outputRate" (change)="calculateFinaleRate()" ng-model="outputRate" type="number">
-        </div>
-    </div>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
 
-    <p> Moyenne : {{ finalRate }} </p>
+                <label class="form-control-label"  for="specsRate">specsRate</label>
+                <input type="text" class="form-control" name="specsRate" id="specsRate" (change)="calculateFinalRate()" value="0"/>
 
-    <div class="row"> <!-- Buttons -->
-        <button type="submit"
-                [routerLink]="['/projet']"
-                class="btn btn-info">
-            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-        </button>
-        <button  type="submit" (click)="createEvaluation()"
-                 class="btn btn-info btn-sm">
-            <fa-icon icon="pencil-alt"></fa-icon>
-            <span class="d-none d-md-inline" jhiTranslate="entity.action.rate"></span>
-        </button>
+                <label class="form-control-label" for="ganttsRate">ganttsRate</label>
+                <input type="text" class="form-control" name="ganttsRate" id="ganttsRate" (change)="calculateFinalRate()" value="0"/>
+
+                <label class="form-control-label" for="outputRate">ganttsRate</label>
+                <input type="text" class="form-control" name="outputRate" id="outputRate" (change)="calculateFinalRate()" value="0"/>
+
+                <label class="form-control-label">Final</label>
+                <span>{{ finalRate }}</span>
+
+                <button type="submit"
+                        (click)="previousState()"
+                        class="btn btn-info">
+                    <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+                </button>
+
+                <button type="button"
+                        (click)="evaluate()"
+                        class="btn btn-primary">
+                    <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Rate</span>
+                </button>
+            </div>
     </div>
 </div>
