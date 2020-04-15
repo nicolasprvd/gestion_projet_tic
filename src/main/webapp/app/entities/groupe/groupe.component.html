@@ -1,6 +1,10 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="projetticApp.groupe.home.title">Groupes</span>
+
+        <button type="submit" (click)="exporter()" class="btn btn-success float-right">
+            <fa-icon icon="book"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
+        </button>
     </h2>
 
     <jhi-alert-error></jhi-alert-error>
@@ -48,11 +52,6 @@
                         </td>
                     </tr>
                 </ng-container>
-                <div class="col-sm-7" id="boutonExport">
-                    <button type="submit" (click)="exporter()" class="btn btn-success">
-                        <fa-icon icon="book"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
-                    </button>
-                </div>
             </tbody>
         </table>
     </div>

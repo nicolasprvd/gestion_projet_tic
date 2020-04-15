@@ -459,8 +459,7 @@ table {
   background: #cbe3ed;
   border-radius: 0.25rem;
   color: #000000c7 !important;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 1rem;
 }
 
 table a {
@@ -497,4 +496,11 @@ td {
 
 dt {
   margin-top: 2% !important;
+}
+
+@media (max-width: 736px) {
+  #profil {
+    border-bottom: 1px solid black;
+    margin-bottom: 15px;
+  }
 }
