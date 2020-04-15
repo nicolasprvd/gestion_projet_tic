@@ -1,5 +1,5 @@
 <div class="row">
-    <div>
+    <div class="col-12">
         <div *ngIf="projet">
             <h2>{{ projet.nom }}</h2>
 
@@ -7,19 +7,25 @@
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
-                <dt><label class="form-control-label" for="client" jhiTranslate="projetticApp.projet.client"></label></dt>
+                <dt><label class="form-control-label" for="client" jhiTranslate="projetticApp.projet.client"></label>
+                </dt>
                 <dd>
-                    <input type="text" class="form-control" id="client" name="client" disabled="disabled" value="{{ client?.firstName }} {{ client?.lastName }}">
+                    <input type="text" class="form-control" id="client" name="client" disabled="disabled"
+                           value="{{ client?.firstName }} {{ client?.lastName }}">
                 </dd>
                 <dt><label class="form-control-label" for="email" jhiTranslate="projetticApp.projet.email"></label></dt>
                 <dd>
-                    <input type="text" class="form-control" id="email" name="email" disabled="disabled" value="{{ client?.email }}">
+                    <input type="text" class="form-control" id="email" name="email" disabled="disabled"
+                           value="{{ client?.email }}">
                 </dd>
-                <dt><label class="form-control-label" for="nbetu" jhiTranslate="projetticApp.projet.nbEtudiant"></label></dt>
+                <dt><label class="form-control-label" for="nbetu" jhiTranslate="projetticApp.projet.nbEtudiant"></label>
+                </dt>
                 <dd>
-                    <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled" value="{{ projet.nbEtudiant }}">
+                    <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled"
+                           value="{{ projet.nbEtudiant }}">
                 </dd>
-                <dt *ngIf="projet.groupeId !== null"><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label></dt>
+                <dt *ngIf="projet.groupeId !== null"><label class="form-control-label"
+                                                            jhiTranslate="projetticApp.projet.groupe"></label></dt>
                 <ng-container *ngIf="projet.groupeId !== null">
                     <dd *ngFor="let extra of userExtras">
                         <div *ngIf="extra.groupeId === projet.groupeId">
@@ -27,14 +33,20 @@
                         </div>
                     </dd>
                 </ng-container>
-                <dt id="description" *ngIf="isDescriptionTexte(projet)"><label class="form-control-label" for="desctxt" jhiTranslate="projetticApp.projet.descriptionTexte"></label></dt>
+                <dt id="description" *ngIf="isDescriptionTexte(projet)"><label class="form-control-label" for="desctxt"
+                                                                               jhiTranslate="projetticApp.projet.descriptionTexte"></label>
+                </dt>
                 <dd *ngIf="isDescriptionTexte(projet)">
-                    <textarea class="form-control" id="desctxt" name="desctxt" disabled="disabled" cols="5" rows="5">{{ projet.descriptionTexte }}</textarea>
+                    <textarea class="form-control" id="desctxt" name="desctxt" disabled="disabled" cols="5"
+                              rows="5">{{ projet.descriptionTexte }}</textarea>
                 </dd>
-                <dt *ngIf="isDescriptionPDF(projet)"><label class="form-control-label" jhiTranslate="projetticApp.projet.descriptionPDF"></label></dt>
+                <dt *ngIf="isDescriptionPDF(projet)"><label class="form-control-label"
+                                                            jhiTranslate="projetticApp.projet.descriptionPDF"></label>
+                </dt>
                 <dd *ngIf="isDescriptionPDF(projet)">
                     <div *ngIf="projet.descriptionPDF">
-                        <a id="ouvrirpdf" (click)="openFile(projet?.descriptionPDFContentType!, projet?.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
+                        <a id="ouvrirpdf" (click)="openFile(projet?.descriptionPDFContentType!, projet?.descriptionPDF)"
+                           jhiTranslate="entity.action.open">open</a>
                         {{ byteSize(projet.descriptionPDF) }}
                     </div>
                 </dd>
@@ -55,7 +67,8 @@
             <button *ngIf="isAutorise(projet) && projet.groupeId === null && isChoisi(projet.id)===true" type="button"
                     [routerLink]="['/projet', projet.id, 'attribuer']"
                     class="btn btn-success">
-                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.attribuate">Attribuer</span>
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span
+                jhiTranslate="entity.action.attribuate">Attribuer</span>
             </button>
 
             <button *ngIf="isAutorise(projet) && projet.groupeId != null " type="submit"
@@ -68,7 +81,8 @@
             <button *ngIf="!isClient() && !aDejaUnGroupe()" type="button"
                     [routerLink]="['/projet', projet.id, 'postuler']"
                     class="btn btn-primary">
-                <fa-icon icon="book"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.bouton.choisir">Apply</span>
+                <fa-icon icon="book"></fa-icon>&nbsp;<span
+                jhiTranslate="projetticApp.projet.bouton.choisir">Apply</span>
             </button>
 
             <button *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet)" type="button"

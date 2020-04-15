@@ -37,6 +37,18 @@
         "attribGroupe": "Assign to this group",
         "etudiant": "Student(s)"
       },
+      "rate": {
+        "cahierDesCharges": "Specification",
+        "soutenance": "Defense",
+        "rendu": "Report",
+        "moyenne": "Final mark",
+        "noteCahierDesCharges": "Specification mark",
+        "noteSoutenance": "Defense mark",
+        "noteRendu": "Report mark",
+        "ouvrir": "Open",
+        "noter": "Rate",
+        "manquant": "Missing document :"
+      },
       "bouton": {
         "choisir": "Apply",
         "etatCandidature": "Applied",

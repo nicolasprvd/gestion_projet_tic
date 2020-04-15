@@ -38,6 +38,18 @@
         "attribGroupe": "Attribuer à ce groupe",
         "etudiant": "Etudiant(s)"
       },
+      "rate": {
+        "cahierDesCharges": "Cahier des charges",
+        "soutenance": "Soutenance",
+        "rendu": "Rendu",
+        "moyenne": "Note finale",
+        "noteCahierDesCharges": "Note cahier des charges",
+        "noteSoutenance": "Note soutenance",
+        "noteRendu": "Note rendu",
+        "ouvrir": "Ouvrir",
+        "noter": "Noter",
+        "manquant": "Document manquant :"
+      },
       "bouton": {
         "choisir": "Postuler",
         "etatCandidature": "Postulé",
