@@ -73,13 +73,19 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.loadAll();
     this.registerChangeInEvaluations();
     this.userService.findAll().subscribe(users => {
-      this.users = users;
+      if (users !== null) {
+        this.users = users;
+      }
     });
-    this.userExtraService.findAll().subscribe(extras => {
-      this.extras = extras;
+    this.userExtraService.findByActif(true).subscribe(extras => {
+      if (extras !== null) {
+        this.extras = extras.body;
+      }
     });
     this.projetService.findAll().subscribe(projets => {
-      this.projets = projets;
+      if (projets !== null) {
+        this.projets = projets;
+      }
     });
   }
 

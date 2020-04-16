@@ -89,7 +89,7 @@
                                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.attribuate">Attribuer</span>
                             </button>
 
-                            <button *ngIf="isAutorise(projet) && projet.groupeId != null" type="submit"
+                            <button *ngIf="isAutorise(projet) && projet.groupeId !== null" type="submit"
                                     [routerLink]="['/projet', projet.id, 'rate']"
                                     class="btn btn-success btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>

@@ -60,28 +60,34 @@ export class ProjectRateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ projet }) => (this.project = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
-      this.authorities = account?.authorities;
+      if (account !== null) {
+        this.account = account;
+        this.authorities = account.authorities;
+      }
     });
     this.documentService.findByProjetId(this.project.id).subscribe(documents => {
-      for (const doc of documents.body) {
-        if (doc.typeDocument === TypeDocument.CDC) {
-          this.cdcDoc = doc;
-        }
-        if (doc.typeDocument === TypeDocument.GANTT) {
-          this.soutenanceDoc = doc;
-        }
-        if (doc.typeDocument === TypeDocument.RF) {
-          this.renduDoc = doc;
+      if (documents !== null) {
+        for (const doc of documents.body) {
+          if (doc.typeDocument === TypeDocument.CDC) {
+            this.cdcDoc = doc;
+          }
+          if (doc.typeDocument === TypeDocument.GANTT) {
+            this.soutenanceDoc = doc;
+          }
+          if (doc.typeDocument === TypeDocument.RF) {
+            this.renduDoc = doc;
+          }
         }
       }
     });
-    this.userExtraService.findAll().subscribe(userExtras => {
-      this.groupId = this.project.groupeId;
-      this.allUsers = userExtras;
-      for (const extra of userExtras) {
-        if (extra.groupeId === this.groupId) {
-          this.groupUsers.push(extra);
+    this.userExtraService.findByActif(true).subscribe(userExtras => {
+      if (userExtras !== null) {
+        this.groupId = this.project.groupeId;
+        this.allUsers = userExtras.body;
+        for (const extra of this.allUsers) {
+          if (extra.groupeId === this.groupId) {
+            this.groupUsers.push(extra);
+          }
         }
       }
     });

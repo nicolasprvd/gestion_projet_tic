@@ -129,4 +129,15 @@ public class UserExtraResource {
         log.debug("REST request to search UserExtras for query {}", query);
         return userExtraService.search(query);
     }
+
+    /**
+     * {@code GET  /user-extras/actif} : get all the user-extras with the actif status.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userextra in body.
+     */
+    @GetMapping("/user-extras/actif/{actif}")
+    public List<UserExtraDTO> findByActif(@PathVariable boolean actif) {
+        log.debug("REST request to get all User-extras");
+        return userExtraService.findByActif(actif);
+    }
 }

@@ -116,21 +116,29 @@ export class ProjetComponent implements OnInit, OnDestroy {
 
     this.registerChangeInProjets();
     this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
-      this.authorities = account.authorities;
+      if (account !== null) {
+        this.account = account;
+        this.authorities = account.authorities;
+      }
     });
     this.userExtraService.find(this.account.id).subscribe(userExtra => {
-      this.typeUtilisateur = userExtra.body.typeUtilisateur;
-      this.accountExtra = userExtra.body;
-      this.groupeId = userExtra.body.groupeId;
-      if (this.groupeId != null) {
-        this.groupeService.find(this.groupeId).subscribe(groupe => {
-          this.projetChoisiId = groupe.body.projetId;
-        });
+      if (userExtra !== null) {
+        this.typeUtilisateur = userExtra.body.typeUtilisateur;
+        this.accountExtra = userExtra.body;
+        this.groupeId = userExtra.body.groupeId;
+        if (this.groupeId != null) {
+          this.groupeService.find(this.groupeId).subscribe(groupe => {
+            if (groupe !== null) {
+              this.projetChoisiId = groupe.body.projetId;
+            }
+          });
+        }
       }
     });
     this.groupeService.findAll().subscribe(groupes => {
-      this.groupes = groupes;
+      if (groupes !== null) {
+        this.groupes = groupes;
+      }
     });
   }
 

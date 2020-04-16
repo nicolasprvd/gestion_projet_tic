@@ -1,6 +1,5 @@
 package com.app.projettic.repository;
 
-import com.app.projettic.domain.User;
 import com.app.projettic.domain.UserExtra;
 
 import org.springframework.data.jpa.repository.*;
@@ -15,4 +14,5 @@ import java.util.List;
 @Repository
 public interface UserExtraRepository extends JpaRepository<UserExtra, Long> {
     List<UserExtra> findAll();
+    List<UserExtra> findByActif(boolean actif);
 }

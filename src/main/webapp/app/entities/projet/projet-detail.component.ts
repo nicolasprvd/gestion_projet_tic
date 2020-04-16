@@ -49,35 +49,45 @@ export class ProjetDetailComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
-      this.authorities = account?.authorities;
+      if (account !== null) {
+        this.account = account;
+        this.authorities = account.authorities;
+      }
     });
-    this.userExtraService.findAll().subscribe(userExtras => {
-      this.userExtras = userExtras;
-      for (const userExtra of userExtras) {
-        if (this.account.id === userExtra.id) {
-          this.typeUtilisateur = userExtra.typeUtilisateur;
-          this.groupeId = userExtra.groupeId;
-          if (this.groupeId !== null && this.groupeId !== undefined) {
-            this.groupeService.find(this.groupeId).subscribe(groupe => {
-              this.monProjetId = groupe.body.projetId;
+    this.userExtraService.findByActif(true).subscribe(userExtras => {
+      if (userExtras !== null) {
+        this.userExtras = userExtras.body;
+        for (const userExtra of this.userExtras) {
+          if (this.account.id === userExtra.id) {
+            this.typeUtilisateur = userExtra.typeUtilisateur;
+            this.groupeId = userExtra.groupeId;
+            if (this.groupeId !== null && this.groupeId !== undefined) {
+              this.groupeService.find(this.groupeId).subscribe(groupe => {
+                this.monProjetId = groupe.body.projetId;
+              });
+            }
+          }
+          if (userExtra.id === this.projet?.userExtraId) {
+            this.userService.findById(userExtra.userId).subscribe(client => {
+              if (client !== null) {
+                client.firstName = this.formatNom(client.firstName);
+                client.lastName = client.lastName.toUpperCase();
+                this.client = client;
+              }
             });
           }
-        }
-        if (userExtra.id === this.projet?.userExtraId) {
-          this.userService.findById(userExtra.userId).subscribe(client => {
-            client.firstName = this.formatNom(client.firstName);
-            client.lastName = client.lastName.toUpperCase();
-            this.client = client;
-          });
         }
       }
     });
     this.userService.findAll().subscribe(users => {
-      this.users = users;
+      if (users !== null) {
+        this.users = users;
+      }
     });
     this.groupeService.findAll().subscribe(groupes => {
-      this.groupes = groupes;
+      if (groupes !== null) {
+        this.groupes = groupes;
+      }
     });
   }
 
