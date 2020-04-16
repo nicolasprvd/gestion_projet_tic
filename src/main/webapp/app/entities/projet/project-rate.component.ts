@@ -98,9 +98,9 @@ export class ProjectRateComponent implements OnInit {
   }
 
   calculateFinalRate(): void {
-    this.specsRate = +(document.getElementById('specsRate') as HTMLInputElement).value;
-    this.ganttsRate = +(document.getElementById('ganttsRate') as HTMLInputElement).value;
-    this.outputRate = +(document.getElementById('outputRate') as HTMLInputElement).value;
+    this.specsRate = +(document.getElementById('specsRate') as HTMLInputElement).value.replace(',', '.');
+    this.ganttsRate = +(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.');
+    this.outputRate = +(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.');
     this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
   }
 
