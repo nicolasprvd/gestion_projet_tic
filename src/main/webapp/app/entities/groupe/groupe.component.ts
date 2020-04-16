@@ -150,10 +150,10 @@ export class GroupeComponent implements OnInit, OnDestroy {
     let donnees = '';
     let nomFichier = '';
     if (this.translate.currentLang === this.translate.getLangs()[0]) {
-      donnees = 'Projet,Client,Chef de projet,Membres';
+      donnees = 'Projet;Client;Chef de projet;Membres';
       nomFichier = 'groupes_projet_tic.csv';
     } else {
-      donnees = 'Project,Customer,Project manager,Members';
+      donnees = 'Project;Customer;Project manager;Members';
       nomFichier = 'groups_tic_project.csv';
     }
     const rows = table.rows;
@@ -164,11 +164,11 @@ export class GroupeComponent implements OnInit, OnDestroy {
         donnees +
         '\r\n' +
         row.cells[0].textContent.trim() +
-        ',' +
+        ';' +
         row.cells[1].textContent.trim() +
-        ',' +
+        ';' +
         row.cells[2].textContent.trim() +
-        ',' +
+        ';' +
         membres;
     }
     const blob = new Blob([donnees], { type: 'type/txt' });
