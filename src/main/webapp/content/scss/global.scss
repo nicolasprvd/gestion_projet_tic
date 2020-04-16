@@ -7,12 +7,11 @@
 Bootstrap tweaks
 ===============================================================*/
 
-body,
 h1,
 h2,
 h3,
 h4 {
-  font-weight: 300;
+  font-weight: bold;
 }
 
 a:hover {
@@ -43,7 +42,9 @@ Generic styles
 .jh-card {
   padding: 1.5%;
   margin-top: 20px;
-  border: none;
+  background: #f1f1f1;
+  color: #000000c7;
+  border: 1px solid #cccccc;
 }
 
 .error {
@@ -171,13 +172,9 @@ ui bootstrap tweaks
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
-
-body,
-h1,
-h2,
-h3,
-h4 {
-  font-weight: 300;
+html,
+body {
+  background-color: #cbe3ed;
 }
 
 a:hover {
@@ -204,13 +201,6 @@ Generic styles
 ========================================================================== */
 
 /* other generic styles */
-
-.jh-card {
-  padding: 1.5%;
-  margin-top: 20px;
-  border: none;
-}
-
 .error {
   color: white;
   background-color: red;
@@ -335,6 +325,10 @@ Text
   text-transform: uppercase;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -432,4 +426,91 @@ Margin-right
 
 .mrl {
   margin-right: 15px;
+}
+
+/* ==========================================================================
+Hoverable Menu Navbar
+========================================================================== */
+.hoverable {
+  tranform: translateZ(0);
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+
+.hoverable:hover,
+[aria-expanded='true'] {
+  transform: translateY(-5px);
+  font-weight: bold;
+}
+
+/* ==========================================================================
+Elements Margin
+========================================================================== */
+.input-group {
+  margin-bottom: 2%;
+}
+
+fa-icon {
+  margin-right: 3px;
+}
+
+/* ==========================================================================
+Tables design
+========================================================================== */
+table {
+  background: #cbe3ed;
+  border-radius: 0.25rem;
+  color: #000000c7 !important;
+}
+
+table a {
+  color: #000000c7;
+}
+
+table a:hover {
+  font-weight: bold;
+  text-decoration: underline !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f1f1f1;
+}
+
+tr:not(:first-child):hover,
+.table-striped tbody tr:nth-of-type(odd):hover {
+  background-color: #0883b4;
+  color: white;
+}
+
+th {
+  border: 1px solid #444 !important;
+  border-bottom: 4px solid #444 !important;
+  text-align: center;
+  vertical-align: middle !important;
+  text-transform: uppercase;
+}
+
+td {
+  border: 1px solid #444 !important;
+  vertical-align: middle !important;
+}
+
+dt {
+  margin-top: 2% !important;
+}
+
+@media (max-width: 736px) {
+  #profil {
+    border-bottom: 1px solid black;
+    margin-bottom: 15px;
+  }
+}
+
+jhi-login-modal {
+  background: #dadada;
+  color: #000000c7;
+}
+
+jhi-login-modal .close {
+  color: #000000c7;
 }

@@ -1,11 +1,11 @@
-<div class="row justify-content-center">
-    <div class="col-8">
+<div class="row">
+    <div class="col-12">
         <div *ngIf="evaluation">
             <h2><span jhiTranslate="projetticApp.evaluation.detail.title">Evaluation</span> {{ evaluation.id }}</h2>
 
-            <hr>
-
             <jhi-alert-error></jhi-alert-error>
+
+            <hr>
 
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="projetticApp.evaluation.noteCDC">Note CDC</span></dt>
