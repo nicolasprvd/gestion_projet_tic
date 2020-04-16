@@ -57,6 +57,18 @@
                         </a>
                     </li>
                     <li>
+                        <a class="dropdown-item" routerLink="projet/client" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.subentities.projetsClient">Mes projets</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="projet/etudiant" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.subentities.projetEtudiant">Mon projet</span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="dropdown-item" routerLink="groupe" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.groupe">Groupe</span>

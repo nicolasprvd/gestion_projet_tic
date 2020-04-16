@@ -10,6 +10,8 @@ import { ProjectRateComponent } from 'app/entities/projet/project-rate.component
 import { projetRoute } from './projet.route';
 import { ProjetPostulerComponent } from 'app/entities/projet/postuler/projet-postuler.component';
 import { ProjetAttribuerComponent } from 'app/entities/projet/attribuer/projet-attribuer.component';
+import {ProjetsClientComponent} from "app/entities/projet/client/projets-client.component";
+import {ProjetEtudiantComponent} from "app/entities/projet/etudiant/projet-etudiant.component";
 
 @NgModule({
   imports: [ProjetticSharedModule, RouterModule.forChild(projetRoute)],
@@ -20,7 +22,9 @@ import { ProjetAttribuerComponent } from 'app/entities/projet/attribuer/projet-a
     ProjetDeleteDialogComponent,
     ProjetPostulerComponent,
     ProjetAttribuerComponent,
-    ProjectRateComponent
+    ProjectRateComponent,
+    ProjetsClientComponent,
+    ProjetEtudiantComponent
   ],
   entryComponents: [ProjetDeleteDialogComponent]
 })

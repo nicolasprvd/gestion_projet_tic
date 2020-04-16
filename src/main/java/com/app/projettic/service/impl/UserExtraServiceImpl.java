@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -109,6 +110,21 @@ public class UserExtraServiceImpl implements UserExtraService {
         log.debug("Request to search UserExtras for query {}", query);
         return StreamSupport
             .stream(userExtraSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(userExtraMapper::toDto)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all user from groupe id
+     * @param groupeId
+     * @return list user dto
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserExtraDTO> findByGroupeId(Long groupeId) {
+        log.debug("Request to get all UserExtras from groupe id = " + groupeId);
+        return userExtraRepository.findByGroupeId(groupeId)
+            .stream()
             .map(userExtraMapper::toDto)
             .collect(Collectors.toList());
     }

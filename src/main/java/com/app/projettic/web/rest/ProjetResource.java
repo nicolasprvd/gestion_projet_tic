@@ -1,6 +1,7 @@
 package com.app.projettic.web.rest;
 
 import com.app.projettic.service.ProjetService;
+import com.app.projettic.service.dto.UserDTO;
 import com.app.projettic.web.rest.errors.BadRequestAlertException;
 import com.app.projettic.service.dto.ProjetDTO;
 
@@ -12,14 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing {@link com.app.projettic.domain.Projet}.
@@ -129,5 +128,29 @@ public class ProjetResource {
     public List<ProjetDTO> searchProjets(@RequestParam String query) {
         log.debug("REST request to search Projets for query {}", query);
         return projetService.search(query);
+    }
+
+    /**
+     * {@code GET  /projets/client/:userExtraId} : get the "userExtraId" projets.
+     *
+     * @param userExtraId the id of the client to retrieve.
+     * @return array list projet dto
+     */
+    @GetMapping("/projets/client/{userExtraId}")
+    public List<ProjetDTO> findByUserExtraId(@PathVariable Long userExtraId) {
+        log.debug("REST request to search Projets for client id {}", userExtraId);
+        return projetService.findByUserExtraId(userExtraId);
+    }
+
+    /**
+     * {@code GET  /projets/groupe/:groupeId} : get the "groupeId" projets.
+     *
+     * @param groupeId the id of the groupe to retrieve.
+     * @return object projet dto
+     */
+    @GetMapping("/projets/groupe/{groupeId}")
+    public Optional<ProjetDTO> findByGroupeId(@PathVariable Long groupeId) {
+        log.debug("REST request to get Projet from groupe id : {}", groupeId);
+        return projetService.findByGroupeId(groupeId);
     }
 }

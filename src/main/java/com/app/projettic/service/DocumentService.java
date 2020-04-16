@@ -1,5 +1,6 @@
 package com.app.projettic.service;
 
+import com.app.projettic.domain.Document;
 import com.app.projettic.service.dto.DocumentDTO;
 
 import java.util.List;
@@ -44,8 +45,10 @@ public interface DocumentService {
      * Search for the document corresponding to the query.
      *
      * @param query the query of the search.
-     * 
+     *
      * @return the list of entities.
      */
     List<DocumentDTO> search(String query);
+
+    List<DocumentDTO> findByProjetId(Long projetId);
 }

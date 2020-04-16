@@ -45,4 +45,10 @@ export class UserExtraService {
     const options = createRequestOption(req);
     return this.http.get<IUserExtra[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
+
+  findByGroupeId(groupeId: number): Observable<HttpResponse<IUserExtra[]>> {
+    return this.http.get<IUserExtra[]>(`${this.resourceUrl}/groupe/${groupeId}`, { observe: 'response' });
+  }
+
+
 }

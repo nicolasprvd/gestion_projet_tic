@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -49,8 +49,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
     private accountService: AccountService,
     private userService: UserService,
     private userExtraService: UserExtraService,
-    private groupeService: GroupeService,
-    private router: Router
+    private groupeService: GroupeService
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']

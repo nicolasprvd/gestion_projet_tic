@@ -15,4 +15,5 @@ import java.util.List;
 @Repository
 public interface UserExtraRepository extends JpaRepository<UserExtra, Long> {
     List<UserExtra> findAll();
+    List<UserExtra> findByGroupeId(Long groupeId);
 }

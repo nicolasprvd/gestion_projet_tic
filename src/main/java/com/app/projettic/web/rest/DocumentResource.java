@@ -130,4 +130,10 @@ public class DocumentResource {
         log.debug("REST request to search Documents for query {}", query);
         return documentService.search(query);
     }
+
+    @GetMapping("/documents/projet/{projetId}")
+    public List<DocumentDTO> findByProjetId(@PathVariable Long projetId) {
+        log.debug("REST request to get Documents from projet id = {}", projetId);
+        return documentService.findByProjetId(projetId);
+    }
 }

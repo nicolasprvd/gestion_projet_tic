@@ -1,21 +1,19 @@
 package com.app.projettic.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 
 import com.app.projettic.domain.enumeration.TypeDocument;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Document.
  */
 @Entity
 @Table(name = "document")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "document")
 public class Document implements Serializable {
 
@@ -25,7 +23,7 @@ public class Document implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    
+
     @Lob
     @Column(name = "doc", nullable = false)
     private byte[] doc;
@@ -127,6 +125,7 @@ public class Document implements Serializable {
             ", doc='" + getDoc() + "'" +
             ", docContentType='" + getDocContentType() + "'" +
             ", typeDocument='" + getTypeDocument() + "'" +
+            ", projet='" + getProjet() +
             "}";
     }
 }

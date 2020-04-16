@@ -1,6 +1,12 @@
 {
   "projetticApp": {
     "projet": {
+      "documents": {
+        "title": "Documents",
+        "cdc": "Cahier des charges",
+        "gantt": "Gantt",
+        "rendu": "Rendu final"
+      },
       "form": {
         "label": {
           "dateArchive" : "Archives",
@@ -17,6 +23,12 @@
         "edit": "Editer un projet",
         "search": "Recherche pour Projet",
         "notFound": "Aucun Projet trouvé"
+      },
+      "clientProjets": {
+        "titleTab": "Mes projets"
+      },
+      "etudiant": {
+        "titleTab": "Mon projet"
       },
       "created": "Un nouveau Projet a été créé avec l'identifiant {{ param }}",
       "updated": "Le Projet avec l'identifiant {{ param }} a été mis à jour",
@@ -59,7 +71,10 @@
       "userExtra": "User Extra",
       "document": "Document",
       "client": "Client",
-      "email": "Email"
+      "email": "Email",
+      "etudiantProjet": {
+        "title": "Mon projet"
+      }
     }
   }
 }

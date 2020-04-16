@@ -129,4 +129,16 @@ public class UserExtraResource {
         log.debug("REST request to search UserExtras for query {}", query);
         return userExtraService.search(query);
     }
+
+    /**
+     * {@code GET  /user-extras/groupe/:groupeId} : get the "id" groupe.
+     *
+     * @param id the id of the groupe id to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userExtraDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/user-extras/groupe/{groupeId}")
+    public List<UserExtraDTO> getUserExtraByGroupeId(@PathVariable Long groupeId) {
+        log.debug("REST request to get UserExtra from groupe id : {}", groupeId);
+        return userExtraService.findByGroupeId(groupeId);
+    }
 }

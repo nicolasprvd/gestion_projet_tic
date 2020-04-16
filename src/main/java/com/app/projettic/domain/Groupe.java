@@ -1,15 +1,14 @@
 package com.app.projettic.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,10 +30,12 @@ public class Groupe implements Serializable {
     @Column(name = "valide", nullable = false)
     private Boolean valide;
 
-    @OneToMany(mappedBy = "groupe")
+    @OneToMany(mappedBy = "groupe", cascade = CascadeType.REMOVE)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Projet> projets = new HashSet<>();
 
-    @OneToMany(mappedBy = "groupe")
+    @OneToMany(mappedBy = "groupe", cascade = CascadeType.REMOVE)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<UserExtra> userExtras = new HashSet<>();
 
     @ManyToOne

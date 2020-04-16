@@ -41,4 +41,8 @@ export class DocumentService {
     const options = createRequestOption(req);
     return this.http.get<IDocument[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
+
+  findByProjetId(projetId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IDocument[]>(`${this.resourceUrl}/projet/${projetId}`, { observe: 'response' });
+  }
 }

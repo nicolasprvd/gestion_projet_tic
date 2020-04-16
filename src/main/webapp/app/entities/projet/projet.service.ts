@@ -45,4 +45,12 @@ export class ProjetService {
     const options = createRequestOption(req);
     return this.http.get<IProjet[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
+
+  findByUserExtraId(userExtraId: number): Observable<IProjet[]> {
+    return this.http.get<IProjet[]>(`${this.resourceUrl}/client/${userExtraId}`);
+  }
+
+  findByGroupeId(groupeId: number): Observable<EntityResponseType> {
+    return this.http.get<IProjet>(`${this.resourceUrl}/groupe/${groupeId}`, { observe: 'response' });
+  }
 }

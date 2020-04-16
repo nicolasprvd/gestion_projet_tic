@@ -1,0 +1,102 @@
+<div class="table-responsive" id="entities">
+
+    <h1>{{ projet?.nom }}</h1>
+
+    <dl class="row-md jh-entity-details">
+        <dt><label class="form-control-label" for="client" jhiTranslate="projetticApp.projet.client"></label></dt>
+        <dd>
+            <input type="text" class="form-control" id="client" name="client" disabled="disabled" value="{{ client?.firstName }} {{ client?.lastName }}">
+        </dd>
+        <dt><label class="form-control-label" for="email" jhiTranslate="projetticApp.projet.email"></label></dt>
+        <dd>
+            <input type="text" class="form-control" id="email" name="email" disabled="disabled" value="{{ client?.email }}">
+        </dd>
+        <dt><label class="form-control-label" for="nbetu" jhiTranslate="projetticApp.projet.nbEtudiant"></label></dt>
+        <dd>
+            <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled" value="{{ projet?.nbEtudiant }}">
+        </dd>
+        <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label></dt>
+        <ng-container>
+            <dd *ngFor="let membre of membres">
+                <span *ngIf="groupe.userExtraId === membre.id">Chef de projet : {{ membre.firstName + " " + membre.lastName }}</span>
+                <span *ngIf="groupe.userExtraId !== membre.id">{{ membre.firstName + " " + membre.lastName }}</span>
+                <br>
+            </dd>
+        </ng-container>
+        <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.documents.title"></label></dt>
+        <dd>
+            <form name="editForm" role="form" novalidate [formGroup]="documentFormCDC">
+                <!-- Document CDC -->
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.cdc" for="field_documentCDC"></label>
+                    <div>
+                        <div *ngIf="documentFormCDC.get('documentCDC')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(documentFormCDC.get('documentCDCContentType')!.value, documentFormCDC.get('documentCDC')!.value)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{ documentFormCDC.get('documentCDCContentType')!.value }}, {{ byteSize(documentFormCDC.get('documentCDC')!.value) }}</span>
+                            <button type="button" (click)="documentFormCDC.patchValue({documentCDC: null});documentFormCDC.patchValue({documentCDCContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_documentCDC" (change)="setFileData($event, 'documentCDC', false, 'CDC')" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="documentCDC" id="field_documentCDC"
+                           formControlName="documentCDC"/>
+                    <input type="hidden" class="form-control" name="documentCDCContentType" id="field_documentCDCContentType"
+                           formControlName="documentCDCContentType" />
+                </div>
+            </form>
+
+            <form name="editForm" role="form" novalidate [formGroup]="documentFormGANTT">
+                <!-- Document GANTT -->
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.gantt" for="field_documentGANTT"></label>
+                    <div>
+                        <div *ngIf="documentFormGANTT.get('documentGANTT')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(documentFormGANTT.get('documentGANTTContentType')!.value, documentFormGANTT.get('documentGANTT')!.value)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{ documentFormGANTT.get('documentGANTTContentType')!.value }}, {{ byteSize(documentFormGANTT.get('documentGANTT')!.value) }}</span>
+                            <button type="button" (click)="documentFormGANTT.patchValue({documentGANTT: null});documentFormGANTT.patchValue({documentGANTTContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_documentGANTT" (change)="setFileData($event, 'documentGANTT', false, 'GANTT')" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="documentGANTT" id="field_documentGANTT"
+                           formControlName="documentGANTT"/>
+                    <input type="hidden" class="form-control" name="documentGANTTContentType" id="field_documentGANTTContentType"
+                           formControlName="documentGANTTContentType" />
+                </div>
+            </form>
+
+            <form name="editForm" role="form" novalidate [formGroup]="documentFormRF">
+                <!-- Document RF -->
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.rendu" for="field_documentRF"></label>
+                    <div>
+                        <div *ngIf="documentFormRF.get('documentRF')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(documentFormRF.get('documentRFContentType')!.value, documentFormRF.get('documentRF')!.value)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{ documentFormRF.get('documentRFContentType')!.value }}, {{ byteSize(documentFormRF.get('documentRF')!.value) }}</span>
+                            <button type="button" (click)="documentFormRF.patchValue({documentRF: null});documentFormRF.patchValue({documentRFContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_documentRF" (change)="setFileData($event, 'documentRF', false, 'RF')" jhiTranslate="entity.action.addblob"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="documentRF" id="field_documentRF"
+                           formControlName="documentRF"/>
+                    <input type="hidden" class="form-control" name="documentRFContentType" id="field_documentRFContentType"
+                           formControlName="documentRFContentType" />
+                </div>
+            </form>
+        </dd>
+
+        <div>
+            <button type="button" id="save-entity" class="btn btn-primary" (click)="handleSubmitForm()" >
+                <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save"></span>
+            </button>
+        </div>
+    </dl>
+</div>
+
