@@ -41,6 +41,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
+      account.firstName = this.formatNom(account.firstName);
+      account.lastName = account.lastName.toUpperCase();
       this.account = account;
     });
     this.userExtraService.findAll().subscribe(userExtras => {
@@ -48,8 +50,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       this.userService.findAll().subscribe(users => {
         for (const u of users) {
           if (u.id !== this.account?.id && this.isEtudiantActif(u.id) && !this.aDejaUnGroupe(u.id)) {
-            u.firstName = u.firstName?.toLowerCase();
-            u.lastName = u.lastName?.toLowerCase();
+            u.firstName = this.formatNom(u.firstName);
+            u.lastName = u.lastName.toUpperCase();
             this.users.push(u);
           }
         }
@@ -190,5 +192,10 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       ids.push(+etu);
     }
     return valide;
+  }
+
+  formatNom(str: string): string {
+    str = str.toLowerCase();
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 }

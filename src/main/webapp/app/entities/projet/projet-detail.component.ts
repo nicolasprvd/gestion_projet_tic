@@ -66,6 +66,8 @@ export class ProjetDetailComponent implements OnInit {
         }
         if (userExtra.id === this.projet?.userExtraId) {
           this.userService.findById(userExtra.userId).subscribe(client => {
+            client.firstName = this.formatNom(client.firstName);
+            client.lastName = client.lastName.toUpperCase();
             this.client = client;
           });
         }
@@ -194,7 +196,7 @@ export class ProjetDetailComponent implements OnInit {
   getNomPrenomUser(extra: IUserExtra): string {
     for (const usr of this.users) {
       if (usr.id === extra.id) {
-        return this.formatNom(usr.firstName) + ' ' + this.formatNom(usr.lastName);
+        return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
       }
     }
     return '';
@@ -203,5 +205,9 @@ export class ProjetDetailComponent implements OnInit {
   formatNom(str: string): string {
     str = str.toLowerCase();
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  getNomClient(client: IUser): string {
+    return this.formatNom(client.firstName) + ' ' + client.lastName.toUpperCase();
   }
 }

@@ -115,7 +115,7 @@ export class EvaluationComponent implements OnInit, OnDestroy {
       for (const user of this.users) {
         if (user.id === extra.id) {
           this.getEvaluation(extra.evaluationId);
-          return this.formatNom(user.firstName) + ' ' + this.formatNom(user.lastName);
+          return this.formatNom(user.firstName) + ' ' + user.lastName.toUpperCase();
         }
       }
     }

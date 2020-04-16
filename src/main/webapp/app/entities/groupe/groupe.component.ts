@@ -104,7 +104,7 @@ export class GroupeComponent implements OnInit, OnDestroy {
   getChefProjet(user: number): string {
     for (const usr of this.users) {
       if (usr.id === user) {
-        return this.formatNom(usr.firstName) + ' ' + this.formatNom(usr.lastName);
+        return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
       }
     }
     return '';
@@ -118,7 +118,7 @@ export class GroupeComponent implements OnInit, OnDestroy {
   getMembreProjet(extra: IUserExtra): string {
     for (const usr of this.users) {
       if (usr.id === extra.id) {
-        return this.formatNom(usr.firstName) + ' ' + this.formatNom(usr.lastName);
+        return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
       }
     }
     return '';
@@ -129,7 +129,7 @@ export class GroupeComponent implements OnInit, OnDestroy {
       if (projetId === projet.id) {
         for (const usr of this.users) {
           if (usr.id === projet.userExtraId) {
-            return this.formatNom(usr.firstName) + ' ' + this.formatNom(usr.lastName);
+            return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
           }
         }
       }
