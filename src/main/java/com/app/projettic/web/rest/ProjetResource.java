@@ -1,5 +1,7 @@
 package com.app.projettic.web.rest;
 
+import com.app.projettic.domain.User;
+import com.app.projettic.service.MailService;
 import com.app.projettic.service.ProjetService;
 import com.app.projettic.web.rest.errors.BadRequestAlertException;
 import com.app.projettic.service.dto.ProjetDTO;
@@ -17,7 +19,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -37,8 +38,11 @@ public class ProjetResource {
 
     private final ProjetService projetService;
 
-    public ProjetResource(ProjetService projetService) {
+    private final MailService mailService;
+
+    public ProjetResource(ProjetService projetService, MailService mailService) {
         this.projetService = projetService;
+        this.mailService = mailService;
     }
 
     /**
@@ -129,5 +133,17 @@ public class ProjetResource {
     public List<ProjetDTO> searchProjets(@RequestParam String query) {
         log.debug("REST request to search Projets for query {}", query);
         return projetService.search(query);
+    }
+
+    /**
+     * {@code SEND EMAIL  /projets/:to/:subject/:content} : send email to "to" with the subject "subject" and the content "content"
+     *
+     * @param to the mail of the recipient of the email
+     * @param subject the subject of the email
+     * @param content the content of the mail
+     */
+    @PostMapping("/projets/mail/{to}/{subject}/{content}")
+    public void sendMail(@PathVariable String to, @PathVariable String subject, @PathVariable String content){
+        this.mailService.sendEmail(to, subject, content, false, false);
     }
 }

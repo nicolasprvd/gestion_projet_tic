@@ -1,84 +1,85 @@
 <div class="row justify-content">
-    <div class="col-8">
-            <h2>{{project.nom}}</h2>
-            <div>
-                <div id="boutonsDocuments">
-                    <div>
-                        <button *ngIf="cdcDoc !== null" type="button"
-                                (click)="openFile(cdcDoc.docContentType, cdcDoc.doc)"
-                                class="btn btn-primary">
-                            <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
-                        </button>
-                        <button *ngIf="cdcDoc === null" type="button"
-                                disabled="disabled"
-                                class="btn btn-danger">
-                            <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
-                        </button>
-                        <label *ngIf="cdcDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
-                        <label jhiTranslate="projetticApp.projet.rate.cahierDesCharges"></label>
-                    </div>
-                    <div>
-                        <button *ngIf="soutenanceDoc !== null" type="button"
-                                (click)="openFile(soutenanceDoc.docContentType, soutenanceDoc.doc)"
-                                class="btn btn-primary">
-                            <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
-                        </button>
-                        <button *ngIf="soutenanceDoc === null" type="button"
-                                disabled="disabled"
-                                class="btn btn-danger">
-                            <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
-                        </button>
-                        <label *ngIf="soutenanceDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
-                        <label jhiTranslate="projetticApp.projet.rate.soutenance"></label>
-                    </div>
-                    <div>
-                        <button *ngIf="renduDoc !== null" type="button"
-                                (click)="openFile(renduDoc.docContentType, renduDoc.doc)"
-                                class="btn btn-primary">
-                            <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
-                        </button>
-                        <button *ngIf="renduDoc === null" type="button"
-                                disabled="disabled"
-                                class="btn btn-danger">
-                            <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
-                        </button>
-                        <label *ngIf="renduDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
-                        <label jhiTranslate="projetticApp.projet.rate.rendu"></label>
-                    </div>
-                </div>
-                <jhi-alert-error></jhi-alert-error>
-
+    <div class="col-12">
+        <h2>{{project.nom}}</h2>
+        <div>
+            <div id="boutonsDocuments">
                 <div>
-                    <label id="labelCdc" class="form-control-label"  for="specsRate" jhiTranslate="projetticApp.projet.rate.noteCahierDesCharges"></label>
-                    <input type="text" class="form-control" name="specsRate" id="specsRate" (change)="calculateFinalRate()" value="0"/>
-
-                    <label id="labelSoutenance" class="form-control-label" for="ganttsRate" jhiTranslate="projetticApp.projet.rate.noteSoutenance"></label>
-                    <input type="number" class="form-control" name="ganttsRate" id="ganttsRate" (change)="calculateFinalRate()" value="0"/>
-
-                    <label id="labelRendu" class="form-control-label" for="outputRate" jhiTranslate="projetticApp.projet.rate.noteRendu"></label>
-                    <input type="number" class="form-control" name="outputRate" id="outputRate" (change)="calculateFinalRate()" value="0"/>
-
-                    <label id="labelMoyenne" class="form-control-label" for="final" jhiTranslate="projetticApp.projet.rate.moyenne"></label>
-                    <input type="number" class="form-control" name="final" id="final" disabled="disabled" value="{{ finalRate }}"/>
-                </div>
-                <div>
-                    <button type="submit"
-                            (click)="previousState()"
-                            class="btn btn-info">
-                        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-                    </button>
-
-                    <button *ngIf="cdcDoc !== null && soutenanceDoc !== null && renduDoc !== null" type="button"
-                            (click)="evaluate()"
+                    <button *ngIf="cdcDoc !== null" type="button"
+                            (click)="openFile(cdcDoc.docContentType, cdcDoc.doc)"
                             class="btn btn-primary">
-                        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>
+                        <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <button *ngIf="cdcDoc === null || soutenanceDoc === null || renduDoc === null" type="button"
+                    <button *ngIf="cdcDoc === null" type="button"
                             disabled="disabled"
                             class="btn btn-danger">
-                        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>
+                        <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
+                    <label *ngIf="cdcDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
+                    <label jhiTranslate="projetticApp.projet.rate.cahierDesCharges"></label>
+                </div>
+                <div>
+                    <button *ngIf="soutenanceDoc !== null" type="button"
+                            (click)="openFile(soutenanceDoc.docContentType, soutenanceDoc.doc)"
+                            class="btn btn-primary">
+                        <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
+                    </button>
+                    <button *ngIf="soutenanceDoc === null" type="button"
+                            disabled="disabled"
+                            class="btn btn-danger">
+                        <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
+                    </button>
+                    <label *ngIf="soutenanceDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
+                    <label jhiTranslate="projetticApp.projet.rate.soutenance"></label>
+                </div>
+                <div>
+                    <button *ngIf="renduDoc !== null" type="button"
+                            (click)="openFile(renduDoc.docContentType, renduDoc.doc)"
+                            class="btn btn-primary">
+                        <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
+                    </button>
+                    <button *ngIf="renduDoc === null" type="button"
+                            disabled="disabled"
+                            class="btn btn-danger">
+                        <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
+                    </button>
+                    <label *ngIf="renduDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
+                    <label jhiTranslate="projetticApp.projet.rate.rendu"></label>
                 </div>
             </div>
+            <jhi-alert-error></jhi-alert-error>
+            <hr>
+
+            <div>
+                <label id="labelCdc" class="form-control-label"  for="specsRate" jhiTranslate="projetticApp.projet.rate.noteCahierDesCharges"></label>
+                <input type="text" class="form-control" name="specsRate" id="specsRate" (change)="calculateFinalRate()" value="0"/>
+
+                <label id="labelSoutenance" class="form-control-label" for="ganttsRate" jhiTranslate="projetticApp.projet.rate.noteSoutenance"></label>
+                <input type="number" class="form-control" name="ganttsRate" id="ganttsRate" (change)="calculateFinalRate()" value="0"/>
+
+                <label id="labelRendu" class="form-control-label" for="outputRate" jhiTranslate="projetticApp.projet.rate.noteRendu"></label>
+                <input type="number" class="form-control" name="outputRate" id="outputRate" (change)="calculateFinalRate()" value="0"/>
+
+                <label id="labelMoyenne" class="form-control-label" for="final" jhiTranslate="projetticApp.projet.rate.moyenne"></label>
+                <input type="number" class="form-control" name="final" id="final" disabled="disabled" value="{{ finalRate }}"/>
+            </div>
+            <div>
+                <button type="submit"
+                        (click)="previousState()"
+                        class="btn btn-info">
+                    <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+                </button>
+
+                <button *ngIf="cdcDoc !== null && soutenanceDoc !== null && renduDoc !== null" type="button"
+                        (click)="evaluate()"
+                        class="btn btn-primary">
+                    <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>
+                </button>
+                <button *ngIf="cdcDoc === null || soutenanceDoc === null || renduDoc === null" type="button"
+                        disabled="disabled"
+                        class="btn btn-danger">
+                    <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
