@@ -1,10 +1,10 @@
 {
   "error": {
-    "title": "Error page!",
+    "title": "Houston, we have a problem !",
     "http": {
       "400": "Bad request.",
       "403": "You are not authorized to access this page.",
-      "404": "The page does not exist.",
+      "404": "We are informed that the requested page never existed, sorry :(",
       "405": "The HTTP verb you used is not supported for this URL.",
       "500": "Internal server error."
     },

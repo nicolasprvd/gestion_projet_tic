@@ -267,6 +267,12 @@ export class ProjetComponent implements OnInit, OnDestroy {
     window.location.reload();
   }
 
+  /**
+   * Return true if :
+   * - the current user is an administrator
+   * - the current project is archived AND does not have a group
+   * @param projet
+   */
   isAffiche(projet: IProjet): boolean {
     if (this.isAdmin()) {
       return true;

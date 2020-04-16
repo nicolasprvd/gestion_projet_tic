@@ -93,6 +93,17 @@ public class DocumentResource {
     }
 
     /**
+     * {@code GET  /documents} : get all the documents with the project id.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of documents in body.
+     */
+    @GetMapping("/documents/projet/{projetId}")
+    public List<DocumentDTO> findByProjetId(@PathVariable Long projetId) {
+        log.debug("REST request to get all Documents");
+        return documentService.findByProjetId(projetId);
+    }
+
+    /**
      * {@code GET  /documents/:id} : get the "id" document.
      *
      * @param id the id of the documentDTO to retrieve.
@@ -104,6 +115,8 @@ public class DocumentResource {
         Optional<DocumentDTO> documentDTO = documentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(documentDTO);
     }
+
+
 
     /**
      * {@code DELETE  /documents/:id} : delete the "id" document.
