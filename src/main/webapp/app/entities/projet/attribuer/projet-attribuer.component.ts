@@ -81,9 +81,9 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     }
   }
 
-  envoieMailChoisi(idChefProjet: number): void {
+  envoieMailChoisi(idUser: number): void {
     for (const u of this.users) {
-      if (u.id === idChefProjet) {
+      if (u.id === idUser) {
         this.subject = 'Réponse positive attribution du projet';
         this.content = 'Le projet ' + this.projet.nom + ' a bien été attribué à votre groupe.';
         this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
@@ -102,8 +102,11 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     // 1) modify the group id of each user (extra) to set it to null (for all groups not apply)
     for (const ue of this.usersExtra) {
       if (ue.groupeId !== idGroupeChoisit) {
+        this.envoiMailNonChoisi(ue.userId);
         ue.groupeId = null;
         this.userExtraService.update(ue).subscribe();
+      } else {
+        this.envoieMailChoisi(ue.userId);
       }
     }
 
@@ -112,12 +115,10 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     for (const g of this.groupes) {
       // 2) deletion
       if (g.id !== idGroupeChoisit) {
-        this.envoiMailNonChoisi(g.userExtraId);
         this.groupeService.delete(g.id).subscribe();
       }
       // 3) update valide = true
       else {
-        this.envoieMailChoisi(g.userExtraId);
         g.valide = true;
         this.groupeService.update(g).subscribe();
       }
