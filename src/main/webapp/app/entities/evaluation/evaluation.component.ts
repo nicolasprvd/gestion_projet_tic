@@ -115,7 +115,7 @@ export class EvaluationComponent implements OnInit, OnDestroy {
       for (const user of this.users) {
         if (user.id === extra.id) {
           this.getEvaluation(extra.evaluationId);
-          return this.formatNom(user.firstName) + ' ' + this.formatNom(user.lastName);
+          return this.formatNom(user.firstName) + ' ' + user.lastName.toUpperCase();
         }
       }
     }
@@ -196,10 +196,10 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     let donnees = '';
     let nomFichier = '';
     if (this.translate.currentLang === this.translate.getLangs()[0]) {
-      donnees = 'Étudiant,Projet,Note CDC,Note Soutenance,Note Rendu,Note Finale';
+      donnees = 'Étudiant;Projet;Note CDC;Note Soutenance;Note Rendu;Note Finale';
       nomFichier = 'evaluation_projet_tic.csv';
     } else {
-      donnees = 'Student,Project,Specification mark,Defense mark,Rendering mark,Final mark';
+      donnees = 'Student;Project;Specification mark;Defense mark;Rendering mark;Final mark';
       nomFichier = 'rating_tic_project.csv';
     }
     const rows = table.rows;
@@ -209,15 +209,15 @@ export class EvaluationComponent implements OnInit, OnDestroy {
         donnees +
         '\r\n' +
         row.cells[0].textContent.trim() +
-        ',' +
+        ';' +
         row.cells[1].textContent.trim() +
-        ',' +
+        ';' +
         row.cells[2].textContent.trim() +
-        ',' +
+        ';' +
         row.cells[3].textContent.trim() +
-        ',' +
+        ';' +
         row.cells[4].textContent.trim() +
-        ',' +
+        ';' +
         row.cells[5].textContent.trim();
     }
     const blob = new Blob([donnees], { type: 'type/txt' });
