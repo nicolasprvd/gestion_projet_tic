@@ -9,6 +9,8 @@
 
             <jhi-alert-error></jhi-alert-error>
 
+            <hr>
+
             <form id="profil" name="form" role="form" (ngSubmit)="save()" [formGroup]="settingsForm" *ngIf="account" novalidate>
                 <div class="form-group">
                     <label class="form-control-label" for="firstName" jhiTranslate="settings.form.firstname">First Name</label>

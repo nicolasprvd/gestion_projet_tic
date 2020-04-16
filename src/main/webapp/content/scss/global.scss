@@ -8,7 +8,9 @@ Bootstrap tweaks
 ===============================================================*/
 
 h1,
-h2 {
+h2,
+h3,
+h4 {
   font-weight: bold;
 }
 
@@ -459,7 +461,6 @@ table {
   background: #cbe3ed;
   border-radius: 0.25rem;
   color: #000000c7 !important;
-  margin-top: 1rem;
 }
 
 table a {
@@ -503,4 +504,13 @@ dt {
     border-bottom: 1px solid black;
     margin-bottom: 15px;
   }
+}
+
+jhi-login-modal {
+  background: #dadada;
+  color: #000000c7;
+}
+
+jhi-login-modal .close {
+  color: #000000c7;
 }
