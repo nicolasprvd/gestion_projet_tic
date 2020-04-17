@@ -38,7 +38,8 @@
         "question": "Etes-vous certain de vouloir supprimer le Projet {{ id }} ?"
       },
       "detail": {
-        "title": "Projet"
+        "title": "Projet",
+        "chefDeProjet": "Chef de projet"
       },
 
       "apply": {

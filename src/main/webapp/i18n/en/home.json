@@ -2,11 +2,12 @@
   "home": {
     "title": "Welcome on your TIC's project application manager",
     "subtitle": "This site will allow you to : ",
+    "nouvelleAnnee": "Start a new academic year",
     "admin": {
       "role": "If you are the administrator :",
-      "one" : "Have access to the same functionalities as customers",
-      "two" : "Automatically assign projects",
-      "three" : "Historizing the database from one year to the next"
+      "one": "Have access to the same functionalities as customers",
+      "two": "Automatically assign projects",
+      "three": "Historizing the database from one year to the next"
     },
     "student": {
       "role": "If you are a student :",

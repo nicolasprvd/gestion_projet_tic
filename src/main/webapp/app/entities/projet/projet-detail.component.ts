@@ -14,6 +14,7 @@ import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { ProjetService } from 'app/entities/projet/projet.service';
 import { Groupe } from 'app/shared/model/groupe.model';
 import { IUserExtra } from 'app/shared/model/user-extra.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -34,6 +35,7 @@ export class ProjetDetailComponent implements OnInit {
   login: string | undefined;
   monProjetId: number;
   groupes: Groupe[] = [];
+  chefGroupeId: number;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -43,7 +45,8 @@ export class ProjetDetailComponent implements OnInit {
     private userExtraService: UserExtraService,
     private groupeService: GroupeService,
     private projetService: ProjetService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +90,11 @@ export class ProjetDetailComponent implements OnInit {
     this.groupeService.findAll().subscribe(groupes => {
       if (groupes !== null) {
         this.groupes = groupes;
+        for (const grp of groupes) {
+          if (grp.projetId === this.projet.id) {
+            this.chefGroupeId = grp.userExtraId;
+          }
+        }
       }
     });
   }
@@ -206,6 +214,15 @@ export class ProjetDetailComponent implements OnInit {
   getNomPrenomUser(extra: IUserExtra): string {
     for (const usr of this.users) {
       if (usr.id === extra.id) {
+        if (this.chefGroupeId === extra.id) {
+          return (
+            this.translate.instant('projetticApp.projet.detail.chefDeProjet') +
+            ' : ' +
+            this.formatNom(usr.firstName) +
+            ' ' +
+            usr.lastName.toUpperCase()
+          );
+        }
         return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
       }
     }

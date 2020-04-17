@@ -38,7 +38,8 @@
         "question": "Are you sure you want to delete Project {{ id }}?"
       },
       "detail": {
-        "title": "Project"
+        "title": "Project",
+        "chefDeProjet": "Project manager"
       },
       "apply": {
         "postuler": "Apply",

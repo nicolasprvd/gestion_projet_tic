@@ -2,11 +2,12 @@
   "home": {
     "title": "Bienvenue sur votre application de gestion de vos projets TIC",
     "subtitle": "Ce site vous permettra, selon votre profil :",
+    "nouvelleAnnee": "Démarrer une nouvelle année universitaire",
     "admin": {
       "role": "Si vous êtes l'administrateur de l'application :",
-      "one" : "Avoir accès aux mêmes fonctionnalités que les clients",
-      "two" : "Attribuer automatiquement les projets",
-      "three" : "Historiser la base de donnée d’une année sur l’autre"
+      "one": "Avoir accès aux mêmes fonctionnalités que les clients",
+      "two": "Attribuer automatiquement les projets",
+      "three": "Historiser la base de donnée d’une année sur l’autre"
     },
     "student": {
       "role": "Si vous êtes un étudiant :",

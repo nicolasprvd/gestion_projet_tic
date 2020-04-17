@@ -7,6 +7,7 @@ export interface IEvaluation {
   noteRendu?: number;
   noteFinale?: number;
   userExtras?: IUserExtra[];
+  actif?: boolean;
 }
 
 export class Evaluation implements IEvaluation {
@@ -16,6 +17,7 @@ export class Evaluation implements IEvaluation {
     public noteSoutenance?: number,
     public noteRendu?: number,
     public noteFinale?: number,
-    public userExtras?: IUserExtra[]
+    public userExtras?: IUserExtra[],
+    public actif?: boolean
   ) {}
 }
