@@ -9,7 +9,7 @@
       },
       "form": {
         "label": {
-          "dateArchive" : "Archives",
+          "dateArchive": "Archives",
           "dateArchiveSelect": "Choose a date"
         },
         "button": {
@@ -37,7 +37,8 @@
         "question": "Are you sure you want to delete Project {{ id }}?"
       },
       "detail": {
-        "title": "Project"
+        "title": "Project",
+        "chefDeProjet": "Project manager"
       },
       "apply": {
         "postuler": "Apply",
