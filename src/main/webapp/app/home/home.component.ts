@@ -24,10 +24,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
-    this.userExtraService.findByActif(true).subscribe(userExtras => {
-      this.userExtras = userExtras.body;
-    });
-    this.isDesactive = false;
+    if(this.accountService.isAuthenticated()) {
+      this.userExtraService.findByActif(true).subscribe(userExtras => {
+        this.userExtras = userExtras.body;
+      });
+      this.isDesactive = false;
+    }
+
   }
 
   ngOnDestroy(): void {
