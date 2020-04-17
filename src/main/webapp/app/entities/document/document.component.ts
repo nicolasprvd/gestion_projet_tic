@@ -49,9 +49,6 @@ export class DocumentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.documentService.find(1).subscribe(d => {
-      console.error(d.body.projetId);
-    });
     this.loadAll();
     this.registerChangeInDocuments();
   }

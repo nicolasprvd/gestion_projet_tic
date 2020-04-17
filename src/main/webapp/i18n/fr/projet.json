@@ -9,8 +9,9 @@
       },
       "form": {
         "label": {
-          "dateArchive": "Archives",
-          "dateArchiveSelect": "Sélectionner une date"
+          "dateArchive" : "Archives",
+          "dateArchiveSelect": "Sélectionner une date",
+          "chef": "Chef de projet"
         },
         "button": {
           "reprise": "Reprendre"

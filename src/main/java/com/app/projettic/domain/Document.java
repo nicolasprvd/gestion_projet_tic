@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 import com.app.projettic.domain.enumeration.TypeDocument;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
 
 /**
  * A Document.
@@ -39,6 +40,9 @@ public class Document implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("documents")
     private Projet projet;
+
+    @Column(name = "actif")
+    private Boolean actif;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -100,7 +104,14 @@ public class Document implements Serializable {
     public void setProjet(Projet projet) {
         this.projet = projet;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -125,6 +136,7 @@ public class Document implements Serializable {
             ", doc='" + getDoc() + "'" +
             ", docContentType='" + getDocContentType() + "'" +
             ", typeDocument='" + getTypeDocument() + "'" +
+            ", actif=" + isActif() +
             ", projet='" + getProjet() +
             "}";
     }

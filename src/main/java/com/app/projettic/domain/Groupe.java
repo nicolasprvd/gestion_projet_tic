@@ -7,6 +7,7 @@ import javax.validation.constraints.*;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -29,6 +30,9 @@ public class Groupe implements Serializable {
     @NotNull
     @Column(name = "valide", nullable = false)
     private Boolean valide;
+
+    @Column(name = "actif")
+    private Boolean actif;
 
     @OneToMany(mappedBy = "groupe", cascade = CascadeType.REMOVE)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -146,7 +150,14 @@ public class Groupe implements Serializable {
     public void setProjet(Projet projet) {
         this.projet = projet;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -169,6 +180,7 @@ public class Groupe implements Serializable {
         return "Groupe{" +
             "id=" + getId() +
             ", valide='" + isValide() + "'" +
+            ", actif=" + isActif() +
             "}";
     }
 }

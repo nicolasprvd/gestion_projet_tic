@@ -18,7 +18,7 @@
         <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label></dt>
         <ng-container>
             <dd *ngFor="let membre of membres">
-                <span *ngIf="groupe.userExtraId === membre.id">Chef de projet : {{ membre.firstName + " " + membre.lastName }}</span>
+                <span *ngIf="groupe.userExtraId === membre.id"><span jhiTranslate="projetticApp.projet.form.label.chef"></span> : {{ membre.firstName + " " + membre.lastName }}</span>
                 <span *ngIf="groupe.userExtraId !== membre.id">{{ membre.firstName + " " + membre.lastName }}</span>
                 <br>
             </dd>

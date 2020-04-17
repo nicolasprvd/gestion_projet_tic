@@ -8,7 +8,7 @@ import java.util.Objects;
  * A DTO for the {@link com.app.projettic.domain.Groupe} entity.
  */
 public class GroupeDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -18,7 +18,9 @@ public class GroupeDTO implements Serializable {
     private Long userExtraId;
 
     private Long projetId;
-    
+
+    private Boolean actif;
+
     public Long getId() {
         return id;
     }
@@ -51,6 +53,14 @@ public class GroupeDTO implements Serializable {
         this.projetId = projetId;
     }
 
+    public Boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -77,6 +87,7 @@ public class GroupeDTO implements Serializable {
         return "GroupeDTO{" +
             "id=" + getId() +
             ", valide='" + isValide() + "'" +
+            ", actif=" + isActif() +
             ", userExtraId=" + getUserExtraId() +
             ", projetId=" + getProjetId() +
             "}";
