@@ -1,10 +1,11 @@
-<div class="row justify-content-center">
-    <div class="col-8">
+<div class="row">
+    <div class="col-12">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-user-extra-heading" jhiTranslate="projetticApp.userExtra.home.createOrEditLabel">Create or edit a User Extra</h2>
 
             <div>
                 <jhi-alert-error></jhi-alert-error>
+                <hr>
 
                 <div class="form-group" [hidden]="!editForm.get('id')!.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>

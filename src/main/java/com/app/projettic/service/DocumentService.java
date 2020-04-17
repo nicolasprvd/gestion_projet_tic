@@ -2,6 +2,7 @@ package com.app.projettic.service;
 
 import com.app.projettic.domain.Document;
 import com.app.projettic.service.dto.DocumentDTO;
+import com.app.projettic.service.dto.ProjetDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,14 @@ public interface DocumentService {
     Optional<DocumentDTO> findOne(Long id);
 
     /**
+     * Get the "id" documents.
+     *
+     * @param projetId the id of the project.
+     * @return the entity.
+     */
+    List<DocumentDTO> findByProjetId(Long projetId);
+
+    /**
      * Delete the "id" document.
      *
      * @param id the id of the entity.
@@ -49,6 +58,4 @@ public interface DocumentService {
      * @return the list of entities.
      */
     List<DocumentDTO> search(String query);
-
-    List<DocumentDTO> findByProjetId(Long projetId);
 }

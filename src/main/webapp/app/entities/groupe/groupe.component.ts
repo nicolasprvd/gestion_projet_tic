@@ -67,13 +67,19 @@ export class GroupeComponent implements OnInit, OnDestroy {
     this.loadAll();
     this.registerChangeInGroupes();
     this.projetService.findAll().subscribe(projets => {
-      this.projets = projets;
+      if (projets !== null) {
+        this.projets = projets;
+      }
     });
     this.userService.findAll().subscribe(users => {
-      this.users = users;
+      if (users !== null) {
+        this.users = users;
+      }
     });
-    this.userExtraService.findAll().subscribe(userExtras => {
-      this.userExtras = userExtras;
+    this.userExtraService.findByActif(true).subscribe(userExtras => {
+      if (userExtras !== null) {
+        this.userExtras = userExtras.body;
+      }
     });
   }
 
@@ -104,7 +110,7 @@ export class GroupeComponent implements OnInit, OnDestroy {
   getChefProjet(user: number): string {
     for (const usr of this.users) {
       if (usr.id === user) {
-        return this.formatNom(usr.firstName) + ' ' + this.formatNom(usr.lastName);
+        return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
       }
     }
     return '';
@@ -118,7 +124,7 @@ export class GroupeComponent implements OnInit, OnDestroy {
   getMembreProjet(extra: IUserExtra): string {
     for (const usr of this.users) {
       if (usr.id === extra.id) {
-        return this.formatNom(usr.firstName) + ' ' + this.formatNom(usr.lastName);
+        return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
       }
     }
     return '';
@@ -129,7 +135,7 @@ export class GroupeComponent implements OnInit, OnDestroy {
       if (projetId === projet.id) {
         for (const usr of this.users) {
           if (usr.id === projet.userExtraId) {
-            return this.formatNom(usr.firstName) + ' ' + this.formatNom(usr.lastName);
+            return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
           }
         }
       }
@@ -150,10 +156,10 @@ export class GroupeComponent implements OnInit, OnDestroy {
     let donnees = '';
     let nomFichier = '';
     if (this.translate.currentLang === this.translate.getLangs()[0]) {
-      donnees = 'Projet,Client,Chef de projet,Membres';
+      donnees = 'Projet;Client;Chef de projet;Membres';
       nomFichier = 'groupes_projet_tic.csv';
     } else {
-      donnees = 'Project,Customer,Project manager,Members';
+      donnees = 'Project;Customer;Project manager;Members';
       nomFichier = 'groups_tic_project.csv';
     }
     const rows = table.rows;
@@ -164,14 +170,13 @@ export class GroupeComponent implements OnInit, OnDestroy {
         donnees +
         '\r\n' +
         row.cells[0].textContent.trim() +
-        ',' +
+        ';' +
         row.cells[1].textContent.trim() +
-        ',' +
+        ';' +
         row.cells[2].textContent.trim() +
-        ',' +
+        ';' +
         membres;
     }
-    console.error(donnees);
     const blob = new Blob([donnees], { type: 'type/txt' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');

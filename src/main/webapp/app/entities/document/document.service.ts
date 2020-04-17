@@ -28,6 +28,10 @@ export class DocumentService {
     return this.http.get<IDocument>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  findByProjetId(projetId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IDocument[]>(`${this.resourceUrl}/projet/${projetId}`, { observe: 'response' });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IDocument[]>(this.resourceUrl, { params: options, observe: 'response' });
@@ -40,9 +44,5 @@ export class DocumentService {
   search(req: Search): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IDocument[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
-  }
-
-  findByProjetId(projetId: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IDocument[]>(`${this.resourceUrl}/projet/${projetId}`, { observe: 'response' });
   }
 }

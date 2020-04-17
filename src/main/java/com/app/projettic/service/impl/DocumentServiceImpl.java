@@ -113,6 +113,12 @@ public class DocumentServiceImpl implements DocumentService {
             .collect(Collectors.toList());
     }
 
+    /**
+     * Get documents by project id.
+     *
+     * @param projetId the id of the project.
+     * @return the entity.
+     */
     @Override
     @Transactional(readOnly = true)
     public List<DocumentDTO> findByProjetId(Long projetId) {

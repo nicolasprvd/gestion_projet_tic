@@ -21,7 +21,9 @@
       "noteSoutenance": "Note Soutenance",
       "noteRendu": "Note Rendu",
       "noteFinale": "Note Finale",
-      "userExtra": "User Extra"
+      "userExtra": "User Extra",
+      "etudiant": "Étudiant",
+      "projet": "Projet"
     }
   }
 }

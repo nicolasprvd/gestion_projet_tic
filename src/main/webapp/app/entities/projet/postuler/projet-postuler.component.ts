@@ -41,28 +41,36 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
+      if (account !== null) {
+        account.firstName = this.formatNom(account.firstName);
+        account.lastName = account.lastName.toUpperCase();
+        this.account = account;
+      }
     });
-    this.userExtraService.findAll().subscribe(userExtras => {
-      this.userExtras = userExtras;
-      this.userService.findAll().subscribe(users => {
-        for (const u of users) {
-          if (u.id !== this.account?.id && this.isEtudiantActif(u.id) && !this.aDejaUnGroupe(u.id)) {
-            u.firstName = u.firstName?.toLowerCase();
-            u.lastName = u.lastName?.toLowerCase();
-            this.users.push(u);
+    this.userExtraService.findByActif(true).subscribe(userExtras => {
+      if (userExtras !== null) {
+        this.userExtras = userExtras.body;
+        this.userService.findAll().subscribe(users => {
+          if (users !== null) {
+            for (const u of users) {
+              if (u.id !== this.account?.id && this.isEtudiantActif(u.id) && !this.aDejaUnGroupe(u.id)) {
+                u.firstName = this.formatNom(u.firstName);
+                u.lastName = u.lastName.toUpperCase();
+                this.users.push(u);
+              }
+            }
+            this.users.sort((n1: User, n2: User) => {
+              if (n1.firstName > n2.firstName) {
+                return 1;
+              }
+              if (n1.firstName < n2.firstName) {
+                return -1;
+              }
+              return 0;
+            });
           }
-        }
-        this.users.sort((n1: User, n2: User) => {
-          if (n1.firstName > n2.firstName) {
-            return 1;
-          }
-          if (n1.firstName < n2.firstName) {
-            return -1;
-          }
-          return 0;
         });
-      });
+      }
     });
     this.nbEtuArray = Array(this.projet.nbEtudiant - 1);
     let i: number;
@@ -190,5 +198,10 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       ids.push(+etu);
     }
     return valide;
+  }
+
+  formatNom(str: string): string {
+    str = str.toLowerCase();
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 }

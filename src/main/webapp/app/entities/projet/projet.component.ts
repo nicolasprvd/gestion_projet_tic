@@ -123,21 +123,29 @@ export class ProjetComponent implements OnInit, OnDestroy {
 
     this.registerChangeInProjets();
     this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
-      this.authorities = account.authorities;
+      if (account !== null) {
+        this.account = account;
+        this.authorities = account.authorities;
+      }
     });
     this.userExtraService.find(this.account.id).subscribe(userExtra => {
-      this.typeUtilisateur = userExtra.body.typeUtilisateur;
-      this.accountExtra = userExtra.body;
-      this.groupeId = userExtra.body.groupeId;
-      if (this.groupeId != null) {
-        this.groupeService.find(this.groupeId).subscribe(groupe => {
-          this.projetChoisiId = groupe.body.projetId;
-        });
+      if (userExtra !== null) {
+        this.typeUtilisateur = userExtra.body.typeUtilisateur;
+        this.accountExtra = userExtra.body;
+        this.groupeId = userExtra.body.groupeId;
+        if (this.groupeId != null) {
+          this.groupeService.find(this.groupeId).subscribe(groupe => {
+            if (groupe !== null) {
+              this.projetChoisiId = groupe.body.projetId;
+            }
+          });
+        }
       }
     });
     this.groupeService.findAll().subscribe(groupes => {
-      this.groupes = groupes;
+      if (groupes !== null) {
+        this.groupes = groupes;
+      }
     });
   }
 
@@ -176,6 +184,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
     return this.typeUtilisateur === TypeUtilisateur.CLIENT;
   }
 
+  /**
+   * Return true studients have apply to this project
+   */
   isChoisi(idProjet: number): boolean {
     for (const g of this.groupes) {
       if (g.projetId === idProjet) {
@@ -288,8 +299,14 @@ export class ProjetComponent implements OnInit, OnDestroy {
     window.location.reload();
   }
 
+  /**
+   * Return true if :
+   * - the current user is an administrator
+   * - the current project is archived AND does not have a group
+   * @param projet
+   */
   isAffiche(projet: IProjet): boolean {
-    if (this.isAdmin() || (this.isClient() && projet.archive)) {
+    if (this.isAdmin() || this.isClient()) {
       return true;
     }
     if (!projet.archive) {

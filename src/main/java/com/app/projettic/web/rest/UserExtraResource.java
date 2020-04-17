@@ -16,9 +16,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing {@link com.app.projettic.domain.UserExtra}.
@@ -140,5 +137,16 @@ public class UserExtraResource {
     public List<UserExtraDTO> getUserExtraByGroupeId(@PathVariable Long groupeId) {
         log.debug("REST request to get UserExtra from groupe id : {}", groupeId);
         return userExtraService.findByGroupeId(groupeId);
+    }
+
+    /**
+     * {@code GET  /user-extras/actif} : get all the user-extras with the actif status.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userextra in body.
+     */
+    @GetMapping("/user-extras/actif/{actif}")
+    public List<UserExtraDTO> findByActif(@PathVariable boolean actif) {
+        log.debug("REST request to get all User-extras");
+        return userExtraService.findByActif(actif);
     }
 }

@@ -1,5 +1,5 @@
 <div>
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-md-8">
             <h1 *ngIf="!success" jhiTranslate="register.title"></h1>
 
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-md-8">
             <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
 

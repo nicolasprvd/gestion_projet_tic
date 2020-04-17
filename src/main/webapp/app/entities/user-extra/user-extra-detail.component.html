@@ -1,11 +1,12 @@
-<div class="row justify-content-center">
-    <div class="col-8">
+<div class="row">
+    <div class="col-12">
         <div *ngIf="userExtra">
             <h2><span jhiTranslate="projetticApp.userExtra.detail.title">User Extra</span> {{ userExtra.id }}</h2>
 
             <hr>
 
             <jhi-alert-error></jhi-alert-error>
+            <hr>
 
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="projetticApp.userExtra.actif">Actif</span></dt>

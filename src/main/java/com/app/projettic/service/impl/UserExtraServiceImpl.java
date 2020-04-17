@@ -128,4 +128,16 @@ public class UserExtraServiceImpl implements UserExtraService {
             .map(userExtraMapper::toDto)
             .collect(Collectors.toList());
     }
+    /**
+     * Get userExtra by actif.
+     *
+     * @param actif the actif of the userExtra.
+     * @return the entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserExtraDTO> findByActif(boolean actif) {
+        log.debug("Request to get userextras : {}", actif);
+        return userExtraRepository.findByActif(actif).stream().map(userExtraMapper::toDto).collect(Collectors.toList());
+    }
 }

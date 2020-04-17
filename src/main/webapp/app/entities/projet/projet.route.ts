@@ -14,7 +14,6 @@ import { ProjetUpdateComponent } from './projet-update.component';
 import { ProjetPostulerComponent } from 'app/entities/projet/postuler/projet-postuler.component';
 import { ProjetAttribuerComponent } from 'app/entities/projet/attribuer/projet-attribuer.component';
 import { ProjectRateComponent } from 'app/entities/projet/project-rate.component';
-import {ProjetsClientComponent} from "app/entities/projet/client/projets-client.component";
 import {ProjetEtudiantComponent} from "app/entities/projet/etudiant/projet-etudiant.component";
 
 @Injectable({ providedIn: 'root' })
@@ -118,18 +117,6 @@ export const projetRoute: Routes = [
     data: {
       authorities: [Authority.USER],
       pageTitle: 'projetticApp.projet.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'client',
-    component: ProjetsClientComponent,
-    resolve: {
-      projet: ProjetResolve
-    },
-    data: {
-      authorities: [Authority.USER],
-      pageTitle: 'projetticApp.projet.clientProjets.titleTab'
     },
     canActivate: [UserRouteAccessService]
   },

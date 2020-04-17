@@ -40,7 +40,6 @@ export class DocumentComponent implements OnInit, OnDestroy {
         .subscribe((res: HttpResponse<IDocument[]>) => (this.documents = res.body || []));
       return;
     }
-
     this.documentService.query().subscribe((res: HttpResponse<IDocument[]>) => (this.documents = res.body || []));
   }
 

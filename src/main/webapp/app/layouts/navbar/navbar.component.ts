@@ -11,6 +11,7 @@ import { LoginService } from 'app/core/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { Account } from 'app/core/user/account.model';
 import {Subscription} from "rxjs";
+import {IUser} from "app/core/user/user.model";
 
 @Component({
   selector: 'jhi-navbar',
@@ -25,6 +26,7 @@ export class NavbarComponent implements OnInit {
   version: string;
   account: Account;
   authSubscription: Subscription;
+  user: IUser;
 
   constructor(
     private loginService: LoginService,
@@ -45,7 +47,7 @@ export class NavbarComponent implements OnInit {
     });
 
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account
+      this.account = account;
     });
 
   }

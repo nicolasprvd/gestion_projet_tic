@@ -61,10 +61,16 @@ export class ProjetUpdateComponent implements OnInit {
 
       this.groupeService.query().subscribe((res: HttpResponse<IGroupe[]>) => (this.groupes = res.body || []));
 
-      this.userExtraService.query().subscribe((res: HttpResponse<IUserExtra[]>) => (this.userextras = res.body || []));
+      this.userExtraService.findByActif(true).subscribe(userExtras => {
+        if (userExtras !== null) {
+          this.userextras = userExtras.body;
+        }
+      });
 
       this.accountService.getAuthenticationState().subscribe(account => {
-        this.account = account;
+        if (account !== null) {
+          this.account = account;
+        }
       });
     });
   }

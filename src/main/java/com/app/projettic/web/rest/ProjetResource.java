@@ -1,7 +1,6 @@
 package com.app.projettic.web.rest;
-
+import com.app.projettic.service.MailService;
 import com.app.projettic.service.ProjetService;
-import com.app.projettic.service.dto.UserDTO;
 import com.app.projettic.web.rest.errors.BadRequestAlertException;
 import com.app.projettic.service.dto.ProjetDTO;
 
@@ -12,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,8 +33,11 @@ public class ProjetResource {
 
     private final ProjetService projetService;
 
-    public ProjetResource(ProjetService projetService) {
+    private final MailService mailService;
+
+    public ProjetResource(ProjetService projetService, MailService mailService) {
         this.projetService = projetService;
+        this.mailService = mailService;
     }
 
     /**
@@ -152,5 +152,16 @@ public class ProjetResource {
     public Optional<ProjetDTO> findByGroupeId(@PathVariable Long groupeId) {
         log.debug("REST request to get Projet from groupe id : {}", groupeId);
         return projetService.findByGroupeId(groupeId);
+    }
+    /**
+     * {@code SEND EMAIL  /projets/:to/:subject/:content} : send email to "to" with the subject "subject" and the content "content"
+     *
+     * @param to the mail of the recipient of the email
+     * @param subject the subject of the email
+     * @param content the content of the mail
+     */
+    @PostMapping("/projets/mail/{to}/{subject}/{content}")
+    public void sendMail(@PathVariable String to, @PathVariable String subject, @PathVariable String content){
+        this.mailService.sendEmail(to, subject, content, false, false);
     }
 }

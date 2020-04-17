@@ -51,6 +51,10 @@ export class ProjetService {
   }
 
   findByGroupeId(groupeId: number): Observable<EntityResponseType> {
-    return this.http.get<IProjet>(`${this.resourceUrl}/groupe/${groupeId}`, { observe: 'response' });
+    return this.http.get<IProjet>(`${this.resourceUrl}/groupe/${groupeId}`, {observe: 'response'});
+  }
+
+  sendMail(to: String, subject: String, content: String): Observable<{}> {
+    return this.http.post(`${this.resourceUrl}/mail/${to}/${subject}/${content}`, { observe: 'response' });
   }
 }

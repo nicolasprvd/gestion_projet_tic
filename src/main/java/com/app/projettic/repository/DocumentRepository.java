@@ -13,6 +13,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
-
     List<Document> findByProjetId(Long projetId);
 }

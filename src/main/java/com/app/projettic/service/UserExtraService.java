@@ -35,6 +35,14 @@ public interface UserExtraService {
     Optional<UserExtraDTO> findOne(Long id);
 
     /**
+     * Get the "id" userExtra.
+     *
+     * @param actif the actif of the userExtra.
+     * @return the entity.
+     */
+    List<UserExtraDTO> findByActif(boolean actif);
+
+    /**
      * Delete the "id" userExtra.
      *
      * @param id the id of the entity.
