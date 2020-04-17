@@ -7,6 +7,7 @@ import javax.validation.constraints.*;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.SQLDelete;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;

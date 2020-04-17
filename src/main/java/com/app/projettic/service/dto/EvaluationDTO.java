@@ -8,7 +8,7 @@ import java.util.Objects;
  * A DTO for the {@link com.app.projettic.domain.Evaluation} entity.
  */
 public class EvaluationDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -23,7 +23,9 @@ public class EvaluationDTO implements Serializable {
     @NotNull
     private Double noteFinale;
 
-    
+    private Boolean actif;
+
+
     public Long getId() {
         return id;
     }
@@ -64,6 +66,14 @@ public class EvaluationDTO implements Serializable {
         this.noteFinale = noteFinale;
     }
 
+    public Boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -93,6 +103,7 @@ public class EvaluationDTO implements Serializable {
             ", noteSoutenance=" + getNoteSoutenance() +
             ", noteRendu=" + getNoteRendu() +
             ", noteFinale=" + getNoteFinale() +
+            ", actif=" + isActif() +
             "}";
     }
 }
