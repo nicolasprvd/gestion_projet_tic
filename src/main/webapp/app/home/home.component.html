@@ -1,5 +1,8 @@
 <div class="row">
     <div class="col-md-12">
+        <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
+
         <h1 class="display-6" jhiTranslate="home.title"></h1>
 
         <p class="lead underline" jhiTranslate="home.subtitle"></p>
@@ -29,5 +32,10 @@
             <li class="text" jhiTranslate="home.student.two">  </li>
             <li class="text" jhiTranslate="home.student.three">  </li>
         </ul>
+    </div>
+    <div class="col-sm-12" id="nouvelleAnnee" *ngIf="isAdmin() && isEtudiantActif() && !isDesactive">
+        <button id="boutonNouvelleAnnee" class="btn btn-danger btn-sm" (click)="nouvelleAnnee()">
+            <span class="d-none d-md-inline" jhiTranslate="home.nouvelleAnnee"></span>
+        </button>
     </div>
 </div>
