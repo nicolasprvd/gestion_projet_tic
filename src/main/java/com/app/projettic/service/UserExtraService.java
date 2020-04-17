@@ -1,5 +1,6 @@
 package com.app.projettic.service;
 
+import com.app.projettic.domain.UserExtra;
 import com.app.projettic.service.dto.UserExtraDTO;
 
 import java.util.List;
@@ -56,4 +57,11 @@ public interface UserExtraService {
      * @return the list of entities.
      */
     List<UserExtraDTO> search(String query);
+
+    /**
+     * Get all user from groupe id
+     * @param groupeId
+     * @return array list
+     */
+    List<UserExtraDTO> findByGroupeId(Long groupeId);
 }

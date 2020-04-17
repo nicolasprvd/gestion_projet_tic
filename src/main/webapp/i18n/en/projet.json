@@ -1,9 +1,19 @@
 {
   "projetticApp": {
     "projet": {
+      "documents": {
+        "title": "Documents",
+        "cdc": "Requirements specification",
+        "gantt": "Gantt",
+        "rendu": "Final result"
+      },
       "form": {
         "label": {
-          "dateArchive": "Archives"
+          "dateArchive" : "Archives",
+          "dateArchiveSelect": "Choose a date"
+        },
+        "button": {
+          "reprise": "Take over"
         }
       },
       "home": {
@@ -13,6 +23,12 @@
         "edit": "Edit a project",
         "search": "Search for Project",
         "notFound": "No Projects found"
+      },
+      "clientProjets": {
+        "titleTab": "My projects"
+      },
+      "etudiant": {
+        "titleTab": "My project"
       },
       "created": "A new Project is created with identifier {{ param }}",
       "updated": "A Project is updated with identifier {{ param }}",
@@ -67,7 +83,10 @@
       "userExtra": "User Extra",
       "document": "Document",
       "client": "Customer",
-      "email": "Email"
+      "email": "Email",
+      "etudiantProjet": {
+        "title": "My project"
+      }
     }
   }
 }

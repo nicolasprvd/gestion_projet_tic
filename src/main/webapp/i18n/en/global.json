@@ -12,7 +12,11 @@
         "document": "Document",
         "projet": "Projet",
         "groupe": "Groupe",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "subentities": {
+          "projetsClient": "My projects",
+          "projetEtudiant": "My project"
+        }
       },
       "account": {
         "main": "Account",

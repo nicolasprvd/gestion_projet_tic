@@ -60,7 +60,7 @@
                 <input type="text" class="form-control" name="outputRate" id="outputRate" (input)="calculateFinalRate()"/>
 
                 <label id="labelMoyenne" class="form-control-label" for="final" jhiTranslate="projetticApp.projet.rate.moyenne"></label>
-                <input type="number" class="form-control" name="final" id="final" disabled="disabled" value="{{ finalRate }}"/>
+                <input type="number" class="form-control" name="final" id="final" disabled="disabled" [(ngModel)]="finalRate"/>
             </div>
             <div>
                 <button type="submit"
@@ -69,12 +69,12 @@
                     <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
                 </button>
 
-                <button *ngIf="cdcDoc !== null && soutenanceDoc !== null && renduDoc !== null" type="button"
+                <button *ngIf="cdcDoc !== null && ganttDoc !== null && renduDoc !== null" type="button"
                         (click)="evaluate()"
                         class="btn btn-primary">
                     <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>
                 </button>
-                <button *ngIf="cdcDoc === null || soutenanceDoc === null || renduDoc === null" type="button"
+                <button *ngIf="cdcDoc === null || ganttDoc === null || renduDoc === null" type="button"
                         disabled="disabled"
                         class="btn btn-danger">
                     <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>

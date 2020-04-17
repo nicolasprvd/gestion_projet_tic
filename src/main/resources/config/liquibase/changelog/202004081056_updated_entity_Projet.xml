@@ -11,7 +11,7 @@
     -->
     <changeSet id="202004081057-1" author="nipr">
         <addColumn tableName="projet">
-            <column name="date_creation" type="timestamp" defaultValueDate="current_timestamp"/>
+            <column name="date_creation" type="timestamp" defaultValueDate="current_timestamp" />
         </addColumn>
     </changeSet>
 

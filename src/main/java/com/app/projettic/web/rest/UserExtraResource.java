@@ -16,9 +16,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing {@link com.app.projettic.domain.UserExtra}.
@@ -128,6 +125,18 @@ public class UserExtraResource {
     public List<UserExtraDTO> searchUserExtras(@RequestParam String query) {
         log.debug("REST request to search UserExtras for query {}", query);
         return userExtraService.search(query);
+    }
+
+    /**
+     * {@code GET  /user-extras/groupe/:groupeId} : get the "id" groupe.
+     *
+     * @param id the id of the groupe id to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userExtraDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/user-extras/groupe/{groupeId}")
+    public List<UserExtraDTO> getUserExtraByGroupeId(@PathVariable Long groupeId) {
+        log.debug("REST request to get UserExtra from groupe id : {}", groupeId);
+        return userExtraService.findByGroupeId(groupeId);
     }
 
     /**

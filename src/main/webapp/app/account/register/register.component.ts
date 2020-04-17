@@ -71,32 +71,30 @@ export class RegisterComponent implements AfterViewInit {
       const firstName = this.registerForm.get(['firstName'])!.value;
       const lastName = this.registerForm.get(['lastName'])!.value;
       const typeUtilisateur = this.registerForm.get(['typeUtilisateur'])!.value;
-      this.registerService
-        .save({ login, firstName, lastName, email, password, langKey: this.languageService.getCurrentLanguage(), typeUtilisateur })
-        .subscribe(
-          () => {
-            this.success = true;
-            this.loginService
-              .login({
-                username: login.toString(),
-                password: password.toString(),
-                rememberMe: false
-              })
-              .subscribe(
-                () => {
-                  if (
-                    this.router.url === '/account/register' ||
-                    this.router.url.startsWith('/account/activate') ||
-                    this.router.url.startsWith('/account/reset/')
-                  ) {
-                    this.router.navigate(['']);
-                  }
-                },
-                () => (this.success = false)
-              );
-          },
-          response => this.processError(response)
-        );
+      this.registerService.save({ login, firstName, lastName, email, password, langKey: this.languageService.getCurrentLanguage(), typeUtilisateur }).subscribe(
+        () => {
+          this.success = true;
+          this.loginService
+            .login({
+              username: login.toString(),
+              password: password.toString(),
+              rememberMe: false
+            })
+            .subscribe(
+              () => {
+                if (
+                  this.router.url === '/account/register' ||
+                  this.router.url.startsWith('/account/activate') ||
+                  this.router.url.startsWith('/account/reset/')
+                ) {
+                  this.router.navigate(['/']);
+                }
+              },
+              () => (this.success = false)
+            );
+        },
+        response => this.processError(response)
+      );
     }
   }
 

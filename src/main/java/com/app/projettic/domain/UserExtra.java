@@ -4,15 +4,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.app.projettic.domain.enumeration.TypeUtilisateur;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A UserExtra.
@@ -39,10 +36,12 @@ public class UserExtra implements Serializable {
     @MapsId
     private User user;
 
-    @OneToMany(mappedBy = "userExtra")
+    @OneToMany(mappedBy = "userExtra", cascade = CascadeType.REMOVE)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Groupe> groupes = new HashSet<>();
 
-    @OneToMany(mappedBy = "userExtra")
+    @OneToMany(mappedBy = "userExtra", cascade = CascadeType.REMOVE)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Projet> projets = new HashSet<>();
 
     @ManyToOne

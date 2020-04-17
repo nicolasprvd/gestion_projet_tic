@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -26,7 +26,6 @@ import { Groupe } from 'app/shared/model/groupe.model';
 })
 export class ProjetComponent implements OnInit, OnDestroy {
   allProjets?: IProjet[];
-  accountExtraId!: number;
   datesArchive: number[];
   isReset: boolean;
   isSaving = false;
@@ -50,8 +49,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
     private accountService: AccountService,
     private userService: UserService,
     private userExtraService: UserExtraService,
-    private groupeService: GroupeService,
-    private router: Router
+    private groupeService: GroupeService
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -79,7 +77,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
         if (date.year() === moment().year() && !archive) {
           this.projets.push(projet);
         }
-        this.datesArchive.push(date.year());
+        if(archive) {
+          this.datesArchive.push(date.year());
+        }
       });
 
       this.datesArchive = [...new Set(this.datesArchive)];
@@ -87,6 +87,10 @@ export class ProjetComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Load projects list from date
+   * @param value
+   */
   changeProjets(value: number): void {
     this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
       this.projets = [];
@@ -102,6 +106,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Reset select list date
+   */
   reset(): void {
     this.isReset = true;
   }
@@ -262,6 +269,23 @@ export class ProjetComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Take over archive project
+   * @param projet
+   */
+  reprise(projet: IProjet): void {
+    this.reset();
+    projet.archive = false;
+    projet.dateCreation = moment();
+    projet.groupeId = null;
+    projet.documents = [];
+    this.projetService.update(projet).subscribe(() => {
+      this.loadAll();
+    },
+      () => (this.onSaveError())
+    );
+  }
+
   protected onSaveSuccess(): void {
     this.isSaving = false;
     this.previousState();
@@ -282,12 +306,13 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * @param projet
    */
   isAffiche(projet: IProjet): boolean {
-    if (this.isAdmin()) {
+    if (this.isAdmin() || this.isClient()) {
       return true;
     }
     if (!projet.archive) {
       return !projet.groupeId;
     }
+
     return false;
   }
 }
