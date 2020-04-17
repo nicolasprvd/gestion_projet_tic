@@ -101,7 +101,9 @@ export class ProjectRateComponent implements OnInit {
     this.specsRate = +(document.getElementById('specsRate') as HTMLInputElement).value.replace(',', '.');
     this.ganttsRate = +(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.');
     this.outputRate = +(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.');
-    this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
+    if (this.isValidate()) {
+      this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
+    }
   }
 
   evaluate(): void {

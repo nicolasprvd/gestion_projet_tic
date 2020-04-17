@@ -51,13 +51,13 @@
 
             <div>
                 <label id="labelCdc" class="form-control-label"  for="specsRate" jhiTranslate="projetticApp.projet.rate.noteCahierDesCharges"></label>
-                <input type="text" class="form-control" name="specsRate" id="specsRate" (change)="calculateFinalRate()" value="0"/>
+                <input type="text" class="form-control" name="specsRate" id="specsRate" (input)="calculateFinalRate()"/>
 
                 <label id="labelSoutenance" class="form-control-label" for="ganttsRate" jhiTranslate="projetticApp.projet.rate.noteSoutenance"></label>
-                <input type="number" class="form-control" name="ganttsRate" id="ganttsRate" (change)="calculateFinalRate()" value="0"/>
+                <input type="text" class="form-control" name="ganttsRate" id="ganttsRate" (input)="calculateFinalRate()"/>
 
                 <label id="labelRendu" class="form-control-label" for="outputRate" jhiTranslate="projetticApp.projet.rate.noteRendu"></label>
-                <input type="number" class="form-control" name="outputRate" id="outputRate" (change)="calculateFinalRate()" value="0"/>
+                <input type="text" class="form-control" name="outputRate" id="outputRate" (input)="calculateFinalRate()"/>
 
                 <label id="labelMoyenne" class="form-control-label" for="final" jhiTranslate="projetticApp.projet.rate.moyenne"></label>
                 <input type="number" class="form-control" name="final" id="final" disabled="disabled" value="{{ finalRate }}"/>
