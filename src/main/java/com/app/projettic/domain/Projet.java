@@ -54,11 +54,11 @@ public class Projet implements Serializable {
     @Column(name = "date_creation")
     private Instant dateCreation;
 
-    @OneToMany(mappedBy = "projet", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "projet")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Document> documents = new HashSet<>();
 
-    @OneToMany(mappedBy = "projet", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "projet")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Groupe> groupes = new HashSet<>();
 
