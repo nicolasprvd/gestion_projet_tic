@@ -7,10 +7,9 @@
     </div>
 
     <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
         <hr>
-
-        <p id="jhi-delete-projet-heading" jhiTranslate="projetticApp.projet.delete.question" [translateValues]="{ id: projet.id }">Are you sure you want to delete this Projet?</p>
+        <p id="jhi-delete-projet-heading-details" jhiTranslate="projetticApp.projet.delete.detail"></p>
+        <p id="jhi-delete-projet-heading" jhiTranslate="projetticApp.projet.delete.question" [translateValues]="{ nom: projet.nom }"></p>
     </div>
 
     <div class="modal-footer">
