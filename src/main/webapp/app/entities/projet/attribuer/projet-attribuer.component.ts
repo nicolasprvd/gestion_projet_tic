@@ -36,14 +36,14 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
-    this.groupeService.findAll().subscribe(groupes => {
-      if (groupes !== null) {
-        for (const g of groupes) {
+    this.groupeService.findByActif(true).subscribe(groupes => {
+      if (groupes !== null && groupes.body !== null) {
+        for (const g of groupes.body) {
           if (g.projetId === this.projet.id) {
             this.groupes.push(g);
 
             this.userExtraService.findByActif(true).subscribe(usersExtra => {
-              if (usersExtra !== null) {
+              if (usersExtra !== null && usersExtra.body !== null) {
                 for (const ue of usersExtra.body) {
                   if (ue.groupeId === g.id) {
                     this.usersExtra.push(ue);

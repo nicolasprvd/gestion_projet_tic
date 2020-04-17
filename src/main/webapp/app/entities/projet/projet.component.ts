@@ -16,7 +16,7 @@ import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.
 import { Authority } from 'app/shared/constants/authority.constants';
 import * as moment from 'moment';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
-import { UserExtra } from 'app/shared/model/user-extra.model';
+import { IUserExtra, UserExtra } from 'app/shared/model/user-extra.model';
 import { Groupe } from 'app/shared/model/groupe.model';
 
 @Component({
@@ -39,6 +39,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   currentSearch: string;
   accountExtra: UserExtra;
   groupes: Groupe[] = [];
+  userextras: IUserExtra[] = [];
 
   constructor(
     protected projetService: ProjetService,
@@ -77,7 +78,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
         if (date.year() === moment().year() && !archive) {
           this.projets.push(projet);
         }
-        if(archive) {
+        if (archive) {
           this.datesArchive.push(date.year());
         }
       });
@@ -142,9 +143,14 @@ export class ProjetComponent implements OnInit, OnDestroy {
         }
       }
     });
-    this.groupeService.findAll().subscribe(groupes => {
-      if (groupes !== null) {
-        this.groupes = groupes;
+    this.groupeService.findByActif(true).subscribe(groupes => {
+      if (groupes !== null && groupes.body !== null) {
+        this.groupes = groupes.body;
+      }
+    });
+    this.userExtraService.findByActif(true).subscribe(userextras => {
+      if (userextras !== null && userextras.body !== null) {
+        this.userextras = userextras.body;
       }
     });
   }
@@ -246,27 +252,25 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - modify the group id of each user (extra) to set it to null
    */
   retractation(): void {
-    this.projetService.find(this.projetChoisiId).subscribe(projet => {
-      let compteur = projet.body.nbEtudiant;
-      const idMonGroupe: number = this.accountExtra.groupeId;
-      this.userExtraService.findAll().subscribe(
-        userextras => {
-          this.groupeService.delete(idMonGroupe).subscribe();
-          for (const userextra of userextras) {
-            if (userextra.groupeId === idMonGroupe) {
-              userextra.groupeId = null;
-              compteur--;
-              this.userExtraService.update(userextra).subscribe(() => {
-                if (compteur === 0) {
-                  this.onSaveSuccess();
-                }
-              });
-            }
+    this.projetService.find(this.projetChoisiId).subscribe(
+      projet => {
+        let compteur = projet.body.nbEtudiant;
+        const idMonGroupe: number = this.accountExtra.groupeId;
+        this.groupeService.delete(idMonGroupe).subscribe();
+        for (const userextra of this.userextras) {
+          if (userextra.groupeId === idMonGroupe) {
+            userextra.groupeId = null;
+            compteur--;
+            this.userExtraService.update(userextra).subscribe(() => {
+              if (compteur === 0) {
+                this.onSaveSuccess();
+              }
+            });
           }
-        },
-        () => this.onSaveError()
-      );
-    });
+        }
+      },
+      () => this.onSaveError()
+    );
   }
 
   /**
@@ -279,10 +283,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
     projet.dateCreation = moment();
     projet.groupeId = null;
     projet.documents = [];
-    this.projetService.update(projet).subscribe(() => {
-      this.loadAll();
-    },
-      () => (this.onSaveError())
+    this.projetService.update(projet).subscribe(
+      () => {
+        this.loadAll();
+      },
+      () => this.onSaveError()
     );
   }
 

@@ -58,7 +58,7 @@ export class ProjetDetailComponent implements OnInit {
       }
     });
     this.userExtraService.findByActif(true).subscribe(userExtras => {
-      if (userExtras !== null) {
+      if (userExtras !== null && userExtras.body !== null) {
         this.userExtras = userExtras.body;
         for (const userExtra of this.userExtras) {
           if (this.account.id === userExtra.id) {
@@ -87,10 +87,10 @@ export class ProjetDetailComponent implements OnInit {
         this.users = users;
       }
     });
-    this.groupeService.findAll().subscribe(groupes => {
-      if (groupes !== null) {
-        this.groupes = groupes;
-        for (const grp of groupes) {
+    this.groupeService.findByActif(true).subscribe(groupes => {
+      if (groupes !== null && groupes.body !== null) {
+        this.groupes = groupes.body;
+        for (const grp of groupes.body) {
           if (grp.projetId === this.projet.id) {
             this.chefGroupeId = grp.userExtraId;
           }
@@ -174,18 +174,20 @@ export class ProjetDetailComponent implements OnInit {
     this.projetService.find(this.monProjetId).subscribe(projet => {
       let compteur = projet.body.nbEtudiant;
       const idMonGroupe: number = this.groupeId;
-      this.userExtraService.findAll().subscribe(
+      this.userExtraService.findByActif(true).subscribe(
         userextras => {
-          this.groupeService.delete(idMonGroupe).subscribe();
-          for (const userextra of userextras) {
-            if (userextra.groupeId === idMonGroupe) {
-              userextra.groupeId = null;
-              compteur--;
-              this.userExtraService.update(userextra).subscribe(() => {
-                if (compteur === 0) {
-                  this.onSaveSuccess();
-                }
-              });
+          if (userextras !== null && userextras.body !== null) {
+            this.groupeService.delete(idMonGroupe).subscribe();
+            for (const userextra of userextras.body) {
+              if (userextra.groupeId === idMonGroupe) {
+                userextra.groupeId = null;
+                compteur--;
+                this.userExtraService.update(userextra).subscribe(() => {
+                  if (compteur === 0) {
+                    this.onSaveSuccess();
+                  }
+                });
+              }
             }
           }
         },

@@ -149,7 +149,8 @@ export class ProjectRateComponent implements OnInit {
       noteCDC: this.specsRate,
       noteRendu: this.outputRate,
       noteSoutenance: this.ganttsRate,
-      noteFinale: this.finalRate
+      noteFinale: this.finalRate,
+      actif: true
     };
   }
 

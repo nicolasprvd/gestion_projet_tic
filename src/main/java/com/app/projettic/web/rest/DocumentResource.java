@@ -143,4 +143,15 @@ public class DocumentResource {
         log.debug("REST request to search Documents for query {}", query);
         return documentService.search(query);
     }
+
+    /**
+     * {@code GET  /documents/actif} : get all the documents with the actif status.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of documents in body.
+     */
+    @GetMapping("/documents/actif/{actif}")
+    public List<DocumentDTO> findByActif(@PathVariable boolean actif) {
+        log.debug("REST request to get all documents");
+        return documentService.findByActif(actif);
+    }
 }

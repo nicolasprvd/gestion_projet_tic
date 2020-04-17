@@ -14,4 +14,5 @@ import java.util.List;
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<Document> findByProjetId(Long projetId);
+    List<Document> findByActif(boolean actif);
 }

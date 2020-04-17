@@ -34,6 +34,14 @@ public interface GroupeService {
     Optional<GroupeDTO> findOne(Long id);
 
     /**
+     * Get the "id" groupe.
+     *
+     * @param actif the actif of the groupe.
+     * @return the entity.
+     */
+    List<GroupeDTO> findByActif(boolean actif);
+
+    /**
      * Delete the "id" groupe.
      *
      * @param id the id of the entity.
@@ -44,7 +52,7 @@ public interface GroupeService {
      * Search for the groupe corresponding to the query.
      *
      * @param query the query of the search.
-     * 
+     *
      * @return the list of entities.
      */
     List<GroupeDTO> search(String query);

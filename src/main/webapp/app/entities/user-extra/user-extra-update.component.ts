@@ -50,9 +50,17 @@ export class UserExtraUpdateComponent implements OnInit {
 
       this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
 
-      this.evaluationService.query().subscribe((res: HttpResponse<IEvaluation[]>) => (this.evaluations = res.body || []));
+      this.evaluationService.findByActif(true).subscribe(evaluations => {
+        if (evaluations !== null && evaluations.body !== null) {
+          this.evaluations = evaluations.body;
+        }
+      });
 
-      this.groupeService.query().subscribe((res: HttpResponse<IGroupe[]>) => (this.groupes = res.body || []));
+      this.groupeService.findByActif(true).subscribe(groupes => {
+        if (groupes !== null && groupes.body !== null) {
+          this.groupes = groupes.body;
+        }
+      });
     });
   }
 

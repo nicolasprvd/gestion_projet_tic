@@ -15,7 +15,7 @@ import { IUserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
-import * as moment from "moment";
+import * as moment from 'moment';
 
 @Component({
   selector: 'jhi-projet-update',
@@ -59,10 +59,14 @@ export class ProjetUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ projet }) => {
       this.updateForm(projet);
 
-      this.groupeService.query().subscribe((res: HttpResponse<IGroupe[]>) => (this.groupes = res.body || []));
+      this.groupeService.findByActif(true).subscribe(groupes => {
+        if (groupes !== null && groupes.body !== null) {
+          this.groupes = groupes.body;
+        }
+      });
 
       this.userExtraService.findByActif(true).subscribe(userExtras => {
-        if (userExtras !== null) {
+        if (userExtras !== null && userExtras.body !== null) {
           this.userextras = userExtras.body;
         }
       });

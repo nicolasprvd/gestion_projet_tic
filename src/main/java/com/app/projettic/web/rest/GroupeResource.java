@@ -130,4 +130,15 @@ public class GroupeResource {
         log.debug("REST request to search Groupes for query {}", query);
         return groupeService.search(query);
     }
+
+    /**
+     * {@code GET  /groupes/actif} : get all the groupes with the actif status.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of groupe in body.
+     */
+    @GetMapping("/groupes/actif/{actif}")
+    public List<GroupeDTO> findByActif(@PathVariable boolean actif) {
+        log.debug("REST request to get all groupes");
+        return groupeService.findByActif(actif);
+    }
 }
