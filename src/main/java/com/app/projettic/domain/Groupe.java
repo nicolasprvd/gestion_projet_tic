@@ -34,11 +34,11 @@ public class Groupe implements Serializable {
     @Column(name = "actif")
     private Boolean actif;
 
-    @OneToMany(mappedBy = "groupe", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "groupe")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Projet> projets = new HashSet<>();
 
-    @OneToMany(mappedBy = "groupe", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "groupe")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<UserExtra> userExtras = new HashSet<>();
 

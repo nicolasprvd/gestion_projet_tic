@@ -36,11 +36,11 @@ public class UserExtra implements Serializable {
     @MapsId
     private User user;
 
-    @OneToMany(mappedBy = "userExtra", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "userExtra")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Groupe> groupes = new HashSet<>();
 
-    @OneToMany(mappedBy = "userExtra", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "userExtra")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Projet> projets = new HashSet<>();
 

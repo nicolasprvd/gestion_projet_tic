@@ -9,7 +9,7 @@
       },
       "form": {
         "label": {
-          "dateArchive" : "Archives",
+          "dateArchive": "Archives",
           "dateArchiveSelect": "Sélectionner une date",
           "chef": "Chef de projet"
         },
@@ -35,7 +35,8 @@
       "updated": "Le Projet avec l'identifiant {{ param }} a été mis à jour",
       "deleted": "Le Projet avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Projet {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer le Projet {{ nom }} ?",
+        "detail": "La suppression du projet entraînera son archivage."
       },
       "detail": {
         "title": "Projet",
