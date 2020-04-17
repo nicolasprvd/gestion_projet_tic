@@ -16,7 +16,7 @@ import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.
 import { Authority } from 'app/shared/constants/authority.constants';
 import * as moment from 'moment';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
-import { IUserExtra, UserExtra } from 'app/shared/model/user-extra.model';
+import { UserExtra } from 'app/shared/model/user-extra.model';
 import { Groupe } from 'app/shared/model/groupe.model';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -41,7 +41,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
   currentSearch: string;
   accountExtra: UserExtra;
   groupes: Groupe[] = [];
-  userextras: IUserExtra[] = [];
 
   constructor(
     protected projetService: ProjetService,
@@ -152,11 +151,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
         this.groupes = groupes.body;
       }
     });
-    this.userExtraService.findByActif(true).subscribe(userextras => {
-      if (userextras !== null && userextras.body !== null) {
-        this.userextras = userextras.body;
-      }
-    });
   }
 
   ngOnDestroy(): void {
@@ -256,25 +250,29 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - modify the group id of each user (extra) to set it to null
    */
   retractation(): void {
-    this.projetService.find(this.projetChoisiId).subscribe(
-      projet => {
-        let compteur = projet.body.nbEtudiant;
-        const idMonGroupe: number = this.accountExtra.groupeId;
-        this.groupeService.delete(idMonGroupe).subscribe();
-        for (const userextra of this.userextras) {
-          if (userextra.groupeId === idMonGroupe) {
-            userextra.groupeId = null;
-            compteur--;
-            this.userExtraService.update(userextra).subscribe(() => {
-              if (compteur === 0) {
-                this.onSaveSuccess();
+    this.projetService.find(this.projetChoisiId).subscribe(projet => {
+      let compteur = projet.body.nbEtudiant;
+      const idMonGroupe: number = this.groupeId;
+      this.userExtraService.findByActif(true).subscribe(
+        userextras => {
+          if (userextras !== null && userextras.body !== null) {
+            this.groupeService.delete(idMonGroupe).subscribe();
+            for (const userextra of userextras.body) {
+              if (userextra.groupeId === idMonGroupe) {
+                userextra.groupeId = null;
+                compteur--;
+                this.userExtraService.update(userextra).subscribe(() => {
+                  if (compteur === 0) {
+                    this.onSaveSuccess();
+                  }
+                });
               }
-            });
+            }
           }
-        }
-      },
-      () => this.onSaveError()
-    );
+        },
+        () => this.onSaveError()
+      );
+    });
   }
 
   /**

@@ -22,5 +22,6 @@ export class Groupe implements IGroupe {
     public actif?: boolean
   ) {
     this.valide = this.valide || false;
+    this.actif = this.actif || false;
   }
 }
