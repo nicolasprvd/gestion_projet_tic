@@ -465,11 +465,11 @@ table {
 
 table a {
   color: #000000c7;
+  text-decoration: underline;
 }
 
 table a:hover {
   font-weight: bold;
-  text-decoration: underline !important;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
@@ -479,6 +479,10 @@ table a:hover {
 tr:not(:first-child):hover,
 .table-striped tbody tr:nth-of-type(odd):hover {
   background-color: #0883b4;
+  color: white;
+}
+
+table tbody tr:hover a {
   color: white;
 }
 
@@ -499,6 +503,22 @@ dt {
   margin-top: 2% !important;
 }
 
+/* ==========================================================================
+Popin
+========================================================================== */
+jhi-login-modal,
+#deleteForm {
+  background: #dadada;
+  color: #000000c7;
+}
+
+.close {
+  color: #000000c7;
+}
+
+/* ==========================================================================
+Responsive
+========================================================================== */
 @media (max-width: 736px) {
   #profil {
     border-bottom: 1px solid black;
@@ -506,11 +526,25 @@ dt {
   }
 }
 
-jhi-login-modal {
-  background: #dadada;
-  color: #000000c7;
-}
-
-jhi-login-modal .close {
-  color: #000000c7;
+@media (max-width: 576px) {
+  h2 {
+    font-size: 2rem;
+  }
+  .lead {
+    font-size: 0.9rem;
+  }
+  body,
+  select,
+  button,
+  input {
+    font-size: 0.7rem !important;
+  }
+  .btn-group {
+    flex-direction: column;
+  }
+  .btn-group .btn {
+    margin: 1px;
+    border-radius: 0;
+    margin-left: 0;
+  }
 }

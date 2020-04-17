@@ -1,32 +1,32 @@
-<div class="row justify-content-center">
-    <div class="col-8">
-        <div *ngIf="projet">
-            <h2 jhiTranslate="projetticApp.projet.attribuate.titre" [translateValues]="{titre: projet.nom}"> Attribution </h2>
+<div>
+    <div *ngIf="projet">
+        <h2 jhiTranslate="projetticApp.projet.attribuate.titre" [translateValues]="{titre: projet.nom}">
+            Attribution </h2>
 
-            <br>
+        <br>
 
-            <div class="table-responsive" id="entities" *ngIf="groupes?.length > 0">
+        <div class="table-responsive" id="entities" *ngIf="groupes?.length > 0">
 
-                <table class="table table-striped" aria-describedby="page-heading">
-                    <thead>
-                    <tr>
-                        <th scope="col" ><span jhiTranslate="projetticApp.projet.attribuate.chefPro"></span></th>
-                        <th scope="col" ><span jhiTranslate="projetticApp.projet.attribuate.etudiant"></span></th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let groupe of groupes ;">
+            <table class="table table-striped" aria-describedby="page-heading">
+                <thead>
+                <tr>
+                    <th scope="col"><span jhiTranslate="projetticApp.projet.attribuate.chefPro"></span></th>
+                    <th scope="col"><span jhiTranslate="projetticApp.projet.attribuate.etudiant"></span></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let groupe of groupes ;">
 
-                        <td>
-                            <div *ngFor="let u of users">
-                                <div *ngIf="u.id === groupe.userExtraId">
-                                    <span> {{ u.firstName }} {{ u.lastName }} </span>
-                                </div>
+                    <td>
+                        <div *ngFor="let u of users">
+                            <div *ngIf="u.id === groupe.userExtraId">
+                                <span> {{ u.firstName }} {{ u.lastName }} </span>
                             </div>
-                        </td>
+                        </div>
+                    </td>
 
-                        <td>
+                    <td>
                         <div *ngFor="let ue of usersExtra">
                             <div *ngIf="ue.groupeId === groupe.id && ue.userId != groupe.userExtraId">
                                 <div *ngFor="let u of users">
@@ -36,28 +36,28 @@
                                 </div>
                             </div>
                         </div>
-                        </td>
+                    </td>
 
-                        <td class="text-right">
-                            <div class="btn-group">
-                                <button type="button"
-                                        (click)="attribution(groupe.id)"
-                                        class="btn btn-info btn-sm">
-                                    <fa-icon icon="pencil-alt"></fa-icon>
-                                    <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.attribuate.attribGroupe"></span>
-                                </button>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="button"
+                                    (click)="attribution(groupe.id)"
+                                    class="btn btn-success btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline"
+                                      jhiTranslate="projetticApp.projet.attribuate.attribGroupe"></span>
+                            </button>
 
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <button type="submit" (click)="previousState()" class="btn btn-info">
-                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-            </button>
-
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info">
+            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
     </div>
 </div>

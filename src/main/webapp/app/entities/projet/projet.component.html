@@ -2,11 +2,12 @@
     <h2 id="page-heading">
         <span jhiTranslate="projetticApp.projet.home.title">Projets</span>
 
-        <button *ngIf="isClient()" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-projet" [routerLink]="['/projet/new']">
+        <button *ngIf="isClient()" id="jh-create-entity" type="submit"
+                [routerLink]="['/projet/new']"
+                class="btn btn-primary float-right jh-create-entity create-projet">
             <fa-icon icon="plus"></fa-icon>
-            <span class="hidden-sm-down"  jhiTranslate="projetticApp.projet.home.createLabel">
-            Create a new Projet
-            </span>
+            <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.home.createLabel">
+                Create a new Projet</span>
         </button>
     </h2>
 
@@ -14,11 +15,17 @@
 
     <jhi-alert></jhi-alert>
 
+    <hr>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="projets?.length === 0">
+        <span jhiTranslate="projetticApp.projet.home.notFound">No projets found</span>
+    </div>
+
     <div class="row" *ngIf="isAdmin() || isClient()">
-        <div class="col-sm-12">
+        <div class="col-sm-12 mb-3">
             <form name="archiveForm" class="form-inline" (ngSubmit)="loadAll()">
                 <label class="form-control-label label-projet-archive" for="dateArchive" jhiTranslate="projetticApp.projet.form.label.dateArchive"></label>
-                <select name="dateArchive" id="dateArchive" class="form-control" (change)="changeProjets($event.target.value)">
+                <select name="dateArchive" id="dateArchive" class="form-control ng-pristine ng-valid ng-touched" (change)="changeProjets($event.target.value)">
                     <option [selected]="isReset === false" disabled>Selectionner une année</option>
                     <option *ngFor="let date of datesArchive" [value]="date" >{{ date }}</option>
                 </select>
@@ -28,12 +35,6 @@
             </form>
         </div>
     </div>
-
-    <div class="alert alert-warning" id="no-result" *ngIf="projets?.length === 0">
-        <span jhiTranslate="projetticApp.projet.home.notFound">No projets found</span>
-    </div>
-
-    <hr>
 
     <div class="table-responsive" id="entities" *ngIf="projets?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
@@ -55,7 +56,7 @@
                         <a id="ouvrirpdf" *ngIf="projet.descriptionPDF" (click)="openFile(projet.descriptionPDFContentType, projet.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
                         <span *ngIf="projet.descriptionPDF">{{ byteSize(projet.descriptionPDF) }}</span>
                     </td>
-                    <td>{{ projet.descriptionTexte }}</td>
+                    <td class="text-justify">{{ projet.descriptionTexte }}</td>
                     <td>{{ projet.nbEtudiant }}</td>
 
                     <td *ngIf="isAdmin()">
@@ -73,49 +74,50 @@
                                     [routerLink]="['/projet', projet.id, 'view']"
                                     class="btn btn-info btn-sm">
                                 <fa-icon icon="eye"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                                <span jhiTranslate="entity.action.view">View</span>
                             </button>
 
                             <button *ngIf="isAutorise(projet) && !(projet.archive)" type="submit"
                                     [routerLink]="['/projet', projet.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                                <span jhiTranslate="entity.action.edit">Edit</span>
                             </button>
 
                             <button *ngIf="isAutorise(projet) && projet.groupeId === null && isChoisi(projet.id)===true" type="button"
                                     [routerLink]="['/projet', projet.id, 'attribuer']"
                                     class="btn btn-success btn-sm">
-                                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.attribuate">Attribuer</span>
+                                <fa-icon icon="book"></fa-icon>
+                                <span jhiTranslate="entity.action.attribuate">Attribuer</span>
                             </button>
 
                             <button *ngIf="isAutorise(projet) && projet.groupeId != null" type="submit"
                                     [routerLink]="['/projet', projet.id, 'rate']"
                                     class="btn btn-success btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.rate">Rate</span>
+                                <span jhiTranslate="entity.action.rate">Rate</span>
                             </button>
 
                             <button *ngIf="isAutorise(projet) && !(projet.archive)" type="submit" (click)="delete(projet)"
                                     class="btn btn-danger btn-sm">
-                                <fa-icon icon="times"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                                <fa-icon icon="trash-alt"></fa-icon>
+                                <span jhiTranslate="entity.action.delete">Delete</span>
                             </button>
 
                             <button *ngIf="!isClient() && !aDejaUnGroupe()" type="submit" [routerLink]="['/projet', projet.id, 'postuler']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="book"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.bouton.choisir"></span>
+                                <span  jhiTranslate="projetticApp.projet.bouton.choisir"></span>
                             </button>
 
                             <button id="boutonPostule" *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet)"
                                     class="btn btn-success btn-sm" disabled="disabled">
-                                <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.bouton.etatCandidature"></span>
+                                <span jhiTranslate="projetticApp.projet.bouton.etatCandidature"></span>
                             </button>
 
                             <button *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet)"
                                     class="btn btn-danger btn-sm" (click)="retractation()">
-                                <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.bouton.retractation"></span>
+                                <span jhiTranslate="projetticApp.projet.bouton.retractation"></span>
                             </button>
                         </div>
                     </td>
