@@ -10,6 +10,9 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { LoginService } from 'app/core/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { Account } from 'app/core/user/account.model';
+import { Subscription } from 'rxjs';
+import { IUser } from 'app/core/user/user.model';
+import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 
 @Component({
   selector: 'jhi-navbar',
@@ -23,6 +26,9 @@ export class NavbarComponent implements OnInit {
   swaggerEnabled?: boolean;
   version: string;
   account: Account;
+  authSubscription: Subscription;
+  user: IUser;
+  afficheProjet: boolean;
 
   constructor(
     private loginService: LoginService,
@@ -31,18 +37,28 @@ export class NavbarComponent implements OnInit {
     private accountService: AccountService,
     private loginModalService: LoginModalService,
     private profileService: ProfileService,
-    private router: Router
+    private router: Router,
+    private userExtraService: UserExtraService
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
   }
 
   ngOnInit(): void {
+    this.afficheProjet = false;
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction = profileInfo.inProduction;
       this.swaggerEnabled = profileInfo.swaggerEnabled;
+    });
+
+    this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => {
+      this.account = account;
       if (this.isAuthenticated()) {
-        this.accountService.getAuthenticationState().subscribe(account => {
-          this.account = account;
+        this.userExtraService.find(this.account.id).subscribe(ue => {
+          if (ue.body.typeUtilisateur === 'ETUDIANT') {
+            if (ue.body.groupeId !== null) {
+              this.afficheProjet = true;
+            }
+          }
         });
       }
     });
@@ -67,6 +83,7 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.collapseNavbar();
+    this.afficheProjet = false;
     this.loginService.logout();
     this.router.navigate(['']);
   }

@@ -2,7 +2,7 @@
     <h2 id="page-heading">
         <span jhiTranslate="projetticApp.groupe.home.title">Groupes</span>
 
-        <button type="submit" (click)="exporter()" class="btn btn-success float-right">
+        <button *ngIf="groupes?.length > 0" type="submit" (click)="exporter()" class="btn btn-success float-right">
             <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
         </button>
     </h2>

@@ -15,8 +15,7 @@ import { IUserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
-
-type SelectableEntity = IGroupe | IUserExtra;
+import * as moment from 'moment';
 
 @Component({
   selector: 'jhi-projet-update',
@@ -39,7 +38,8 @@ export class ProjetUpdateComponent implements OnInit {
     automatique: [],
     archive: [],
     groupeId: [],
-    userExtraId: []
+    userExtraId: [],
+    dateCreation: []
   });
 
   constructor(
@@ -61,10 +61,16 @@ export class ProjetUpdateComponent implements OnInit {
 
       this.groupeService.query().subscribe((res: HttpResponse<IGroupe[]>) => (this.groupes = res.body || []));
 
-      this.userExtraService.query().subscribe((res: HttpResponse<IUserExtra[]>) => (this.userextras = res.body || []));
+      this.userExtraService.findByActif(true).subscribe(userExtras => {
+        if (userExtras !== null) {
+          this.userextras = userExtras.body;
+        }
+      });
 
       this.accountService.getAuthenticationState().subscribe(account => {
-        this.account = account;
+        if (account !== null) {
+          this.account = account;
+        }
       });
     });
   }
@@ -80,7 +86,8 @@ export class ProjetUpdateComponent implements OnInit {
       automatique: projet.automatique,
       archive: projet.archive,
       groupeId: projet.groupeId,
-      userExtraId: this.account?.id
+      userExtraId: this.account?.id,
+      dateCreation: projet.dateCreation
     });
   }
 
@@ -106,15 +113,16 @@ export class ProjetUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    const projet = this.createFromForm();
-    if (projet.id !== undefined) {
+    if (this.editForm.get(['id']).value !== undefined) {
+      const projet = this.createFromForm(false);
       this.subscribeToSaveResponse(this.projetService.update(projet));
     } else {
+      const projet = this.createFromForm(true);
       this.subscribeToSaveResponse(this.projetService.create(projet));
     }
   }
 
-  private createFromForm(): IProjet {
+  private createFromForm(create: boolean): IProjet {
     return {
       ...new Projet(),
       id: this.editForm.get(['id'])!.value,
@@ -126,7 +134,8 @@ export class ProjetUpdateComponent implements OnInit {
       automatique: this.editForm.get(['automatique'])!.value,
       archive: this.editForm.get(['archive'])!.value,
       groupeId: this.editForm.get(['groupeId'])!.value,
-      userExtraId: this.account?.id
+      userExtraId: this.account?.id,
+      dateCreation: create === true ? moment() : this.editForm.get(['dateCreation'])!.value
     };
   }
 

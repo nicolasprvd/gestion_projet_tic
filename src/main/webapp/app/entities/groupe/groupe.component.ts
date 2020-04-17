@@ -67,13 +67,19 @@ export class GroupeComponent implements OnInit, OnDestroy {
     this.loadAll();
     this.registerChangeInGroupes();
     this.projetService.findAll().subscribe(projets => {
-      this.projets = projets;
+      if (projets !== null) {
+        this.projets = projets;
+      }
     });
     this.userService.findAll().subscribe(users => {
-      this.users = users;
+      if (users !== null) {
+        this.users = users;
+      }
     });
-    this.userExtraService.findAll().subscribe(userExtras => {
-      this.userExtras = userExtras;
+    this.userExtraService.findByActif(true).subscribe(userExtras => {
+      if (userExtras !== null) {
+        this.userExtras = userExtras.body;
+      }
     });
   }
 

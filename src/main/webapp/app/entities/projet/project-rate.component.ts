@@ -42,7 +42,7 @@ export class ProjectRateComponent implements OnInit {
   outputRate = 0;
   isSaving = false;
   cdcDoc: IDocument = null;
-  soutenanceDoc: IDocument = null;
+  ganttDoc: IDocument = null;
   renduDoc: IDocument = null;
 
   constructor(
@@ -60,28 +60,34 @@ export class ProjectRateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ projet }) => (this.project = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
-      this.authorities = account?.authorities;
+      if (account !== null) {
+        this.account = account;
+        this.authorities = account.authorities;
+      }
     });
     this.documentService.findByProjetId(this.project.id).subscribe(documents => {
-      for (const doc of documents.body) {
-        if (doc.typeDocument === TypeDocument.CDC) {
-          this.cdcDoc = doc;
-        }
-        if (doc.typeDocument === TypeDocument.GANTT) {
-          this.soutenanceDoc = doc;
-        }
-        if (doc.typeDocument === TypeDocument.RF) {
-          this.renduDoc = doc;
+      if (documents !== null) {
+        for (const doc of documents.body) {
+          if (doc.typeDocument === TypeDocument.CDC) {
+            this.cdcDoc = doc;
+          }
+          if (doc.typeDocument === TypeDocument.GANTT) {
+            this.ganttDoc = doc;
+          }
+          if (doc.typeDocument === TypeDocument.RF) {
+            this.renduDoc = doc;
+          }
         }
       }
     });
-    this.userExtraService.findAll().subscribe(userExtras => {
-      this.groupId = this.project.groupeId;
-      this.allUsers = userExtras;
-      for (const extra of userExtras) {
-        if (extra.groupeId === this.groupId) {
-          this.groupUsers.push(extra);
+    this.userExtraService.findByActif(true).subscribe(userExtras => {
+      if (userExtras !== null) {
+        this.groupId = this.project.groupeId;
+        this.allUsers = userExtras.body;
+        for (const extra of this.allUsers) {
+          if (extra.groupeId === this.groupId) {
+            this.groupUsers.push(extra);
+          }
         }
       }
     });
@@ -92,10 +98,12 @@ export class ProjectRateComponent implements OnInit {
   }
 
   calculateFinalRate(): void {
-    this.specsRate = +(document.getElementById('specsRate') as HTMLInputElement).value;
-    this.ganttsRate = +(document.getElementById('ganttsRate') as HTMLInputElement).value;
-    this.outputRate = +(document.getElementById('outputRate') as HTMLInputElement).value;
-    this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
+    this.specsRate = +(document.getElementById('specsRate') as HTMLInputElement).value.replace(',', '.');
+    this.ganttsRate = +(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.');
+    this.outputRate = +(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.');
+    if (this.isValidate()) {
+      this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
+    }
   }
 
   evaluate(): void {

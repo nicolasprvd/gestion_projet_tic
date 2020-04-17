@@ -28,6 +28,10 @@ export class UserExtraComponent implements OnInit, OnDestroy {
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
         ? this.activatedRoute.snapshot.queryParams['search']
         : '';
+
+    this.userExtraService.findAll().subscribe(ue => {
+      console.error(ue);
+    });
   }
 
   loadAll(): void {

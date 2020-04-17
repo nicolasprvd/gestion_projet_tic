@@ -122,7 +122,9 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @Transactional(readOnly = true)
     public List<DocumentDTO> findByProjetId(Long projetId) {
-        log.debug("Request to get Documents : {}", projetId);
-        return documentRepository.findByProjetId(projetId).stream().map(documentMapper::toDto).collect(Collectors.toList());
+        log.debug("Request to get Documents from projet id = " + projetId);
+        return documentRepository.findByProjetId(projetId)
+            .stream()
+            .map(documentMapper::toDto).collect(Collectors.toList());
     }
 }

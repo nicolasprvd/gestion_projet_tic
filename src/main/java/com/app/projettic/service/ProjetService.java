@@ -1,5 +1,6 @@
 package com.app.projettic.service;
 
+import com.app.projettic.domain.Projet;
 import com.app.projettic.service.dto.ProjetDTO;
 
 import java.util.List;
@@ -44,8 +45,22 @@ public interface ProjetService {
      * Search for the projet corresponding to the query.
      *
      * @param query the query of the search.
-     * 
+     *
      * @return the list of entities.
      */
     List<ProjetDTO> search(String query);
+
+    /**
+     * Find projects by client id
+     * @param userExtraId
+     * @return
+     */
+    List<ProjetDTO> findByUserExtraId(Long userExtraId);
+
+    /**
+     * Find project by groupe id
+     * @param groupeId
+     * @return
+     */
+    Optional<ProjetDTO> findByGroupeId(Long groupeId);
 }

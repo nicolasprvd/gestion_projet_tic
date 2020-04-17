@@ -32,6 +32,10 @@ export class UserExtraService {
     return this.http.get<IUserExtra[]>(`${this.resourceUrl}`);
   }
 
+  findByActif(actif: boolean): Observable<EntityArrayResponseType> {
+    return this.http.get<IUserExtra[]>(`${this.resourceUrl}/actif/${actif}`, { observe: 'response' });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IUserExtra[]>(this.resourceUrl, { params: options, observe: 'response' });
@@ -44,5 +48,9 @@ export class UserExtraService {
   search(req: Search): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IUserExtra[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+  }
+
+  findByGroupeId(groupeId: number): Observable<HttpResponse<IUserExtra[]>> {
+    return this.http.get<IUserExtra[]>(`${this.resourceUrl}/groupe/${groupeId}`, { observe: 'response' });
   }
 }

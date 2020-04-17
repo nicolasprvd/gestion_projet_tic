@@ -89,7 +89,7 @@ export class RegisterComponent implements AfterViewInit {
                     this.router.url.startsWith('/account/activate') ||
                     this.router.url.startsWith('/account/reset/')
                   ) {
-                    this.router.navigate(['']);
+                    this.router.navigate(['/']);
                   }
                 },
                 () => (this.success = false)

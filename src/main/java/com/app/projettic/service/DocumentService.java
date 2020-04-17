@@ -1,5 +1,6 @@
 package com.app.projettic.service;
 
+import com.app.projettic.domain.Document;
 import com.app.projettic.service.dto.DocumentDTO;
 import com.app.projettic.service.dto.ProjetDTO;
 

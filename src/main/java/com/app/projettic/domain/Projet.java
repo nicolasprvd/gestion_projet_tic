@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.SQLDelete;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.*;
@@ -14,6 +17,7 @@ import java.util.*;
  */
 @Entity
 @Table(name = "projet")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @org.springframework.data.elasticsearch.annotations.Document(indexName = "projet")
 @SQLDelete(sql = "UPDATE projet SET archive = true WHERE id = ?")
 public class Projet implements Serializable {
@@ -50,15 +54,18 @@ public class Projet implements Serializable {
     @Column(name = "date_creation")
     private Instant dateCreation;
 
-    @OneToMany(mappedBy = "projet")
+    @OneToMany(mappedBy = "projet", cascade = CascadeType.REMOVE)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Document> documents = new HashSet<>();
 
-    @OneToMany(mappedBy = "projet")
+    @OneToMany(mappedBy = "projet", cascade = CascadeType.REMOVE)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Groupe> groupes = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("projets")
     @JsonBackReference
+    @JoinColumn(name = "groupe_id")
     private Groupe groupe;
 
     @ManyToOne
