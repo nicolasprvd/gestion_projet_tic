@@ -42,7 +42,7 @@ export class ProjectRateComponent implements OnInit {
   outputRate = 0;
   isSaving = false;
   cdcDoc: IDocument = null;
-  soutenanceDoc: IDocument = null;
+  ganttDoc: IDocument = null;
   renduDoc: IDocument = null;
 
   constructor(
@@ -72,7 +72,7 @@ export class ProjectRateComponent implements OnInit {
             this.cdcDoc = doc;
           }
           if (doc.typeDocument === TypeDocument.GANTT) {
-            this.soutenanceDoc = doc;
+            this.ganttDoc = doc;
           }
           if (doc.typeDocument === TypeDocument.RF) {
             this.renduDoc = doc;
@@ -101,7 +101,9 @@ export class ProjectRateComponent implements OnInit {
     this.specsRate = +(document.getElementById('specsRate') as HTMLInputElement).value.replace(',', '.');
     this.ganttsRate = +(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.');
     this.outputRate = +(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.');
-    this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
+    if (this.isValidate()) {
+      this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
+    }
   }
 
   evaluate(): void {

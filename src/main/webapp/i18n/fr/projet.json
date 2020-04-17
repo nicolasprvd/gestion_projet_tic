@@ -64,7 +64,8 @@
         "noteRendu": "Note rendu",
         "ouvrir": "Ouvrir",
         "noter": "Noter",
-        "manquant": "Document manquant :"
+        "manquant": "Document manquant :",
+        "gantt": "Gantt"
       },
       "bouton": {
         "choisir": "Postuler",

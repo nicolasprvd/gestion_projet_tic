@@ -18,18 +18,18 @@
                     <label jhiTranslate="projetticApp.projet.rate.cahierDesCharges"></label>
                 </div>
                 <div>
-                    <button *ngIf="soutenanceDoc !== null" type="button"
-                            (click)="openFile(soutenanceDoc.docContentType, soutenanceDoc.doc)"
+                    <button *ngIf="ganttDoc !== null" type="button"
+                            (click)="openFile(ganttDoc.docContentType, ganttDoc.doc)"
                             class="btn btn-primary">
                         <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <button *ngIf="soutenanceDoc === null" type="button"
+                    <button *ngIf="ganttDoc === null" type="button"
                             disabled="disabled"
                             class="btn btn-danger">
                         <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <label *ngIf="soutenanceDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
-                    <label jhiTranslate="projetticApp.projet.rate.soutenance"></label>
+                    <label *ngIf="ganttDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
+                    <label jhiTranslate="projetticApp.projet.rate.gantt"></label>
                 </div>
                 <div>
                     <button *ngIf="renduDoc !== null" type="button"
@@ -51,13 +51,13 @@
 
             <div>
                 <label id="labelCdc" class="form-control-label"  for="specsRate" jhiTranslate="projetticApp.projet.rate.noteCahierDesCharges"></label>
-                <input type="text" class="form-control" name="specsRate" id="specsRate" (change)="calculateFinalRate()"/>
+                <input type="text" class="form-control" name="specsRate" id="specsRate" (input)="calculateFinalRate()"/>
 
                 <label id="labelSoutenance" class="form-control-label" for="ganttsRate" jhiTranslate="projetticApp.projet.rate.noteSoutenance"></label>
-                <input type="text" class="form-control" name="ganttsRate" id="ganttsRate" (change)="calculateFinalRate()"/>
+                <input type="text" class="form-control" name="ganttsRate" id="ganttsRate" (input)="calculateFinalRate()"/>
 
                 <label id="labelRendu" class="form-control-label" for="outputRate" jhiTranslate="projetticApp.projet.rate.noteRendu"></label>
-                <input type="text" class="form-control" name="outputRate" id="outputRate" (change)="calculateFinalRate()"/>
+                <input type="text" class="form-control" name="outputRate" id="outputRate" (input)="calculateFinalRate()"/>
 
                 <label id="labelMoyenne" class="form-control-label" for="final" jhiTranslate="projetticApp.projet.rate.moyenne"></label>
                 <input type="number" class="form-control" name="final" id="final" disabled="disabled" [(ngModel)]="finalRate"/>
@@ -69,12 +69,12 @@
                     <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
                 </button>
 
-                <button *ngIf="cdcDoc !== null && soutenanceDoc !== null && renduDoc !== null" type="button"
+                <button *ngIf="cdcDoc !== null && ganttDoc !== null && renduDoc !== null" type="button"
                         (click)="evaluate()"
                         class="btn btn-primary">
                     <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>
                 </button>
-                <button *ngIf="cdcDoc === null || soutenanceDoc === null || renduDoc === null" type="button"
+                <button *ngIf="cdcDoc === null || ganttDoc === null || renduDoc === null" type="button"
                         disabled="disabled"
                         class="btn btn-danger">
                     <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>

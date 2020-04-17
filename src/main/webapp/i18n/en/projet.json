@@ -63,7 +63,8 @@
         "noteRendu": "Report mark",
         "ouvrir": "Open",
         "noter": "Rate",
-        "manquant": "Missing document :"
+        "manquant": "Missing document :",
+        "gantt": "Gantt"
       },
       "bouton": {
         "choisir": "Apply",
