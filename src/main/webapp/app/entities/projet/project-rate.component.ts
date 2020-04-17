@@ -42,7 +42,7 @@ export class ProjectRateComponent implements OnInit {
   outputRate = 0;
   isSaving = false;
   cdcDoc: IDocument = null;
-  soutenanceDoc: IDocument = null;
+  ganttDoc: IDocument = null;
   renduDoc: IDocument = null;
 
   constructor(
@@ -72,7 +72,7 @@ export class ProjectRateComponent implements OnInit {
             this.cdcDoc = doc;
           }
           if (doc.typeDocument === TypeDocument.GANTT) {
-            this.soutenanceDoc = doc;
+            this.ganttDoc = doc;
           }
           if (doc.typeDocument === TypeDocument.RF) {
             this.renduDoc = doc;

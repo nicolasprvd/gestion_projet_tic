@@ -18,18 +18,18 @@
                     <label jhiTranslate="projetticApp.projet.rate.cahierDesCharges"></label>
                 </div>
                 <div>
-                    <button *ngIf="soutenanceDoc !== null" type="button"
-                            (click)="openFile(soutenanceDoc.docContentType, soutenanceDoc.doc)"
+                    <button *ngIf="ganttDoc !== null" type="button"
+                            (click)="openFile(ganttDoc.docContentType, ganttDoc.doc)"
                             class="btn btn-primary">
                         <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <button *ngIf="soutenanceDoc === null" type="button"
+                    <button *ngIf="ganttDoc === null" type="button"
                             disabled="disabled"
                             class="btn btn-danger">
                         <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <label *ngIf="soutenanceDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
-                    <label jhiTranslate="projetticApp.projet.rate.soutenance"></label>
+                    <label *ngIf="ganttDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
+                    <label jhiTranslate="projetticApp.projet.rate.gantt"></label>
                 </div>
                 <div>
                     <button *ngIf="renduDoc !== null" type="button"
