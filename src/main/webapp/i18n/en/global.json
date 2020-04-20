@@ -121,6 +121,18 @@
           "message": "The project has been recovered."
         }
       },
+      "candidature": {
+        "projet": {
+          "title": "Application on the {{nom}} project",
+          "message": "Your application has been saved"
+        }
+      },
+      "retractation": {
+        "projet": {
+          "title": "Withdrawall on the {{nom}} project",
+          "message": "Your withdrawall has been saved"
+        }
+      },
       "erreur": {
         "title": "Error",
         "message": "An error has occured"

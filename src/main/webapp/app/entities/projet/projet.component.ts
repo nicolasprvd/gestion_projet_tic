@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit} from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -41,6 +41,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   currentSearch: string;
   accountExtra: UserExtra;
   groupes: Groupe[] = [];
+  isRetracte: boolean;
 
   constructor(
     protected projetService: ProjetService,
@@ -53,7 +54,8 @@ export class ProjetComponent implements OnInit, OnDestroy {
     private userExtraService: UserExtraService,
     private groupeService: GroupeService,
     private toastrService: ToastrService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: Router
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -123,6 +125,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.isRetracte = false;
     this.loadAll();
 
     this.registerChangeInProjets();
@@ -250,6 +253,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - modify the group id of each user (extra) to set it to null
    */
   retractation(): void {
+    this.isRetracte = false;
     this.projetService.find(this.projetChoisiId).subscribe(projet => {
       let compteur = projet.body.nbEtudiant;
       const idMonGroupe: number = this.groupeId;
@@ -263,11 +267,15 @@ export class ProjetComponent implements OnInit, OnDestroy {
                 compteur--;
                 this.userExtraService.update(userextra).subscribe(() => {
                   if (compteur === 0) {
-                    this.onSaveSuccess();
+                    // this.onSaveSuccess();
+                    return;
                   }
                 });
               }
             }
+            this.isSaving = false;
+            this.isRetracte = true;
+            this.router.navigate(['/projet']);
           }
         },
         () => this.onSaveError()

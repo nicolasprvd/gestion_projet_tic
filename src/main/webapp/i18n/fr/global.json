@@ -121,6 +121,18 @@
           "message": "Le projet a bien été récupéré"
         }
       },
+      "candidature": {
+        "projet": {
+          "title": "Candidature sur le projet {{nom}}",
+          "message": "Votre candidature a bien été enregistrée"
+        }
+      },
+      "retractation": {
+        "projet": {
+          "title": "Rétractation du projet {{nom}}",
+          "message": "Votre rétractation a bien été enregistrée"
+        }
+      },
       "erreur": {
         "title": "Erreur",
         "message": "Une erreur est survenue"

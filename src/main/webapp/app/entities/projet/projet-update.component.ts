@@ -141,7 +141,6 @@ export class ProjetUpdateComponent implements OnInit {
       const projet = this.createFromForm(true);
       this.projetService.create(projet).subscribe(
         () => {
-          this.translateService.instant('global.toastr.creations.projet.title', { nom: projet.nom });
           this.isSaving = false;
           this.toastrService.success(
             this.translateService.instant('global.toastr.creations.projet.message'),
