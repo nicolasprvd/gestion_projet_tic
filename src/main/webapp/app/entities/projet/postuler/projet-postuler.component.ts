@@ -48,7 +48,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       }
     });
     this.userExtraService.findByActif(true).subscribe(userExtras => {
-      if (userExtras !== null) {
+      if (userExtras !== null && userExtras.body !== null) {
         this.userExtras = userExtras.body;
         this.userService.findAll().subscribe(users => {
           if (users !== null) {
@@ -131,7 +131,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       ...new Groupe(),
       valide: false,
       userExtraId: this.account.id,
-      projetId: this.projet.id
+      projetId: this.projet.id,
+      actif: true
     };
   }
 

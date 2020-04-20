@@ -34,6 +34,14 @@ public interface EvaluationService {
     Optional<EvaluationDTO> findOne(Long id);
 
     /**
+     * Get the "id" evaluation.
+     *
+     * @param actif the actif of the evaluation.
+     * @return the entity.
+     */
+    List<EvaluationDTO> findByActif(boolean actif);
+
+    /**
      * Delete the "id" evaluation.
      *
      * @param id the id of the entity.
@@ -44,7 +52,7 @@ public interface EvaluationService {
      * Search for the evaluation corresponding to the query.
      *
      * @param query the query of the search.
-     * 
+     *
      * @return the list of entities.
      */
     List<EvaluationDTO> search(String query);

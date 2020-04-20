@@ -22,6 +22,7 @@ public interface GroupeMapper extends EntityMapper<GroupeDTO, Groupe> {
     @Mapping(target = "removeUserExtra", ignore = true)
     @Mapping(source = "userExtraId", target = "userExtra")
     @Mapping(source = "projetId", target = "projet")
+    @Mapping(source = "actif", target = "actif")
     Groupe toEntity(GroupeDTO groupeDTO);
 
     default Groupe fromId(Long id) {

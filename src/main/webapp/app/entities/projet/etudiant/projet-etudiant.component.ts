@@ -171,7 +171,6 @@ export class ProjetEtudiantComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean, typeDocument: string): void {
     if (typeDocument === 'CDC') {
       this.isSavingCDC = true;
-      console.error('saving cdc : ' + this.isSavingCDC);
       this.dataUtils.loadFileToForm(event, this.documentFormCDC, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
         this.eventManager.broadcast(
           new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
@@ -179,7 +178,6 @@ export class ProjetEtudiantComponent implements OnInit {
       });
     } else if (typeDocument === 'GANTT') {
       this.isSavingGANTT = true;
-      console.error('saving gantt : ' + this.isSavingGANTT);
       this.dataUtils.loadFileToForm(event, this.documentFormGANTT, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
         this.eventManager.broadcast(
           new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
@@ -187,7 +185,6 @@ export class ProjetEtudiantComponent implements OnInit {
       });
     } else {
       this.isSavingRF = true;
-      console.error('saving rf : ' + this.isSavingRF);
       this.dataUtils.loadFileToForm(event, this.documentFormRF, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
         this.eventManager.broadcast(
           new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
@@ -204,14 +201,11 @@ export class ProjetEtudiantComponent implements OnInit {
 
   saveDocumentCDC(): void {
     if (this.isSavingCDC) {
-      console.error('cdc creee ? = ' + this.isCreatedCDC);
       if (this.documentFormCDC.get(['id']).value !== null || this.isCreatedCDC) {
-        console.error('update cdc');
         const documentCDC = this.createFromForm(false, TypeDocument.CDC);
         this.documentService.update(documentCDC).subscribe();
       } else {
         if (!this.isCreatedCDC) {
-          console.error('cdc va etre créé ');
           const documentCDC = this.createFromForm(true, TypeDocument.CDC);
           this.documentService.create(documentCDC).subscribe();
           this.isCreatedCDC = true;
@@ -223,14 +217,11 @@ export class ProjetEtudiantComponent implements OnInit {
 
   saveDocumentRF(): void {
     if (this.isSavingRF) {
-      console.error('rf creee ? = ' + this.isCreatedRF);
       if (this.documentFormRF.get(['id']).value !== null || this.isCreatedRF) {
-        console.error('update rf');
         const documentRF = this.createFromForm(false, TypeDocument.RF);
         this.documentService.update(documentRF).subscribe();
       } else {
         if (!this.isCreatedRF) {
-          console.error('rf va etre créé ');
           const documentRF = this.createFromForm(true, TypeDocument.RF);
           this.documentService.create(documentRF).subscribe();
           this.isCreatedRF = true;
@@ -242,15 +233,13 @@ export class ProjetEtudiantComponent implements OnInit {
 
   saveDocumentGANTT(): void {
     if (this.isSavingGANTT) {
-      console.error('gantt creee ? = ' + this.isCreatedRF);
       if (this.documentFormGANTT.get(['id']).value !== null || this.isCreatedGANTT) {
-        console.error('update gantt');
         const documentGANTT = this.createFromForm(false, TypeDocument.GANTT);
         this.documentService.update(documentGANTT).subscribe();
       } else {
         if (!this.isCreatedGANTT) {
-          console.error('gantt va etre créé ');
           const documentGANTT = this.createFromForm(true, TypeDocument.GANTT);
+          console.error(documentGANTT);
           this.documentService.create(documentGANTT).subscribe();
           this.isCreatedGANTT = true;
         }
@@ -267,7 +256,8 @@ export class ProjetEtudiantComponent implements OnInit {
         docContentType: this.documentFormCDC.get(['documentCDCContentType']).value,
         doc: this.documentFormCDC.get(['documentCDC']).value,
         typeDocument: TypeDocument.CDC,
-        projetId: this.projet.id
+        projetId: this.projet.id,
+        actif: true
       };
     } else if (typeDocument === TypeDocument.GANTT) {
       return {
@@ -276,7 +266,8 @@ export class ProjetEtudiantComponent implements OnInit {
         docContentType: this.documentFormGANTT.get(['documentGANTTContentType']).value,
         doc: this.documentFormGANTT.get(['documentGANTT']).value,
         typeDocument: TypeDocument.GANTT,
-        projetId: this.projet.id
+        projetId: this.projet.id,
+        actif: true
       };
     } else {
       return {
@@ -285,7 +276,8 @@ export class ProjetEtudiantComponent implements OnInit {
         docContentType: this.documentFormRF.get(['documentRFContentType']).value,
         doc: this.documentFormRF.get(['documentRF']).value,
         typeDocument: TypeDocument.RF,
-        projetId: this.projet.id
+        projetId: this.projet.id,
+        actif: true
       };
     }
   }

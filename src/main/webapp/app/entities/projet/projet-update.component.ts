@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
-
 import { IProjet, Projet } from 'app/shared/model/projet.model';
 import { ProjetService } from './projet.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
@@ -16,6 +12,8 @@ import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-projet-update',
@@ -50,7 +48,9 @@ export class ProjetUpdateComponent implements OnInit {
     protected userExtraService: UserExtraService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private toastrService: ToastrService,
+    private translateService: TranslateService
   ) {
     this.nbEtudiantDefault = 2;
   }
@@ -59,10 +59,14 @@ export class ProjetUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ projet }) => {
       this.updateForm(projet);
 
-      this.groupeService.query().subscribe((res: HttpResponse<IGroupe[]>) => (this.groupes = res.body || []));
+      this.groupeService.findByActif(true).subscribe(groupes => {
+        if (groupes !== null && groupes.body !== null) {
+          this.groupes = groupes.body;
+        }
+      });
 
       this.userExtraService.findByActif(true).subscribe(userExtras => {
-        if (userExtras !== null) {
+        if (userExtras !== null && userExtras.body !== null) {
           this.userextras = userExtras.body;
         }
       });
@@ -115,10 +119,44 @@ export class ProjetUpdateComponent implements OnInit {
     this.isSaving = true;
     if (this.editForm.get(['id']).value !== undefined) {
       const projet = this.createFromForm(false);
-      this.subscribeToSaveResponse(this.projetService.update(projet));
+      this.projetService.update(projet).subscribe(
+        () => {
+          this.translateService.instant('global.toastr.modifications.projet.title', { nom: projet.nom });
+          this.isSaving = false;
+          this.toastrService.success(
+            this.translateService.instant('global.toastr.modifications.projet.message'),
+            this.translateService.instant('global.toastr.modifications.projet.title', { nom: projet.nom })
+          );
+          this.previousState();
+        },
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+        }
+      );
     } else {
       const projet = this.createFromForm(true);
-      this.subscribeToSaveResponse(this.projetService.create(projet));
+      this.projetService.create(projet).subscribe(
+        () => {
+          this.translateService.instant('global.toastr.creations.projet.title', { nom: projet.nom });
+          this.isSaving = false;
+          this.toastrService.success(
+            this.translateService.instant('global.toastr.creations.projet.message'),
+            this.translateService.instant('global.toastr.creations.projet.title', { nom: projet.nom })
+          );
+          this.previousState();
+        },
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+        }
+      );
     }
   }
 
@@ -137,21 +175,5 @@ export class ProjetUpdateComponent implements OnInit {
       userExtraId: this.account?.id,
       dateCreation: create === true ? moment() : this.editForm.get(['dateCreation'])!.value
     };
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IProjet>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
   }
 }

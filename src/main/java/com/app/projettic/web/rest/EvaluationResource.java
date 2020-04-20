@@ -130,4 +130,15 @@ public class EvaluationResource {
         log.debug("REST request to search Evaluations for query {}", query);
         return evaluationService.search(query);
     }
+
+    /**
+     * {@code GET  /evaluations/actif} : get all the evaluations with the actif status.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of evaluations in body.
+     */
+    @GetMapping("/evaluations/actif/{actif}")
+    public List<EvaluationDTO> findByActif(@PathVariable boolean actif) {
+        log.debug("REST request to get all evaluations");
+        return evaluationService.findByActif(actif);
+    }
 }

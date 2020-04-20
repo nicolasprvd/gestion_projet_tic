@@ -112,4 +112,17 @@ public class GroupeServiceImpl implements GroupeService {
             .map(groupeMapper::toDto)
             .collect(Collectors.toList());
     }
+
+    /**
+     * Get groupe by actif.
+     *
+     * @param actif the actif of the groupe.
+     * @return the entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<GroupeDTO> findByActif(boolean actif) {
+        log.debug("Request to get groupe : {}", actif);
+        return groupeRepository.findByActif(actif).stream().map(groupeMapper::toDto).collect(Collectors.toList());
+    }
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
@@ -32,15 +31,11 @@ export class DocumentComponent implements OnInit, OnDestroy {
   }
 
   loadAll(): void {
-    if (this.currentSearch) {
-      this.documentService
-        .search({
-          query: this.currentSearch
-        })
-        .subscribe((res: HttpResponse<IDocument[]>) => (this.documents = res.body || []));
-      return;
-    }
-    this.documentService.query().subscribe((res: HttpResponse<IDocument[]>) => (this.documents = res.body || []));
+    this.documentService.findByActif(true).subscribe(documents => {
+      if (documents !== null && documents.body !== null) {
+        this.documents = documents.body;
+      }
+    });
   }
 
   search(query: string): void {

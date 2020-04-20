@@ -112,4 +112,17 @@ public class EvaluationServiceImpl implements EvaluationService {
             .map(evaluationMapper::toDto)
             .collect(Collectors.toList());
     }
+
+    /**
+     * Get evaluation by actif.
+     *
+     * @param actif the actif of the evaluation.
+     * @return the entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<EvaluationDTO> findByActif(boolean actif) {
+        log.debug("Request to get evaluation : {}", actif);
+        return evaluationRepository.findByActif(actif).stream().map(evaluationMapper::toDto).collect(Collectors.toList());
+    }
 }

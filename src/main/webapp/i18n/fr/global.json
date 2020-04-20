@@ -95,7 +95,37 @@
     "ribbon": {
       "dev": "Développement"
     },
-    "item-count": "Affichage {{first}} - {{second}} de {{total}} items."
+    "item-count": "Affichage {{first}} - {{second}} de {{total}} items.",
+    "toastr": {
+      "modifications": {
+        "projet": {
+          "title": "Modification du projet {{nom}}",
+          "message": "Vos modifications ont été enregistrées"
+        }
+      },
+      "creations": {
+        "projet": {
+          "title": "Création du projet {{nom}}",
+          "message": "Le projet a bien été créé"
+        }
+      },
+      "suppressions": {
+        "projet": {
+          "title": "Suppression du projet {{nom}}",
+          "message": "Le projet a bien été archivé"
+        }
+      },
+      "reprise": {
+        "projet": {
+          "title": "Reprise du projet {{nom}}",
+          "message": "Le projet a bien été récupéré"
+        }
+      },
+      "erreur": {
+        "title": "Erreur",
+        "message": "Une erreur est survenue"
+      }
+    }
   },
   "entity": {
     "action": {

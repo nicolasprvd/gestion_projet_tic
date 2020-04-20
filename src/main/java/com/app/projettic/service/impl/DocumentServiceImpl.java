@@ -127,4 +127,17 @@ public class DocumentServiceImpl implements DocumentService {
             .stream()
             .map(documentMapper::toDto).collect(Collectors.toList());
     }
+
+    /**
+     * Get documents by actif.
+     *
+     * @param actif the actif of the documents.
+     * @return the entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<DocumentDTO> findByActif(boolean actif) {
+        log.debug("Request to get document : {}", actif);
+        return documentRepository.findByActif(actif).stream().map(documentMapper::toDto).collect(Collectors.toList());
+    }
 }

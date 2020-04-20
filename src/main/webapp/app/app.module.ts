@@ -16,17 +16,29 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { HeaderComponent } from 'app/layouts/header/header.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ProjetticSharedModule,
     ProjetticCoreModule,
     ProjetticHomeModule,
     ProjetticFAQModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     ProjetticEntityModule,
-    ProjetticAppRoutingModule
+    ProjetticAppRoutingModule,
+    ToastrModule.forRoot({
+      tapToDismiss: true,
+      closeButton: true,
+      disableTimeOut: false,
+      easeTime: 300,
+      timeOut: 8000,
+      positionClass: 'toast-top-left',
+      preventDuplicates: true
+    })
   ],
   declarations: [
     MainComponent,
