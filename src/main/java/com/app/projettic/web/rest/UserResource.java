@@ -216,4 +216,15 @@ public class UserResource {
             .stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    /**
+     * {@code GET  /users/activated} : get all the user with the activated status.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of user in body.
+     */
+    @GetMapping("/users/activated/{activated}")
+    public List<User> findByActivated(@PathVariable boolean activated) {
+        log.debug("REST request to get all User");
+        return userService.findByActivated(activated);
+    }
 }

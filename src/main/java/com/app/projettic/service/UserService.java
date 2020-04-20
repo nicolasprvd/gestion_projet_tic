@@ -329,4 +329,9 @@ public class UserService {
             Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
         }
     }
+
+    @Transactional(readOnly = true)
+    public List<User> findByActivated(boolean activated) {
+        return userRepository.findByActivated(activated);
+    }
 }
