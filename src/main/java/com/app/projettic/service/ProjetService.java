@@ -35,6 +35,14 @@ public interface ProjetService {
     Optional<ProjetDTO> findOne(Long id);
 
     /**
+     * Get the "id" projet.
+     *
+     * @param archive the archive of the projet.
+     * @return the entity.
+     */
+    List<ProjetDTO> findByArchive(boolean archive);
+
+    /**
      * Delete the "id" projet.
      *
      * @param id the id of the entity.
