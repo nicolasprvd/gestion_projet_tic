@@ -1,12 +1,11 @@
 package com.app.projettic.domain;
 
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import org.hibernate.annotations.Where;
 
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,6 +38,9 @@ public class Evaluation implements Serializable {
     @NotNull
     @Column(name = "note_finale", nullable = false)
     private Double noteFinale;
+
+    @Column(name = "actif")
+    private Boolean actif;
 
     @OneToMany(mappedBy = "evaluation")
     private Set<UserExtra> userExtras = new HashSet<>();
@@ -128,7 +130,14 @@ public class Evaluation implements Serializable {
     public void setUserExtras(Set<UserExtra> userExtras) {
         this.userExtras = userExtras;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -154,6 +163,7 @@ public class Evaluation implements Serializable {
             ", noteSoutenance=" + getNoteSoutenance() +
             ", noteRendu=" + getNoteRendu() +
             ", noteFinale=" + getNoteFinale() +
+            ", actif=" + isActif() +
             "}";
     }
 }

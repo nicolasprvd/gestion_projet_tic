@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -52,16 +51,11 @@ export class EvaluationComponent implements OnInit, OnDestroy {
   }
 
   loadAll(): void {
-    if (this.currentSearch) {
-      this.evaluationService
-        .search({
-          query: this.currentSearch
-        })
-        .subscribe((res: HttpResponse<IEvaluation[]>) => (this.evaluations = res.body || []));
-      return;
-    }
-
-    this.evaluationService.query().subscribe((res: HttpResponse<IEvaluation[]>) => (this.evaluations = res.body || []));
+    this.evaluationService.findByActif(true).subscribe(evaluations => {
+      if (evaluations !== null && evaluations.body !== null) {
+        this.evaluations = evaluations.body;
+      }
+    });
   }
 
   search(query: string): void {
@@ -73,13 +67,19 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.loadAll();
     this.registerChangeInEvaluations();
     this.userService.findAll().subscribe(users => {
-      this.users = users;
+      if (users !== null) {
+        this.users = users;
+      }
     });
-    this.userExtraService.findAll().subscribe(extras => {
-      this.extras = extras;
+    this.userExtraService.findByActif(true).subscribe(extras => {
+      if (extras !== null) {
+        this.extras = extras.body;
+      }
     });
     this.projetService.findAll().subscribe(projets => {
-      this.projets = projets;
+      if (projets !== null) {
+        this.projets = projets;
+      }
     });
   }
 

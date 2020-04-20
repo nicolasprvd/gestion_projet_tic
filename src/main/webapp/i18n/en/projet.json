@@ -1,9 +1,20 @@
 {
   "projetticApp": {
     "projet": {
+      "documents": {
+        "title": "Documents",
+        "cdc": "Requirements specification",
+        "gantt": "Gantt",
+        "rendu": "Final result"
+      },
       "form": {
         "label": {
-          "dateArchive": "Archives"
+          "dateArchive": "Archives",
+          "dateArchiveSelect": "Choose a date",
+          "chef": "Project manager"
+        },
+        "button": {
+          "reprise": "Take over"
         }
       },
       "home": {
@@ -14,14 +25,22 @@
         "search": "Search for Project",
         "notFound": "No Projects found"
       },
+      "clientProjets": {
+        "titleTab": "My projects"
+      },
+      "etudiant": {
+        "titleTab": "My project"
+      },
       "created": "A new Project is created with identifier {{ param }}",
       "updated": "A Project is updated with identifier {{ param }}",
       "deleted": "A Project is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Project {{ id }}?"
+        "question": "Are you sure you want to delete project {{ nom }}?",
+        "detail": "Deleting the project will cause it to be archived."
       },
       "detail": {
-        "title": "Project"
+        "title": "Project",
+        "chefDeProjet": "Project manager"
       },
       "apply": {
         "postuler": "Apply",
@@ -47,7 +66,8 @@
         "noteRendu": "Report mark",
         "ouvrir": "Open",
         "noter": "Rate",
-        "manquant": "Missing document :"
+        "manquant": "Missing document :",
+        "gantt": "Gantt"
       },
       "bouton": {
         "choisir": "Apply",
@@ -66,7 +86,10 @@
       "userExtra": "User Extra",
       "document": "Document",
       "client": "Customer",
-      "email": "Email"
+      "email": "Email",
+      "etudiantProjet": {
+        "title": "My project"
+      }
     }
   }
 }

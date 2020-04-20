@@ -14,6 +14,7 @@ import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { ProjetService } from 'app/entities/projet/projet.service';
 import { Groupe } from 'app/shared/model/groupe.model';
 import { IUserExtra } from 'app/shared/model/user-extra.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -34,6 +35,7 @@ export class ProjetDetailComponent implements OnInit {
   login: string | undefined;
   monProjetId: number;
   groupes: Groupe[] = [];
+  chefGroupeId: number;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -43,41 +45,57 @@ export class ProjetDetailComponent implements OnInit {
     private userExtraService: UserExtraService,
     private groupeService: GroupeService,
     private projetService: ProjetService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
-      this.authorities = account?.authorities;
+      if (account !== null) {
+        this.account = account;
+        this.authorities = account.authorities;
+      }
     });
-    this.userExtraService.findAll().subscribe(userExtras => {
-      this.userExtras = userExtras;
-      for (const userExtra of userExtras) {
-        if (this.account.id === userExtra.id) {
-          this.typeUtilisateur = userExtra.typeUtilisateur;
-          this.groupeId = userExtra.groupeId;
-          if (this.groupeId !== null && this.groupeId !== undefined) {
-            this.groupeService.find(this.groupeId).subscribe(groupe => {
-              this.monProjetId = groupe.body.projetId;
+    this.userExtraService.findByActif(true).subscribe(userExtras => {
+      if (userExtras !== null && userExtras.body !== null) {
+        this.userExtras = userExtras.body;
+        for (const userExtra of this.userExtras) {
+          if (this.account.id === userExtra.id) {
+            this.typeUtilisateur = userExtra.typeUtilisateur;
+            this.groupeId = userExtra.groupeId;
+            if (this.groupeId !== null && this.groupeId !== undefined) {
+              this.groupeService.find(this.groupeId).subscribe(groupe => {
+                this.monProjetId = groupe.body.projetId;
+              });
+            }
+          }
+          if (userExtra.id === this.projet?.userExtraId) {
+            this.userService.findById(userExtra.userId).subscribe(client => {
+              if (client !== null) {
+                client.firstName = this.formatNom(client.firstName);
+                client.lastName = client.lastName.toUpperCase();
+                this.client = client;
+              }
             });
           }
-        }
-        if (userExtra.id === this.projet?.userExtraId) {
-          this.userService.findById(userExtra.userId).subscribe(client => {
-            client.firstName = this.formatNom(client.firstName);
-            client.lastName = client.lastName.toUpperCase();
-            this.client = client;
-          });
         }
       }
     });
     this.userService.findAll().subscribe(users => {
-      this.users = users;
+      if (users !== null) {
+        this.users = users;
+      }
     });
-    this.groupeService.findAll().subscribe(groupes => {
-      this.groupes = groupes;
+    this.groupeService.findByActif(true).subscribe(groupes => {
+      if (groupes !== null && groupes.body !== null) {
+        this.groupes = groupes.body;
+        for (const grp of groupes.body) {
+          if (grp.projetId === this.projet.id) {
+            this.chefGroupeId = grp.userExtraId;
+          }
+        }
+      }
     });
   }
 
@@ -156,18 +174,20 @@ export class ProjetDetailComponent implements OnInit {
     this.projetService.find(this.monProjetId).subscribe(projet => {
       let compteur = projet.body.nbEtudiant;
       const idMonGroupe: number = this.groupeId;
-      this.userExtraService.findAll().subscribe(
+      this.userExtraService.findByActif(true).subscribe(
         userextras => {
-          this.groupeService.delete(idMonGroupe).subscribe();
-          for (const userextra of userextras) {
-            if (userextra.groupeId === idMonGroupe) {
-              userextra.groupeId = null;
-              compteur--;
-              this.userExtraService.update(userextra).subscribe(() => {
-                if (compteur === 0) {
-                  this.onSaveSuccess();
-                }
-              });
+          if (userextras !== null && userextras.body !== null) {
+            this.groupeService.delete(idMonGroupe).subscribe();
+            for (const userextra of userextras.body) {
+              if (userextra.groupeId === idMonGroupe) {
+                userextra.groupeId = null;
+                compteur--;
+                this.userExtraService.update(userextra).subscribe(() => {
+                  if (compteur === 0) {
+                    this.onSaveSuccess();
+                  }
+                });
+              }
             }
           }
         },
@@ -196,6 +216,15 @@ export class ProjetDetailComponent implements OnInit {
   getNomPrenomUser(extra: IUserExtra): string {
     for (const usr of this.users) {
       if (usr.id === extra.id) {
+        if (this.chefGroupeId === extra.id) {
+          return (
+            this.translate.instant('projetticApp.projet.detail.chefDeProjet') +
+            ' : ' +
+            this.formatNom(usr.firstName) +
+            ' ' +
+            usr.lastName.toUpperCase()
+          );
+        }
         return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
       }
     }

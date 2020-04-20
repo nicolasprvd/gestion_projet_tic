@@ -1,15 +1,15 @@
 package com.app.projettic.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Where;
+
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,10 +31,15 @@ public class Groupe implements Serializable {
     @Column(name = "valide", nullable = false)
     private Boolean valide;
 
+    @Column(name = "actif")
+    private Boolean actif;
+
     @OneToMany(mappedBy = "groupe")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Projet> projets = new HashSet<>();
 
     @OneToMany(mappedBy = "groupe")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<UserExtra> userExtras = new HashSet<>();
 
     @ManyToOne
@@ -145,7 +150,14 @@ public class Groupe implements Serializable {
     public void setProjet(Projet projet) {
         this.projet = projet;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -168,6 +180,7 @@ public class Groupe implements Serializable {
         return "Groupe{" +
             "id=" + getId() +
             ", valide='" + isValide() + "'" +
+            ", actif=" + isActif() +
             "}";
     }
 }

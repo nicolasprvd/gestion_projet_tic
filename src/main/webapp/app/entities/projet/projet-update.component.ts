@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
-
 import { IProjet, Projet } from 'app/shared/model/projet.model';
 import { ProjetService } from './projet.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
@@ -15,8 +11,9 @@ import { IUserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
-
-type SelectableEntity = IGroupe | IUserExtra;
+import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-projet-update',
@@ -39,7 +36,8 @@ export class ProjetUpdateComponent implements OnInit {
     automatique: [],
     archive: [],
     groupeId: [],
-    userExtraId: []
+    userExtraId: [],
+    dateCreation: []
   });
 
   constructor(
@@ -50,7 +48,9 @@ export class ProjetUpdateComponent implements OnInit {
     protected userExtraService: UserExtraService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private toastrService: ToastrService,
+    private translateService: TranslateService
   ) {
     this.nbEtudiantDefault = 2;
   }
@@ -59,12 +59,22 @@ export class ProjetUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ projet }) => {
       this.updateForm(projet);
 
-      this.groupeService.query().subscribe((res: HttpResponse<IGroupe[]>) => (this.groupes = res.body || []));
+      this.groupeService.findByActif(true).subscribe(groupes => {
+        if (groupes !== null && groupes.body !== null) {
+          this.groupes = groupes.body;
+        }
+      });
 
-      this.userExtraService.query().subscribe((res: HttpResponse<IUserExtra[]>) => (this.userextras = res.body || []));
+      this.userExtraService.findByActif(true).subscribe(userExtras => {
+        if (userExtras !== null && userExtras.body !== null) {
+          this.userextras = userExtras.body;
+        }
+      });
 
       this.accountService.getAuthenticationState().subscribe(account => {
-        this.account = account;
+        if (account !== null) {
+          this.account = account;
+        }
       });
     });
   }
@@ -80,7 +90,8 @@ export class ProjetUpdateComponent implements OnInit {
       automatique: projet.automatique,
       archive: projet.archive,
       groupeId: projet.groupeId,
-      userExtraId: this.account?.id
+      userExtraId: this.account?.id,
+      dateCreation: projet.dateCreation
     });
   }
 
@@ -106,15 +117,50 @@ export class ProjetUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving = true;
-    const projet = this.createFromForm();
-    if (projet.id !== undefined) {
-      this.subscribeToSaveResponse(this.projetService.update(projet));
+    if (this.editForm.get(['id']).value !== undefined) {
+      const projet = this.createFromForm(false);
+      this.projetService.update(projet).subscribe(
+        () => {
+          this.translateService.instant('global.toastr.modifications.projet.title', { nom: projet.nom });
+          this.isSaving = false;
+          this.toastrService.success(
+            this.translateService.instant('global.toastr.modifications.projet.message'),
+            this.translateService.instant('global.toastr.modifications.projet.title', { nom: projet.nom })
+          );
+          this.previousState();
+        },
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+        }
+      );
     } else {
-      this.subscribeToSaveResponse(this.projetService.create(projet));
+      const projet = this.createFromForm(true);
+      this.projetService.create(projet).subscribe(
+        () => {
+          this.translateService.instant('global.toastr.creations.projet.title', { nom: projet.nom });
+          this.isSaving = false;
+          this.toastrService.success(
+            this.translateService.instant('global.toastr.creations.projet.message'),
+            this.translateService.instant('global.toastr.creations.projet.title', { nom: projet.nom })
+          );
+          this.previousState();
+        },
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+        }
+      );
     }
   }
 
-  private createFromForm(): IProjet {
+  private createFromForm(create: boolean): IProjet {
     return {
       ...new Projet(),
       id: this.editForm.get(['id'])!.value,
@@ -126,23 +172,8 @@ export class ProjetUpdateComponent implements OnInit {
       automatique: this.editForm.get(['automatique'])!.value,
       archive: this.editForm.get(['archive'])!.value,
       groupeId: this.editForm.get(['groupeId'])!.value,
-      userExtraId: this.account?.id
+      userExtraId: this.account?.id,
+      dateCreation: create === true ? moment() : this.editForm.get(['dateCreation'])!.value
     };
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IProjet>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
   }
 }

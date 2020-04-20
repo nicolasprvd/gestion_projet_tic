@@ -7,11 +7,11 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <!--
-        Updated the entity Projet.
+        Updated the entity Document.
     -->
-    <changeSet id="202004081057-1" author="nipr">
-        <addColumn tableName="projet">
-            <column name="date_creation" type="timestamp" defaultValueDate="current_timestamp" />
+    <changeSet id="202004171552-1" author="mamo">
+        <addColumn tableName="document">
+            <column name="actif" type="boolean" defaultValueBoolean="true" />
         </addColumn>
     </changeSet>
 

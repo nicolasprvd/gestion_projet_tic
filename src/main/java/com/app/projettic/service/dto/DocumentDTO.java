@@ -10,10 +10,10 @@ import com.app.projettic.domain.enumeration.TypeDocument;
  * A DTO for the {@link com.app.projettic.domain.Document} entity.
  */
 public class DocumentDTO implements Serializable {
-    
+
     private Long id;
 
-    
+
     @Lob
     private byte[] doc;
 
@@ -21,9 +21,10 @@ public class DocumentDTO implements Serializable {
     @NotNull
     private TypeDocument typeDocument;
 
-
     private Long projetId;
-    
+
+    private Boolean actif;
+
     public Long getId() {
         return id;
     }
@@ -64,6 +65,14 @@ public class DocumentDTO implements Serializable {
         this.projetId = projetId;
     }
 
+    public Boolean isActif() {
+        return actif;
+    }
+
+    public void setActif(Boolean actif) {
+        this.actif = actif;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -91,6 +100,7 @@ public class DocumentDTO implements Serializable {
             "id=" + getId() +
             ", doc='" + getDoc() + "'" +
             ", typeDocument='" + getTypeDocument() + "'" +
+            ", actif=" + isActif() +
             ", projetId=" + getProjetId() +
             "}";
     }

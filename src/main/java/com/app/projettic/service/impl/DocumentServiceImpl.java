@@ -122,7 +122,22 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @Transactional(readOnly = true)
     public List<DocumentDTO> findByProjetId(Long projetId) {
-        log.debug("Request to get Documents : {}", projetId);
-        return documentRepository.findByProjetId(projetId).stream().map(documentMapper::toDto).collect(Collectors.toList());
+        log.debug("Request to get Documents from projet id = " + projetId);
+        return documentRepository.findByProjetId(projetId)
+            .stream()
+            .map(documentMapper::toDto).collect(Collectors.toList());
+    }
+
+    /**
+     * Get documents by actif.
+     *
+     * @param actif the actif of the documents.
+     * @return the entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<DocumentDTO> findByActif(boolean actif) {
+        log.debug("Request to get document : {}", actif);
+        return documentRepository.findByActif(actif).stream().map(documentMapper::toDto).collect(Collectors.toList());
     }
 }

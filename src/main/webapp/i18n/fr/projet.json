@@ -1,9 +1,20 @@
 {
   "projetticApp": {
     "projet": {
+      "documents": {
+        "title": "Documents",
+        "cdc": "Cahier des charges",
+        "gantt": "Gantt",
+        "rendu": "Rendu final"
+      },
       "form": {
         "label": {
-          "dateArchive": "Archives"
+          "dateArchive": "Archives",
+          "dateArchiveSelect": "Sélectionner une date",
+          "chef": "Chef de projet"
+        },
+        "button": {
+          "reprise": "Reprendre"
         }
       },
       "home": {
@@ -14,14 +25,22 @@
         "search": "Recherche pour Projet",
         "notFound": "Aucun Projet trouvé"
       },
+      "clientProjets": {
+        "titleTab": "Mes projets"
+      },
+      "etudiant": {
+        "titleTab": "Mon projet"
+      },
       "created": "Un nouveau Projet a été créé avec l'identifiant {{ param }}",
       "updated": "Le Projet avec l'identifiant {{ param }} a été mis à jour",
       "deleted": "Le Projet avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Projet {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer le Projet {{ nom }} ?",
+        "detail": "La suppression du projet entraînera son archivage."
       },
       "detail": {
-        "title": "Projet"
+        "title": "Projet",
+        "chefDeProjet": "Chef de projet"
       },
 
       "apply": {
@@ -48,7 +67,8 @@
         "noteRendu": "Note rendu",
         "ouvrir": "Ouvrir",
         "noter": "Noter",
-        "manquant": "Document manquant :"
+        "manquant": "Document manquant :",
+        "gantt": "Gantt"
       },
       "bouton": {
         "choisir": "Postuler",
@@ -67,7 +87,10 @@
       "userExtra": "User Extra",
       "document": "Document",
       "client": "Client",
-      "email": "Email"
+      "email": "Email",
+      "etudiantProjet": {
+        "title": "Mon projet"
+      }
     }
   }
 }

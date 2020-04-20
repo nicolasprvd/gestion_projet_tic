@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -31,16 +30,11 @@ export class UserExtraComponent implements OnInit, OnDestroy {
   }
 
   loadAll(): void {
-    if (this.currentSearch) {
-      this.userExtraService
-        .search({
-          query: this.currentSearch
-        })
-        .subscribe((res: HttpResponse<IUserExtra[]>) => (this.userExtras = res.body || []));
-      return;
-    }
-
-    this.userExtraService.query().subscribe((res: HttpResponse<IUserExtra[]>) => (this.userExtras = res.body || []));
+    this.userExtraService.findByActif(true).subscribe(userExtras => {
+      if (userExtras !== null && userExtras.body !== null) {
+        this.userExtras = userExtras.body;
+      }
+    });
   }
 
   search(query: string): void {

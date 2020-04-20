@@ -6,6 +6,7 @@ import com.app.projettic.repository.ProjetRepository;
 import com.app.projettic.repository.search.ProjetSearchRepository;
 import com.app.projettic.service.dto.ProjetDTO;
 import com.app.projettic.service.mapper.ProjetMapper;
+import jdk.nashorn.internal.runtime.options.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,5 +112,32 @@ public class ProjetServiceImpl implements ProjetService {
             .stream(projetSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(projetMapper::toDto)
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all projects from client id
+     * @param userExtraId
+     * @return array list
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProjetDTO> findByUserExtraId(Long userExtraId) {
+        log.debug("Request to search projects from client id {}", userExtraId);
+        return projetRepository.findByUserExtraId(userExtraId)
+            .stream()
+            .map(projetMapper::toDto)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Get project from group id
+     * @param groupeId
+     * @return object projet
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ProjetDTO> findByGroupeId(Long groupeId) {
+        log.debug("Request to get Projet from group id : {}", groupeId);
+        return projetRepository.findByGroupeId(groupeId).map(projetMapper::toDto);
     }
 }

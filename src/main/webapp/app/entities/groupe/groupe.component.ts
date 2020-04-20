@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -46,16 +45,11 @@ export class GroupeComponent implements OnInit, OnDestroy {
   }
 
   loadAll(): void {
-    if (this.currentSearch) {
-      this.groupeService
-        .search({
-          query: this.currentSearch
-        })
-        .subscribe((res: HttpResponse<IGroupe[]>) => (this.groupes = res.body || []));
-      return;
-    }
-
-    this.groupeService.query().subscribe((res: HttpResponse<IGroupe[]>) => (this.groupes = res.body || []));
+    this.groupeService.findByActif(true).subscribe(groupes => {
+      if (groupes !== null && groupes.body !== null) {
+        this.groupes = groupes.body;
+      }
+    });
   }
 
   search(query: string): void {
@@ -67,13 +61,19 @@ export class GroupeComponent implements OnInit, OnDestroy {
     this.loadAll();
     this.registerChangeInGroupes();
     this.projetService.findAll().subscribe(projets => {
-      this.projets = projets;
+      if (projets !== null) {
+        this.projets = projets;
+      }
     });
     this.userService.findAll().subscribe(users => {
-      this.users = users;
+      if (users !== null) {
+        this.users = users;
+      }
     });
-    this.userExtraService.findAll().subscribe(userExtras => {
-      this.userExtras = userExtras;
+    this.userExtraService.findByActif(true).subscribe(userExtras => {
+      if (userExtras !== null) {
+        this.userExtras = userExtras.body;
+      }
     });
   }
 

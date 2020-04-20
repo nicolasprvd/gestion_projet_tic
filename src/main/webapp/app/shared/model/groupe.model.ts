@@ -8,6 +8,7 @@ export interface IGroupe {
   userExtras?: IUserExtra[];
   userExtraId?: number;
   projetId?: number;
+  actif?: boolean;
 }
 
 export class Groupe implements IGroupe {
@@ -17,8 +18,10 @@ export class Groupe implements IGroupe {
     public projets?: IProjet[],
     public userExtras?: IUserExtra[],
     public userExtraId?: number,
-    public projetId?: number
+    public projetId?: number,
+    public actif?: boolean
   ) {
     this.valide = this.valide || false;
+    this.actif = this.actif || false;
   }
 }

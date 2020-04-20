@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -18,6 +18,8 @@ import * as moment from 'moment';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtra } from 'app/shared/model/user-extra.model';
 import { Groupe } from 'app/shared/model/groupe.model';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-projet',
@@ -26,7 +28,6 @@ import { Groupe } from 'app/shared/model/groupe.model';
 })
 export class ProjetComponent implements OnInit, OnDestroy {
   allProjets?: IProjet[];
-  accountExtraId!: number;
   datesArchive: number[];
   isReset: boolean;
   isSaving = false;
@@ -51,7 +52,8 @@ export class ProjetComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private userExtraService: UserExtraService,
     private groupeService: GroupeService,
-    private router: Router
+    private toastrService: ToastrService,
+    private translateService: TranslateService
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -79,7 +81,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
         if (date.year() === moment().year() && !archive) {
           this.projets.push(projet);
         }
-        this.datesArchive.push(date.year());
+        if (archive) {
+          this.datesArchive.push(date.year());
+        }
       });
 
       this.datesArchive = [...new Set(this.datesArchive)];
@@ -87,6 +91,10 @@ export class ProjetComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Load projects list from date
+   * @param value
+   */
   changeProjets(value: number): void {
     this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
       this.projets = [];
@@ -102,6 +110,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Reset select list date
+   */
   reset(): void {
     this.isReset = true;
   }
@@ -116,21 +127,29 @@ export class ProjetComponent implements OnInit, OnDestroy {
 
     this.registerChangeInProjets();
     this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
-      this.authorities = account.authorities;
-    });
-    this.userExtraService.find(this.account.id).subscribe(userExtra => {
-      this.typeUtilisateur = userExtra.body.typeUtilisateur;
-      this.accountExtra = userExtra.body;
-      this.groupeId = userExtra.body.groupeId;
-      if (this.groupeId != null) {
-        this.groupeService.find(this.groupeId).subscribe(groupe => {
-          this.projetChoisiId = groupe.body.projetId;
-        });
+      if (account !== null) {
+        this.account = account;
+        this.authorities = account.authorities;
       }
     });
-    this.groupeService.findAll().subscribe(groupes => {
-      this.groupes = groupes;
+    this.userExtraService.find(this.account.id).subscribe(userExtra => {
+      if (userExtra !== null) {
+        this.typeUtilisateur = userExtra.body.typeUtilisateur;
+        this.accountExtra = userExtra.body;
+        this.groupeId = userExtra.body.groupeId;
+        if (this.groupeId != null) {
+          this.groupeService.find(this.groupeId).subscribe(groupe => {
+            if (groupe !== null) {
+              this.projetChoisiId = groupe.body.projetId;
+            }
+          });
+        }
+      }
+    });
+    this.groupeService.findByActif(true).subscribe(groupes => {
+      if (groupes !== null && groupes.body !== null) {
+        this.groupes = groupes.body;
+      }
     });
   }
 
@@ -233,25 +252,55 @@ export class ProjetComponent implements OnInit, OnDestroy {
   retractation(): void {
     this.projetService.find(this.projetChoisiId).subscribe(projet => {
       let compteur = projet.body.nbEtudiant;
-      const idMonGroupe: number = this.accountExtra.groupeId;
-      this.userExtraService.findAll().subscribe(
+      const idMonGroupe: number = this.groupeId;
+      this.userExtraService.findByActif(true).subscribe(
         userextras => {
-          this.groupeService.delete(idMonGroupe).subscribe();
-          for (const userextra of userextras) {
-            if (userextra.groupeId === idMonGroupe) {
-              userextra.groupeId = null;
-              compteur--;
-              this.userExtraService.update(userextra).subscribe(() => {
-                if (compteur === 0) {
-                  this.onSaveSuccess();
-                }
-              });
+          if (userextras !== null && userextras.body !== null) {
+            this.groupeService.delete(idMonGroupe).subscribe();
+            for (const userextra of userextras.body) {
+              if (userextra.groupeId === idMonGroupe) {
+                userextra.groupeId = null;
+                compteur--;
+                this.userExtraService.update(userextra).subscribe(() => {
+                  if (compteur === 0) {
+                    this.onSaveSuccess();
+                  }
+                });
+              }
             }
           }
         },
         () => this.onSaveError()
       );
     });
+  }
+
+  /**
+   * Take over archive project
+   * @param projet
+   */
+  reprise(projet: IProjet): void {
+    this.reset();
+    projet.archive = false;
+    projet.dateCreation = moment();
+    projet.groupeId = null;
+    projet.documents = [];
+    this.projetService.update(projet).subscribe(
+      () => {
+        this.toastrService.success(
+          this.translateService.instant('global.toastr.reprise.projet.message'),
+          this.translateService.instant('global.toastr.reprise.projet.title', { nom: projet.nom })
+        );
+        this.loadAll();
+      },
+      () => {
+        this.isSaving = false;
+        this.toastrService.error(
+          this.translateService.instant('global.toastr.erreur.message'),
+          this.translateService.instant('global.toastr.erreur.title')
+        );
+      }
+    );
   }
 
   protected onSaveSuccess(): void {
@@ -274,12 +323,13 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * @param projet
    */
   isAffiche(projet: IProjet): boolean {
-    if (this.isAdmin()) {
+    if (this.isAdmin() || this.isClient()) {
       return true;
     }
     if (!projet.archive) {
       return !projet.groupeId;
     }
+
     return false;
   }
 }

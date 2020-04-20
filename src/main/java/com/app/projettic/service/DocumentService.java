@@ -1,7 +1,6 @@
 package com.app.projettic.service;
 
 import com.app.projettic.service.dto.DocumentDTO;
-import com.app.projettic.service.dto.ProjetDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +32,14 @@ public interface DocumentService {
      * @return the entity.
      */
     Optional<DocumentDTO> findOne(Long id);
+
+    /**
+     * Get the "id" document.
+     *
+     * @param actif the actif of the document.
+     * @return the entity.
+     */
+    List<DocumentDTO> findByActif(boolean actif);
 
     /**
      * Get the "id" documents.
