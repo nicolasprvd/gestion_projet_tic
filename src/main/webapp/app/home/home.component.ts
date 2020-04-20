@@ -107,26 +107,36 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isSaving = true;
     for (const groupe of this.groupes) {
       groupe.actif = false;
-      this.groupeService.update(groupe).subscribe();
+      this.groupeService.update(groupe).subscribe(() => {
+        this.isDesactive = true;
+      });
     }
     for (const evaluation of this.evaluations) {
       evaluation.actif = false;
-      this.evaluationService.update(evaluation).subscribe();
+      this.evaluationService.update(evaluation).subscribe(() => {
+        this.isDesactive = true;
+      });
     }
     for (const document of this.documents) {
       document.actif = false;
-      this.documentService.update(document).subscribe();
+      this.documentService.update(document).subscribe(() => {
+        this.isDesactive = true;
+      });
     }
     for (const projet of this.projets) {
       projet.archive = true;
-      this.projetService.update(projet).subscribe();
+      this.projetService.update(projet).subscribe(() => {
+        this.isDesactive = true;
+      });
     }
     for (const extra of this.userExtras) {
       if (extra.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
         const usr = this.getUserById(extra.id);
         extra.actif = false;
         usr.activated = false;
-        this.userService.update(usr).subscribe();
+        this.userService.update(usr).subscribe(() => {
+          this.isDesactive = true;
+        });
         this.userExtraService.update(extra).subscribe(() => {
           this.isDesactive = true;
           this.onSaveSuccess();
