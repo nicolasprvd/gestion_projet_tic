@@ -331,7 +331,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> findByActivated(boolean activated) {
+    public List<UserDTO> findByActivated(boolean activated) {
         return userRepository.findByActivated(activated);
     }
 }

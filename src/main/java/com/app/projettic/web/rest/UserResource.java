@@ -223,7 +223,7 @@ public class UserResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of user in body.
      */
     @GetMapping("/users/activated/{activated}")
-    public List<User> findByActivated(@PathVariable boolean activated) {
+    public List<UserDTO> findByActivated(@PathVariable boolean activated) {
         log.debug("REST request to get all User");
         return userService.findByActivated(activated);
     }
