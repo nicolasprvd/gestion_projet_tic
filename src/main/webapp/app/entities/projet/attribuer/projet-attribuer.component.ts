@@ -77,11 +77,11 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
   envoiMailNonChoisi(idChefProjet: number): void {
     for (const u of this.users) {
       if (u.id === idChefProjet) {
-        this.subject = 'Réponse negative attribution du projet';
+        this.subject = 'Réponse négative attribution du projet';
         this.content =
           'Le projet ' +
           this.projet.nom +
-          " n'a pas été attribué à votre groupe. Veuillez-vous rendre sur le site pour en choisir un autre.";
+          " n'a pas été attribué à votre groupe. Veuillez vous rendre sur le site pour en choisir un autre.";
         this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
       }
     }
