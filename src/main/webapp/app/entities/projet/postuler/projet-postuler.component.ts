@@ -57,7 +57,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     this.userExtraService.findByActif(true).subscribe(userExtras => {
       if (userExtras !== null && userExtras.body !== null) {
         this.userExtras = userExtras.body;
-        this.userService.findAll().subscribe(users => {
+        this.userService.findByActivated(true).subscribe(users => {
           if (users !== null) {
             for (const u of users) {
               if (u.id !== this.account?.id && this.isEtudiantActif(u.id) && !this.aDejaUnGroupe(u.id)) {

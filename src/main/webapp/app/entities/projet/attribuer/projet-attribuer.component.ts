@@ -50,7 +50,7 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
                   if (ue.groupeId === g.id) {
                     this.usersExtra.push(ue);
 
-                    this.userService.findAll().subscribe(users => {
+                    this.userService.findByActivated(true).subscribe(users => {
                       if (users !== null) {
                         for (const u of users) {
                           if (u.id === ue.userId) {

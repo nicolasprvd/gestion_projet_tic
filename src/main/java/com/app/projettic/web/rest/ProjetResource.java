@@ -164,4 +164,15 @@ public class ProjetResource {
     public void sendMail(@PathVariable String to, @PathVariable String subject, @PathVariable String content){
         this.mailService.sendEmail(to, subject, content, false, false);
     }
+
+    /**
+     * {@code GET  /projets/archive} : get all the projet with the archive status.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of projet in body.
+     */
+    @GetMapping("/projets/archive/{archive}")
+    public List<ProjetDTO> findByArchive(@PathVariable boolean archive) {
+        log.debug("REST request to get all projets");
+        return projetService.findByArchive(archive);
+    }
 }

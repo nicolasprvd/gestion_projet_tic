@@ -66,7 +66,7 @@ export class EvaluationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadAll();
     this.registerChangeInEvaluations();
-    this.userService.findAll().subscribe(users => {
+    this.userService.findByActivated(true).subscribe(users => {
       if (users !== null) {
         this.users = users;
       }

@@ -32,6 +32,10 @@ export class ProjetService {
     return this.http.get<IProjet[]>(`${this.resourceUrl}`);
   }
 
+  findByArchive(archive: boolean): Observable<EntityArrayResponseType> {
+    return this.http.get<IProjet[]>(`${this.resourceUrl}/archive/${archive}`, { observe: 'response' });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IProjet[]>(this.resourceUrl, { params: options, observe: 'response' });
@@ -51,7 +55,7 @@ export class ProjetService {
   }
 
   findByGroupeId(groupeId: number): Observable<EntityResponseType> {
-    return this.http.get<IProjet>(`${this.resourceUrl}/groupe/${groupeId}`, {observe: 'response'});
+    return this.http.get<IProjet>(`${this.resourceUrl}/groupe/${groupeId}`, { observe: 'response' });
   }
 
   sendMail(to: String, subject: String, content: String): Observable<{}> {

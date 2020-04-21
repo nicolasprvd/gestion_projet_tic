@@ -2,6 +2,7 @@ package com.app.projettic.repository;
 
 import com.app.projettic.domain.User;
 
+import com.app.projettic.service.dto.UserDTO;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 
@@ -52,4 +53,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneById(Long id);
 
     List<User> findAll();
+
+    List<UserDTO> findByActivated(boolean activated);
 }

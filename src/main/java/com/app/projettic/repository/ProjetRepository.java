@@ -15,4 +15,5 @@ public interface ProjetRepository extends JpaRepository<Projet, Long> {
 
     List<Projet> findByUserExtraId(Long userExtraId);
     Optional<Projet> findByGroupeId(Long groupeId);
+    List<Projet> findByArchive(boolean archive);
 }
