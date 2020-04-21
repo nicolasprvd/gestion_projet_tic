@@ -17,6 +17,8 @@ import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { EvaluationService } from 'app/entities/evaluation/evaluation.service';
 import { UserService } from 'app/core/user/user.service';
 import { ProjetService } from 'app/entities/projet/projet.service';
+import { HomeNouvelleAnneeComponent } from 'app/home/home-nouvelleAnnee.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-home',
@@ -43,7 +45,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private documentService: DocumentService,
     private projetService: ProjetService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -104,55 +107,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   nouvelleAnnee(): void {
-    this.isSaving = true;
-    for (const groupe of this.groupes) {
-      groupe.actif = false;
-      this.groupeService.update(groupe).subscribe(() => {
-        this.isDesactive = true;
-      });
-    }
-    for (const evaluation of this.evaluations) {
-      evaluation.actif = false;
-      this.evaluationService.update(evaluation).subscribe(() => {
-        this.isDesactive = true;
-      });
-    }
-    for (const document of this.documents) {
-      document.actif = false;
-      this.documentService.update(document).subscribe(() => {
-        this.isDesactive = true;
-      });
-    }
-    for (const projet of this.projets) {
-      projet.archive = true;
-      this.projetService.update(projet).subscribe(() => {
-        this.isDesactive = true;
-      });
-    }
-    for (const extra of this.userExtras) {
-      if (extra.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
-        const usr = this.getUserById(extra.id);
-        extra.actif = false;
-        usr.activated = false;
-        this.userService.update(usr).subscribe(() => {
-          this.isDesactive = true;
-        });
-        this.userExtraService.update(extra).subscribe(() => {
-          this.isDesactive = true;
-          this.onSaveSuccess();
-        });
-        this.isDesactive = false;
-      }
-    }
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.router.navigate(['/']);
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
+    const modalRef = this.modalService.open(HomeNouvelleAnneeComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.account = this.account;
+    modalRef.componentInstance.userExtras = this.userExtras;
+    modalRef.componentInstance.documents = this.documents;
+    modalRef.componentInstance.evaluations = this.evaluations;
+    modalRef.componentInstance.groupes = this.groupes;
+    modalRef.componentInstance.users = this.users;
+    modalRef.componentInstance.projets = this.projets;
+    modalRef.componentInstance.isDesactive = this.isDesactive;
+    modalRef.componentInstance.passEntry.subscribe((value: boolean) => {
+      this.isDesactive = value;
+    });
   }
 
   isEtudiantActif(): boolean {
@@ -162,14 +128,5 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     }
     return false;
-  }
-
-  private getUserById(id: number): IUser {
-    for (const usr of this.users) {
-      if (usr.id === id) {
-        return usr;
-      }
-    }
-    return null;
   }
 }
