@@ -2,7 +2,6 @@
   "home": {
     "title": "Bienvenue sur votre application de gestion de vos projets TIC",
     "subtitle": "Ce site vous permettra, selon votre profil :",
-    "nouvelleAnnee": "Démarrer une nouvelle année universitaire",
     "admin": {
       "role": "Si vous êtes l'administrateur de l'application :",
       "one": "Avoir accès aux mêmes fonctionnalités que les clients",
@@ -22,6 +21,11 @@
       "three": "Visualiser le ou les projets proposés",
       "four": "Visualiser les informations sur le groupe attribué au projet, ainsi que les documents déposés par ce dernier",
       "five": "Noter les groupes"
+    },
+    "newYear": {
+      "titre": "Démarrer une nouvelle année universitaire",
+      "detail": "Attention, démarrer une nouvelle année universitaire va désactiver tous les groupes / évaluations / documents / étudiants actifs. Ceux-ci seront tout de même conservés.",
+      "question": "Êtes-vous sûr de vouloir démarrer une nouvelle année universitaire ?"
     }
   }
 }
