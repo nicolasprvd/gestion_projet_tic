@@ -169,7 +169,7 @@ export class ProjetUpdateComponent implements OnInit {
       descriptionTexte: this.editForm.get(['descriptionTexte'])!.value,
       nbEtudiant: this.editForm.get(['nbEtudiant'])!.value,
       automatique: this.editForm.get(['automatique'])!.value,
-      archive: this.editForm.get(['archive'])!.value,
+      archive: false,
       groupeId: this.editForm.get(['groupeId'])!.value,
       userExtraId: this.account?.id,
       dateCreation: create === true ? moment() : this.editForm.get(['dateCreation'])!.value

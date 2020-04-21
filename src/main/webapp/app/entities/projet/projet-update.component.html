@@ -58,22 +58,12 @@
                     </select>
                 </div>
 
-                <!-- Attribution automatique -->
-                <!--
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.automatique" for="field_automatique">Automatique</label>
-                    <input type="checkbox" class="form-control" name="automatique" id="field_automatique"
-                           formControlName="automatique"/>
-                </div>
-                -->
+            </div>
 
-                <!-- Archive -->
-                <div *ngIf="editForm.get('id')!.value ">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.archive" for="field_archive"></label>
-                    <input type="checkbox" class="form-control" name="archive" id="field_archive"
-                           formControlName="archive"/>
-                </div>
-
+            <div>
+                <small class="form-text text-danger" jhiTranslate="global.champs.annotation">
+                </small>
+                <br>
             </div>
 
             <!-- Bouton -->

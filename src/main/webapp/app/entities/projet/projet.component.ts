@@ -64,6 +64,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   loadAll(): void {
+    this.isRetracte = false;
     this.isReset = false;
     if (this.currentSearch) {
       this.projetService
@@ -125,7 +126,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.isRetracte = false;
     this.loadAll();
 
     this.registerChangeInProjets();
@@ -253,7 +253,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - modify the group id of each user (extra) to set it to null
    */
   retractation(): void {
-    this.isRetracte = false;
     this.projetService.find(this.projetChoisiId).subscribe(projet => {
       let compteur = projet.body.nbEtudiant;
       const idMonGroupe: number = this.groupeId;
@@ -267,18 +266,27 @@ export class ProjetComponent implements OnInit, OnDestroy {
                 compteur--;
                 this.userExtraService.update(userextra).subscribe(() => {
                   if (compteur === 0) {
-                    // this.onSaveSuccess();
+                    this.isRetracte = true;
+                    this.isSaving = false;
                     return;
                   }
                 });
               }
             }
-            this.isSaving = false;
-            this.isRetracte = true;
-            this.router.navigate(['/projet']);
+            this.toastrService.success(
+              this.translateService.instant('global.toastr.retractation.projet.message'),
+              this.translateService.instant('global.toastr.retractation.projet.title', { nom: projet.body.nom })
+            );
+            this.router.navigate(['projet']);
           }
         },
-        () => this.onSaveError()
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+        }
       );
     });
   }

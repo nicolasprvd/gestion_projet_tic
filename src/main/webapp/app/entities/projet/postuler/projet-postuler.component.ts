@@ -27,7 +27,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   users: User[] = [];
   userExtras: UserExtra[] = [];
   nbEtuArray: (number | undefined)[] | undefined;
-  groupeCree: number;
+  valideEmpty: boolean;
+  valideInclude: boolean;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -43,6 +44,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.valideEmpty = false;
+    this.valideInclude = false;
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
       if (account !== null) {
@@ -188,7 +191,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * - there is 2 times or more the same person
    */
   validationGroupe(): boolean {
-    const ids: number[] = [];
+    this.valideEmpty = false;
+    this.valideInclude = false;
     let valide = true;
     for (let i = 0; i < this.nbEtuArray.length; i++) {
       const etuId = 'etu' + this.nbEtuArray[i];
@@ -197,14 +201,25 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       if (etuId === null || etu === '') {
         document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
         valide = false;
+        this.valideEmpty = true;
       }
+    }
+    return valide;
+  }
+
+  isInclude(): void {
+    this.valideInclude = false;
+    const ids: number[] = [];
+    for (let i = 0; i < this.nbEtuArray.length; i++) {
+      const etuId = 'etu' + this.nbEtuArray[i];
+      document.getElementById(etuId).setAttribute('style', 'background-color:white');
+      const etu = (document.getElementById(etuId) as HTMLInputElement).value;
       if (ids.includes(+etu)) {
         document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
-        valide = false;
+        this.valideInclude = true;
       }
       ids.push(+etu);
     }
-    return valide;
   }
 
   formatNom(str: string): string {

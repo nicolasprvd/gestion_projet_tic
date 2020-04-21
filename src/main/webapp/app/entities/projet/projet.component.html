@@ -104,13 +104,13 @@
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                             </button>
 
-                            <button *ngIf="!isClient() && !aDejaUnGroupe()" type="submit" [routerLink]="['/projet', projet.id, 'postuler']"
+                            <button *ngIf="!isClient() && !aDejaUnGroupe() || isRetracte" type="submit" [routerLink]="['/projet', projet.id, 'postuler']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="book"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.bouton.choisir"></span>
                             </button>
 
-                            <button id="boutonPostule" *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet)"
+                            <button id="boutonPostule" *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet) && !isRetracte"
                                     class="btn btn-success btn-sm" disabled="disabled">
                                 <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.bouton.etatCandidature"></span>
                             </button>

@@ -1,6 +1,12 @@
 {
   "projetticApp": {
     "projet": {
+      "postuler": {
+        "messages": {
+          "empty": "You must inform all members of the project",
+          "include": "Student has already been selected"
+        }
+      },
       "documents": {
         "title": "Documents",
         "cdc": "Requirements specification",

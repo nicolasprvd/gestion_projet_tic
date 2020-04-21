@@ -109,6 +109,25 @@
           "message": "The project has been created"
         }
       },
+      "documents": {
+        "depot": {
+          "message": "The documents have been filed",
+          "title": "Filing of documents"
+        }
+      },
+      "noter": {
+        "projet": {
+          "message": "The project was properly evaluated",
+          "title": "Evaluation of the {{nom}} project",
+          "messageUpdate": "Evaluation changes have been saved"
+        }
+      },
+      "attribuer": {
+        "projet": {
+          "message": "The project was awarded",
+          "title": "Assignment of the {{nom}} project"
+        }
+      },
       "suppressions": {
         "projet": {
           "title": "Deletion of the {{nom}} project",
@@ -137,6 +156,9 @@
         "title": "Error",
         "message": "An error has occured"
       }
+    },
+    "champs": {
+      "annotation": "Fields followed by * are required"
     }
   },
   "entity": {
