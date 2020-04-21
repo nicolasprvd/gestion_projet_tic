@@ -25,7 +25,8 @@
     "newYear": {
       "titre": "Démarrer une nouvelle année universitaire",
       "detail": "Attention, démarrer une nouvelle année universitaire va désactiver tous les groupes / évaluations / documents / étudiants actifs. Ceux-ci seront tout de même conservés.",
-      "question": "Êtes-vous sûr de vouloir démarrer une nouvelle année universitaire ?"
+      "question": "Êtes-vous sûr de vouloir démarrer une nouvelle année universitaire ?",
+      "confirmation": "Démarrer"
     }
   }
 }

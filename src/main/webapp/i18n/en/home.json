@@ -25,7 +25,8 @@
     "newYear": {
       "titre": "Start a new academic year",
       "detail": "Be careful, starting a new academic year will disable all active groups / evaluations / documents / students. These will still be kept.",
-      "question": "Are you sure you want to start a new academic year?"
+      "question": "Are you sure you want to start a new academic year?",
+      "confirmation": "Start"
     }
   }
 }
