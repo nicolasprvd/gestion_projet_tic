@@ -65,7 +65,7 @@ export class GroupeComponent implements OnInit, OnDestroy {
         this.projets = projets;
       }
     });
-    this.userService.findAll().subscribe(users => {
+    this.userService.findByActivated(true).subscribe(users => {
       if (users !== null) {
         this.users = users;
       }

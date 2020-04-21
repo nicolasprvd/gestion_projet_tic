@@ -140,4 +140,17 @@ public class ProjetServiceImpl implements ProjetService {
         log.debug("Request to get Projet from group id : {}", groupeId);
         return projetRepository.findByGroupeId(groupeId).map(projetMapper::toDto);
     }
+
+    /**
+     * Get projet by archive.
+     *
+     * @param archive the archive of the userExtra.
+     * @return the entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProjetDTO> findByArchive(boolean archive) {
+        log.debug("Request to get projet : {}", archive);
+        return projetRepository.findByArchive(archive).stream().map(projetMapper::toDto).collect(Collectors.toList());
+    }
 }

@@ -32,6 +32,10 @@ export class ProjetService {
     return this.http.get<IProjet[]>(`${this.resourceUrl}`);
   }
 
+  findByArchive(archive: boolean): Observable<EntityArrayResponseType> {
+    return this.http.get<IProjet[]>(`${this.resourceUrl}/archive/${archive}`, { observe: 'response' });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IProjet[]>(this.resourceUrl, { params: options, observe: 'response' });
