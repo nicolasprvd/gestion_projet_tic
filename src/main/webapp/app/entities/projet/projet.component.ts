@@ -208,9 +208,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * Return true studients have apply to this project
    */
   isChoisi(idProjet: number): boolean {
-    for (const g of this.groupes) {
-      if (g.projetId === idProjet) {
-        return true;
+    if (this.groupes !== null && this.groupes !== undefined) {
+      for (const g of this.groupes) {
+        if (g.projetId === idProjet) {
+          return true;
+        }
       }
     }
     return false;
@@ -222,9 +224,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - the project was created by the current user
    */
   isAutorise(projet: IProjet): boolean {
-    for (const droit of this.authorities) {
-      if (Authority.ADMIN === droit) {
-        return true;
+    if (this.authorities !== null && this.authorities !== undefined) {
+      for (const droit of this.authorities) {
+        if (Authority.ADMIN === droit) {
+          return true;
+        }
       }
     }
     if (this.isClient()) {
@@ -237,9 +241,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * Return true if the current user is an administrator
    */
   isAdmin(): boolean {
-    for (const droit of this.authorities) {
-      if (Authority.ADMIN === droit) {
-        return true;
+    if (this.authorities !== null && this.authorities !== undefined) {
+      for (const droit of this.authorities) {
+        if (Authority.ADMIN === droit) {
+          return true;
+        }
       }
     }
     return false;

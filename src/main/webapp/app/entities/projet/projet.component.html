@@ -91,7 +91,7 @@
                                 <span class="d-none d-md-inline" jhiTranslate="projetticApp.projet.form.button.reprise"></span>
                             </button>
 
-                            <button *ngIf="isAutorise(projet) && projet.groupeId != null" type="submit"
+                            <button *ngIf="isAutorise(projet) && projet.groupeId != null && !projet.archive" type="submit"
                                     [routerLink]="['/projet', projet.id, 'rate']"
                                     class="btn btn-success btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>

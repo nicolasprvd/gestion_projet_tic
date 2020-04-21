@@ -141,9 +141,11 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * @param utilisateur
    */
   private aDejaUnGroupe(utilisateur: number): boolean {
-    for (const extra of this.userExtras) {
-      if (extra.id === utilisateur) {
-        return extra.groupeId !== null;
+    if (this.userExtras !== null && this.userExtras !== undefined) {
+      for (const extra of this.userExtras) {
+        if (extra.id === utilisateur) {
+          return extra.groupeId !== null;
+        }
       }
     }
     return false;
@@ -154,9 +156,11 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * @param utilisateur
    */
   private getUserExtra(utilisateur: number): IUserExtra {
-    for (const extra of this.userExtras) {
-      if (extra.id === utilisateur) {
-        return extra;
+    if (this.userExtras !== null && this.userExtras !== undefined) {
+      for (const extra of this.userExtras) {
+        if (extra.id === utilisateur) {
+          return extra;
+        }
       }
     }
     return null;
@@ -167,9 +171,11 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * @param utilisateur
    */
   private isEtudiantActif(utilisateur: number): boolean {
-    for (const extra of this.userExtras) {
-      if (extra.id === utilisateur) {
-        return extra.typeUtilisateur === TypeUtilisateur.ETUDIANT && extra.actif;
+    if (this.userExtras !== null && this.userExtras !== undefined) {
+      for (const extra of this.userExtras) {
+        if (extra.id === utilisateur) {
+          return extra.typeUtilisateur === TypeUtilisateur.ETUDIANT && extra.actif;
+        }
       }
     }
     return false;
