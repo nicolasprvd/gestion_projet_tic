@@ -69,7 +69,6 @@ export class ProjetDeleteDialogComponent {
   }
 
   envoiMailProjetSupprime(extra: number): void {
-    console.error(this.users.length + ' id extra : ' + extra);
     for (const u of this.users) {
       if (u.id === extra) {
         this.subject = 'Réponse négative attribution du projet';

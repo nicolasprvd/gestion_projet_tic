@@ -9,13 +9,13 @@
 
     <jhi-alert-error></jhi-alert-error>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="extras?.length === 0">
+    <div class="alert alert-warning" id="no-result" *ngIf="!isEvaluationAffiche()">
         <span jhiTranslate="projetticApp.evaluation.home.notFound">No evaluations found</span>
     </div>
 
     <hr>
 
-    <div class="table-responsive" id="entities" *ngIf="extras?.length > 0">
+    <div class="table-responsive" id="entities" *ngIf="isEvaluationAffiche()">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr>
