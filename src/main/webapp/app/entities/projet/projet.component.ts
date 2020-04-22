@@ -299,8 +299,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
     this.reset();
     projet.archive = false;
     projet.dateCreation = moment();
-    projet.groupeId = null;
-    projet.documents = [];
     this.projetService.update(projet).subscribe(
       () => {
         this.toastrService.success(
