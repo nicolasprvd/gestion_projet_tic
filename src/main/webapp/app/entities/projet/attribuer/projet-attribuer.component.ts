@@ -75,24 +75,28 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
   }
 
   envoiMailNonChoisi(idChefProjet: number): void {
-    for (const u of this.users) {
-      if (u.id === idChefProjet) {
-        this.subject = 'Réponse negative attribution du projet';
-        this.content =
-          'Le projet ' +
-          this.projet.nom +
-          " n'a pas été attribué à votre groupe. Veuillez-vous rendre sur le site pour en choisir un autre.";
-        this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
+    if (this.users !== null && this.users !== undefined) {
+      for (const u of this.users) {
+        if (u.id === idChefProjet) {
+          this.subject = 'Réponse négative attribution du projet';
+          this.content =
+            'Le projet ' +
+            this.projet.nom +
+            " n'a pas été attribué à votre groupe. Veuillez vous rendre sur le site pour en choisir un autre.";
+          this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
+        }
       }
     }
   }
 
   envoieMailChoisi(idUser: number): void {
-    for (const u of this.users) {
-      if (u.id === idUser) {
-        this.subject = 'Réponse positive attribution du projet';
-        this.content = 'Le projet ' + this.projet.nom + ' a bien été attribué à votre groupe.';
-        this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
+    if (this.users !== null && this.users !== undefined) {
+      for (const u of this.users) {
+        if (u.id === idUser) {
+          this.subject = 'Réponse positive attribution du projet';
+          this.content = 'Le projet ' + this.projet.nom + ' a bien été attribué à votre groupe.';
+          this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
+        }
       }
     }
   }
@@ -106,27 +110,31 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
    */
   attribution(idGroupeChoisit: number): void {
     // 1) modify the group id of each user (extra) to set it to null (for all groups not apply)
-    for (const ue of this.usersExtra) {
-      if (ue.groupeId !== idGroupeChoisit) {
-        this.envoiMailNonChoisi(ue.userId);
-        ue.groupeId = null;
-        this.userExtraService.update(ue).subscribe();
-      } else {
-        this.envoieMailChoisi(ue.userId);
+    if (this.usersExtra !== null && this.usersExtra !== undefined) {
+      for (const ue of this.usersExtra) {
+        if (ue.groupeId !== idGroupeChoisit) {
+          this.envoiMailNonChoisi(ue.userId);
+          ue.groupeId = null;
+          this.userExtraService.update(ue).subscribe();
+        } else {
+          this.envoieMailChoisi(ue.userId);
+        }
       }
     }
 
     // 2) deletion of all groups not apply in the Group table
     // 3) modify tha attribute validate in the group table to the idGroupeChoisit
-    for (const g of this.groupes) {
-      // 2) deletion
-      if (g.id !== idGroupeChoisit) {
-        this.groupeService.delete(g.id).subscribe();
-      }
-      // 3) update valide = true
-      else {
-        g.valide = true;
-        this.groupeService.update(g).subscribe();
+    if (this.groupes !== null && this.groupes !== undefined) {
+      for (const g of this.groupes) {
+        // 2) deletion
+        if (g.id !== idGroupeChoisit) {
+          this.groupeService.delete(g.id).subscribe();
+        }
+        // 3) update valide = true
+        else {
+          g.valide = true;
+          this.groupeService.update(g).subscribe();
+        }
       }
     }
 

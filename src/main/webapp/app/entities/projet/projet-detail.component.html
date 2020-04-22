@@ -58,7 +58,7 @@
                 <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
-            <button *ngIf="isAutorise(projet)" type="button"
+            <button *ngIf="isAutorise(projet) && projet.groupeId === null" type="button"
                     [routerLink]="['/projet', projet.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
@@ -71,7 +71,7 @@
                 jhiTranslate="entity.action.attribuate">Attribuer</span>
             </button>
 
-            <button *ngIf="isAutorise(projet) && projet.groupeId != null " type="submit"
+            <button *ngIf="isAutorise(projet) && projet.groupeId != null  && !projet.archive" type="submit"
                     [routerLink]="['/projet', projet.id, 'rate']"
                     class="btn btn-success">
                 <fa-icon icon="pencil-alt"></fa-icon>

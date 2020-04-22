@@ -125,9 +125,11 @@ export class ProjetDetailComponent implements OnInit {
    * Return true studients have apply to this project
    */
   isChoisi(idProjet: number): boolean {
-    for (const g of this.groupes) {
-      if (g.projetId === idProjet) {
-        return true;
+    if (this.groupes !== null && this.groupes !== undefined) {
+      for (const g of this.groupes) {
+        if (g.projetId === idProjet) {
+          return true;
+        }
       }
     }
     return false;
@@ -139,9 +141,11 @@ export class ProjetDetailComponent implements OnInit {
    * - the project was created by the current user
    */
   isAutorise(projet: IProjet): boolean {
-    for (const droit of this.authorities) {
-      if (Authority.ADMIN === droit) {
-        return true;
+    if (this.authorities !== null && this.authorities !== undefined) {
+      for (const droit of this.authorities) {
+        if (Authority.ADMIN === droit) {
+          return true;
+        }
       }
     }
     if (this.isClient()) {
@@ -214,18 +218,20 @@ export class ProjetDetailComponent implements OnInit {
   }
 
   getNomPrenomUser(extra: IUserExtra): string {
-    for (const usr of this.users) {
-      if (usr.id === extra.id) {
-        if (this.chefGroupeId === extra.id) {
-          return (
-            this.translate.instant('projetticApp.projet.detail.chefDeProjet') +
-            ' : ' +
-            this.formatNom(usr.firstName) +
-            ' ' +
-            usr.lastName.toUpperCase()
-          );
+    if (this.users !== null && this.users !== undefined) {
+      for (const usr of this.users) {
+        if (usr.id === extra.id) {
+          if (this.chefGroupeId === extra.id) {
+            return (
+              this.translate.instant('projetticApp.projet.detail.chefDeProjet') +
+              ' : ' +
+              this.formatNom(usr.firstName) +
+              ' ' +
+              usr.lastName.toUpperCase()
+            );
+          }
+          return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
         }
-        return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
       }
     }
     return '';
@@ -234,9 +240,5 @@ export class ProjetDetailComponent implements OnInit {
   formatNom(str: string): string {
     str = str.toLowerCase();
     return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  getNomClient(client: IUser): string {
-    return this.formatNom(client.firstName) + ' ' + client.lastName.toUpperCase();
   }
 }

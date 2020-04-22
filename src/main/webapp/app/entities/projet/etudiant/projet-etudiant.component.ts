@@ -239,7 +239,6 @@ export class ProjetEtudiantComponent implements OnInit {
       } else {
         if (!this.isCreatedGANTT) {
           const documentGANTT = this.createFromForm(true, TypeDocument.GANTT);
-          console.error(documentGANTT);
           this.documentService.create(documentGANTT).subscribe();
           this.isCreatedGANTT = true;
         }
