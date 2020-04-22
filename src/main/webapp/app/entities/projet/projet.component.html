@@ -104,18 +104,18 @@
                                 <span jhiTranslate="entity.action.delete">Delete</span>
                             </button>
 
-                            <button *ngIf="!isClient() && !aDejaUnGroupe()" type="submit" [routerLink]="['/projet', projet.id, 'postuler']"
+                            <button *ngIf="!isClient() && !aDejaUnGroupe() || isRetracte" type="submit" [routerLink]="['/projet', projet.id, 'postuler']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="book"></fa-icon>
                                 <span jhiTranslate="projetticApp.projet.bouton.choisir"></span>
                             </button>
 
-                            <button id="boutonPostule" *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet)"
+                            <button id="boutonPostule" *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet) && !isRetracte"
                                     class="btn btn-success btn-sm" disabled="disabled">
                                 <span jhiTranslate="projetticApp.projet.bouton.etatCandidature"></span>
                             </button>
 
-                            <button *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet)"
+                            <button *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet) && !isRetracte"
                                     class="btn btn-danger btn-sm" (click)="retractation()">
                                 <span jhiTranslate="projetticApp.projet.bouton.retractation"></span>
                             </button>

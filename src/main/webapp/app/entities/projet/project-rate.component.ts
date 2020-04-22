@@ -17,6 +17,8 @@ import { UserExtra } from 'app/shared/model/user-extra.model';
 import { EvaluationService } from 'app/entities/evaluation/evaluation.service';
 import { IDocument } from 'app/shared/model/document.model';
 import { TypeDocument } from 'app/shared/model/enumerations/type-document.model';
+import {ToastrService} from "ngx-toastr";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -44,6 +46,8 @@ export class ProjectRateComponent implements OnInit {
   cdcDoc: IDocument = null;
   ganttDoc: IDocument = null;
   renduDoc: IDocument = null;
+  idEvaluation: number;
+  evaluation: IEvaluation;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -54,7 +58,9 @@ export class ProjectRateComponent implements OnInit {
     private documentService: DocumentService,
     private http: HttpClient,
     private evaluationService: EvaluationService,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +71,7 @@ export class ProjectRateComponent implements OnInit {
         this.authorities = account.authorities;
       }
     });
+
     this.documentService.findByProjetId(this.project.id).subscribe(documents => {
       if (documents !== null) {
         for (const doc of documents.body) {
@@ -80,6 +87,7 @@ export class ProjectRateComponent implements OnInit {
         }
       }
     });
+
     this.userExtraService.findByActif(true).subscribe(userExtras => {
       if (userExtras !== null) {
         this.groupId = this.project.groupeId;
@@ -87,10 +95,23 @@ export class ProjectRateComponent implements OnInit {
         for (const extra of this.allUsers) {
           if (extra.groupeId === this.groupId) {
             this.groupUsers.push(extra);
+            if(extra.evaluationId !== null) {
+              this.idEvaluation = extra.evaluationId;
+            }else {
+              this.idEvaluation = undefined;
+            }
           }
+        }
+        if(this.idEvaluation !== undefined) {
+          this.evaluationService.find(this.idEvaluation).subscribe(evaluation => {
+            this.evaluation = evaluation.body;
+          });
         }
       }
     });
+
+    console.error(this.idEvaluation);
+
   }
 
   byteSize(base64String: string): string {
@@ -98,9 +119,9 @@ export class ProjectRateComponent implements OnInit {
   }
 
   calculateFinalRate(): void {
-    this.specsRate = +(document.getElementById('specsRate') as HTMLInputElement).value.replace(',', '.');
-    this.ganttsRate = +(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.');
-    this.outputRate = +(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.');
+    this.specsRate = +(+(document.getElementById('specsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.ganttsRate = +(+(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.outputRate = +(+(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     if (this.isValidate()) {
       this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
     }
@@ -109,17 +130,47 @@ export class ProjectRateComponent implements OnInit {
   evaluate(): void {
     if (this.isValidate()) {
       this.isSaving = true;
-      const newEvaluation = this.createEvaluation();
-      this.evaluationService.create(newEvaluation).subscribe(
-        evaluation => {
-          for (const usr of this.groupUsers) {
-            usr.evaluationId = evaluation.body.id;
-            this.userExtraService.update(usr).subscribe();
-          }
-          this.router.navigate(['/projet']);
+      if(this.idEvaluation !== undefined) {
+        const newEvaluation = this.createEvaluation(false);
+        this.evaluationService.update(newEvaluation).subscribe(() => {
+          this.isSaving = false;
+            this.toastrService.success(
+              this.translateService.instant('global.toastr.noter.projet.messageUpdate'),
+              this.translateService.instant('global.toastr.noter.projet.title', { nom: this.project.nom })
+            );
+            this.router.navigate(['/projet']);
         },
-        () => this.onSaveError()
-      );
+          () => {
+            this.isSaving = false;
+            this.toastrService.error(
+              this.translateService.instant('global.toastr.erreur.message'),
+              this.translateService.instant('global.toastr.erreur.title')
+            );
+          });
+      }else {
+        const newEvaluation = this.createEvaluation(true);
+        this.evaluationService.create(newEvaluation).subscribe(
+          evaluation => {
+            this.isSaving = false;
+            for (const usr of this.groupUsers) {
+              usr.evaluationId = evaluation.body.id;
+              this.userExtraService.update(usr).subscribe();
+            }
+            this.toastrService.success(
+              this.translateService.instant('global.toastr.noter.projet.message'),
+              this.translateService.instant('global.toastr.noter.projet.title', { nom: this.project.nom })
+            );
+            this.router.navigate(['/projet']);
+          },
+          () => {
+            this.isSaving = false;
+            this.toastrService.error(
+              this.translateService.instant('global.toastr.erreur.message'),
+              this.translateService.instant('global.toastr.erreur.title')
+            );
+          }
+        );
+      }
     }
   }
 
@@ -143,24 +194,16 @@ export class ProjectRateComponent implements OnInit {
     return !isNaN(this.finalRate) && this.finalRate >= 0 && this.finalRate <= 20 && valide;
   }
 
-  private createEvaluation(): IEvaluation {
+  private createEvaluation(create: boolean): IEvaluation {
     return {
       ...new Evaluation(),
+      id: create ? undefined : this.idEvaluation,
       noteCDC: this.specsRate,
       noteRendu: this.outputRate,
       noteSoutenance: this.ganttsRate,
       noteFinale: this.finalRate,
       actif: true
     };
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
   }
 
   previousState(): void {

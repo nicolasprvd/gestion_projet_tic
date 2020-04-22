@@ -109,6 +109,25 @@
           "message": "Le projet a bien été créé"
         }
       },
+      "documents": {
+        "depot": {
+          "message": "Les documents ont bien été déposés",
+          "title": "Dépôt des documents"
+        }
+      },
+      "noter": {
+        "projet": {
+          "message": "Le projet a bien été évalué",
+          "title": "Evaluation du projet {{nom}}",
+          "messageUpdate": "L'évaluation a bien été modifiée"
+        }
+      },
+      "attribuer": {
+        "projet": {
+          "message": "Le projet a bien été attribué",
+          "title": "Attribution du projet {{nom}}"
+        }
+      },
       "suppressions": {
         "projet": {
           "title": "Suppression du projet {{nom}}",
@@ -121,10 +140,25 @@
           "message": "Le projet a bien été récupéré"
         }
       },
+      "candidature": {
+        "projet": {
+          "title": "Candidature sur le projet {{nom}}",
+          "message": "Votre candidature a bien été enregistrée"
+        }
+      },
+      "retractation": {
+        "projet": {
+          "title": "Rétractation du projet {{nom}}",
+          "message": "Votre rétractation a bien été enregistrée"
+        }
+      },
       "erreur": {
         "title": "Erreur",
         "message": "Une erreur est survenue"
       }
+    },
+    "champs": {
+      "annotation": "Les champs suivis de * sont obligatoires"
     }
   },
   "entity": {

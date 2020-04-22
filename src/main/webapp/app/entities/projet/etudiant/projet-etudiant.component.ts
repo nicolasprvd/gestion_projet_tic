@@ -14,6 +14,8 @@ import { AlertError } from 'app/shared/alert/alert-error.model';
 import { TypeDocument } from 'app/shared/model/enumerations/type-document.model';
 import { DocumentService } from 'app/entities/document/document.service';
 import { Document, IDocument } from 'app/shared/model/document.model';
+import {ToastrService} from "ngx-toastr";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'jhi-projet-etudiant',
@@ -73,7 +75,9 @@ export class ProjetEtudiantComponent implements OnInit {
     private groupeService: GroupeService,
     private fb: FormBuilder,
     protected eventManager: JhiEventManager,
-    private documentService: DocumentService
+    private documentService: DocumentService,
+    private toastrService: ToastrService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -197,6 +201,13 @@ export class ProjetEtudiantComponent implements OnInit {
     this.saveDocumentCDC();
     this.saveDocumentGANTT();
     this.saveDocumentRF();
+
+    if(!this.isSavingCDC || !this.isSavingGANTT || !this.isSavingRF) {
+      this.toastrService.success(
+        this.translateService.instant('global.toastr.documents.depot.message'),
+        this.translateService.instant('global.toastr.documents.depot.title')
+      );
+    }
   }
 
   saveDocumentCDC(): void {

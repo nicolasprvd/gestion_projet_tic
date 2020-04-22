@@ -12,8 +12,8 @@ import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { IUserExtra, UserExtra } from 'app/shared/model/user-extra.model';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
+import {TranslateService} from "@ngx-translate/core";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'jhi-projet-postuler',
@@ -29,6 +29,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   nbEtuArray: (number | undefined)[] | undefined;
   valideEmpty: boolean;
   valideInclude: boolean;
+  ids: number[] = [];
+  compteur: number;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -46,6 +48,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.valideEmpty = false;
     this.valideInclude = false;
+    this.compteur = -1;
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
       if (account !== null) {
@@ -197,8 +200,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * - there is 2 times or more the same person
    */
   validationGroupe(): boolean {
-    this.valideEmpty = false;
-    this.valideInclude = false;
+    const ids: number[] = [];
     let valide = true;
     for (let i = 0; i < this.nbEtuArray.length; i++) {
       const etuId = 'etu' + this.nbEtuArray[i];
@@ -207,26 +209,53 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       if (etuId === null || etu === '') {
         document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
         valide = false;
-        this.valideEmpty = true;
       }
+      if (ids.includes(+etu)) {
+        document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
+        valide = false;
+      }
+      ids.push(+etu);
     }
     return valide;
   }
 
-  isInclude(): void {
-    this.valideInclude = false;
-    const ids: number[] = [];
-    for (let i = 0; i < this.nbEtuArray.length; i++) {
-      const etuId = 'etu' + this.nbEtuArray[i];
-      document.getElementById(etuId).setAttribute('style', 'background-color:white');
-      const etu = (document.getElementById(etuId) as HTMLInputElement).value;
-      if (ids.includes(+etu)) {
-        document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
-        this.valideInclude = true;
-      }
-      ids.push(+etu);
-    }
-  }
+  // isInclude(event: any): void {
+  //   this.compteur++;
+  //   this.valideInclude = false;
+  //   if(this.compteur > 0) {
+  //     if(this.ids.includes(event)) {
+  //       this.valideInclude = true;
+  //       const index = this.ids.indexOf(event);
+  //       this.ids.splice(index);
+  //     }else {
+  //       this.ids.push(event);
+  //     }
+  //   }else {
+  //     this.ids.push(event);
+  //   }
+  //   console.error(this.ids);
+  //
+  //
+  //
+  //
+  //   // this.valideInclude = false;
+  //   //
+  //   // for (let i = 0; i < this.nbEtuArray.length; i++) {
+  //   //   const etuId = 'etu' + this.nbEtuArray[i];
+  //   //   console.error(etuId);
+  //   //   document.getElementById(etuId).setAttribute('style', 'background-color:white');
+  //   //   const etu = (document.getElementById(etuId) as HTMLInputElement).value;
+  //   //   console.error(etu);
+  //   //   console.error("ids = " + this.ids);
+  //   //   if (this.ids.includes(+etu)) {
+  //   //     console.error("existant");
+  //   //     document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
+  //   //     this.valideInclude = true;
+  //   //     this.ids.push(+etu);
+  //   //     return;
+  //   //   }
+  //   // }
+  // }
 
   formatNom(str: string): string {
     str = str.toLowerCase();

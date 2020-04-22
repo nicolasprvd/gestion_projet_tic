@@ -8,7 +8,8 @@ import { User } from 'app/core/user/user.model';
 import { UserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { ProjetService } from 'app/entities/projet/projet.service';
-import { HttpClient } from '@angular/common/http';
+import {ToastrService} from "ngx-toastr";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'jhi-projet-attribuer',
@@ -31,7 +32,8 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     protected userService: UserService,
     protected userExtraService: UserExtraService,
     protected router: Router,
-    private http: HttpClient
+    private toastrService: ToastrService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -141,9 +143,19 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     // 4) modify the group id in the projet table with the idGroupeChoisit
     this.projet.groupeId = idGroupeChoisit;
     this.projetService.update(this.projet).subscribe(() => {
+        this.toastrService.success(
+          this.translateService.instant('global.toastr.attribuer.projet.message'),
+          this.translateService.instant('global.toastr.attribuer.projet.title', { nom: this.projet.nom })
+        );
       // Return project page
       this.router.navigate(['/projet']);
-    });
+    },
+      () => {
+        this.toastrService.error(
+          this.translateService.instant('global.toastr.erreur.message'),
+          this.translateService.instant('global.toastr.erreur.title')
+        );
+      });
   }
 
   ngOnDestroy(): void {}

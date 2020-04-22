@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
-import { SessionStorageService } from 'ngx-webstorage';
-
-import { VERSION } from 'app/app.constants';
-import { LANGUAGES } from 'app/core/language/language.constants';
-import { AccountService } from 'app/core/auth/account.service';
-import { LoginModalService } from 'app/core/login/login-modal.service';
-import { LoginService } from 'app/core/login/login.service';
-import { ProfileService } from 'app/layouts/profiles/profile.service';
-import { Account } from 'app/core/user/account.model';
-import { Subscription } from 'rxjs';
-import { IUser } from 'app/core/user/user.model';
-import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {JhiLanguageService} from 'ng-jhipster';
+import {SessionStorageService} from 'ngx-webstorage';
+import {VERSION} from 'app/app.constants';
+import {LANGUAGES} from 'app/core/language/language.constants';
+import {AccountService} from 'app/core/auth/account.service';
+import {LoginModalService} from 'app/core/login/login-modal.service';
+import {LoginService} from 'app/core/login/login.service';
+import {ProfileService} from 'app/layouts/profiles/profile.service';
+import {Account} from 'app/core/user/account.model';
+import {Subscription} from "rxjs";
+import {IUser} from "app/core/user/user.model";
+import {UserExtraService} from "app/entities/user-extra/user-extra.service";
+import {TypeUtilisateur} from "app/shared/model/enumerations/type-utilisateur.model";
 
 @Component({
   selector: 'jhi-navbar',
@@ -49,18 +49,17 @@ export class NavbarComponent implements OnInit {
       this.inProduction = profileInfo.inProduction;
       this.swaggerEnabled = profileInfo.swaggerEnabled;
     });
-
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
-      if (this.isAuthenticated()) {
-        this.userExtraService.find(this.account.id).subscribe(ue => {
-          if (ue.body.typeUtilisateur === 'ETUDIANT') {
-            if (ue.body.groupeId !== null) {
-              this.afficheProjet = true;
+      if(this.isAuthenticated()) {
+          this.userExtraService.find(account.id).subscribe(ue => {
+            if(ue.body.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
+              if(ue.body.groupeId !== null) {
+                this.afficheProjet = true;
+              }
             }
-          }
-        });
-      }
+          });
+        }
     });
   }
 
@@ -90,9 +89,5 @@ export class NavbarComponent implements OnInit {
 
   toggleNavbar(): void {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
-  }
-
-  getImageUrl(): string {
-    return this.isAuthenticated() ? this.accountService.getImageUrl() : '';
   }
 }

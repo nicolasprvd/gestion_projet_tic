@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit} from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -42,6 +42,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   currentSearch: string;
   accountExtra: UserExtra;
   groupes: Groupe[] = [];
+  isRetracte: boolean;
   extras: IUserExtra[] = [];
   users: IUser[] = [];
 
@@ -56,7 +57,8 @@ export class ProjetComponent implements OnInit, OnDestroy {
     private userExtraService: UserExtraService,
     private groupeService: GroupeService,
     private toastrService: ToastrService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: Router
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -65,6 +67,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   loadAll(): void {
+    this.isRetracte = false;
     this.isReset = false;
     if (this.currentSearch) {
       this.projetService
@@ -285,14 +288,26 @@ export class ProjetComponent implements OnInit, OnDestroy {
                 compteur--;
                 this.userExtraService.update(userextra).subscribe(() => {
                   if (compteur === 0) {
-                    this.onSaveSuccess();
+                    this.isRetracte = true;
+                    this.isSaving = false;
+                    this.toastrService.success(
+                      this.translateService.instant('global.toastr.retractation.projet.message'),
+                      this.translateService.instant('global.toastr.retractation.projet.title', { nom: projet.body.nom })
+                    );
+                    this.router.navigate(['/projet']);
                   }
                 });
               }
             }
           }
         },
-        () => this.onSaveError()
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+        }
       );
     });
   }
@@ -305,8 +320,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
     this.reset();
     projet.archive = false;
     projet.dateCreation = moment();
-    projet.groupeId = null;
-    projet.documents = [];
     this.projetService.update(projet).subscribe(
       () => {
         this.toastrService.success(

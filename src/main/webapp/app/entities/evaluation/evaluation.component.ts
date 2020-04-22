@@ -54,6 +54,7 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.evaluationService.findByActif(true).subscribe(evaluations => {
       if (evaluations !== null && evaluations.body !== null) {
         this.evaluations = evaluations.body;
+        console.error(this.evaluations);
       }
     });
   }

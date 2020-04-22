@@ -15,7 +15,8 @@
                 <div class="col-sm-12" *ngFor="let i of nbEtuArray">
                     <div class="form-group">
                         <label class="form-control-label projet-label-postuler" for="etu{{i}}">
-                            <select class="form-control" id="etu{{i}}" name="etu{{i}}" ngModel="etu{{i}}" (change)="isInclude()">
+                            <select class="form-control" id="etu{{i}}" name="etu{{i}}" ngModel="etu{{i}}">
+
                                 <ng-container *ngFor="let utilisateur of users">
                                     <option value="{{utilisateur.id}}">{{utilisateur.firstName}} {{utilisateur.lastName}}</option>
                                 </ng-container>
@@ -23,17 +24,17 @@
                         </label>
                     </div>
                 </div>
-                <div class="col-sm-12">
-                    <div class="form-text text-danger"
-                         *ngIf="valideEmpty"
-                         jhiTranslate="projetticApp.projet.postuler.messages.empty">
-                    </div>
+<!--                <div class="col-sm-12">-->
+<!--                    <div class="form-text text-danger"-->
+<!--                         *ngIf="valideEmpty"-->
+<!--                         jhiTranslate="projetticApp.projet.postuler.messages.empty">-->
+<!--                    </div>-->
 
-                    <div class="form-text text-danger"
-                         *ngIf="valideInclude"
-                         jhiTranslate="projetticApp.projet.postuler.messages.include">
-                    </div>
-                </div>
+<!--                    <div class="form-text text-danger"-->
+<!--                         *ngIf="valideInclude"-->
+<!--                         jhiTranslate="projetticApp.projet.postuler.messages.include">-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
             <div class="col-sm-7" id="boutonValidation">
                 <button type="submit" (click)="previousState()" class="btn btn-info">
