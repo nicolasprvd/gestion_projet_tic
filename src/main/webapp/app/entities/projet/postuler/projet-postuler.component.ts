@@ -12,6 +12,8 @@ import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { IUserExtra, UserExtra } from 'app/shared/model/user-extra.model';
+import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'jhi-projet-postuler',
@@ -25,7 +27,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   users: User[] = [];
   userExtras: UserExtra[] = [];
   nbEtuArray: (number | undefined)[] | undefined;
-  groupeCree: number;
+  valideEmpty: boolean;
+  valideInclude: boolean;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -35,10 +38,14 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     private userExtraService: UserExtraService,
     private fb: FormBuilder,
     private groupeService: GroupeService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
+    this.valideEmpty = false;
+    this.valideInclude = false;
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
       if (account !== null) {
@@ -102,21 +109,23 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
           const userExtraCourant = this.getUserExtra(this.account.id);
           userExtraCourant.groupeId = groupe.body.id;
           this.userExtraService.update(userExtraCourant).subscribe(() => {
-            this.onSaveSuccess();
+            this.isSaving = false;
+            this.toastrService.success(
+              this.translateService.instant('global.toastr.candidature.projet.message'),
+              this.translateService.instant('global.toastr.candidature.projet.title', { nom: this.projet.nom })
+            );
+            this.previousState();
           });
         },
-        () => this.onSaveError()
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+        }
       );
     }
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
   }
 
   previousState(): void {
@@ -188,7 +197,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * - there is 2 times or more the same person
    */
   validationGroupe(): boolean {
-    const ids: number[] = [];
+    this.valideEmpty = false;
+    this.valideInclude = false;
     let valide = true;
     for (let i = 0; i < this.nbEtuArray.length; i++) {
       const etuId = 'etu' + this.nbEtuArray[i];
@@ -197,14 +207,25 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       if (etuId === null || etu === '') {
         document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
         valide = false;
+        this.valideEmpty = true;
       }
+    }
+    return valide;
+  }
+
+  isInclude(): void {
+    this.valideInclude = false;
+    const ids: number[] = [];
+    for (let i = 0; i < this.nbEtuArray.length; i++) {
+      const etuId = 'etu' + this.nbEtuArray[i];
+      document.getElementById(etuId).setAttribute('style', 'background-color:white');
+      const etu = (document.getElementById(etuId) as HTMLInputElement).value;
       if (ids.includes(+etu)) {
         document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
-        valide = false;
+        this.valideInclude = true;
       }
       ids.push(+etu);
     }
-    return valide;
   }
 
   formatNom(str: string): string {

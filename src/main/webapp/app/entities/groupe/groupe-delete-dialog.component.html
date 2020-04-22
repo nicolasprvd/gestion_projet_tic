@@ -1,4 +1,4 @@
-<form *ngIf="groupe" name="deleteForm" (ngSubmit)="confirmDelete(groupe?.id!)">
+<form *ngIf="groupe" class="popin" name="deleteForm" (ngSubmit)="confirmDelete(groupe?.id!)">
     <div class="modal-header">
         <h4 class="modal-title" jhiTranslate="entity.delete.title">Confirm delete operation</h4>
 

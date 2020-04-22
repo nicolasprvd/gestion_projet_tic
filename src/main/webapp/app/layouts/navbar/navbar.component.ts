@@ -1,6 +1,6 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {JhiLanguageService} from 'ng-jhipster';
+import { JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService } from 'ngx-webstorage';
 
 import { VERSION } from 'app/app.constants';
@@ -10,9 +10,9 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { LoginService } from 'app/core/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { Account } from 'app/core/user/account.model';
-import {Subscription} from "rxjs";
-import {IUser} from "app/core/user/user.model";
-import {UserExtraService} from "app/entities/user-extra/user-extra.service";
+import { Subscription } from 'rxjs';
+import { IUser } from 'app/core/user/user.model';
+import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 
 @Component({
   selector: 'jhi-navbar',
@@ -52,18 +52,16 @@ export class NavbarComponent implements OnInit {
 
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => {
       this.account = account;
-      if(this.isAuthenticated()) {
+      if (this.isAuthenticated()) {
         this.userExtraService.find(this.account.id).subscribe(ue => {
-          if(ue.body.typeUtilisateur === 'ETUDIANT') {
-            if(ue.body.groupeId !== null) {
+          if (ue.body.typeUtilisateur === 'ETUDIANT') {
+            if (ue.body.groupeId !== null) {
               this.afficheProjet = true;
             }
           }
         });
       }
-
     });
-
   }
 
   changeLanguage(languageKey: string): void {

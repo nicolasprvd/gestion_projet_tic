@@ -53,6 +53,4 @@ export class UserExtraService {
   findByGroupeId(groupeId: number): Observable<HttpResponse<IUserExtra[]>> {
     return this.http.get<IUserExtra[]>(`${this.resourceUrl}/groupe/${groupeId}`, { observe: 'response' });
   }
-
-
 }
