@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {JhiLanguageService} from 'ng-jhipster';
 import {SessionStorageService} from 'ngx-webstorage';
-
 import {VERSION} from 'app/app.constants';
 import {LANGUAGES} from 'app/core/language/language.constants';
 import {AccountService} from 'app/core/auth/account.service';
@@ -62,7 +61,6 @@ export class NavbarComponent implements OnInit {
           });
         }
     });
-
   }
 
   changeLanguage(languageKey: string): void {

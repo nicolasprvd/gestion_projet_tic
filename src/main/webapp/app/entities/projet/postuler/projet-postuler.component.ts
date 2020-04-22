@@ -153,9 +153,11 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * @param utilisateur
    */
   private aDejaUnGroupe(utilisateur: number): boolean {
-    for (const extra of this.userExtras) {
-      if (extra.id === utilisateur) {
-        return extra.groupeId !== null;
+    if (this.userExtras !== null && this.userExtras !== undefined) {
+      for (const extra of this.userExtras) {
+        if (extra.id === utilisateur) {
+          return extra.groupeId !== null;
+        }
       }
     }
     return false;
@@ -166,9 +168,11 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * @param utilisateur
    */
   private getUserExtra(utilisateur: number): IUserExtra {
-    for (const extra of this.userExtras) {
-      if (extra.id === utilisateur) {
-        return extra;
+    if (this.userExtras !== null && this.userExtras !== undefined) {
+      for (const extra of this.userExtras) {
+        if (extra.id === utilisateur) {
+          return extra;
+        }
       }
     }
     return null;
@@ -179,9 +183,11 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * @param utilisateur
    */
   private isEtudiantActif(utilisateur: number): boolean {
-    for (const extra of this.userExtras) {
-      if (extra.id === utilisateur) {
-        return extra.typeUtilisateur === TypeUtilisateur.ETUDIANT && extra.actif;
+    if (this.userExtras !== null && this.userExtras !== undefined) {
+      for (const extra of this.userExtras) {
+        if (extra.id === utilisateur) {
+          return extra.typeUtilisateur === TypeUtilisateur.ETUDIANT && extra.actif;
+        }
       }
     }
     return false;
@@ -202,12 +208,10 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       const etu = (document.getElementById(etuId) as HTMLInputElement).value;
       if (etuId === null || etu === '') {
         document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
-        this.valideEmpty = true;
         valide = false;
       }
       if (ids.includes(+etu)) {
         document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
-        this.valideInclude = true;
         valide = false;
       }
       ids.push(+etu);
@@ -215,43 +219,43 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     return valide;
   }
 
-  isInclude(event: any): void {
-    this.compteur++;
-    this.valideInclude = false;
-    if(this.compteur > 0) {
-      if(this.ids.includes(event)) {
-        this.valideInclude = true;
-        const index = this.ids.indexOf(event);
-        this.ids.splice(index);
-      }else {
-        this.ids.push(event);
-      }
-    }else {
-      this.ids.push(event);
-    }
-    console.error(this.ids);
-
-
-
-
-    // this.valideInclude = false;
-    //
-    // for (let i = 0; i < this.nbEtuArray.length; i++) {
-    //   const etuId = 'etu' + this.nbEtuArray[i];
-    //   console.error(etuId);
-    //   document.getElementById(etuId).setAttribute('style', 'background-color:white');
-    //   const etu = (document.getElementById(etuId) as HTMLInputElement).value;
-    //   console.error(etu);
-    //   console.error("ids = " + this.ids);
-    //   if (this.ids.includes(+etu)) {
-    //     console.error("existant");
-    //     document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
-    //     this.valideInclude = true;
-    //     this.ids.push(+etu);
-    //     return;
-    //   }
-    // }
-  }
+  // isInclude(event: any): void {
+  //   this.compteur++;
+  //   this.valideInclude = false;
+  //   if(this.compteur > 0) {
+  //     if(this.ids.includes(event)) {
+  //       this.valideInclude = true;
+  //       const index = this.ids.indexOf(event);
+  //       this.ids.splice(index);
+  //     }else {
+  //       this.ids.push(event);
+  //     }
+  //   }else {
+  //     this.ids.push(event);
+  //   }
+  //   console.error(this.ids);
+  //
+  //
+  //
+  //
+  //   // this.valideInclude = false;
+  //   //
+  //   // for (let i = 0; i < this.nbEtuArray.length; i++) {
+  //   //   const etuId = 'etu' + this.nbEtuArray[i];
+  //   //   console.error(etuId);
+  //   //   document.getElementById(etuId).setAttribute('style', 'background-color:white');
+  //   //   const etu = (document.getElementById(etuId) as HTMLInputElement).value;
+  //   //   console.error(etu);
+  //   //   console.error("ids = " + this.ids);
+  //   //   if (this.ids.includes(+etu)) {
+  //   //     console.error("existant");
+  //   //     document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
+  //   //     this.valideInclude = true;
+  //   //     this.ids.push(+etu);
+  //   //     return;
+  //   //   }
+  //   // }
+  // }
 
   formatNom(str: string): string {
     str = str.toLowerCase();

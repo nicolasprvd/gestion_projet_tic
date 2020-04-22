@@ -16,10 +16,11 @@ import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.
 import { Authority } from 'app/shared/constants/authority.constants';
 import * as moment from 'moment';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
-import { UserExtra } from 'app/shared/model/user-extra.model';
+import { IUserExtra, UserExtra } from 'app/shared/model/user-extra.model';
 import { Groupe } from 'app/shared/model/groupe.model';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { IUser } from 'app/core/user/user.model';
 
 @Component({
   selector: 'jhi-projet',
@@ -42,6 +43,8 @@ export class ProjetComponent implements OnInit, OnDestroy {
   accountExtra: UserExtra;
   groupes: Groupe[] = [];
   isRetracte: boolean;
+  extras: IUserExtra[] = [];
+  users: IUser[] = [];
 
   constructor(
     protected projetService: ProjetService,
@@ -154,6 +157,16 @@ export class ProjetComponent implements OnInit, OnDestroy {
         this.groupes = groupes.body;
       }
     });
+    this.userExtraService.findByActif(true).subscribe(extras => {
+      if (extras !== null && extras.body !== null) {
+        this.extras = extras.body;
+      }
+    });
+    this.userService.findByActivated(true).subscribe(users => {
+      if (users !== null) {
+        this.users = users;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -182,6 +195,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
   delete(projet: IProjet): void {
     const modalRef = this.modalService.open(ProjetDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.projet = projet;
+    modalRef.componentInstance.groupes = this.groupes;
+    modalRef.componentInstance.extras = this.extras;
+    modalRef.componentInstance.users = this.users;
   }
 
   /**
@@ -195,9 +211,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * Return true studients have apply to this project
    */
   isChoisi(idProjet: number): boolean {
-    for (const g of this.groupes) {
-      if (g.projetId === idProjet) {
-        return true;
+    if (this.groupes !== null && this.groupes !== undefined) {
+      for (const g of this.groupes) {
+        if (g.projetId === idProjet) {
+          return true;
+        }
       }
     }
     return false;
@@ -209,9 +227,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - the project was created by the current user
    */
   isAutorise(projet: IProjet): boolean {
-    for (const droit of this.authorities) {
-      if (Authority.ADMIN === droit) {
-        return true;
+    if (this.authorities !== null && this.authorities !== undefined) {
+      for (const droit of this.authorities) {
+        if (Authority.ADMIN === droit) {
+          return true;
+        }
       }
     }
     if (this.isClient()) {
@@ -224,9 +244,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * Return true if the current user is an administrator
    */
   isAdmin(): boolean {
-    for (const droit of this.authorities) {
-      if (Authority.ADMIN === droit) {
-        return true;
+    if (this.authorities !== null && this.authorities !== undefined) {
+      for (const droit of this.authorities) {
+        if (Authority.ADMIN === droit) {
+          return true;
+        }
       }
     }
     return false;
@@ -268,16 +290,15 @@ export class ProjetComponent implements OnInit, OnDestroy {
                   if (compteur === 0) {
                     this.isRetracte = true;
                     this.isSaving = false;
-                    return;
+                    this.toastrService.success(
+                      this.translateService.instant('global.toastr.retractation.projet.message'),
+                      this.translateService.instant('global.toastr.retractation.projet.title', { nom: projet.body.nom })
+                    );
+                    this.router.navigate(['/projet']);
                   }
                 });
               }
             }
-            this.toastrService.success(
-              this.translateService.instant('global.toastr.retractation.projet.message'),
-              this.translateService.instant('global.toastr.retractation.projet.title', { nom: projet.body.nom })
-            );
-            this.router.navigate(['projet']);
           }
         },
         () => {

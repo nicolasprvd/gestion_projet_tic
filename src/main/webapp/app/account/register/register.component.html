@@ -1,8 +1,8 @@
 <div>
     <div class="row">
         <div class="col-md-8">
-            <h1 *ngIf="!success" jhiTranslate="register.title"></h1>
-
+            <h2 *ngIf="!success" jhiTranslate="register.title"></h2>
+            <hr>
             <div class="alert alert-danger" *ngIf="error" jhiTranslate="register.messages.error.fail">
                 <strong>Registration failed!</strong> Please try again later.
             </div>

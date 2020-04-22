@@ -31,3 +31,10 @@ Main page styles
   font-weight: bold;
   font-size: large;
 }
+
+@media (max-width: 736px) {
+  #boutonNouvelleAnnee {
+    width: 100%;
+    height: 50px;
+  }
+}
