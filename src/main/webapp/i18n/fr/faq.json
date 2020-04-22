@@ -5,51 +5,53 @@
       "role": "Général",
       "one": {
         "question": "Quel est l'objectif de ce site ?",
-        "answer": "La raclette"
+        "answer": "Le site permet de faciliter l'attribution des projets TIC aux étudiants."
       },
       "two": {
         "question": "Comment obtenir mes identifiants ?",
-        "answer": "La raclette"
+        "answer": "Vous devez créer un compte grâce au formulaire présent sur la page 'Créer un compte', disponible depuis l'onglet 'Compte'."
       },
       "three": {
         "question": "J'ai oublié mes identifiants, que faire ?",
-        "answer": "La raclette"
+        "answer": "Vous pouvez demandé un nouveau mot de passe en cliquant sur 'Avez-vous oublié votre mot de passe ?' présent sur la pop-in de connexion."
+      },
+      "four": {
+        "question": "Peut-on utiliser le site sur smartphone/tablette ?",
+        "answer": "Le site intègre la notion de responsivité, ce qui signifie qu'il est accessible sur tout type d'appareil."
       }
     },
-
     "client": {
       "role": "Client",
       "one": {
         "question": "Comment créer un projet ?",
-        "answer": "La raclette"
+        "answer": "Lorsque vous êtes connecté, vous devez vous rendre sur la page 'Projets', accessible depuis le menu en cliquant sur 'Entités' puis 'Projet. Vous trouverez alors un bouton 'Créer un nouveau projet', qui vous conduira à un formulaire que vous devez remplir avec un certain nombre d'informations."
       },
       "two": {
         "question": "Peut-on créer plusieurs projets ?",
-        "answer": "La raclette"
+        "answer": "Il est tout à fait possible pour un utilisateur de créer plus d'un projet."
       }
     },
-
     "student": {
       "role": "Étudiant",
       "one": {
         "question": "Comment postuler à un projet avec d'autres étudiants ?",
-        "answer": "La raclette"
+        "answer": "Après vous être connecté avec vos identifiants, vous pouvez visualiser la liste des projets disponibles sur la page 'Projets', accessible depuis le menu en cliquant sur 'Entités' puis 'Projet.'"
       },
       "two": {
         "question": "Peut-on postuler à plusieurs projets ?",
-        "answer": "La raclette"
+        "answer": "Un groupe d'étudiants ne peut postuler qu'à un seul projet simultanément."
       },
       "three": {
         "question": "Par quels moyens va-t-on connaître notre affectation ?",
-        "answer": "La raclette"
+        "answer": "Une fois que le client aura affecté un groupe, vous serez informé par mail de sa décision (positive ou négative)."
       },
       "four": {
         "question": "Que se passe-t-il si le projet choisi est attribué à un autre grouoe ?",
-        "answer": "La raclette"
+        "answer": "Vous êtes averti par mail que le projet ne vous a pas été attribué. Vous pouvez par la suite vous connecter au site, et postuler de nouveau à un projet encore disponible."
       },
       "five": {
         "question": "Comment transfèrer les documents demandés ?",
-        "answer": "La raclette"
+        "answer": "Rendez-vous sur la page dédiée à votre projet, qui vous permettra de mettre à disposition tous les documents requis."
       }
     }
   }

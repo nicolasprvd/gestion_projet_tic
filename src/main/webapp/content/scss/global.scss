@@ -507,7 +507,7 @@ dt {
 Popin
 ========================================================================== */
 jhi-login-modal,
-#deleteForm {
+.popin {
   background: #dadada;
   color: #000000c7;
 }
@@ -546,5 +546,6 @@ Responsive
     margin: 1px;
     border-radius: 0;
     margin-left: 0;
+    width: 100px;
   }
 }
