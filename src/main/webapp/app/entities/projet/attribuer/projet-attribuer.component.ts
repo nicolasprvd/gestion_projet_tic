@@ -8,8 +8,8 @@ import { User } from 'app/core/user/user.model';
 import { UserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { ProjetService } from 'app/entities/projet/projet.service';
-import {ToastrService} from "ngx-toastr";
-import {TranslateService} from "@ngx-translate/core";
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-projet-attribuer',
@@ -76,10 +76,13 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
-  envoiMailNonChoisi(idChefProjet: number): void {
+  /**
+   * Send email at no apply group (all groups received the email)
+   */
+  envoiMailNonChoisi(idUser: number): void {
     if (this.users !== null && this.users !== undefined) {
       for (const u of this.users) {
-        if (u.id === idChefProjet) {
+        if (u.id === idUser) {
           this.subject = 'Réponse négative attribution du projet';
           this.content =
             'Le projet ' +
@@ -91,6 +94,9 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Send email at  apply group (all groups received the email)
+   */
   envoieMailChoisi(idUser: number): void {
     if (this.users !== null && this.users !== undefined) {
       for (const u of this.users) {
@@ -142,20 +148,22 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
 
     // 4) modify the group id in the projet table with the idGroupeChoisit
     this.projet.groupeId = idGroupeChoisit;
-    this.projetService.update(this.projet).subscribe(() => {
+    this.projetService.update(this.projet).subscribe(
+      () => {
         this.toastrService.success(
           this.translateService.instant('global.toastr.attribuer.projet.message'),
           this.translateService.instant('global.toastr.attribuer.projet.title', { nom: this.projet.nom })
         );
-      // Return project page
-      this.router.navigate(['/projet']);
-    },
+        // Return project page
+        this.router.navigate(['/projet']);
+      },
       () => {
         this.toastrService.error(
           this.translateService.instant('global.toastr.erreur.message'),
           this.translateService.instant('global.toastr.erreur.title')
         );
-      });
+      }
+    );
   }
 
   ngOnDestroy(): void {}
