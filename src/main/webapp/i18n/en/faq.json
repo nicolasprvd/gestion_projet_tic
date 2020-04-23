@@ -1,55 +1,57 @@
 {
   "faq": {
-    "title": "Foire aux questions",
+    "title": "Frequently Asked Questions",
     "general": {
-      "role": "Général :",
+      "role": "General",
       "one": {
-        "question": "Quel est l'objectif de ce site ?",
-        "answer": ""
+        "question": "What is this website's purpose?",
+        "answer": "The site makes it easier to assign TIC projects to students."
       },
       "two": {
-        "question": "Comment obtenir mes identifiants ?",
-        "answer": ""
+        "question": "How do I get my credentials?",
+        "answer": "You must create an account using the form on the 'Create an account' page, available from the 'Account' tab."
       },
       "three": {
-        "question": "J'ai oublié mes identifiants, que faire ?",
-        "answer": ""
-      }
-    },
-
-    "client": {
-      "role": "Client :",
-      "one": {
-        "question": "Comment créer un projet ?",
-        "answer": ""
-      },
-      "two": {
-        "question": "Peut-on créer plusieurs projets ?",
-        "answer": ""
-      }
-    },
-
-    "student": {
-      "role": "Étudiant :",
-      "one": {
-        "question": "Comment postuler à un projet avec d'autres étudiants ?",
-        "answer": ""
-      },
-      "two": {
-        "question": "Peut-on postuler à plusieurs projets ?",
-        "answer": ""
-      },
-      "three": {
-        "question": "Par quels moyens va-t-on connaître notre affectation ?",
-        "answer": ""
+        "question": "I forgot my credentials, what should I do?",
+        "answer": "You can request a new password by clicking on 'Did you forget your password?' present on the connection pop-in."
       },
       "four": {
-        "question": "Que se passe-t-il si le projet choisi est attribué à un autre grouoe ?",
-        "answer": ""
+        "question": "Can we use the site on smartphone / tablet?",
+        "answer": "The site incorporates the concept of responsiveness, which means that it is accessible on any type of device."
+      }
+    },
+    "client": {
+      "role": "Client",
+      "one": {
+        "question": "How to create a project?",
+        "answer": "When you are connected, you must go to the 'Projects' page, accessible from the menu by clicking on 'Entities', then 'Project. Then, you will find a button 'Create a new project', which will take you to a form that you must fill out with a certain amount of information."
+      },
+      "two": {
+        "question": "Can we create several projects?",
+        "answer": "It is entirely possible for a user to create more than one project."
+      }
+    },
+    "student": {
+      "role": "Student",
+      "one": {
+        "question": "How to apply for a project with other students?",
+        "answer": "After logging in with your credentials, you can view the list of available projects on the 'Projects' page, accessible from the menu by clicking on' Entities' then 'Project.'"
+      },
+      "two": {
+        "question": "Can we apply for several projects?",
+        "answer": "A group of students can only apply to one project simultaneously."
+      },
+      "three": {
+        "question": "By which ways will we know our assignment?",
+        "answer": "Once the client has assigned a group, you will be informed by email of his decision (positive or negative)."
+      },
+      "four": {
+        "question": "What happens if the chosen project is assigned to another group?",
+        "answer": "You are notified by email that the project has not been assigned to you. You can then connect to the site, and apply again to a project still available."
       },
       "five": {
-        "question": "Comment transfèrer les documents demandés ?",
-        "answer": ""
+        "question": "How to transfer the requested documents?",
+        "answer": "Go to the page dedicated to your project, which will allow you to put all the required documents."
       }
     }
   }
