@@ -159,6 +159,12 @@
     },
     "champs": {
       "annotation": "Fields followed by * are required"
+    },
+    "email": {
+      "suppressionProjet": {
+        "sujet": "Negative answer - project award",
+        "message": "The {{nom}} project has not been assigned to your group because it has been deleted. Please go to the site to choose a different one."
+      }
     }
   },
   "entity": {

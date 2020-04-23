@@ -71,11 +71,8 @@ export class ProjetDeleteDialogComponent {
   envoiMailProjetSupprime(extra: number): void {
     for (const u of this.users) {
       if (u.id === extra) {
-        this.subject = 'Réponse négative attribution du projet';
-        this.content =
-          'Le projet ' +
-          this.projet.nom +
-          " n'a pas été attribué à votre groupe car il a été supprimé. Veuillez vous rendre sur le site pour en choisir un autre.";
+        this.subject = this.translateService.instant('global.email.suppressionProjet.sujet');
+        this.content = this.translateService.instant('global.email.suppressionProjet.message', { nom: this.projet.nom });
         this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
       }
     }
