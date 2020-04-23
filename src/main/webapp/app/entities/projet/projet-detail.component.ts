@@ -15,6 +15,7 @@ import { ProjetService } from 'app/entities/projet/projet.service';
 import { Groupe } from 'app/shared/model/groupe.model';
 import { IUserExtra } from 'app/shared/model/user-extra.model';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -36,6 +37,7 @@ export class ProjetDetailComponent implements OnInit {
   monProjetId: number;
   groupes: Groupe[] = [];
   chefGroupeId: number;
+  isRetracte: boolean;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -46,7 +48,9 @@ export class ProjetDetailComponent implements OnInit {
     private groupeService: GroupeService,
     private projetService: ProjetService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private toastrService: ToastrService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -97,6 +101,7 @@ export class ProjetDetailComponent implements OnInit {
         }
       }
     });
+    this.isRetracte = false;
   }
 
   byteSize(base64String: string): string {
@@ -178,31 +183,37 @@ export class ProjetDetailComponent implements OnInit {
     this.projetService.find(this.monProjetId).subscribe(projet => {
       let compteur = projet.body.nbEtudiant;
       const idMonGroupe: number = this.groupeId;
-      this.userExtraService.findByActif(true).subscribe(
+      this.userExtraService.findByGroupeId(idMonGroupe).subscribe(
         userextras => {
           if (userextras !== null && userextras.body !== null) {
-            this.groupeService.delete(idMonGroupe).subscribe();
             for (const userextra of userextras.body) {
-              if (userextra.groupeId === idMonGroupe) {
-                userextra.groupeId = null;
+              userextra.groupeId = null;
+              this.userExtraService.update(userextra).subscribe(() => {
                 compteur--;
-                this.userExtraService.update(userextra).subscribe(() => {
-                  if (compteur === 0) {
-                    this.onSaveSuccess();
-                  }
-                });
-              }
+                if (compteur === 0) {
+                  this.groupeService.delete(idMonGroupe).subscribe(() => {
+                    this.isRetracte = true;
+                    this.isSaving = false;
+                    this.toastrService.success(
+                      this.translateService.instant('global.toastr.retractation.projet.message'),
+                      this.translateService.instant('global.toastr.retractation.projet.title', { nom: projet.body.nom })
+                    );
+                    this.router.navigate(['/projet']);
+                  });
+                }
+              });
             }
           }
         },
-        () => this.onSaveError()
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+        }
       );
     });
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.router.navigate(['/projet']);
   }
 
   protected onSaveError(): void {
