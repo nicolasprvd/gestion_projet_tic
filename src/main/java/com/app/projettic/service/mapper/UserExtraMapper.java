@@ -15,6 +15,7 @@ public interface UserExtraMapper extends EntityMapper<UserExtraDTO, UserExtra> {
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "evaluation.id", target = "evaluationId")
     @Mapping(source = "groupe.id", target = "groupeId")
+    @Mapping(source = "cursus", target = "cursus")
     UserExtraDTO toDto(UserExtra userExtra);
 
     @Mapping(source = "userId", target = "user")
@@ -24,6 +25,7 @@ public interface UserExtraMapper extends EntityMapper<UserExtraDTO, UserExtra> {
     @Mapping(target = "removeProjet", ignore = true)
     @Mapping(source = "evaluationId", target = "evaluation")
     @Mapping(source = "groupeId", target = "groupe")
+    @Mapping(source = "cursus", target = "cursus")
     UserExtra toEntity(UserExtraDTO userExtraDTO);
 
     default UserExtra fromId(Long id) {

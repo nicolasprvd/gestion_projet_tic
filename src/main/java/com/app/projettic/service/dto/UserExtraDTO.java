@@ -2,6 +2,8 @@ package com.app.projettic.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
+
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.domain.enumeration.TypeUtilisateur;
 
 import javax.persistence.Embeddable;
@@ -23,6 +25,8 @@ public class UserExtraDTO implements Serializable {
     private Long evaluationId;
 
     private Long groupeId;
+
+    private TypeCursus cursus;
 
     public Long getId() {
         return id;
@@ -72,6 +76,14 @@ public class UserExtraDTO implements Serializable {
         this.groupeId = groupeId;
     }
 
+    public TypeCursus getCursus() {
+        return cursus;
+    }
+
+    public void setCursus(TypeCursus cursus) {
+        this.cursus = cursus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -102,6 +114,7 @@ public class UserExtraDTO implements Serializable {
             ", userId=" + getUserId() +
             ", evaluationId=" + getEvaluationId() +
             ", groupeId=" + getGroupeId() +
+            ", cursus=" + getCursus() +
             "}";
     }
 }
