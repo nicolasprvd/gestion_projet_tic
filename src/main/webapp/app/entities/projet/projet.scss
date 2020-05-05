@@ -6,6 +6,17 @@
 #dateArchive {
   margin-right: 10px;
   margin-left: 15px;
+  width: 25%;
+}
+
+@media (max-width: 576px) {
+  #dateArchive {
+    width: 60%;
+  }
+}
+
+.label-projet-archive {
+  margin-bottom: 0;
 }
 
 #boutonPostule {

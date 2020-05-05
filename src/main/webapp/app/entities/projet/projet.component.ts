@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -16,10 +16,11 @@ import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.
 import { Authority } from 'app/shared/constants/authority.constants';
 import * as moment from 'moment';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
-import { UserExtra } from 'app/shared/model/user-extra.model';
+import { IUserExtra, UserExtra } from 'app/shared/model/user-extra.model';
 import { Groupe } from 'app/shared/model/groupe.model';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { IUser } from 'app/core/user/user.model';
 
 @Component({
   selector: 'jhi-projet',
@@ -41,6 +42,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
   currentSearch: string;
   accountExtra: UserExtra;
   groupes: Groupe[] = [];
+  isRetracte: boolean;
+  extras: IUserExtra[] = [];
+  users: IUser[] = [];
 
   constructor(
     protected projetService: ProjetService,
@@ -53,7 +57,8 @@ export class ProjetComponent implements OnInit, OnDestroy {
     private userExtraService: UserExtraService,
     private groupeService: GroupeService,
     private toastrService: ToastrService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: Router
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -62,6 +67,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   loadAll(): void {
+    this.isRetracte = false;
     this.isReset = false;
     if (this.currentSearch) {
       this.projetService
@@ -151,6 +157,16 @@ export class ProjetComponent implements OnInit, OnDestroy {
         this.groupes = groupes.body;
       }
     });
+    this.userExtraService.findByActif(true).subscribe(extras => {
+      if (extras !== null && extras.body !== null) {
+        this.extras = extras.body;
+      }
+    });
+    this.userService.findByActivated(true).subscribe(users => {
+      if (users !== null) {
+        this.users = users;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -179,6 +195,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
   delete(projet: IProjet): void {
     const modalRef = this.modalService.open(ProjetDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.projet = projet;
+    modalRef.componentInstance.groupes = this.groupes;
+    modalRef.componentInstance.extras = this.extras;
+    modalRef.componentInstance.users = this.users;
   }
 
   /**
@@ -192,9 +211,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * Return true studients have apply to this project
    */
   isChoisi(idProjet: number): boolean {
-    for (const g of this.groupes) {
-      if (g.projetId === idProjet) {
-        return true;
+    if (this.groupes !== null && this.groupes !== undefined) {
+      for (const g of this.groupes) {
+        if (g.projetId === idProjet) {
+          return true;
+        }
       }
     }
     return false;
@@ -206,9 +227,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - the project was created by the current user
    */
   isAutorise(projet: IProjet): boolean {
-    for (const droit of this.authorities) {
-      if (Authority.ADMIN === droit) {
-        return true;
+    if (this.authorities !== null && this.authorities !== undefined) {
+      for (const droit of this.authorities) {
+        if (Authority.ADMIN === droit) {
+          return true;
+        }
       }
     }
     if (this.isClient()) {
@@ -221,9 +244,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * Return true if the current user is an administrator
    */
   isAdmin(): boolean {
-    for (const droit of this.authorities) {
-      if (Authority.ADMIN === droit) {
-        return true;
+    if (this.authorities !== null && this.authorities !== undefined) {
+      for (const droit of this.authorities) {
+        if (Authority.ADMIN === droit) {
+          return true;
+        }
       }
     }
     return false;
@@ -253,24 +278,35 @@ export class ProjetComponent implements OnInit, OnDestroy {
     this.projetService.find(this.projetChoisiId).subscribe(projet => {
       let compteur = projet.body.nbEtudiant;
       const idMonGroupe: number = this.groupeId;
-      this.userExtraService.findByActif(true).subscribe(
+      this.userExtraService.findByGroupeId(idMonGroupe).subscribe(
         userextras => {
           if (userextras !== null && userextras.body !== null) {
-            this.groupeService.delete(idMonGroupe).subscribe();
             for (const userextra of userextras.body) {
-              if (userextra.groupeId === idMonGroupe) {
-                userextra.groupeId = null;
+              userextra.groupeId = null;
+              this.userExtraService.update(userextra).subscribe(() => {
                 compteur--;
-                this.userExtraService.update(userextra).subscribe(() => {
-                  if (compteur === 0) {
-                    this.onSaveSuccess();
-                  }
-                });
-              }
+                if (compteur === 0) {
+                  this.groupeService.delete(idMonGroupe).subscribe(() => {
+                    this.isRetracte = true;
+                    this.isSaving = false;
+                    this.toastrService.success(
+                      this.translateService.instant('global.toastr.retractation.projet.message'),
+                      this.translateService.instant('global.toastr.retractation.projet.title', { nom: projet.body.nom })
+                    );
+                    this.router.navigate(['/projet']);
+                  });
+                }
+              });
             }
           }
         },
-        () => this.onSaveError()
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+        }
       );
     });
   }
@@ -283,8 +319,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
     this.reset();
     projet.archive = false;
     projet.dateCreation = moment();
-    projet.groupeId = null;
-    projet.documents = [];
     this.projetService.update(projet).subscribe(
       () => {
         this.toastrService.success(
@@ -301,15 +335,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
         );
       }
     );
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
   }
 
   previousState(): void {

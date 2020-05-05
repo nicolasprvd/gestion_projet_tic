@@ -109,6 +109,25 @@
           "message": "The project has been created"
         }
       },
+      "documents": {
+        "depot": {
+          "message": "The documents have been filed",
+          "title": "Filing of documents"
+        }
+      },
+      "noter": {
+        "projet": {
+          "message": "The project was properly evaluated",
+          "title": "Evaluation of the {{nom}} project",
+          "messageUpdate": "Evaluation changes have been saved"
+        }
+      },
+      "attribuer": {
+        "projet": {
+          "message": "The project was awarded",
+          "title": "Assignment of the {{nom}} project"
+        }
+      },
       "suppressions": {
         "projet": {
           "title": "Deletion of the {{nom}} project",
@@ -121,9 +140,30 @@
           "message": "The project has been recovered."
         }
       },
+      "candidature": {
+        "projet": {
+          "title": "Application on the {{nom}} project",
+          "message": "Your application has been saved"
+        }
+      },
+      "retractation": {
+        "projet": {
+          "title": "Withdrawall on the {{nom}} project",
+          "message": "Your withdrawall has been saved"
+        }
+      },
       "erreur": {
         "title": "Error",
         "message": "An error has occured"
+      }
+    },
+    "champs": {
+      "annotation": "Fields followed by * are required"
+    },
+    "email": {
+      "suppressionProjet": {
+        "sujet": "Negative answer - project award",
+        "message": "The {{nom}} project has not been assigned to your group because it has been deleted. Please go to the site to choose a different one."
       }
     }
   },

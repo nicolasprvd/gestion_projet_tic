@@ -4,9 +4,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
 import { LoginService } from 'app/core/login/login.service';
-import {JhiEventManager} from "ng-jhipster";
-import {AccountService} from "app/core/auth/account.service";
-import {Account} from "app/core/user/account.model";
+import { JhiEventManager } from 'ng-jhipster';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
 
 @Component({
   selector: 'jhi-login-modal',

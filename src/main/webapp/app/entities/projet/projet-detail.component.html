@@ -3,7 +3,6 @@
         <div *ngIf="projet">
             <h2>{{ projet.nom }}</h2>
 
-            <hr>
             <jhi-alert-error></jhi-alert-error>
             <hr>
 
@@ -59,7 +58,7 @@
                 <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
 
-            <button *ngIf="isAutorise(projet)" type="button"
+            <button *ngIf="isAutorise(projet) && projet.groupeId === null" type="button"
                     [routerLink]="['/projet', projet.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
@@ -72,11 +71,11 @@
                 jhiTranslate="entity.action.attribuate">Attribuer</span>
             </button>
 
-            <button *ngIf="isAutorise(projet) && projet.groupeId != null " type="submit"
+            <button *ngIf="isAutorise(projet) && projet.groupeId != null  && !projet.archive" type="submit"
                     [routerLink]="['/projet', projet.id, 'rate']"
                     class="btn btn-success">
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.rate">Rate</span>
+                <span jhiTranslate="entity.action.rate">Rate</span>
             </button>
 
             <button *ngIf="!isClient() && !aDejaUnGroupe()" type="button"

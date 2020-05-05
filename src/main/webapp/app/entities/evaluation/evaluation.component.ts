@@ -66,7 +66,7 @@ export class EvaluationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadAll();
     this.registerChangeInEvaluations();
-    this.userService.findAll().subscribe(users => {
+    this.userService.findByActivated(true).subscribe(users => {
       if (users !== null) {
         this.users = users;
       }
@@ -103,6 +103,17 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.evaluation = evaluation;
   }
 
+  isEvaluationAffiche(): boolean {
+    if (this.extras !== null) {
+      for (const extra of this.extras) {
+        if (extra.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   isEtudiantActif(extra: IUserExtra): boolean {
     if (extra !== null) {
       return extra.actif && extra.typeUtilisateur === TypeUtilisateur.ETUDIANT;
@@ -111,7 +122,7 @@ export class EvaluationComponent implements OnInit, OnDestroy {
   }
 
   getEtudiant(extra: IUserExtra): string {
-    if (extra !== null) {
+    if (extra !== null && this.users !== null && this.users !== undefined) {
       for (const user of this.users) {
         if (user.id === extra.id) {
           this.getEvaluation(extra.evaluationId);
@@ -127,13 +138,15 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.noteSoutenance = null;
     this.noteRendu = null;
     this.noteFinale = null;
-    for (const eva of this.evaluations) {
-      if (eva.id === evaluation) {
-        this.noteCDC = eva.noteCDC.toString();
-        this.noteSoutenance = eva.noteSoutenance.toString();
-        this.noteRendu = eva.noteRendu.toString();
-        this.noteFinale = eva.noteFinale.toString();
-        return;
+    if (this.evaluations !== null && this.evaluations !== undefined) {
+      for (const eva of this.evaluations) {
+        if (eva.id === evaluation) {
+          this.noteCDC = eva.noteCDC.toString();
+          this.noteSoutenance = eva.noteSoutenance.toString();
+          this.noteRendu = eva.noteRendu.toString();
+          this.noteFinale = eva.noteFinale.toString();
+          return;
+        }
       }
     }
   }
@@ -175,15 +188,17 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.projetActuelId = null;
     this.projetActuelNom = null;
     if (groupe !== null) {
-      for (const projet of this.projets) {
-        if (projet.groupeId === groupe) {
-          if (projet.nom === null || projet.nom === '') {
-            this.projetActuelNom = '-';
+      if (this.projets !== null && this.projets !== undefined) {
+        for (const projet of this.projets) {
+          if (projet.groupeId === groupe) {
+            if (projet.nom === null || projet.nom === '') {
+              this.projetActuelNom = '-';
+              return true;
+            }
+            this.projetActuelId = projet.id;
+            this.projetActuelNom = projet.nom;
             return true;
           }
-          this.projetActuelId = projet.id;
-          this.projetActuelNom = projet.nom;
-          return true;
         }
       }
     }

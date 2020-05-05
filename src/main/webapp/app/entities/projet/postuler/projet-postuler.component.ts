@@ -12,6 +12,8 @@ import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { IUserExtra, UserExtra } from 'app/shared/model/user-extra.model';
+import {TranslateService} from "@ngx-translate/core";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'jhi-projet-postuler',
@@ -25,7 +27,10 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   users: User[] = [];
   userExtras: UserExtra[] = [];
   nbEtuArray: (number | undefined)[] | undefined;
-  groupeCree: number;
+  valideEmpty: boolean;
+  valideInclude: boolean;
+  ids: number[] = [];
+  compteur: number;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -35,10 +40,15 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     private userExtraService: UserExtraService,
     private fb: FormBuilder,
     private groupeService: GroupeService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
+    this.valideEmpty = false;
+    this.valideInclude = false;
+    this.compteur = -1;
     this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
     this.accountService.getAuthenticationState().subscribe(account => {
       if (account !== null) {
@@ -50,7 +60,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     this.userExtraService.findByActif(true).subscribe(userExtras => {
       if (userExtras !== null && userExtras.body !== null) {
         this.userExtras = userExtras.body;
-        this.userService.findAll().subscribe(users => {
+        this.userService.findByActivated(true).subscribe(users => {
           if (users !== null) {
             for (const u of users) {
               if (u.id !== this.account?.id && this.isEtudiantActif(u.id) && !this.aDejaUnGroupe(u.id)) {
@@ -102,21 +112,23 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
           const userExtraCourant = this.getUserExtra(this.account.id);
           userExtraCourant.groupeId = groupe.body.id;
           this.userExtraService.update(userExtraCourant).subscribe(() => {
-            this.onSaveSuccess();
+            this.isSaving = false;
+            this.toastrService.success(
+              this.translateService.instant('global.toastr.candidature.projet.message'),
+              this.translateService.instant('global.toastr.candidature.projet.title', { nom: this.projet.nom })
+            );
+            this.previousState();
           });
         },
-        () => this.onSaveError()
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+        }
       );
     }
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
   }
 
   previousState(): void {
@@ -141,9 +153,11 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * @param utilisateur
    */
   private aDejaUnGroupe(utilisateur: number): boolean {
-    for (const extra of this.userExtras) {
-      if (extra.id === utilisateur) {
-        return extra.groupeId !== null;
+    if (this.userExtras !== null && this.userExtras !== undefined) {
+      for (const extra of this.userExtras) {
+        if (extra.id === utilisateur) {
+          return extra.groupeId !== null;
+        }
       }
     }
     return false;
@@ -154,9 +168,11 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * @param utilisateur
    */
   private getUserExtra(utilisateur: number): IUserExtra {
-    for (const extra of this.userExtras) {
-      if (extra.id === utilisateur) {
-        return extra;
+    if (this.userExtras !== null && this.userExtras !== undefined) {
+      for (const extra of this.userExtras) {
+        if (extra.id === utilisateur) {
+          return extra;
+        }
       }
     }
     return null;
@@ -167,9 +183,11 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
    * @param utilisateur
    */
   private isEtudiantActif(utilisateur: number): boolean {
-    for (const extra of this.userExtras) {
-      if (extra.id === utilisateur) {
-        return extra.typeUtilisateur === TypeUtilisateur.ETUDIANT && extra.actif;
+    if (this.userExtras !== null && this.userExtras !== undefined) {
+      for (const extra of this.userExtras) {
+        if (extra.id === utilisateur) {
+          return extra.typeUtilisateur === TypeUtilisateur.ETUDIANT && extra.actif;
+        }
       }
     }
     return false;
@@ -200,6 +218,44 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     }
     return valide;
   }
+
+  // isInclude(event: any): void {
+  //   this.compteur++;
+  //   this.valideInclude = false;
+  //   if(this.compteur > 0) {
+  //     if(this.ids.includes(event)) {
+  //       this.valideInclude = true;
+  //       const index = this.ids.indexOf(event);
+  //       this.ids.splice(index);
+  //     }else {
+  //       this.ids.push(event);
+  //     }
+  //   }else {
+  //     this.ids.push(event);
+  //   }
+  //   console.error(this.ids);
+  //
+  //
+  //
+  //
+  //   // this.valideInclude = false;
+  //   //
+  //   // for (let i = 0; i < this.nbEtuArray.length; i++) {
+  //   //   const etuId = 'etu' + this.nbEtuArray[i];
+  //   //   console.error(etuId);
+  //   //   document.getElementById(etuId).setAttribute('style', 'background-color:white');
+  //   //   const etu = (document.getElementById(etuId) as HTMLInputElement).value;
+  //   //   console.error(etu);
+  //   //   console.error("ids = " + this.ids);
+  //   //   if (this.ids.includes(+etu)) {
+  //   //     console.error("existant");
+  //   //     document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
+  //   //     this.valideInclude = true;
+  //   //     this.ids.push(+etu);
+  //   //     return;
+  //   //   }
+  //   // }
+  // }
 
   formatNom(str: string): string {
     str = str.toLowerCase();

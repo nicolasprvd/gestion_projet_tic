@@ -1,6 +1,12 @@
 {
   "projetticApp": {
     "projet": {
+      "postuler": {
+        "messages": {
+          "empty": "Vous devez renseigner tous les membres du projet",
+          "include": "L'étudiant a déjà été sélectionné"
+        }
+      },
       "documents": {
         "title": "Documents",
         "cdc": "Cahier des charges",

@@ -8,7 +8,8 @@ import { User } from 'app/core/user/user.model';
 import { UserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { ProjetService } from 'app/entities/projet/projet.service';
-import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-projet-attribuer',
@@ -31,7 +32,8 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     protected userService: UserService,
     protected userExtraService: UserExtraService,
     protected router: Router,
-    private http: HttpClient
+    private toastrService: ToastrService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
                   if (ue.groupeId === g.id) {
                     this.usersExtra.push(ue);
 
-                    this.userService.findAll().subscribe(users => {
+                    this.userService.findByActivated(true).subscribe(users => {
                       if (users !== null) {
                         for (const u of users) {
                           if (u.id === ue.userId) {
@@ -74,25 +76,35 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
-  envoiMailNonChoisi(idChefProjet: number): void {
-    for (const u of this.users) {
-      if (u.id === idChefProjet) {
-        this.subject = 'Réponse negative attribution du projet';
-        this.content =
-          'Le projet ' +
-          this.projet.nom +
-          " n'a pas été attribué à votre groupe. Veuillez-vous rendre sur le site pour en choisir un autre.";
-        this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
+  /**
+   * Send email at no apply group (all groups received the email)
+   */
+  envoiMailNonChoisi(idUser: number): void {
+    if (this.users !== null && this.users !== undefined) {
+      for (const u of this.users) {
+        if (u.id === idUser) {
+          this.subject = 'Réponse négative attribution du projet';
+          this.content =
+            'Le projet ' +
+            this.projet.nom +
+            " n'a pas été attribué à votre groupe. Veuillez vous rendre sur le site pour en choisir un autre.";
+          this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
+        }
       }
     }
   }
 
+  /**
+   * Send email at  apply group (all groups received the email)
+   */
   envoieMailChoisi(idUser: number): void {
-    for (const u of this.users) {
-      if (u.id === idUser) {
-        this.subject = 'Réponse positive attribution du projet';
-        this.content = 'Le projet ' + this.projet.nom + ' a bien été attribué à votre groupe.';
-        this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
+    if (this.users !== null && this.users !== undefined) {
+      for (const u of this.users) {
+        if (u.id === idUser) {
+          this.subject = 'Réponse positive attribution du projet';
+          this.content = 'Le projet ' + this.projet.nom + ' a bien été attribué à votre groupe.';
+          this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
+        }
       }
     }
   }
@@ -106,36 +118,52 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
    */
   attribution(idGroupeChoisit: number): void {
     // 1) modify the group id of each user (extra) to set it to null (for all groups not apply)
-    for (const ue of this.usersExtra) {
-      if (ue.groupeId !== idGroupeChoisit) {
-        this.envoiMailNonChoisi(ue.userId);
-        ue.groupeId = null;
-        this.userExtraService.update(ue).subscribe();
-      } else {
-        this.envoieMailChoisi(ue.userId);
+    if (this.usersExtra !== null && this.usersExtra !== undefined) {
+      for (const ue of this.usersExtra) {
+        if (ue.groupeId !== idGroupeChoisit) {
+          this.envoiMailNonChoisi(ue.userId);
+          ue.groupeId = null;
+          this.userExtraService.update(ue).subscribe();
+        } else {
+          this.envoieMailChoisi(ue.userId);
+        }
       }
     }
 
     // 2) deletion of all groups not apply in the Group table
     // 3) modify tha attribute validate in the group table to the idGroupeChoisit
-    for (const g of this.groupes) {
-      // 2) deletion
-      if (g.id !== idGroupeChoisit) {
-        this.groupeService.delete(g.id).subscribe();
-      }
-      // 3) update valide = true
-      else {
-        g.valide = true;
-        this.groupeService.update(g).subscribe();
+    if (this.groupes !== null && this.groupes !== undefined) {
+      for (const g of this.groupes) {
+        // 2) deletion
+        if (g.id !== idGroupeChoisit) {
+          this.groupeService.delete(g.id).subscribe();
+        }
+        // 3) update valide = true
+        else {
+          g.valide = true;
+          this.groupeService.update(g).subscribe();
+        }
       }
     }
 
     // 4) modify the group id in the projet table with the idGroupeChoisit
     this.projet.groupeId = idGroupeChoisit;
-    this.projetService.update(this.projet).subscribe(() => {
-      // Return project page
-      this.router.navigate(['/projet']);
-    });
+    this.projetService.update(this.projet).subscribe(
+      () => {
+        this.toastrService.success(
+          this.translateService.instant('global.toastr.attribuer.projet.message'),
+          this.translateService.instant('global.toastr.attribuer.projet.title', { nom: this.projet.nom })
+        );
+        // Return project page
+        this.router.navigate(['/projet']);
+      },
+      () => {
+        this.toastrService.error(
+          this.translateService.instant('global.toastr.erreur.message'),
+          this.translateService.instant('global.toastr.erreur.title')
+        );
+      }
+    );
   }
 
   ngOnDestroy(): void {}

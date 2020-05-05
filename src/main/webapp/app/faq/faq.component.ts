@@ -7,7 +7,8 @@ import { Account } from 'app/core/user/account.model';
 
 @Component({
   selector: 'jhi-faq',
-  templateUrl: './faq.component.html'
+  templateUrl: './faq.component.html',
+  styleUrls: ['faq.scss']
 })
 export class FAQComponent implements OnInit, OnDestroy {
   account: Account | null = null;

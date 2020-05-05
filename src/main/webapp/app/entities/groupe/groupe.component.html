@@ -3,13 +3,11 @@
         <span jhiTranslate="projetticApp.groupe.home.title">Groupes</span>
 
         <button *ngIf="groupes?.length > 0" type="submit" (click)="exporter()" class="btn btn-success float-right">
-            <fa-icon icon="book"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
+            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
         </button>
     </h2>
 
     <jhi-alert-error></jhi-alert-error>
-
-    <jhi-alert></jhi-alert>
 
     <div class="alert alert-warning" id="no-result" *ngIf="groupes?.length === 0">
         <span jhiTranslate="projetticApp.groupe.home.notFound">No groupes found</span>

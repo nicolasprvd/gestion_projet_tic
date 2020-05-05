@@ -65,7 +65,7 @@ export class GroupeComponent implements OnInit, OnDestroy {
         this.projets = projets;
       }
     });
-    this.userService.findAll().subscribe(users => {
+    this.userService.findByActivated(true).subscribe(users => {
       if (users !== null) {
         this.users = users;
       }
@@ -93,18 +93,22 @@ export class GroupeComponent implements OnInit, OnDestroy {
   }
 
   getNomProjet(projetId: number): string {
-    for (const projet of this.projets) {
-      if (projet.id === projetId) {
-        return projet.nom;
+    if (this.projets !== null && this.projets !== undefined) {
+      for (const projet of this.projets) {
+        if (projet.id === projetId) {
+          return projet.nom;
+        }
       }
     }
     return '';
   }
 
   getChefProjet(user: number): string {
-    for (const usr of this.users) {
-      if (usr.id === user) {
-        return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+    if (this.users !== null && this.users !== undefined) {
+      for (const usr of this.users) {
+        if (usr.id === user) {
+          return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+        }
       }
     }
     return '';
@@ -116,20 +120,26 @@ export class GroupeComponent implements OnInit, OnDestroy {
   }
 
   getMembreProjet(extra: IUserExtra): string {
-    for (const usr of this.users) {
-      if (usr.id === extra.id) {
-        return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+    if (this.users !== null && this.users !== undefined) {
+      for (const usr of this.users) {
+        if (usr.id === extra.id) {
+          return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+        }
       }
     }
     return '';
   }
 
   getClient(projetId: number): string {
-    for (const projet of this.projets) {
-      if (projetId === projet.id) {
-        for (const usr of this.users) {
-          if (usr.id === projet.userExtraId) {
-            return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+    if (this.projets !== null && this.projets !== undefined) {
+      for (const projet of this.projets) {
+        if (projetId === projet.id) {
+          if (this.users !== null && this.users !== undefined) {
+            for (const usr of this.users) {
+              if (usr.id === projet.userExtraId) {
+                return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+              }
+            }
           }
         }
       }

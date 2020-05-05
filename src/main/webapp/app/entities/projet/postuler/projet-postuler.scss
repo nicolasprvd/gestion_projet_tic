@@ -13,3 +13,30 @@
 select {
   color: #000000;
 }
+
+.projet-label-postuler {
+  width:22%;
+}
+
+.projet-input-chef {
+  width:33%;
+}
+
+.error-include {
+  background-color: #d65959;
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .projet-input-chef,
+  .projet-label-postuler {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .projet-input-chef,
+  .projet-label-postuler {
+    width: 33%;
+  }
+}
