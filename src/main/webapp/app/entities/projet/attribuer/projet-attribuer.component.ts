@@ -84,7 +84,7 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
       for (const u of this.users) {
         if (u.id === idUser) {
           this.subject = this.translateService.instant('global.email.assignProject.negative.subject');
-          this.content = this.translateService.instant('global.email.suppressionProjet.negative.content', { nom: this.projet.nom });
+          this.content = this.translateService.instant('global.email.assignProject.negative.content', { nom: this.projet.nom });
           this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
         }
       }
