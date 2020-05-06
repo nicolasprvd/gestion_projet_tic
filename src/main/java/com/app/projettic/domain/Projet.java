@@ -55,6 +55,7 @@ public class Projet implements Serializable {
     @Column(name = "date_creation")
     private Instant dateCreation;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "cursus")
     private TypeCursus cursus;
 

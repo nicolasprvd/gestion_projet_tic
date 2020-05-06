@@ -74,6 +74,7 @@
             <column name="nb_etudiant" type="numeric"/>
             <column name="automatique" type="boolean"/>
             <column name="archive" type="boolean"/>
+            <column name="cursus" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

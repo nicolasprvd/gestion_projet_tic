@@ -29,6 +29,7 @@ public class UserExtra implements Serializable {
     @Column(name = "actif")
     private Boolean actif;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "cursus")
     private TypeCursus cursus;
 
