@@ -1,4 +1,5 @@
 package com.app.projettic.web.rest;
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.service.MailService;
 import com.app.projettic.service.ProjetService;
 import com.app.projettic.web.rest.errors.BadRequestAlertException;
@@ -174,5 +175,16 @@ public class ProjetResource {
     public List<ProjetDTO> findByArchive(@PathVariable boolean archive) {
         log.debug("REST request to get all projets");
         return projetService.findByArchive(archive);
+    }
+
+    /**
+     * {@code GET  /projets/cursus} : get all the projet with the cursus status.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of projet in body.
+     */
+    @GetMapping("/projets/cursus/{cursus}/{archive}")
+    public List<ProjetDTO> findByArchiveAndCursus(@PathVariable boolean archive, @PathVariable TypeCursus cursus) {
+        log.debug("REST request to get all projets");
+        return projetService.findByArchiveAndCursus(archive, cursus);
     }
 }

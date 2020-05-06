@@ -77,24 +77,32 @@ export class ProjetComponent implements OnInit, OnDestroy {
         .subscribe((res: HttpResponse<IProjet[]>) => (this.projets = res.body || []));
       return;
     }
-
-    this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
-      this.datesArchive = [];
-      this.projets = [];
-      res.body.forEach(projet => {
-        const date = moment(projet.dateCreation);
-        const archive = projet.archive;
-        if (date.year() === moment().year() && !archive) {
-          this.projets.push(projet);
-        }
-        if (archive) {
-          this.datesArchive.push(date.year());
+    if (this.accountExtra.cursus !== null) {
+      this.projetService.findByArchiveAndCursus(false, this.accountExtra.cursus).subscribe(projets => {
+        if (projets !== null) {
+          this.projets = projets.body;
+          this.allProjets = projets.body;
         }
       });
+    } else {
+      this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
+        this.datesArchive = [];
+        this.projets = [];
+        res.body.forEach(projet => {
+          const date = moment(projet.dateCreation);
+          const archive = projet.archive;
+          if (date.year() === moment().year() && !archive) {
+            this.projets.push(projet);
+          }
+          if (archive) {
+            this.datesArchive.push(date.year());
+          }
+        });
 
-      this.datesArchive = [...new Set(this.datesArchive)];
-      this.datesArchive = this.datesArchive.sort((a, b) => (a > b ? -1 : 1));
-    });
+        this.datesArchive = [...new Set(this.datesArchive)];
+        this.datesArchive = this.datesArchive.sort((a, b) => (a > b ? -1 : 1));
+      });
+    }
   }
 
   /**
@@ -129,8 +137,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadAll();
-
     this.registerChangeInProjets();
     this.accountService.getAuthenticationState().subscribe(account => {
       if (account !== null) {
@@ -150,6 +156,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
             }
           });
         }
+        this.loadAll();
       }
     });
     this.groupeService.findByActif(true).subscribe(groupes => {
