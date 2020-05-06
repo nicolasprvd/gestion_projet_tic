@@ -83,11 +83,8 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     if (this.users !== null && this.users !== undefined) {
       for (const u of this.users) {
         if (u.id === idUser) {
-          this.subject = 'Réponse négative attribution du projet';
-          this.content =
-            'Le projet ' +
-            this.projet.nom +
-            " n'a pas été attribué à votre groupe. Veuillez vous rendre sur le site pour en choisir un autre.";
+          this.subject = this.translateService.instant('global.email.assignProject.negative.subject');
+          this.content = this.translateService.instant('global.email.suppressionProjet.negative.content', { nom: this.projet.nom });
           this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
         }
       }
@@ -101,8 +98,8 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
     if (this.users !== null && this.users !== undefined) {
       for (const u of this.users) {
         if (u.id === idUser) {
-          this.subject = 'Réponse positive attribution du projet';
-          this.content = 'Le projet ' + this.projet.nom + ' a bien été attribué à votre groupe.';
+          this.subject = this.translateService.instant('global.email.assignProject.positive.subject');
+          this.content = this.translateService.instant('global.email.assignProject.positive.content', { nom: this.projet.nom });
           this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
         }
       }
