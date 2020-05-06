@@ -24,8 +24,8 @@
                     </span>
                 </a>
             </li>
-            <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer mls" display="dynamic"
+            <!-- Entities (no student) -->
+            <li *ngIf="!student && isAuthenticated()" ngbDropdown class="nav-item dropdown pointer mls" display="dynamic"
                 routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                 <a class="nav-link dropdown-toggle hoverable upper" ngbDropdownToggle href="javascript:void(0);"
                    id="entity-menu">
@@ -37,14 +37,7 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-                    <li>
-                        <a class="dropdown-item" routerLink="evaluation" routerLinkActive="active"
-                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.evaluation">Evaluation</span>
-                        </a>
-                    </li>
-                    <li>
+                    <li *ngIf="!afficheProjet">
                         <a class="dropdown-item" routerLink="projet" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
@@ -65,8 +58,32 @@
                             <span jhiTranslate="global.menu.entities.groupe">Groupe</span>
                         </a>
                     </li>
-                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+                    <li *ngIf="!student">
+                        <a class="dropdown-item" routerLink="evaluation" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.evaluation">Evaluation</span>
+                        </a>
+                    </li>
                 </ul>
+            </li>
+            <!-- Entities (student without group) -->
+            <li *ngIf="!afficheProjet && student && isAuthenticated()" class="nav-item mls" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link hoverable upper" routerLink="projet"  (click)="collapseNavbar()">
+                   <span>
+                       <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                       <span jhiTranslate="global.menu.entities.projet">Projets</span>
+                    </span>
+                </a>
+            </li>
+            <!-- Entities (student with group) -->
+            <li *ngIf="afficheProjet && student && isAuthenticated()" class="nav-item mls" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link hoverable upper" routerLink="projet/etudiant"  (click)="collapseNavbar()">
+                   <span>
+                       <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                       <span jhiTranslate="global.menu.entities.subentities.projetEtudiant">Mon projet</span>
+                    </span>
+                </a>
             </li>
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer mls" display="dynamic"
                 routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
