@@ -5,7 +5,7 @@
       "role": "Général",
       "one": {
         "question": "Quel est l'objectif de ce site ?",
-        "answer": "Le site permet de faciliter l'attribution des projets TIC aux étudiants."
+        "answer": "Le site permet de faciliter l'attribution des projets aux étudiants du cursus MIAGE."
       },
       "two": {
         "question": "Comment obtenir mes identifiants ?",

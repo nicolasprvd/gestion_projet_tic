@@ -1,5 +1,6 @@
 package com.app.projettic.web.rest.vm;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.domain.enumeration.TypeUtilisateur;
 import com.app.projettic.service.dto.UserDTO;
 import javax.validation.constraints.Size;
@@ -18,6 +19,8 @@ public class ManagedUserVM extends UserDTO {
 
     private TypeUtilisateur typeUtilisateur;
 
+    private TypeCursus typeCursus;
+
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
     }
@@ -32,6 +35,10 @@ public class ManagedUserVM extends UserDTO {
 
     public TypeUtilisateur getTypeUtilisateur() {
         return typeUtilisateur;
+    }
+
+    public TypeCursus getTypeCursus() {
+        return typeCursus;
     }
 
     public void setTypeUtilisateur(TypeUtilisateur typeUtilisateur) {

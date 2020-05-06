@@ -15,6 +15,7 @@ public interface ProjetMapper extends EntityMapper<ProjetDTO, Projet> {
     @Mapping(source = "groupe.id", target = "groupeId")
     @Mapping(source = "userExtra.id", target = "userExtraId")
     @Mapping(source = "dateCreation", target = "dateCreation")
+    @Mapping(source = "cursus", target = "cursus")
     ProjetDTO toDto(Projet projet);
 
     @Mapping(target = "documents", ignore = true)
@@ -24,6 +25,7 @@ public interface ProjetMapper extends EntityMapper<ProjetDTO, Projet> {
     @Mapping(source = "groupeId", target = "groupe")
     @Mapping(source = "userExtraId", target = "userExtra")
     @Mapping(source = "dateCreation", target = "dateCreation")
+    @Mapping(source = "cursus", target = "cursus")
     Projet toEntity(ProjetDTO projetDTO);
 
     default Projet fromId(Long id) {
