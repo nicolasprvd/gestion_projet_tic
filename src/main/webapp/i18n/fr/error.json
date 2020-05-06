@@ -2,10 +2,10 @@
   "error": {
     "title": "Houston, nous avons un problème !",
     "http": {
-      "400": "Mauvaise requête.",
-      "403": "Vous n'avez pas les droits pour accéder à cette page.",
+      "400": "Vous êtes incompréhensible !",
+      "403": "Français, je vous ai compris ! Vous n'avez simplement pas accès à cette page.",
       "404": "On nous informe que la page demandée n'a jamais existé, nous en sommes navrés :(",
-      "405": "Le verbe HTTP que vous avez utilisé n'est pas reconnu par cet URL.",
+      "405": "Ah je connais cette méthode ! Mais de nom seulement...",
       "500": "Erreur interne du serveur."
     },
     "concurrencyFailure": "Un autre utilisateur a modifié ces données en même temps que vous. Vos changements n'ont pas été sauvegardés.",

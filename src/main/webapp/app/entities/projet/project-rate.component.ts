@@ -17,8 +17,8 @@ import { UserExtra } from 'app/shared/model/user-extra.model';
 import { EvaluationService } from 'app/entities/evaluation/evaluation.service';
 import { IDocument } from 'app/shared/model/document.model';
 import { TypeDocument } from 'app/shared/model/enumerations/type-document.model';
-import {ToastrService} from "ngx-toastr";
-import {TranslateService} from "@ngx-translate/core";
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -95,23 +95,20 @@ export class ProjectRateComponent implements OnInit {
         for (const extra of this.allUsers) {
           if (extra.groupeId === this.groupId) {
             this.groupUsers.push(extra);
-            if(extra.evaluationId !== null) {
+            if (extra.evaluationId !== null) {
               this.idEvaluation = extra.evaluationId;
-            }else {
+            } else {
               this.idEvaluation = undefined;
             }
           }
         }
-        if(this.idEvaluation !== undefined) {
+        if (this.idEvaluation !== undefined) {
           this.evaluationService.find(this.idEvaluation).subscribe(evaluation => {
             this.evaluation = evaluation.body;
           });
         }
       }
     });
-
-    console.error(this.idEvaluation);
-
   }
 
   byteSize(base64String: string): string {
@@ -130,24 +127,26 @@ export class ProjectRateComponent implements OnInit {
   evaluate(): void {
     if (this.isValidate()) {
       this.isSaving = true;
-      if(this.idEvaluation !== undefined) {
+      if (this.idEvaluation !== undefined) {
         const newEvaluation = this.createEvaluation(false);
-        this.evaluationService.update(newEvaluation).subscribe(() => {
-          this.isSaving = false;
+        this.evaluationService.update(newEvaluation).subscribe(
+          () => {
+            this.isSaving = false;
             this.toastrService.success(
               this.translateService.instant('global.toastr.noter.projet.messageUpdate'),
               this.translateService.instant('global.toastr.noter.projet.title', { nom: this.project.nom })
             );
             this.router.navigate(['/projet']);
-        },
+          },
           () => {
             this.isSaving = false;
             this.toastrService.error(
               this.translateService.instant('global.toastr.erreur.message'),
               this.translateService.instant('global.toastr.erreur.title')
             );
-          });
-      }else {
+          }
+        );
+      } else {
         const newEvaluation = this.createEvaluation(true);
         this.evaluationService.create(newEvaluation).subscribe(
           evaluation => {

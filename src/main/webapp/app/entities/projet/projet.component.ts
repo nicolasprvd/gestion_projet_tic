@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -278,16 +278,15 @@ export class ProjetComponent implements OnInit, OnDestroy {
     this.projetService.find(this.projetChoisiId).subscribe(projet => {
       let compteur = projet.body.nbEtudiant;
       const idMonGroupe: number = this.groupeId;
-      this.userExtraService.findByActif(true).subscribe(
+      this.userExtraService.findByGroupeId(idMonGroupe).subscribe(
         userextras => {
           if (userextras !== null && userextras.body !== null) {
-            this.groupeService.delete(idMonGroupe).subscribe();
             for (const userextra of userextras.body) {
-              if (userextra.groupeId === idMonGroupe) {
-                userextra.groupeId = null;
+              userextra.groupeId = null;
+              this.userExtraService.update(userextra).subscribe(() => {
                 compteur--;
-                this.userExtraService.update(userextra).subscribe(() => {
-                  if (compteur === 0) {
+                if (compteur === 0) {
+                  this.groupeService.delete(idMonGroupe).subscribe(() => {
                     this.isRetracte = true;
                     this.isSaving = false;
                     this.toastrService.success(
@@ -295,9 +294,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
                       this.translateService.instant('global.toastr.retractation.projet.title', { nom: projet.body.nom })
                     );
                     this.router.navigate(['/projet']);
-                  }
-                });
-              }
+                  });
+                }
+              });
             }
           }
         },
@@ -336,15 +335,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
         );
       }
     );
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
   }
 
   previousState(): void {

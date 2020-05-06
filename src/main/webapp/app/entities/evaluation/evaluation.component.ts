@@ -54,7 +54,6 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.evaluationService.findByActif(true).subscribe(evaluations => {
       if (evaluations !== null && evaluations.body !== null) {
         this.evaluations = evaluations.body;
-        console.error(this.evaluations);
       }
     });
   }
@@ -102,6 +101,17 @@ export class EvaluationComponent implements OnInit, OnDestroy {
   delete(evaluation: IEvaluation): void {
     const modalRef = this.modalService.open(EvaluationDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.evaluation = evaluation;
+  }
+
+  isEvaluationAffiche(): boolean {
+    if (this.extras !== null) {
+      for (const extra of this.extras) {
+        if (extra.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   isEtudiantActif(extra: IUserExtra): boolean {
