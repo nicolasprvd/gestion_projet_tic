@@ -123,7 +123,7 @@ public class UserService {
         }
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
-        newUser.setActivated(true);
+        newUser.setActivated(userDTO.getActivated());
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
@@ -138,7 +138,7 @@ public class UserService {
         UserExtra newUserExtra = new UserExtra();
         newUserExtra.setUser(newUser);
         newUserExtra.setTypeUtilisateur(typeUtilisateur);
-        newUserExtra.setActif(true);
+        newUserExtra.setActif(userDTO.getActivated());
         userExtraRepository.save(newUserExtra);
         log.debug("Created Information for UserExtra: {}", newUserExtra);
 
@@ -160,6 +160,7 @@ public class UserService {
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
+        user.setActivated(userDTO.getActivated());
         if (userDTO.getEmail() != null) {
             user.setEmail(userDTO.getEmail().toLowerCase());
         }
@@ -173,7 +174,7 @@ public class UserService {
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
-        user.setActivated(true);
+        user.setActivated(userDTO.getActivated());
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = userDTO.getAuthorities().stream()
                 .map(authorityRepository::findById)
@@ -195,10 +196,11 @@ public class UserService {
      * @param firstName first name of user.
      * @param lastName  last name of user.
      * @param email     email id of user.
+     * @param activated user is activated?
      * @param langKey   language key.
      * @param imageUrl  image URL of user.
      */
-    public void updateUser(Long id, String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public void updateUser(Long id, String firstName, String lastName, String email, Boolean activated, String langKey, String imageUrl) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
@@ -208,6 +210,7 @@ public class UserService {
                 if (email != null) {
                     user.setEmail(email.toLowerCase());
                 }
+                user.setActivated(activated);
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
                 userSearchRepository.save(user);

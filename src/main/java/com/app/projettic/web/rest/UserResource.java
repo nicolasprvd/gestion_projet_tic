@@ -111,7 +111,12 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
-            mailService.sendCreationEmail(newUser);
+            // mailService.sendCreationEmail(newUser);
+            if (userDTO.isActivated() == false) {
+                String subject = "Compte client à valider";
+                String content = "Le client " + userDTO.getFirstName() + " " + userDTO.getLastName() + " a créé un compte sur le site de gestion des projets. Rendez-vous sur celui-ci pour valider le compte.";
+                mailService.sendEmail("audrey.balat028@gmail.com", subject, content, false, false);
+            }
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert(applicationName,  "userManagement.created", newUser.getLogin()))
                 .body(newUser);

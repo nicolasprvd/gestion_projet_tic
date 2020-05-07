@@ -97,6 +97,9 @@
     },
     "item-count": "Affichage {{first}} - {{second}} de {{total}} items.",
     "toastr": {
+      "register": {
+        "message": "Votre compte est en attente de validation par l'administrateur."
+      },
       "modifications": {
         "projet": {
           "title": "Modification du projet {{nom}}",
@@ -161,6 +164,14 @@
       "annotation": "Les champs suivis de * sont obligatoires"
     },
     "email": {
+      "compteValide": {
+        "sujet": "Validation de votre compte",
+        "message": "Bonjour, votre compte a bien été validée. Vous pouvez désormais vous rendre sur le site pour vous y connecter."
+      },
+      "infoValidationCompte": {
+        "sujet": "Compte client à valider",
+        "message": "Le client {{ prenom }} {{nom}} a créé un compte sur le site de gestion des projets. Rendez-vous sur celui-ci pour valider le compte."
+      },
       "suppressionProjet": {
         "sujet": "Réponse négative - attribution du projet",
         "message": "Le projet {{nom}} n'a pas été attribué à votre groupe car il a été supprimé. Veuillez vous rendre sur le site pour en choisir un autre."
