@@ -19,7 +19,7 @@ public class ManagedUserVM extends UserDTO {
 
     private TypeUtilisateur typeUtilisateur;
 
-    private TypeCursus typeCursus;
+    private TypeCursus cursus;
 
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
@@ -37,8 +37,12 @@ public class ManagedUserVM extends UserDTO {
         return typeUtilisateur;
     }
 
-    public TypeCursus getTypeCursus() {
-        return typeCursus;
+    public TypeCursus getCursus() {
+        return cursus;
+    }
+
+    public void setCursus(TypeCursus cursus) {
+        this.cursus = cursus;
     }
 
     public void setTypeUtilisateur(TypeUtilisateur typeUtilisateur) {

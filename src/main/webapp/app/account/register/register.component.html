@@ -153,10 +153,18 @@
                 <div class="form-group">
                     <label class="form-control-label" for="typeUtilisateur" jhiTranslate="register.form.label.typeUtilisateur"></label>
 
-                    <select name="typeUtilisateur" id="typeUtilisateur" class="form-control" formControlName="typeUtilisateur" [(ngModel)]="typeUtilisateurDefault">
+                    <select name="typeUtilisateur" id="typeUtilisateur" class="form-control" formControlName="typeUtilisateur" [(ngModel)]="typeUtilisateurDefault" (change)="afficherCursus()">
                         <option *ngFor="let statut of typeUtilisateurs" [value]="statut">{{ statut }}</option>
                     </select>
+                </div>
 
+                <!-- CURSUS -->
+                <div id="divCursus" class="form-group">
+                    <label class="form-control-label" for="cursus" jhiTranslate="register.form.label.cursus"></label>
+
+                    <select name="cursus" id="cursus" class="form-control" formControlName="cursus" [(ngModel)]="cursusDefault">
+                        <option *ngFor="let niveau of cursus" [value]="niveau">{{ niveau }}</option>
+                    </select>
                 </div>
 
                 <!-- MOT DE PASSE -->

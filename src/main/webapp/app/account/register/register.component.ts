@@ -8,6 +8,7 @@ import { RegisterService } from './register.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { LoginService } from 'app/core/login/login.service';
 import { Router } from '@angular/router';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   selector: 'jhi-register',
@@ -24,6 +25,8 @@ export class RegisterComponent implements AfterViewInit {
   success = false;
   typeUtilisateurs: string[];
   typeUtilisateurDefault: TypeUtilisateur;
+  cursus: string[];
+  cursusDefault: TypeCursus;
 
   registerForm = this.fb.group({
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern('^[_.@A-Za-z0-9-]*$')]],
@@ -31,6 +34,7 @@ export class RegisterComponent implements AfterViewInit {
     firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(254)]],
     lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(254)]],
     typeUtilisateur: [''],
+    cursus: [''],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]]
   });
@@ -45,6 +49,8 @@ export class RegisterComponent implements AfterViewInit {
   ) {
     this.typeUtilisateurs = [TypeUtilisateur.ETUDIANT, TypeUtilisateur.CLIENT];
     this.typeUtilisateurDefault = TypeUtilisateur.ETUDIANT;
+    this.cursus = [TypeCursus.L3, TypeCursus.M1, TypeCursus.M2];
+    this.cursusDefault = TypeCursus.L3;
   }
 
   ngAfterViewInit(): void {
@@ -71,8 +77,12 @@ export class RegisterComponent implements AfterViewInit {
       const firstName = this.registerForm.get(['firstName'])!.value;
       const lastName = this.registerForm.get(['lastName'])!.value;
       const typeUtilisateur = this.registerForm.get(['typeUtilisateur'])!.value;
+      let cursus = this.registerForm.get(['cursus'])!.value;
+      if (typeUtilisateur === TypeUtilisateur.CLIENT) {
+        cursus = null;
+      }
       this.registerService
-        .save({ login, firstName, lastName, email, password, langKey: this.languageService.getCurrentLanguage(), typeUtilisateur })
+        .save({ login, firstName, lastName, email, password, langKey: this.languageService.getCurrentLanguage(), typeUtilisateur, cursus })
         .subscribe(
           () => {
             this.success = true;
@@ -107,6 +117,15 @@ export class RegisterComponent implements AfterViewInit {
       this.errorEmailExists = true;
     } else {
       this.error = true;
+    }
+  }
+
+  afficherCursus(): void {
+    const typeUtilisateur = this.registerForm.get(['typeUtilisateur'])!.value;
+    if (typeUtilisateur === TypeUtilisateur.CLIENT) {
+      document.getElementById('divCursus').style.display = 'none';
+    } else {
+      document.getElementById('divCursus').style.display = 'block';
     }
   }
 }
