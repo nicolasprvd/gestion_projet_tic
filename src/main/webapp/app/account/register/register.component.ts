@@ -13,6 +13,7 @@ import { UserService } from 'app/core/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjetService } from 'app/entities/projet/projet.service';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   selector: 'jhi-register',
@@ -30,8 +31,8 @@ export class RegisterComponent implements AfterViewInit {
   typeUtilisateurs: string[];
   typeUtilisateurDefault: TypeUtilisateur;
   active = true;
-  subject: string;
-  content: string;
+  cursus: string[];
+  cursusDefault: TypeCursus;
 
   registerForm = this.fb.group({
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern('^[_.@A-Za-z0-9-]*$')]],
@@ -39,6 +40,7 @@ export class RegisterComponent implements AfterViewInit {
     firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(254)]],
     lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(254)]],
     typeUtilisateur: [''],
+    cursus: [''],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]]
   });
@@ -58,6 +60,8 @@ export class RegisterComponent implements AfterViewInit {
   ) {
     this.typeUtilisateurs = [TypeUtilisateur.ETUDIANT, TypeUtilisateur.CLIENT];
     this.typeUtilisateurDefault = TypeUtilisateur.ETUDIANT;
+    this.cursus = [TypeCursus.L3, TypeCursus.M1, TypeCursus.M2];
+    this.cursusDefault = TypeCursus.L3;
   }
 
   ngAfterViewInit(): void {
@@ -84,12 +88,14 @@ export class RegisterComponent implements AfterViewInit {
       const firstName = this.registerForm.get(['firstName'])!.value;
       const lastName = this.registerForm.get(['lastName'])!.value;
       const typeUtilisateur = this.registerForm.get(['typeUtilisateur'])!.value;
-
       if (typeUtilisateur === 'CLIENT') {
         this.active = false;
       }
       const activated = this.active;
-
+      let cursus = this.registerForm.get(['cursus'])!.value;
+      if (typeUtilisateur === TypeUtilisateur.CLIENT) {
+        cursus = null;
+      }
       this.registerService
         .save({
           login,
@@ -99,18 +105,15 @@ export class RegisterComponent implements AfterViewInit {
           password,
           activated,
           langKey: this.languageService.getCurrentLanguage(),
-          typeUtilisateur
+          typeUtilisateur,
+          cursus
         })
+
         .subscribe(
           () => {
             this.success = true;
 
             if (typeUtilisateur === 'CLIENT') {
-              // sending email to the administrator
-              // this.subject = this.translateService.instant('global.email.infoValidationCompte.sujet');
-              // this.content = this.translateService.instant('global.email.infoValidationCompte.message', { prenom : firstName, nom: lastName });
-              // this.projetService.sendMail("audrey.balat@etu.u-bordeaux.fr", this.subject, this.content).subscribe();
-
               this.router.navigate(['/']);
               this.toastrService.success(this.translateService.instant('global.toastr.register.message'));
             } else {
@@ -146,6 +149,15 @@ export class RegisterComponent implements AfterViewInit {
       this.errorEmailExists = true;
     } else {
       this.error = true;
+    }
+  }
+
+  afficherCursus(): void {
+    const typeUtilisateur = this.registerForm.get(['typeUtilisateur'])!.value;
+    if (typeUtilisateur === TypeUtilisateur.CLIENT) {
+      document.getElementById('divCursus').style.display = 'none';
+    } else {
+      document.getElementById('divCursus').style.display = 'block';
     }
   }
 }

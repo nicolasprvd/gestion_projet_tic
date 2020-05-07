@@ -1,5 +1,6 @@
 package com.app.projettic.service.impl;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.service.ProjetService;
 import com.app.projettic.domain.Projet;
 import com.app.projettic.repository.ProjetRepository;
@@ -144,7 +145,7 @@ public class ProjetServiceImpl implements ProjetService {
     /**
      * Get projet by archive.
      *
-     * @param archive the archive of the userExtra.
+     * @param archive the archive of the projet.
      * @return the entity.
      */
     @Override
@@ -152,5 +153,18 @@ public class ProjetServiceImpl implements ProjetService {
     public List<ProjetDTO> findByArchive(boolean archive) {
         log.debug("Request to get projet : {}", archive);
         return projetRepository.findByArchive(archive).stream().map(projetMapper::toDto).collect(Collectors.toList());
+    }
+
+    /**
+     * Get projet by cursus.
+     *
+     * @param cursus the cursus of the projet.
+     * @return the entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProjetDTO> findByArchiveAndCursus(boolean archive, TypeCursus cursus) {
+        log.debug("Request to get projet : {}", cursus);
+        return projetRepository.findByArchiveAndCursus(archive, cursus).stream().map(projetMapper::toDto).collect(Collectors.toList());
     }
 }

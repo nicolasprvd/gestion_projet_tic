@@ -6,7 +6,8 @@
       "label": {
         "firstName": "Prénom",
         "lastName": "Nom",
-        "typeUtilisateur": "Statut"
+        "typeUtilisateur": "Statut",
+        "cursus": "Niveau"
       },
       "placeholder": {
         "firstName": "Votre prénom",

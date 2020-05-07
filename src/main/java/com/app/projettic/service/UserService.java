@@ -4,6 +4,7 @@ import com.app.projettic.config.Constants;
 import com.app.projettic.domain.Authority;
 import com.app.projettic.domain.User;
 import com.app.projettic.domain.UserExtra;
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.domain.enumeration.TypeUtilisateur;
 import com.app.projettic.repository.AuthorityRepository;
 import com.app.projettic.repository.UserExtraRepository;
@@ -98,7 +99,7 @@ public class UserService {
             });
     }
 
-    public User registerUser(UserDTO userDTO, String password, TypeUtilisateur typeUtilisateur) {
+    public User registerUser(UserDTO userDTO, String password, TypeUtilisateur typeUtilisateur, TypeCursus typeCursus) {
         userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
             boolean removed = removeNonActivatedUser(existingUser);
             if (!removed) {
@@ -139,6 +140,7 @@ public class UserService {
         newUserExtra.setUser(newUser);
         newUserExtra.setTypeUtilisateur(typeUtilisateur);
         newUserExtra.setActif(userDTO.getActivated());
+        newUserExtra.setCursus(typeCursus);
         userExtraRepository.save(newUserExtra);
         log.debug("Created Information for UserExtra: {}", newUserExtra);
 

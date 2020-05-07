@@ -1,6 +1,7 @@
 import { IDocument } from 'app/shared/model/document.model';
 import { IGroupe } from 'app/shared/model/groupe.model';
 import { Moment } from 'moment';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 export interface IProjet {
   id?: number;
@@ -16,6 +17,7 @@ export interface IProjet {
   groupeId?: number;
   userExtraId?: number;
   dateCreation?: Moment;
+  cursus?: TypeCursus;
 }
 
 export class Projet implements IProjet {
@@ -32,7 +34,8 @@ export class Projet implements IProjet {
     public groupes?: IGroupe[],
     public groupeId?: number,
     public userExtraId?: number,
-    public dateCreation?: Moment
+    public dateCreation?: Moment,
+    public cursus?: TypeCursus
   ) {
     this.automatique = this.automatique || false;
     this.archive = this.archive || false;

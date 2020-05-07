@@ -10,7 +10,7 @@
         "evaluation": "Evaluation",
         "userExtra": "User Extra",
         "document": "Document",
-        "projet": "Projet",
+        "projet": "Projects",
         "groupe": "Groupe",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "subentities": {
@@ -175,6 +175,16 @@
       "suppressionProjet": {
         "sujet": "Negative answer - project award",
         "message": "The {{nom}} project has not been assigned to your group because it has been deleted. Please go to the site to choose a different one."
+      },
+      "assignProject": {
+        "negative": {
+          "subject": "Negative answer - project assignation",
+          "content": "The {{nom}} project has not been assigned to your group. Please go to the site to choose a different one."
+        },
+        "positive": {
+          "subject": "Positive answer - project assignation",
+          "content": "The {{nom}} project has been assigned to your group. You can now render the projet's documents on the project's details page."
+        }
       }
     }
   },

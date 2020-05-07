@@ -1,4 +1,5 @@
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 export interface IUser {
   id?: any;
@@ -15,6 +16,7 @@ export interface IUser {
   lastModifiedDate?: Date;
   password?: string;
   typeUtilisateur?: TypeUtilisateur;
+  cursus?: TypeCursus;
 }
 
 export class User implements IUser {
@@ -32,6 +34,7 @@ export class User implements IUser {
     public lastModifiedBy?: string,
     public lastModifiedDate?: Date,
     public password?: string,
-    public typeUtilisateur?: TypeUtilisateur
+    public typeUtilisateur?: TypeUtilisateur,
+    public cursus?: TypeCursus
   ) {}
 }
