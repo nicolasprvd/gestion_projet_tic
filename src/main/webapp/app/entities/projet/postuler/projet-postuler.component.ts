@@ -70,10 +70,10 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
                       }
                     }
                     this.users.sort((n1: User, n2: User) => {
-                      if (n1.firstName > n2.firstName) {
+                      if (n1.lastName > n2.lastName) {
                         return 1;
                       }
-                      if (n1.firstName < n2.firstName) {
+                      if (n1.lastName < n2.lastName) {
                         return -1;
                       }
                       return 0;
@@ -222,44 +222,6 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     }
     return valide;
   }
-
-  // isInclude(event: any): void {
-  //   this.compteur++;
-  //   this.valideInclude = false;
-  //   if(this.compteur > 0) {
-  //     if(this.ids.includes(event)) {
-  //       this.valideInclude = true;
-  //       const index = this.ids.indexOf(event);
-  //       this.ids.splice(index);
-  //     }else {
-  //       this.ids.push(event);
-  //     }
-  //   }else {
-  //     this.ids.push(event);
-  //   }
-  //   console.error(this.ids);
-  //
-  //
-  //
-  //
-  //   // this.valideInclude = false;
-  //   //
-  //   // for (let i = 0; i < this.nbEtuArray.length; i++) {
-  //   //   const etuId = 'etu' + this.nbEtuArray[i];
-  //   //   console.error(etuId);
-  //   //   document.getElementById(etuId).setAttribute('style', 'background-color:white');
-  //   //   const etu = (document.getElementById(etuId) as HTMLInputElement).value;
-  //   //   console.error(etu);
-  //   //   console.error("ids = " + this.ids);
-  //   //   if (this.ids.includes(+etu)) {
-  //   //     console.error("existant");
-  //   //     document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
-  //   //     this.valideInclude = true;
-  //   //     this.ids.push(+etu);
-  //   //     return;
-  //   //   }
-  //   // }
-  // }
 
   formatNom(str: string): string {
     str = str.toLowerCase();
