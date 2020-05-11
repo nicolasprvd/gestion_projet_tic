@@ -168,10 +168,6 @@
         "sujet": "Validation de votre compte",
         "message": "Bonjour, votre compte a bien été validée. Vous pouvez désormais vous rendre sur le site pour vous y connecter."
       },
-      "infoValidationCompte": {
-        "sujet": "Compte client à valider",
-        "message": "Le client {{ prenom }} {{nom}} a créé un compte sur le site de gestion des projets. Rendez-vous sur celui-ci pour valider le compte."
-      },
       "suppressionProjet": {
         "sujet": "Réponse négative - attribution du projet",
         "message": "Le projet {{nom}} n'a pas été attribué à votre groupe car il a été supprimé. Veuillez vous rendre sur le site pour en choisir un autre."
