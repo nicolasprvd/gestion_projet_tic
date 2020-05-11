@@ -12,8 +12,8 @@ import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { IUserExtra, UserExtra } from 'app/shared/model/user-extra.model';
-import {TranslateService} from "@ngx-translate/core";
-import {ToastrService} from "ngx-toastr";
+import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'jhi-projet-postuler',
@@ -55,28 +55,33 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
         account.firstName = this.formatNom(account.firstName);
         account.lastName = account.lastName.toUpperCase();
         this.account = account;
-      }
-    });
-    this.userExtraService.findByActif(true).subscribe(userExtras => {
-      if (userExtras !== null && userExtras.body !== null) {
-        this.userExtras = userExtras.body;
-        this.userService.findByActivated(true).subscribe(users => {
-          if (users !== null) {
-            for (const u of users) {
-              if (u.id !== this.account?.id && this.isEtudiantActif(u.id) && !this.aDejaUnGroupe(u.id)) {
-                u.firstName = this.formatNom(u.firstName);
-                u.lastName = u.lastName.toUpperCase();
-                this.users.push(u);
+        this.userExtraService.find(this.account.id).subscribe(userActuel => {
+          if (userActuel !== null && userActuel.body !== undefined) {
+            this.userExtraService.findByActifAndCursus(true, userActuel.body.cursus).subscribe(userExtras => {
+              if (userExtras !== null && userExtras.body !== null) {
+                this.userExtras = userExtras.body;
+                console.error(this.userExtras.length);
+                this.userService.findByActivated(true).subscribe(users => {
+                  if (users !== null) {
+                    for (const u of users) {
+                      if (u.id !== this.account?.id && this.isEtudiantActif(u.id) && !this.aDejaUnGroupe(u.id)) {
+                        u.firstName = this.formatNom(u.firstName);
+                        u.lastName = u.lastName.toUpperCase();
+                        this.users.push(u);
+                      }
+                    }
+                    this.users.sort((n1: User, n2: User) => {
+                      if (n1.lastName > n2.lastName) {
+                        return 1;
+                      }
+                      if (n1.lastName < n2.lastName) {
+                        return -1;
+                      }
+                      return 0;
+                    });
+                  }
+                });
               }
-            }
-            this.users.sort((n1: User, n2: User) => {
-              if (n1.firstName > n2.firstName) {
-                return 1;
-              }
-              if (n1.firstName < n2.firstName) {
-                return -1;
-              }
-              return 0;
             });
           }
         });

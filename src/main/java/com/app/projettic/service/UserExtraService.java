@@ -1,6 +1,7 @@
 package com.app.projettic.service;
 
 import com.app.projettic.domain.UserExtra;
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.service.dto.UserExtraDTO;
 
 import java.util.List;
@@ -41,6 +42,15 @@ public interface UserExtraService {
      * @return the entity.
      */
     List<UserExtraDTO> findByActif(boolean actif);
+
+    /**
+     * Get the "id" userExtra.
+     *
+     * @param actif the actif of the userExtra.
+     * @param cursus the cursus of the userExtra.
+     * @return the entity.
+     */
+    List<UserExtraDTO> findByActifAndCursus(boolean actif, TypeCursus cursus);
 
     /**
      * Delete the "id" userExtra.
