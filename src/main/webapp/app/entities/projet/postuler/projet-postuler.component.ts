@@ -60,7 +60,6 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
             this.userExtraService.findByActifAndCursus(true, userActuel.body.cursus).subscribe(userExtras => {
               if (userExtras !== null && userExtras.body !== null) {
                 this.userExtras = userExtras.body;
-                console.error(this.userExtras.length);
                 this.userService.findByActivated(true).subscribe(users => {
                   if (users !== null) {
                     for (const u of users) {
@@ -71,10 +70,10 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
                       }
                     }
                     this.users.sort((n1: User, n2: User) => {
-                      if (n1.lastName > n2.lastName) {
+                      if (n1.firstName > n2.firstName) {
                         return 1;
                       }
-                      if (n1.lastName < n2.lastName) {
+                      if (n1.firstName < n2.firstName) {
                         return -1;
                       }
                       return 0;

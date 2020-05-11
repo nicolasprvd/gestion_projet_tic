@@ -84,6 +84,8 @@ export class HomeNouvelleAnneeComponent {
     }
     for (const extra of this.userExtras) {
       if (extra.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
+        extra.groupeId = null;
+        extra.evaluationId = null;
         if (extra.cursus === TypeCursus.M2) {
           const usr = this.getUserById(extra.id);
           extra.actif = false;
