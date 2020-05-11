@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, Search } from 'app/shared/util/request-util';
 import { IUserExtra } from 'app/shared/model/user-extra.model';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 type EntityResponseType = HttpResponse<IUserExtra>;
 type EntityArrayResponseType = HttpResponse<IUserExtra[]>;
@@ -34,6 +35,10 @@ export class UserExtraService {
 
   findByActif(actif: boolean): Observable<EntityArrayResponseType> {
     return this.http.get<IUserExtra[]>(`${this.resourceUrl}/actif/${actif}`, { observe: 'response' });
+  }
+
+  findByActifAndCursus(actif: boolean, cursus: TypeCursus): Observable<EntityArrayResponseType> {
+    return this.http.get<IUserExtra[]>(`${this.resourceUrl}/cursus/${actif}/${cursus}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
