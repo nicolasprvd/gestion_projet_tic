@@ -5,6 +5,7 @@ import com.app.projettic.domain.Groupe;
 import com.app.projettic.repository.GroupeRepository;
 import com.app.projettic.repository.search.GroupeSearchRepository;
 import com.app.projettic.service.dto.GroupeDTO;
+import com.app.projettic.service.dto.ProjetDTO;
 import com.app.projettic.service.mapper.GroupeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,4 +126,19 @@ public class GroupeServiceImpl implements GroupeService {
         log.debug("Request to get groupe : {}", actif);
         return groupeRepository.findByActif(actif).stream().map(groupeMapper::toDto).collect(Collectors.toList());
     }
+
+    /**
+     * Get groupe from project id
+     * @param projetId
+     * @return object groupe
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<GroupeDTO> findByProjetId(Long projetId) {
+        log.debug("Request to get Groupe from projet id : {}", projetId);
+        return groupeRepository.findByProjetId(projetId)
+            .map(groupeMapper::toDto);
+    }
+
+
 }
