@@ -24,6 +24,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   isSaving = false;
   projet: IProjet;
   account: Account | null;
+  accountExtra: IUserExtra;
   users: User[] = [];
   userExtras: UserExtra[] = [];
   nbEtuArray: (number | undefined)[] | undefined;
@@ -57,6 +58,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
         this.account = account;
         this.userExtraService.find(this.account.id).subscribe(userActuel => {
           if (userActuel !== null && userActuel.body !== undefined) {
+            this.accountExtra = userActuel.body;
             this.userExtraService.findByActifAndCursus(true, userActuel.body.cursus).subscribe(userExtras => {
               if (userExtras !== null && userExtras.body !== null) {
                 this.userExtras = userExtras.body;
@@ -148,7 +150,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       valide: false,
       userExtraId: this.account.id,
       projetId: this.projet.id,
-      actif: true
+      actif: true,
+      cursus: this.accountExtra.cursus
     };
   }
 
@@ -222,44 +225,6 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     }
     return valide;
   }
-
-  // isInclude(event: any): void {
-  //   this.compteur++;
-  //   this.valideInclude = false;
-  //   if(this.compteur > 0) {
-  //     if(this.ids.includes(event)) {
-  //       this.valideInclude = true;
-  //       const index = this.ids.indexOf(event);
-  //       this.ids.splice(index);
-  //     }else {
-  //       this.ids.push(event);
-  //     }
-  //   }else {
-  //     this.ids.push(event);
-  //   }
-  //   console.error(this.ids);
-  //
-  //
-  //
-  //
-  //   // this.valideInclude = false;
-  //   //
-  //   // for (let i = 0; i < this.nbEtuArray.length; i++) {
-  //   //   const etuId = 'etu' + this.nbEtuArray[i];
-  //   //   console.error(etuId);
-  //   //   document.getElementById(etuId).setAttribute('style', 'background-color:white');
-  //   //   const etu = (document.getElementById(etuId) as HTMLInputElement).value;
-  //   //   console.error(etu);
-  //   //   console.error("ids = " + this.ids);
-  //   //   if (this.ids.includes(+etu)) {
-  //   //     console.error("existant");
-  //   //     document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
-  //   //     this.valideInclude = true;
-  //   //     this.ids.push(+etu);
-  //   //     return;
-  //   //   }
-  //   // }
-  // }
 
   formatNom(str: string): string {
     str = str.toLowerCase();
