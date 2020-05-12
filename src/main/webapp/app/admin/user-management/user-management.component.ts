@@ -63,7 +63,9 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   setActive(user: User, isActivated: boolean): void {
-    this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadAll());
+    console.error(user);
+    user.activated = isActivated;
+    this.userService.update(user).subscribe(() => this.loadAll());
   }
 
   trackIdentity(index: number, item: User): any {
