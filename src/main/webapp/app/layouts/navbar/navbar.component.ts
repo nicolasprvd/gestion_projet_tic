@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { IUser } from 'app/core/user/user.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
+import { GroupeService } from 'app/entities/groupe/groupe.service';
 
 @Component({
   selector: 'jhi-navbar',
@@ -40,7 +41,8 @@ export class NavbarComponent implements OnInit {
     private loginModalService: LoginModalService,
     private profileService: ProfileService,
     private router: Router,
-    private userExtraService: UserExtraService
+    private userExtraService: UserExtraService,
+    private groupeService: GroupeService
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
   }
@@ -61,7 +63,13 @@ export class NavbarComponent implements OnInit {
             if (ue.body.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
               this.student = true;
               if (ue.body.groupeId !== null) {
-                this.afficheProjet = true;
+                this.groupeService.find(ue.body.groupeId).subscribe(grp => {
+                  if (grp !== null && grp.body !== null) {
+                    if (grp.body.valide === true) {
+                      this.afficheProjet = true;
+                    }
+                  }
+                });
               }
             }
           });

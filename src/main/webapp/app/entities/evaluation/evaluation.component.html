@@ -16,6 +16,21 @@
     <hr>
 
     <div class="table-responsive" id="entities" *ngIf="isEvaluationAffiche()">
+        <button id="filtreL3" type="submit"
+                (click)="filtrerEtudiant(L3)"
+                class="btn btn-success btn-sm">
+            <span>{{L3}}</span>
+        </button>
+        <button id="filtreM1" type="submit"
+                (click)="filtrerEtudiant(M1)"
+                class="btn btn-danger btn-sm">
+            <span>{{M1}}</span>
+        </button>
+        <button id="filtreM2" type="submit"
+                (click)="filtrerEtudiant(M2)"
+                class="btn btn-danger btn-sm">
+            <span>{{M2}}</span>
+        </button>
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr>
@@ -28,7 +43,7 @@
                 </tr>
             </thead>
             <tbody id="data">
-                <ng-container *ngFor="let extra of extras">
+                <ng-container *ngFor="let extra of extrasFiltres">
                     <tr *ngIf="isEtudiantActif(extra)">
                         <td [textContent]="getEtudiant(extra)"></td>
                         <td *ngIf="getProjet(extra.groupeId)">
