@@ -24,6 +24,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   isSaving = false;
   projet: IProjet;
   account: Account | null;
+  accountExtra: IUserExtra;
   users: User[] = [];
   userExtras: UserExtra[] = [];
   nbEtuArray: (number | undefined)[] | undefined;
@@ -57,6 +58,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
         this.account = account;
         this.userExtraService.find(this.account.id).subscribe(userActuel => {
           if (userActuel !== null && userActuel.body !== undefined) {
+            this.accountExtra = userActuel.body;
             this.userExtraService.findByActifAndCursus(true, userActuel.body.cursus).subscribe(userExtras => {
               if (userExtras !== null && userExtras.body !== null) {
                 this.userExtras = userExtras.body;
@@ -148,7 +150,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       valide: false,
       userExtraId: this.account.id,
       projetId: this.projet.id,
-      actif: true
+      actif: true,
+      cursus: this.accountExtra.cursus
     };
   }
 
