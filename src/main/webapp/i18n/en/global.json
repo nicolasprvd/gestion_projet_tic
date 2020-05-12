@@ -165,8 +165,16 @@
     },
     "email": {
       "compteValide": {
-        "sujet": "Validation of your account",
-        "message": "Hello, your account has been validated. You can go to the website to connect to it."
+        "sujet": "Activation of your account",
+        "message": "Hello, your account has been activated. You can go to the website to connect to it."
+      },
+      "compteNonValide": {
+        "sujet": "Deactivation of your account",
+        "message": "Hello, your account has been deactivated. If this is an error, please contact the project manager."
+      },
+      "compteSupprimer": {
+        "sujet": "Deleting of your account",
+        "message": "Hello, your account has been deleted. If this is an error, please contact the project manager."
       },
       "suppressionProjet": {
         "sujet": "Negative answer - project award",

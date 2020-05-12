@@ -12,6 +12,8 @@ import { Account } from 'app/core/user/account.model';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.model';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
+import { ProjetService } from 'app/entities/projet/projet.service';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -27,6 +29,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   predicate!: string;
   previousPage!: number;
   ascending!: boolean;
+  subject: string;
+  content: string;
 
   constructor(
     private userService: UserService,
@@ -34,7 +38,9 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventManager: JhiEventManager,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private translateService: TranslateService,
+    protected projetService: ProjetService
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +71,15 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   setActive(user: User, isActivated: boolean): void {
     user.activated = isActivated;
     this.userService.update(user).subscribe(() => this.loadAll());
+
+    if (isActivated === true) {
+      this.subject = this.translateService.instant('global.email.compteValide.sujet');
+      this.content = this.translateService.instant('global.email.compteValide.message');
+    } else {
+      this.subject = this.translateService.instant('global.email.compteNonValide.sujet');
+      this.content = this.translateService.instant('global.email.compteNonValide.message');
+    }
+    this.projetService.sendMail(user.email, this.subject, this.content).subscribe();
   }
 
   trackIdentity(index: number, item: User): any {
@@ -92,6 +107,10 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   deleteUser(user: User): void {
     const modalRef = this.modalService.open(UserManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.user = user;
+
+    this.subject = this.translateService.instant('global.email.compteSupprimer.sujet');
+    this.content = this.translateService.instant('global.email.compteSupprimer.message');
+    this.projetService.sendMail(user.email, this.subject, this.content).subscribe();
   }
 
   private loadAll(): void {

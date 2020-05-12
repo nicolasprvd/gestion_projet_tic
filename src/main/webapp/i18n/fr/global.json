@@ -165,8 +165,16 @@
     },
     "email": {
       "compteValide": {
-        "sujet": "Validation de votre compte",
-        "message": "Bonjour, votre compte a bien été validée. Vous pouvez désormais vous rendre sur le site pour vous y connecter."
+        "sujet": "Activation de votre compte",
+        "message": "Bonjour, votre compte a bien été activé. Vous pouvez désormais vous rendre sur le site pour vous y connecter."
+      },
+      "compteNonValide": {
+        "sujet": "Désactivation de votre compte",
+        "message": "Bonjour, votre compte a été désactivé. Si cela est une erreur, veuillez contacter le responsable des projets."
+      },
+      "compteSupprimer": {
+        "sujet": "Suppression de votre compte",
+        "message": "Bonjour, votre compte a été supprimé. Si cela est une erreur, veuillez contacter le responsable des projets."
       },
       "suppressionProjet": {
         "sujet": "Réponse négative - attribution du projet",
