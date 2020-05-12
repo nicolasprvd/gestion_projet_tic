@@ -21,6 +21,7 @@ import { Groupe } from 'app/shared/model/groupe.model';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { IUser } from 'app/core/user/user.model';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   selector: 'jhi-projet',
@@ -35,6 +36,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   account: Account | null;
   typeUtilisateur: TypeUtilisateur;
   projets: IProjet[];
+  projetsFiltres: IProjet[];
   authorities: string[] | undefined;
   groupeId: number;
   projetChoisiId: number;
@@ -45,6 +47,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
   isRetracte: boolean;
   extras: IUserExtra[] = [];
   users: IUser[] = [];
+  L3: TypeCursus = TypeCursus.L3;
+  M1: TypeCursus = TypeCursus.M1;
+  M2: TypeCursus = TypeCursus.M2;
 
   constructor(
     protected projetService: ProjetService,
@@ -79,9 +84,10 @@ export class ProjetComponent implements OnInit, OnDestroy {
     }
     if (this.accountExtra.cursus !== null) {
       this.projetService.findByArchiveAndCursus(false, this.accountExtra.cursus).subscribe(projets => {
-        if (projets !== null) {
+        if (projets !== null && projets.body !== null) {
           this.projets = projets.body;
           this.allProjets = projets.body;
+          this.projetsFiltres = projets.body;
         }
       });
     } else {
@@ -98,7 +104,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
             this.datesArchive.push(date.year());
           }
         });
-
+        this.projetsFiltres = this.projets;
         this.datesArchive = [...new Set(this.datesArchive)];
         this.datesArchive = this.datesArchive.sort((a, b) => (a > b ? -1 : 1));
       });
@@ -363,5 +369,36 @@ export class ProjetComponent implements OnInit, OnDestroy {
     }
 
     return false;
+  }
+
+  filtrerProjets(niveau: TypeCursus): void {
+    this.projetsFiltres = [];
+    for (const projet of this.projets) {
+      if (projet.cursus === niveau) {
+        this.projetsFiltres.push(projet);
+      }
+    }
+    this.modifierCouleurBoutonFiltre(niveau);
+  }
+
+  reinitFiltreProjets(): void {
+    this.projetsFiltres = this.projets;
+    this.modifierCouleurBoutonFiltre(null);
+  }
+
+  modifierCouleurBoutonFiltre(niveau: TypeCursus): void {
+    document.getElementById('filtreAucun').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreL3').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreM1').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreM2').setAttribute('class', 'btn btn-danger btn-sm');
+    if (niveau === null) {
+      document.getElementById('filtreAucun').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (niveau === TypeCursus.L3) {
+      document.getElementById('filtreL3').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (niveau === TypeCursus.M1) {
+      document.getElementById('filtreM1').setAttribute('class', 'btn btn-success btn-sm');
+    } else {
+      document.getElementById('filtreM2').setAttribute('class', 'btn btn-success btn-sm');
+    }
   }
 }

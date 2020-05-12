@@ -80,6 +80,9 @@
         "etatCandidature": "Applied",
         "retractation": "Retract"
       },
+      "filtre": {
+        "aucun": "No filter"
+      },
       "nom": "Project's name",
       "descriptionPDF": "PDF description",
       "descriptionTexte": "Textual description",

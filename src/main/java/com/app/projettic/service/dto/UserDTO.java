@@ -112,6 +112,10 @@ public class UserDTO {
         this.email = email;
     }
 
+    public boolean getActivated(){ return activated; }
+
+    public void setActivated(Boolean activated) { this.activated = activated; }
+
     public String getImageUrl() {
         return imageUrl;
     }

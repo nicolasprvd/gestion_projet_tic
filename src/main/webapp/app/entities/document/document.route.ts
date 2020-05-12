@@ -39,7 +39,7 @@ export const documentRoute: Routes = [
     path: '',
     component: DocumentComponent,
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'projetticApp.document.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -51,7 +51,7 @@ export const documentRoute: Routes = [
       document: DocumentResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'projetticApp.document.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -63,7 +63,7 @@ export const documentRoute: Routes = [
       document: DocumentResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'projetticApp.document.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -75,7 +75,7 @@ export const documentRoute: Routes = [
       document: DocumentResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'projetticApp.document.home.title'
     },
     canActivate: [UserRouteAccessService]

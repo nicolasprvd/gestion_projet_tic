@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {ActivatedRouteSnapshot, Resolve, Router, Routes} from '@angular/router';
+import {EMPTY, Observable, of} from 'rxjs';
+import {flatMap} from 'rxjs/operators';
 
-import { Authority } from 'app/shared/constants/authority.constants';
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IProjet, Projet } from 'app/shared/model/projet.model';
-import { ProjetService } from './projet.service';
-import { ProjetComponent } from './projet.component';
-import { ProjetDetailComponent } from './projet-detail.component';
-import { ProjetUpdateComponent } from './projet-update.component';
-import { ProjetPostulerComponent } from 'app/entities/projet/postuler/projet-postuler.component';
-import { ProjetAttribuerComponent } from 'app/entities/projet/attribuer/projet-attribuer.component';
-import { ProjectRateComponent } from 'app/entities/projet/project-rate.component';
-import { ProjetEtudiantComponent } from 'app/entities/projet/etudiant/projet-etudiant.component';
+import {Authority} from 'app/shared/constants/authority.constants';
+import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
+import {IProjet, Projet} from 'app/shared/model/projet.model';
+import {ProjetService} from './projet.service';
+import {ProjetComponent} from './projet.component';
+import {ProjetDetailComponent} from './projet-detail.component';
+import {ProjetUpdateComponent} from './projet-update.component';
+import {ProjetPostulerComponent} from 'app/entities/projet/postuler/projet-postuler.component';
+import {ProjetAttribuerComponent} from 'app/entities/projet/attribuer/projet-attribuer.component';
+import {ProjectRateComponent} from 'app/entities/projet/project-rate.component';
+import {ProjetEtudiantComponent} from 'app/entities/projet/etudiant/projet-etudiant.component';
 
 @Injectable({ providedIn: 'root' })
 export class ProjetResolve implements Resolve<IProjet> {
@@ -67,7 +67,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.CLIENT],
       pageTitle: 'projetticApp.projet.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -79,7 +79,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.CLIENT],
       pageTitle: 'projetticApp.projet.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -91,7 +91,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ETUDIANT],
       pageTitle: 'projetticApp.projet.apply.postuler'
     },
     canActivate: [UserRouteAccessService]
@@ -103,7 +103,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.CLIENT, Authority.ADMIN],
       pageTitle: 'projetticApp.projet.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -115,7 +115,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.CLIENT, Authority.ADMIN],
       pageTitle: 'projetticApp.projet.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -127,7 +127,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ETUDIANT],
       pageTitle: 'projetticApp.projet.etudiant.titleTab'
     },
     canActivate: [UserRouteAccessService]
