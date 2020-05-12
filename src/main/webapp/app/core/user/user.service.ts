@@ -17,7 +17,6 @@ export class UserService {
   }
 
   update(user: IUser): Observable<IUser> {
-    console.error(user);
     return this.http.put<IUser>(this.resourceUrl, user);
   }
 

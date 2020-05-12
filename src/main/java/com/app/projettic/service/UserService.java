@@ -233,13 +233,11 @@ public class UserService {
      * @return updated user.
      */
     public Optional<UserDTO> updateUser(UserDTO userDTO) {
-        log.debug("dans userService " + userDTO);
         return Optional.of(userRepository
             .findById(userDTO.getId()))
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(user -> {
-                log.error("je suis la!" + user);
                 this.clearUserCaches(user);
                 user.setLogin(userDTO.getLogin().toLowerCase());
                 user.setFirstName(userDTO.getFirstName());
@@ -250,18 +248,15 @@ public class UserService {
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
-                log.error("je suis ici!" + user);
                 Set<Authority> managedAuthorities = user.getAuthorities();
-                log.debug("manage" + managedAuthorities);
-                managedAuthorities.clear();
-                log.error("lilo");
-                 userDTO.getAuthorities().stream()
-                    .map(authorityRepository::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .forEach(managedAuthorities::add);
-                log.debug("droit" + managedAuthorities);
-                log.debug("log UserService " + user);
+                if (userDTO.getAuthorities() != null) {
+                    Set<Authority> authorities = userDTO.getAuthorities().stream()
+                        .map(authorityRepository::findById)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .collect(Collectors.toSet());
+                    user.setAuthorities(authorities);
+                }
                 userSearchRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);

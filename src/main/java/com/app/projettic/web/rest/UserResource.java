@@ -143,10 +143,7 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new LoginAlreadyUsedException();
         }
-        log.error("av updateUser " + userDTO);
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
-        log.debug("coucou updateuser" + updatedUser);
-        log.debug("coucou updateuser" + updatedUser);
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert(applicationName, "userManagement.updated", userDTO.getLogin()));
     }
