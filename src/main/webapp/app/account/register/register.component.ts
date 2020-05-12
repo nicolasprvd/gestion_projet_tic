@@ -8,6 +8,11 @@ import { RegisterService } from './register.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { LoginService } from 'app/core/login/login.service';
 import { Router } from '@angular/router';
+import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
+import { UserService } from 'app/core/user/user.service';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
+import { ProjetService } from 'app/entities/projet/projet.service';
 import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
@@ -25,6 +30,7 @@ export class RegisterComponent implements AfterViewInit {
   success = false;
   typeUtilisateurs: string[];
   typeUtilisateurDefault: TypeUtilisateur;
+  active = true;
   cursus: string[];
   cursusDefault: TypeCursus;
 
@@ -41,10 +47,15 @@ export class RegisterComponent implements AfterViewInit {
 
   constructor(
     private languageService: JhiLanguageService,
+    protected projetService: ProjetService,
     private loginModalService: LoginModalService,
     private registerService: RegisterService,
     private fb: FormBuilder,
     private loginService: LoginService,
+    protected userService: UserService,
+    protected userExtraService: UserExtraService,
+    private toastrService: ToastrService,
+    private translateService: TranslateService,
     private router: Router
   ) {
     this.typeUtilisateurs = [TypeUtilisateur.ETUDIANT, TypeUtilisateur.CLIENT];
@@ -77,33 +88,54 @@ export class RegisterComponent implements AfterViewInit {
       const firstName = this.registerForm.get(['firstName'])!.value;
       const lastName = this.registerForm.get(['lastName'])!.value;
       const typeUtilisateur = this.registerForm.get(['typeUtilisateur'])!.value;
+      if (typeUtilisateur === 'CLIENT') {
+        this.active = false;
+      }
+      const activated = this.active;
       let cursus = this.registerForm.get(['cursus'])!.value;
       if (typeUtilisateur === TypeUtilisateur.CLIENT) {
         cursus = null;
       }
       this.registerService
-        .save({ login, firstName, lastName, email, password, langKey: this.languageService.getCurrentLanguage(), typeUtilisateur, cursus })
+        .save({
+          login,
+          firstName,
+          lastName,
+          email,
+          password,
+          activated,
+          langKey: this.languageService.getCurrentLanguage(),
+          typeUtilisateur,
+          cursus
+        })
+
         .subscribe(
           () => {
             this.success = true;
-            this.loginService
-              .login({
-                username: login.toString(),
-                password: password.toString(),
-                rememberMe: false
-              })
-              .subscribe(
-                () => {
-                  if (
-                    this.router.url === '/account/register' ||
-                    this.router.url.startsWith('/account/activate') ||
-                    this.router.url.startsWith('/account/reset/')
-                  ) {
-                    this.router.navigate(['/']);
-                  }
-                },
-                () => (this.success = false)
-              );
+
+            if (typeUtilisateur === 'CLIENT') {
+              this.router.navigate(['/']);
+              this.toastrService.success(this.translateService.instant('global.toastr.register.message'));
+            } else {
+              this.loginService
+                .login({
+                  username: login.toString(),
+                  password: password.toString(),
+                  rememberMe: false
+                })
+                .subscribe(
+                  () => {
+                    if (
+                      this.router.url === '/account/register' ||
+                      this.router.url.startsWith('/account/activate') ||
+                      this.router.url.startsWith('/account/reset/')
+                    ) {
+                      this.router.navigate(['/']);
+                    }
+                  },
+                  () => (this.success = false)
+                );
+            }
           },
           response => this.processError(response)
         );

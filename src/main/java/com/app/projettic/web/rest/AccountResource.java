@@ -63,8 +63,14 @@ public class AccountResource {
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
+
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.getTypeUtilisateur(), managedUserVM.getCursus());
-        mailService.sendActivationEmail(user);
+        // mailService.sendActivationEmail(user);
+        if (user.getActivated() == false) {
+            String subject = "Compte client à valider";
+            String content = "Le client " + user.getFirstName() + " " + user.getLastName() + " a créé un compte sur le site de gestion des projets. Rendez-vous sur celui-ci pour valider le compte.";
+            mailService.sendEmail("audrey.balat028@gmail.com", subject, content, false, false);
+        }
     }
 
     /**
@@ -124,7 +130,7 @@ public class AccountResource {
         if (!user.isPresent()) {
             throw new AccountResourceException("User could not be found");
         }
-        userService.updateUser(userDTO.getId(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
+        userService.updateUser(userDTO.getId(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getActivated(),
             userDTO.getLangKey(), userDTO.getImageUrl());
     }
 
