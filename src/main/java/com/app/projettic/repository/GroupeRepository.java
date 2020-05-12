@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data  repository for the Groupe entity.
@@ -14,4 +15,5 @@ import java.util.List;
 @Repository
 public interface GroupeRepository extends JpaRepository<Groupe, Long> {
     List<Groupe> findByActif(boolean actif);
+    Optional<Groupe> findByProjetId(Long projetId);
 }
