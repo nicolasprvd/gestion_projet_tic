@@ -129,6 +129,11 @@ public class UserService {
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        if(typeUtilisateur.equals(TypeUtilisateur.CLIENT)) {
+            authorityRepository.findById(AuthoritiesConstants.CLIENT).ifPresent(authorities::add);
+        }else if(typeUtilisateur.equals(TypeUtilisateur.ETUDIANT)) {
+            authorityRepository.findById(AuthoritiesConstants.ETUDIANT).ifPresent(authorities::add);
+        }
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         userSearchRepository.save(newUser);

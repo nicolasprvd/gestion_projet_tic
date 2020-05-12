@@ -201,7 +201,8 @@ export class ProjectRateComponent implements OnInit {
       noteRendu: this.outputRate,
       noteSoutenance: this.ganttsRate,
       noteFinale: this.finalRate,
-      actif: true
+      actif: true,
+      cursus: this.project.cursus
     };
   }
 

@@ -42,6 +42,13 @@ public interface GroupeService {
     List<GroupeDTO> findByActif(boolean actif);
 
     /**
+     * Find group by projet id
+     * @param projetId
+     * @return
+     */
+    Optional<GroupeDTO> findByProjetId(Long projetId);
+
+    /**
      * Delete the "id" groupe.
      *
      * @param id the id of the entity.

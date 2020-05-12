@@ -1,5 +1,6 @@
 package com.app.projettic.web.rest;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.service.UserExtraService;
 import com.app.projettic.web.rest.errors.BadRequestAlertException;
 import com.app.projettic.service.dto.UserExtraDTO;
@@ -148,5 +149,16 @@ public class UserExtraResource {
     public List<UserExtraDTO> findByActif(@PathVariable boolean actif) {
         log.debug("REST request to get all User-extras");
         return userExtraService.findByActif(actif);
+    }
+
+    /**
+     * {@code GET  /user-extras/cursus} : get all the user-extras with the actif and cursus status.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userextra in body.
+     */
+    @GetMapping("/user-extras/cursus/{actif}/{cursus}")
+    public List<UserExtraDTO> findByActifAndCursus(@PathVariable boolean actif, @PathVariable TypeCursus cursus) {
+        log.debug("REST request to get all User-extras");
+        return userExtraService.findByActifAndCursus(actif, cursus);
     }
 }

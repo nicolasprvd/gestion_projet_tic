@@ -1,5 +1,6 @@
 package com.app.projettic.domain;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -33,6 +34,10 @@ public class Groupe implements Serializable {
 
     @Column(name = "actif")
     private Boolean actif;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cursus")
+    private TypeCursus cursus;
 
     @OneToMany(mappedBy = "groupe")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -159,6 +164,14 @@ public class Groupe implements Serializable {
         this.actif = actif;
     }
 
+    public TypeCursus getCursus() {
+        return cursus;
+    }
+
+    public void setCursus(TypeCursus cursus) {
+        this.cursus = cursus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -181,6 +194,7 @@ public class Groupe implements Serializable {
             "id=" + getId() +
             ", valide='" + isValide() + "'" +
             ", actif=" + isActif() +
+            ", cursus=" + getCursus() +
             "}";
     }
 }
