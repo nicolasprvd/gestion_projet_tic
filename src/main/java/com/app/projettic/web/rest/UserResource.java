@@ -174,8 +174,9 @@ public class UserResource {
      * @param login the login of the user to find.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the "login" user, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
+    @GetMapping("/users/login/{login:" + Constants.LOGIN_REGEX + "}")
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
+        log.debug("login service = " + login);
         log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthoritiesByLogin(login)
@@ -230,5 +231,16 @@ public class UserResource {
     public List<UserDTO> findByActivated(@PathVariable boolean activated) {
         log.debug("REST request to get all User");
         return userService.findByActivated(activated);
+    }
+
+    /**
+     * {@code GET  /users/authorities/{id}} : get the authorities for a user
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the user in body.
+     */
+    @GetMapping("/users/authorities/{id}")
+    public Optional<User> findWithAuthoritiesById(@PathVariable Long id) {
+        log.debug("REST request to get user with authorities");
+        return userService.getUserWithAuthorities(id);
     }
 }

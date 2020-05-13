@@ -12,6 +12,7 @@ import { Account } from 'app/core/user/account.model';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.model';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
+import {UserExtraService} from "app/entities/user-extra/user-extra.service";
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -34,7 +35,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventManager: JhiEventManager,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private userExtraService: UserExtraService
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +56,10 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe();
+
+    this.userExtraService.find(10).subscribe(user => {
+      console.error(user);
+    });
   }
 
   ngOnDestroy(): void {
@@ -95,13 +101,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   private loadAll(): void {
-    this.userService
-      .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe((res: HttpResponse<User[]>) => this.onSuccess(res.body, res.headers));
+    this.userService.findAll().subscribe((res) => this.onSuccess(res, null));
   }
 
   private sort(): string[] {
@@ -113,7 +113,21 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   private onSuccess(users: User[] | null, headers: HttpHeaders): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
+    //this.totalItems = Number(headers.get('X-Total-Count'));
     this.users = users;
+    // this.users.forEach(user => {
+    //     this.userExtraService.find(user.id).subscribe(ue => {
+    //       user.typeUtilisateur = ue.body.typeUtilisateur;
+    //       user.cursus = ue.body.cursus;
+    //     });
+    //     this.userService.findByIdWithAuthorities(user.id).subscribe(u => {
+    //       console.error(u);
+    //       user.authorities = u.authorities;
+    //     });
+    // });
+    //
+    // console.error(this.users);
+
+
   }
 }
