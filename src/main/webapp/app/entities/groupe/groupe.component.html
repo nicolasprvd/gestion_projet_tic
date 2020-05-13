@@ -9,14 +9,40 @@
 
     <jhi-alert-error></jhi-alert-error>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="groupes?.length === 0">
-        <span jhiTranslate="projetticApp.groupe.home.notFound">No groupes found</span>
-    </div>
-
     <hr>
 
     <div class="table-responsive" id="entities" *ngIf="groupes?.length > 0">
-        <table class="table table-striped" aria-describedby="page-heading">
+        <div class="filterButtons">
+            <button id="filtreAucun" type="submit"
+                    (click)="reinitFiltreGroupes()"
+                    class="btn btn-success btn-sm">
+                <fa-icon icon="ban"></fa-icon>
+                <span jhiTranslate="projetticApp.projet.filtre.aucun"></span>
+            </button>
+            <button id="filtreL3" type="submit"
+                    (click)="filtrerGroupes(L3)"
+                    class="btn btn-danger btn-sm">
+                <span>{{L3}}</span>
+            </button>
+            <button id="filtreM1" type="submit"
+                    (click)="filtrerGroupes(M1)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M1}}</span>
+            </button>
+            <button id="filtreM2" type="submit"
+                    (click)="filtrerGroupes(M2)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M2}}</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="groupesFiltres?.length === 0">
+        <span jhiTranslate="projetticApp.groupe.home.notFound">No groupes found</span>
+    </div>
+
+    <div class="table-responsive" *ngIf="groupes?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading" *ngIf="groupesFiltres?.length > 0">
             <thead>
                 <tr>
                     <th scope="col" ><span jhiTranslate="projetticApp.groupe.projet"></span></th>
@@ -26,7 +52,7 @@
                 </tr>
             </thead>
             <tbody id="data">
-                <ng-container *ngFor="let groupe of groupes">
+                <ng-container *ngFor="let groupe of groupesFiltres">
                     <tr *ngIf="groupe.valide">
                         <td>
                             <div *ngIf="groupe.projetId">

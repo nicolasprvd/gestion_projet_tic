@@ -14,6 +14,7 @@ import { IUser } from 'app/core/user/user.model';
 import { IUserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TranslateService } from '@ngx-translate/core';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   selector: 'jhi-groupe',
@@ -22,11 +23,16 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class GroupeComponent implements OnInit, OnDestroy {
   groupes?: IGroupe[];
+  groupesFiltres: IGroupe[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;
   projets: IProjet[] = [];
   users: IUser[] = [];
   userExtras: IUserExtra[] = [];
+  L3: TypeCursus = TypeCursus.L3;
+  M1: TypeCursus = TypeCursus.M1;
+  M2: TypeCursus = TypeCursus.M2;
+  cursusSelectionne: TypeCursus;
 
   constructor(
     protected groupeService: GroupeService,
@@ -48,6 +54,7 @@ export class GroupeComponent implements OnInit, OnDestroy {
     this.groupeService.findByActif(true).subscribe(groupes => {
       if (groupes !== null && groupes.body !== null) {
         this.groupes = groupes.body;
+        this.groupesFiltres = groupes.body;
       }
     });
   }
@@ -159,12 +166,18 @@ export class GroupeComponent implements OnInit, OnDestroy {
     const table = document.getElementById('data') as HTMLTableElement;
     let donnees = '';
     let nomFichier = '';
+    let cursusTitre;
+    if (this.cursusSelectionne === null || this.cursusSelectionne === undefined) {
+      cursusTitre = this.L3 + '_' + this.M1 + '_' + this.M2;
+    } else {
+      cursusTitre = this.cursusSelectionne.toString();
+    }
     if (this.translate.currentLang === this.translate.getLangs()[0]) {
       donnees = 'Projet;Client;Chef de projet;Membres';
-      nomFichier = 'groupes_projet_tic.csv';
+      nomFichier = cursusTitre + '_groupes_projet_tic.csv';
     } else {
       donnees = 'Project;Customer;Project manager;Members';
-      nomFichier = 'groups_tic_project.csv';
+      nomFichier = cursusTitre + '_groups_tic_project.csv';
     }
     const rows = table.rows;
     for (let i = 0; i < rows.length; i++) {
@@ -200,5 +213,38 @@ export class GroupeComponent implements OnInit, OnDestroy {
       retraitEspace = str.includes('  ');
     }
     return str;
+  }
+
+  filtrerGroupes(niveau: TypeCursus): void {
+    this.cursusSelectionne = niveau;
+    this.groupesFiltres = [];
+    for (const groupe of this.groupes) {
+      if (groupe.cursus === niveau) {
+        this.groupesFiltres.push(groupe);
+      }
+    }
+    this.modifierCouleurBoutonFiltre(niveau);
+  }
+
+  reinitFiltreGroupes(): void {
+    this.cursusSelectionne = null;
+    this.groupesFiltres = this.groupes;
+    this.modifierCouleurBoutonFiltre(null);
+  }
+
+  modifierCouleurBoutonFiltre(niveau: TypeCursus): void {
+    document.getElementById('filtreAucun').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreL3').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreM1').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreM2').setAttribute('class', 'btn btn-danger btn-sm');
+    if (niveau === null) {
+      document.getElementById('filtreAucun').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (niveau === TypeCursus.L3) {
+      document.getElementById('filtreL3').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (niveau === TypeCursus.M1) {
+      document.getElementById('filtreM1').setAttribute('class', 'btn btn-success btn-sm');
+    } else {
+      document.getElementById('filtreM2').setAttribute('class', 'btn btn-success btn-sm');
+    }
   }
 }

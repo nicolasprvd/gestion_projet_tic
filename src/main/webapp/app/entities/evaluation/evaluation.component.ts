@@ -15,10 +15,12 @@ import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.
 import { ProjetService } from 'app/entities/projet/projet.service';
 import { IProjet } from 'app/shared/model/projet.model';
 import { TranslateService } from '@ngx-translate/core';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   selector: 'jhi-evaluation',
-  templateUrl: './evaluation.component.html'
+  templateUrl: './evaluation.component.html',
+  styleUrls: ['./evaluation.scss']
 })
 export class EvaluationComponent implements OnInit, OnDestroy {
   evaluations?: IEvaluation[];
@@ -26,6 +28,7 @@ export class EvaluationComponent implements OnInit, OnDestroy {
   currentSearch: string;
   users: IUser[] = [];
   extras: IUserExtra[] = [];
+  extrasFiltres: IUserExtra[] = [];
   projets: IProjet[] = [];
   noteCDC: string;
   noteSoutenance: string;
@@ -33,6 +36,10 @@ export class EvaluationComponent implements OnInit, OnDestroy {
   noteFinale: string;
   projetActuelId: number;
   projetActuelNom: string;
+  L3: TypeCursus = TypeCursus.L3;
+  M1: TypeCursus = TypeCursus.M1;
+  M2: TypeCursus = TypeCursus.M2;
+  cursusSelectionne: TypeCursus;
 
   constructor(
     protected evaluationService: EvaluationService,
@@ -74,6 +81,7 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.userExtraService.findByActif(true).subscribe(extras => {
       if (extras !== null) {
         this.extras = extras.body;
+        this.filtrerEtudiant(this.L3);
       }
     });
     this.projetService.findAll().subscribe(projets => {
@@ -212,10 +220,10 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     let nomFichier = '';
     if (this.translate.currentLang === this.translate.getLangs()[0]) {
       donnees = 'Étudiant;Projet;Note CDC;Note Soutenance;Note Rendu;Note Finale';
-      nomFichier = 'evaluation_projet_tic.csv';
+      nomFichier = this.cursusSelectionne + '_evaluation_projet_tic.csv';
     } else {
       donnees = 'Student;Project;Specification mark;Defense mark;Rendering mark;Final mark';
-      nomFichier = 'rating_tic_project.csv';
+      nomFichier = this.cursusSelectionne + '_rating_tic_project.csv';
     }
     const rows = table.rows;
     for (let i = 0; i < rows.length; i++) {
@@ -244,5 +252,35 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
+  }
+
+  filtrerEtudiant(niveau: TypeCursus): void {
+    this.cursusSelectionne = niveau;
+    this.extrasFiltres = [];
+    for (const extra of this.extras) {
+      if (extra.cursus === niveau) {
+        this.extrasFiltres.push(extra);
+      }
+    }
+    this.modifierCouleurBoutonFiltre(niveau);
+  }
+
+  modifierCouleurBoutonFiltre(niveau: TypeCursus): void {
+    if (
+      document.getElementById('filtreL3') !== null &&
+      document.getElementById('filtreM1') !== null &&
+      document.getElementById('filtreM2') !== null
+    ) {
+      document.getElementById('filtreL3').setAttribute('class', 'btn btn-danger btn-sm');
+      document.getElementById('filtreM1').setAttribute('class', 'btn btn-danger btn-sm');
+      document.getElementById('filtreM2').setAttribute('class', 'btn btn-danger btn-sm');
+      if (niveau === TypeCursus.L3) {
+        document.getElementById('filtreL3').setAttribute('class', 'btn btn-success btn-sm');
+      } else if (niveau === TypeCursus.M1) {
+        document.getElementById('filtreM1').setAttribute('class', 'btn btn-success btn-sm');
+      } else {
+        document.getElementById('filtreM2').setAttribute('class', 'btn btn-success btn-sm');
+      }
+    }
   }
 }
