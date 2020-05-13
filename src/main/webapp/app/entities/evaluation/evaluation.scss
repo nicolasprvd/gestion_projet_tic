@@ -1,0 +1,10 @@
+.filterButtonsEvaluation button {
+  margin: 0 3px 7px 0;
+  width: 60px;
+}
+
+@media (max-width: 576px) {
+  .filterButtonsEvaluation button {
+    width: 50px;
+  }
+}
