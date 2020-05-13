@@ -18,9 +18,9 @@
                     <th scope="col"><span jhiTranslate="userManagement.lastName">Lastname</span></th>
                     <th scope="col"><span jhiTranslate="userManagement.firstName">Firstname</span></th>
                     <th scope="col"><span jhiTranslate="userManagement.email">Email</span></th>
-                    <th scope="col"><span jhiTranslate="userManagement.status">Status</span></th>
-                    <th scope="col"><span jhiTranslate="userManagement.cursus">Grade</span></th>
-                    <th scope="col"><span jhiTranslate="userManagement.profiles">Profiles</span></th>
+<!--                    <th scope="col"><span jhiTranslate="userManagement.status">Status</span></th>-->
+<!--                    <th scope="col"><span jhiTranslate="userManagement.cursus">Grade</span></th>-->
+<!--                    <th scope="col"><span jhiTranslate="userManagement.profiles">Profiles</span></th>-->
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -29,13 +29,13 @@
                     <td>{{ user.lastName }}</td>
                     <td>{{ user.firstName }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>
-                        <div *ngFor="let authority of user?.authorities">
-                            <span class="badge badge-info">{{ authority }}</span>
-                        </div>
-                    </td>
+<!--                    <td>{{ user.email }}</td>-->
+<!--                    <td>{{ user.email }}</td>-->
+<!--                    <td>-->
+<!--                        <div *ngFor="let authority of user?.authorities">-->
+<!--                            <span class="badge badge-info">{{ authority }}</span>-->
+<!--                        </div>-->
+<!--                    </td>-->
                     <td class="text-right">
                         <div class="btn-group">
                             <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated"

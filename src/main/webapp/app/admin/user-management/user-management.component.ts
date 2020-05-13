@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpHeaders } from '@angular/common/http';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
@@ -12,7 +12,6 @@ import { Account } from 'app/core/user/account.model';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.model';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
-import {UserExtraService} from "app/entities/user-extra/user-extra.service";
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -35,8 +34,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventManager: JhiEventManager,
-    private modalService: NgbModal,
-    private userExtraService: UserExtraService
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -56,10 +54,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe();
-
-    this.userExtraService.find(10).subscribe(user => {
-      console.error(user);
-    });
   }
 
   ngOnDestroy(): void {
@@ -101,7 +95,13 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   private loadAll(): void {
-    this.userService.findAll().subscribe((res) => this.onSuccess(res, null));
+    this.userService
+      .query({
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort()
+      })
+      .subscribe((res: HttpResponse<User[]>) => this.onSuccess(res.body, res.headers));
   }
 
   private sort(): string[] {
@@ -113,7 +113,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   private onSuccess(users: User[] | null, headers: HttpHeaders): void {
-    //this.totalItems = Number(headers.get('X-Total-Count'));
+    this.totalItems = Number(headers.get('X-Total-Count'));
     this.users = users;
     // this.users.forEach(user => {
     //     this.userExtraService.find(user.id).subscribe(ue => {
