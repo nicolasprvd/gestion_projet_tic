@@ -80,12 +80,13 @@
         "etatCandidature": "Applied",
         "retractation": "Retract"
       },
+      "filtre": {
+        "aucun": "No filter"
+      },
       "nom": "Project's name",
-      "nomObligatoire": "Project's name *",
       "descriptionPDF": "PDF description",
       "descriptionTexte": "Textual description",
       "nbEtudiant": "Team size",
-      "nbEtudiantObligatoire": "Team size *",
       "automatique": "Automatic allocation",
       "archive": "Archive",
       "groupe": "Group",

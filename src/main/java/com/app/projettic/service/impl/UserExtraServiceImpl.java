@@ -1,5 +1,6 @@
 package com.app.projettic.service.impl;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.service.UserExtraService;
 import com.app.projettic.domain.UserExtra;
 import com.app.projettic.repository.UserExtraRepository;
@@ -128,6 +129,7 @@ public class UserExtraServiceImpl implements UserExtraService {
             .map(userExtraMapper::toDto)
             .collect(Collectors.toList());
     }
+
     /**
      * Get userExtra by actif.
      *
@@ -139,5 +141,19 @@ public class UserExtraServiceImpl implements UserExtraService {
     public List<UserExtraDTO> findByActif(boolean actif) {
         log.debug("Request to get userextras : {}", actif);
         return userExtraRepository.findByActif(actif).stream().map(userExtraMapper::toDto).collect(Collectors.toList());
+    }
+
+    /**
+     * Get userExtra by actif and cursus.
+     *
+     * @param actif the actif of the userExtra.
+     * @param cursus the cursus of the userExtra.
+     * @return the entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserExtraDTO> findByActifAndCursus(boolean actif, TypeCursus cursus) {
+        log.debug("Request to get userextras : {} {}", actif, cursus);
+        return userExtraRepository.findByActifAndCursus(actif, cursus).stream().map(userExtraMapper::toDto).collect(Collectors.toList());
     }
 }

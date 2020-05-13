@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IEvaluation, Evaluation } from 'app/shared/model/evaluation.model';
+import { Evaluation, IEvaluation } from 'app/shared/model/evaluation.model';
 import { EvaluationService } from './evaluation.service';
 import { EvaluationComponent } from './evaluation.component';
 import { EvaluationDetailComponent } from './evaluation-detail.component';
@@ -39,7 +39,7 @@ export const evaluationRoute: Routes = [
     path: '',
     component: EvaluationComponent,
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.CLIENT],
       pageTitle: 'projetticApp.evaluation.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -51,7 +51,7 @@ export const evaluationRoute: Routes = [
       evaluation: EvaluationResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.CLIENT],
       pageTitle: 'projetticApp.evaluation.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -63,7 +63,7 @@ export const evaluationRoute: Routes = [
       evaluation: EvaluationResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.CLIENT],
       pageTitle: 'projetticApp.evaluation.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -75,7 +75,7 @@ export const evaluationRoute: Routes = [
       evaluation: EvaluationResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.CLIENT],
       pageTitle: 'projetticApp.evaluation.home.title'
     },
     canActivate: [UserRouteAccessService]

@@ -1,6 +1,7 @@
 package com.app.projettic.domain;
 
 
+import com.app.projettic.domain.enumeration.TypeCursus;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -38,6 +39,10 @@ public class Evaluation implements Serializable {
     @NotNull
     @Column(name = "note_finale", nullable = false)
     private Double noteFinale;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cursus")
+    private TypeCursus cursus;
 
     @Column(name = "actif")
     private Boolean actif;
@@ -139,6 +144,14 @@ public class Evaluation implements Serializable {
         this.actif = actif;
     }
 
+    public TypeCursus getCursus() {
+        return cursus;
+    }
+
+    public void setCursus(TypeCursus cursus) {
+        this.cursus = cursus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -164,6 +177,7 @@ public class Evaluation implements Serializable {
             ", noteRendu=" + getNoteRendu() +
             ", noteFinale=" + getNoteFinale() +
             ", actif=" + isActif() +
+            ", cursus=" + getCursus() +
             "}";
     }
 }

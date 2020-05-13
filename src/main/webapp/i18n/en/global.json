@@ -47,10 +47,10 @@
       "username.placeholder": "Your username",
       "currentpassword.label": "Current password",
       "currentpassword.placeholder": "Current password",
-      "newpassword.label": "Password",
-      "newpassword.placeholder": "Password",
-      "confirmpassword.label": "Password confirmation",
-      "confirmpassword.placeholder": "Confirm the password",
+      "newpassword.label": "New password",
+      "newpassword.placeholder": "New password",
+      "confirmpassword.label": "New password confirmation",
+      "confirmpassword.placeholder": "Confirm the new password",
       "email.label": "Email",
       "email.placeholder": "Your email"
     },
@@ -97,6 +97,9 @@
     },
     "item-count": "Showing {{first}} - {{second}} of {{total}} items.",
     "toastr": {
+      "register": {
+        "message": "Your account is pending validation by the administrator."
+      },
       "modifications": {
         "projet": {
           "title": "Modification of the {{nom}} project",
@@ -161,6 +164,10 @@
       "annotation": "Fields followed by * are required"
     },
     "email": {
+      "compteValide": {
+        "sujet": "Validation of your account",
+        "message": "Hello, your account has been validated. You can go to the website to connect to it."
+      },
       "suppressionProjet": {
         "sujet": "Negative answer - project award",
         "message": "The {{nom}} project has not been assigned to your group because it has been deleted. Please go to the site to choose a different one."

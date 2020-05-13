@@ -12,8 +12,8 @@ import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { IUserExtra, UserExtra } from 'app/shared/model/user-extra.model';
-import {TranslateService} from "@ngx-translate/core";
-import {ToastrService} from "ngx-toastr";
+import { TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'jhi-projet-postuler',
@@ -24,6 +24,7 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
   isSaving = false;
   projet: IProjet;
   account: Account | null;
+  accountExtra: IUserExtra;
   users: User[] = [];
   userExtras: UserExtra[] = [];
   nbEtuArray: (number | undefined)[] | undefined;
@@ -55,28 +56,33 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
         account.firstName = this.formatNom(account.firstName);
         account.lastName = account.lastName.toUpperCase();
         this.account = account;
-      }
-    });
-    this.userExtraService.findByActif(true).subscribe(userExtras => {
-      if (userExtras !== null && userExtras.body !== null) {
-        this.userExtras = userExtras.body;
-        this.userService.findByActivated(true).subscribe(users => {
-          if (users !== null) {
-            for (const u of users) {
-              if (u.id !== this.account?.id && this.isEtudiantActif(u.id) && !this.aDejaUnGroupe(u.id)) {
-                u.firstName = this.formatNom(u.firstName);
-                u.lastName = u.lastName.toUpperCase();
-                this.users.push(u);
+        this.userExtraService.find(this.account.id).subscribe(userActuel => {
+          if (userActuel !== null && userActuel.body !== undefined) {
+            this.accountExtra = userActuel.body;
+            this.userExtraService.findByActifAndCursus(true, userActuel.body.cursus).subscribe(userExtras => {
+              if (userExtras !== null && userExtras.body !== null) {
+                this.userExtras = userExtras.body;
+                this.userService.findByActivated(true).subscribe(users => {
+                  if (users !== null) {
+                    for (const u of users) {
+                      if (u.id !== this.account?.id && this.isEtudiantActif(u.id) && !this.aDejaUnGroupe(u.id)) {
+                        u.firstName = this.formatNom(u.firstName);
+                        u.lastName = u.lastName.toUpperCase();
+                        this.users.push(u);
+                      }
+                    }
+                    this.users.sort((n1: User, n2: User) => {
+                      if (n1.firstName > n2.firstName) {
+                        return 1;
+                      }
+                      if (n1.firstName < n2.firstName) {
+                        return -1;
+                      }
+                      return 0;
+                    });
+                  }
+                });
               }
-            }
-            this.users.sort((n1: User, n2: User) => {
-              if (n1.firstName > n2.firstName) {
-                return 1;
-              }
-              if (n1.firstName < n2.firstName) {
-                return -1;
-              }
-              return 0;
             });
           }
         });
@@ -144,7 +150,8 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
       valide: false,
       userExtraId: this.account.id,
       projetId: this.projet.id,
-      actif: true
+      actif: true,
+      cursus: this.accountExtra.cursus
     };
   }
 
@@ -218,44 +225,6 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
     }
     return valide;
   }
-
-  // isInclude(event: any): void {
-  //   this.compteur++;
-  //   this.valideInclude = false;
-  //   if(this.compteur > 0) {
-  //     if(this.ids.includes(event)) {
-  //       this.valideInclude = true;
-  //       const index = this.ids.indexOf(event);
-  //       this.ids.splice(index);
-  //     }else {
-  //       this.ids.push(event);
-  //     }
-  //   }else {
-  //     this.ids.push(event);
-  //   }
-  //   console.error(this.ids);
-  //
-  //
-  //
-  //
-  //   // this.valideInclude = false;
-  //   //
-  //   // for (let i = 0; i < this.nbEtuArray.length; i++) {
-  //   //   const etuId = 'etu' + this.nbEtuArray[i];
-  //   //   console.error(etuId);
-  //   //   document.getElementById(etuId).setAttribute('style', 'background-color:white');
-  //   //   const etu = (document.getElementById(etuId) as HTMLInputElement).value;
-  //   //   console.error(etu);
-  //   //   console.error("ids = " + this.ids);
-  //   //   if (this.ids.includes(+etu)) {
-  //   //     console.error("existant");
-  //   //     document.getElementById(etuId).setAttribute('style', 'background-color:#d65959');
-  //   //     this.valideInclude = true;
-  //   //     this.ids.push(+etu);
-  //   //     return;
-  //   //   }
-  //   // }
-  // }
 
   formatNom(str: string): string {
     str = str.toLowerCase();

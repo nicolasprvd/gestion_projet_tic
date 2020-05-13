@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
-import { Observable, of, EMPTY } from 'rxjs';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
@@ -67,7 +67,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.CLIENT],
       pageTitle: 'projetticApp.projet.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -79,7 +79,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN, Authority.CLIENT],
       pageTitle: 'projetticApp.projet.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -91,7 +91,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ETUDIANT],
       pageTitle: 'projetticApp.projet.apply.postuler'
     },
     canActivate: [UserRouteAccessService]
@@ -103,7 +103,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.CLIENT, Authority.ADMIN],
       pageTitle: 'projetticApp.projet.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -115,7 +115,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.CLIENT, Authority.ADMIN],
       pageTitle: 'projetticApp.projet.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -127,7 +127,7 @@ export const projetRoute: Routes = [
       projet: ProjetResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ETUDIANT],
       pageTitle: 'projetticApp.projet.etudiant.titleTab'
     },
     canActivate: [UserRouteAccessService]

@@ -14,6 +14,7 @@ import { Account } from 'app/core/user/account.model';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   selector: 'jhi-projet-update',
@@ -25,6 +26,8 @@ export class ProjetUpdateComponent implements OnInit {
   userextras: IUserExtra[] = [];
   account!: Account | null;
   nbEtudiantDefault: number;
+  cursus: string[];
+  cursusDefault: TypeCursus;
 
   editForm = this.fb.group({
     id: [],
@@ -33,6 +36,7 @@ export class ProjetUpdateComponent implements OnInit {
     descriptionPDFContentType: [],
     descriptionTexte: [],
     nbEtudiant: [null, [Validators.required]],
+    cursus: [''],
     automatique: [],
     archive: [],
     groupeId: [],
@@ -53,6 +57,8 @@ export class ProjetUpdateComponent implements OnInit {
     private translateService: TranslateService
   ) {
     this.nbEtudiantDefault = 2;
+    this.cursus = [TypeCursus.L3, TypeCursus.M1, TypeCursus.M2];
+    this.cursusDefault = TypeCursus.L3;
   }
 
   ngOnInit(): void {
@@ -87,6 +93,7 @@ export class ProjetUpdateComponent implements OnInit {
       descriptionPDFContentType: projet.descriptionPDFContentType,
       descriptionTexte: projet.descriptionTexte,
       nbEtudiant: projet.nbEtudiant,
+      cursus: projet.cursus,
       automatique: projet.automatique,
       archive: projet.archive,
       groupeId: projet.groupeId,
@@ -168,6 +175,7 @@ export class ProjetUpdateComponent implements OnInit {
       descriptionPDF: this.editForm.get(['descriptionPDF'])!.value,
       descriptionTexte: this.editForm.get(['descriptionTexte'])!.value,
       nbEtudiant: this.editForm.get(['nbEtudiant'])!.value,
+      cursus: this.editForm.get(['cursus'])!.value,
       automatique: this.editForm.get(['automatique'])!.value,
       archive: false,
       groupeId: this.editForm.get(['groupeId'])!.value,

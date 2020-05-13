@@ -15,6 +15,7 @@ public interface EvaluationMapper extends EntityMapper<EvaluationDTO, Evaluation
 
     @Mapping(target = "userExtras", ignore = true)
     @Mapping(target = "removeUserExtra", ignore = true)
+    @Mapping(source = "cursus", target = "cursus")
     Evaluation toEntity(EvaluationDTO evaluationDTO);
 
     default Evaluation fromId(Long id) {

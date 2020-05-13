@@ -20,6 +20,7 @@ import { Account } from 'app/core/user/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { Router } from '@angular/router';
 import { ProjetService } from 'app/entities/projet/projet.service';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   templateUrl: './home-nouvelleAnnee.component.html'
@@ -83,12 +84,22 @@ export class HomeNouvelleAnneeComponent {
     }
     for (const extra of this.userExtras) {
       if (extra.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
-        const usr = this.getUserById(extra.id);
-        extra.actif = false;
-        usr.activated = false;
-        this.userService.update(usr).subscribe(() => {
-          this.isDesactive = true;
-        });
+        extra.groupeId = null;
+        extra.evaluationId = null;
+        if (extra.cursus === TypeCursus.M2) {
+          const usr = this.getUserById(extra.id);
+          extra.actif = false;
+          usr.activated = false;
+          this.userService.update(usr).subscribe(() => {
+            this.isDesactive = true;
+          });
+        }
+        if (extra.cursus === TypeCursus.M1) {
+          extra.cursus = TypeCursus.M2;
+        }
+        if (extra.cursus === TypeCursus.L3) {
+          extra.cursus = TypeCursus.M1;
+        }
         this.userExtraService.update(extra).subscribe(() => {
           this.isDesactive = true;
           this.onSaveSuccess();

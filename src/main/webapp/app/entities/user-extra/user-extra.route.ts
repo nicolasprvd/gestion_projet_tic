@@ -39,7 +39,7 @@ export const userExtraRoute: Routes = [
     path: '',
     component: UserExtraComponent,
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'projetticApp.userExtra.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -51,7 +51,7 @@ export const userExtraRoute: Routes = [
       userExtra: UserExtraResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'projetticApp.userExtra.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -63,7 +63,7 @@ export const userExtraRoute: Routes = [
       userExtra: UserExtraResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'projetticApp.userExtra.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -75,7 +75,7 @@ export const userExtraRoute: Routes = [
       userExtra: UserExtraResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'projetticApp.userExtra.home.title'
     },
     canActivate: [UserRouteAccessService]
