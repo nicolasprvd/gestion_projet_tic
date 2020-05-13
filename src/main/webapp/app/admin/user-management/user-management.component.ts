@@ -14,6 +14,8 @@ import { User } from 'app/core/user/user.model';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjetService } from 'app/entities/projet/projet.service';
+import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
+import { IUserExtra } from 'app/shared/model/user-extra.model';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -31,6 +33,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   subject: string;
   content: string;
+  userExtra: IUserExtra;
 
   constructor(
     private userService: UserService,
@@ -40,7 +43,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     private eventManager: JhiEventManager,
     private modalService: NgbModal,
     private translateService: TranslateService,
-    protected projetService: ProjetService
+    protected projetService: ProjetService,
+    private userExtraService: UserExtraService
   ) {}
 
   ngOnInit(): void {
@@ -71,7 +75,11 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   setActive(user: User, isActivated: boolean): void {
     user.activated = isActivated;
     this.userService.update(user).subscribe(() => this.loadAll());
-
+    this.userExtraService.find(user.id).subscribe(userExtra => {
+      this.userExtra = userExtra.body;
+      this.userExtra.actif = isActivated;
+      this.userExtraService.update(this.userExtra).subscribe();
+    });
     if (isActivated === true) {
       this.subject = this.translateService.instant('global.email.compteValide.sujet');
       this.content = this.translateService.instant('global.email.compteValide.message');
