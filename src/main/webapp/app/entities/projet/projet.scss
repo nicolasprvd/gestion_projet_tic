@@ -59,3 +59,17 @@
 #boutonsDocuments button {
   margin-bottom: 3px;
 }
+
+.filterButtons button {
+  margin: 0 3px 7px 0;
+}
+
+.filterButtons :nth-child(1n + 2) {
+  width: 60px;
+}
+
+@media (max-width: 576px) {
+  .filterButtons :nth-child(1n + 2) {
+    width: 50px;
+  }
+}
