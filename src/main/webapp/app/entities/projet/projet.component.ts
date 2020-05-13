@@ -118,6 +118,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   changeProjets(value: number): void {
     this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
       this.projets = [];
+      this.projetsFiltres = [];
       this.allProjets = res.body;
       const annee: number = +value;
       let date = 0;
@@ -125,6 +126,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
         date = +moment(projet.dateCreation).year();
         if (date === annee && projet.archive) {
           this.projets.push(projet);
+          this.projetsFiltres.push(projet);
         }
       });
     });

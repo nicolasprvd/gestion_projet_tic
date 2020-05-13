@@ -25,39 +25,39 @@
         </div>
     </div>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="projetsFiltres?.length === 0 && !isClient()">
-        <span jhiTranslate="projetticApp.projet.home.notFound">No projets found</span>
-    </div>
-
     <hr>
 
     <div class="table-responsive" id="entities" *ngIf="projets?.length > 0">
-        <button *ngIf="isClient()" id="filtreAucun" type="submit"
-                (click)="reinitFiltreProjets()"
-                class="btn btn-success btn-sm">
-            <fa-icon icon="ban"></fa-icon>
-            <span jhiTranslate="projetticApp.projet.filtre.aucun"></span>
-        </button>
-        <button *ngIf="isClient()" id="filtreL3" type="submit"
-                (click)="filtrerProjets(L3)"
-                class="btn btn-danger btn-sm">
-            <span>{{L3}}</span>
-        </button>
-        <button *ngIf="isClient()" id="filtreM1" type="submit"
-                (click)="filtrerProjets(M1)"
-                class="btn btn-danger btn-sm">
-            <span>{{M1}}</span>
-        </button>
-        <button *ngIf="isClient()" id="filtreM2" type="submit"
-                (click)="filtrerProjets(M2)"
-                class="btn btn-danger btn-sm">
-            <span>{{M2}}</span>
-        </button>
-
-        <div class="alert alert-warning" id="no-result-client" *ngIf="projetsFiltres?.length === 0 && isClient()">
-            <span jhiTranslate="projetticApp.projet.home.notFound">No projets found</span>
+        <div class="filterButtons">
+            <button *ngIf="isClient()" id="filtreAucun" type="submit"
+                    (click)="reinitFiltreProjets()"
+                    class="btn btn-success btn-sm">
+                <fa-icon icon="ban"></fa-icon>
+                <span jhiTranslate="projetticApp.projet.filtre.aucun"></span>
+            </button>
+            <button *ngIf="isClient()" id="filtreL3" type="submit"
+                    (click)="filtrerProjets(L3)"
+                    class="btn btn-danger btn-sm">
+                <span>{{L3}}</span>
+            </button>
+            <button *ngIf="isClient()" id="filtreM1" type="submit"
+                    (click)="filtrerProjets(M1)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M1}}</span>
+            </button>
+            <button *ngIf="isClient()" id="filtreM2" type="submit"
+                    (click)="filtrerProjets(M2)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M2}}</span>
+            </button>
         </div>
+    </div>
 
+    <div class="alert alert-warning" id="no-result-client" *ngIf="projetsFiltres?.length === 0">
+        <span jhiTranslate="projetticApp.projet.home.notFound">No projets found</span>
+    </div>
+
+    <div class="table-responsive" *ngIf="projets?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading" *ngIf="projetsFiltres?.length > 0">
             <thead>
             <tr>

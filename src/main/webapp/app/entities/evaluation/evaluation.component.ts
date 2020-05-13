@@ -19,7 +19,8 @@ import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   selector: 'jhi-evaluation',
-  templateUrl: './evaluation.component.html'
+  templateUrl: './evaluation.component.html',
+  styleUrls: ['./evaluation.scss']
 })
 export class EvaluationComponent implements OnInit, OnDestroy {
   evaluations?: IEvaluation[];

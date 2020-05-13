@@ -9,28 +9,31 @@
 
     <jhi-alert-error></jhi-alert-error>
 
+    <hr>
+
     <div class="alert alert-warning" id="no-result" *ngIf="!isEvaluationAffiche()">
         <span jhiTranslate="projetticApp.evaluation.home.notFound">No evaluations found</span>
     </div>
 
-    <hr>
-
     <div class="table-responsive" id="entities" *ngIf="isEvaluationAffiche()">
-        <button id="filtreL3" type="submit"
-                (click)="filtrerEtudiant(L3)"
-                class="btn btn-success btn-sm">
-            <span>{{L3}}</span>
-        </button>
-        <button id="filtreM1" type="submit"
-                (click)="filtrerEtudiant(M1)"
-                class="btn btn-danger btn-sm">
-            <span>{{M1}}</span>
-        </button>
-        <button id="filtreM2" type="submit"
-                (click)="filtrerEtudiant(M2)"
-                class="btn btn-danger btn-sm">
-            <span>{{M2}}</span>
-        </button>
+        <div class="filterButtonsEvaluation">
+            <button id="filtreL3" type="submit"
+                    (click)="filtrerEtudiant(L3)"
+                    class="btn btn-success btn-sm">
+                <span>{{L3}}</span>
+            </button>
+            <button id="filtreM1" type="submit"
+                    (click)="filtrerEtudiant(M1)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M1}}</span>
+            </button>
+            <button id="filtreM2" type="submit"
+                    (click)="filtrerEtudiant(M2)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M2}}</span>
+            </button>
+        </div>
+
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr>
