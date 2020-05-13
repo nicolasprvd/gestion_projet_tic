@@ -118,6 +118,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   changeProjets(value: number): void {
     this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
       this.projets = [];
+      this.projetsFiltres = [];
       this.allProjets = res.body;
       const annee: number = +value;
       let date = 0;
@@ -125,6 +126,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
         date = +moment(projet.dateCreation).year();
         if (date === annee && projet.archive) {
           this.projets.push(projet);
+          this.projetsFiltres.push(projet);
         }
       });
     });
@@ -369,6 +371,28 @@ export class ProjetComponent implements OnInit, OnDestroy {
     }
 
     return false;
+  }
+
+  formatNom(str: string): string {
+    str = str.toLowerCase();
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  getClient(projetId: number): string {
+    if (this.projets !== null && this.projets !== undefined) {
+      for (const projet of this.projets) {
+        if (projetId === projet.id) {
+          if (this.users !== null && this.users !== undefined) {
+            for (const usr of this.users) {
+              if (usr.id === projet.userExtraId) {
+                return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+              }
+            }
+          }
+        }
+      }
+    }
+    return '';
   }
 
   filtrerProjets(niveau: TypeCursus): void {

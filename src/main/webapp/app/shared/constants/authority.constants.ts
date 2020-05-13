@@ -3,5 +3,4 @@ export enum Authority {
   USER = 'ROLE_USER',
   CLIENT = 'ROLE_CLIENT',
   ETUDIANT = 'ROLE_ETUDIANT'
-
 }
