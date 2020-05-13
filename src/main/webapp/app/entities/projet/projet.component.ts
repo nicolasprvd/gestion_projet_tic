@@ -357,4 +357,26 @@ export class ProjetComponent implements OnInit, OnDestroy {
 
     return false;
   }
+
+  formatNom(str: string): string {
+    str = str.toLowerCase();
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  getClient(projetId: number): string {
+    if (this.projets !== null && this.projets !== undefined) {
+      for (const projet of this.projets) {
+        if (projetId === projet.id) {
+          if (this.users !== null && this.users !== undefined) {
+            for (const usr of this.users) {
+              if (usr.id === projet.userExtraId) {
+                return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+              }
+            }
+          }
+        }
+      }
+    }
+    return '';
+  }
 }

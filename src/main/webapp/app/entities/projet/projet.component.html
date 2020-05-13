@@ -35,10 +35,10 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-                <th scope="col" ><span jhiTranslate="projetticApp.projet.nom">Nom</span></th>
-                <th scope="col" ><span jhiTranslate="projetticApp.projet.descriptionPDF">Description PDF</span></th>
-                <th scope="col" ><span jhiTranslate="projetticApp.projet.descriptionTexte">Description Texte</span></th>
-                <th scope="col" ><span jhiTranslate="projetticApp.projet.nbEtudiant">Nb Etudiant</span></th>
+                <th scope="col" style="width: 23%"><span jhiTranslate="projetticApp.projet.nom">Nom</span></th>
+                <th scope="col" style="width: 15%"><span jhiTranslate="projetticApp.groupe.client">Client</span></th>
+                <th scope="col" style="width: 50%"><span jhiTranslate="projetticApp.projet.descriptionTexte">Description Texte</span></th>
+                <th scope="col"><span jhiTranslate="projetticApp.projet.nbEtudiant">Nb Etudiant</span></th>
                 <th *ngIf="isAdmin()" scope="col" ><span jhiTranslate="projetticApp.projet.groupe">Groupe</span></th>
                 <th scope="col"></th>
             </tr>
@@ -47,10 +47,7 @@
             <ng-container *ngFor="let projet of projets ;trackBy: trackId">
                 <tr *ngIf="isAffiche(projet)">
                     <td>{{ projet.nom }}</td>
-                    <td>
-                        <a id="ouvrirpdf" *ngIf="projet.descriptionPDF" (click)="openFile(projet.descriptionPDFContentType, projet.descriptionPDF)" jhiTranslate="entity.action.open">open</a>
-                        <span *ngIf="projet.descriptionPDF">{{ byteSize(projet.descriptionPDF) }}</span>
-                    </td>
+                    <td>{{ getClient(projet.id) }}</td>
                     <td>{{ projet.descriptionTexte }}</td>
                     <td>{{ projet.nbEtudiant }}</td>
 
