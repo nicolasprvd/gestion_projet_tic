@@ -97,6 +97,9 @@
     },
     "item-count": "Showing {{first}} - {{second}} of {{total}} items.",
     "toastr": {
+      "activation": "The user {{prenom}} {{nom}} has been activated",
+      "desactivation": "The user {{prenom}} {{nom}} has been disabled",
+      "suppression": "The user {{login}} has been deleted",
       "register": {
         "message": "Your account is pending validation by the administrator."
       },

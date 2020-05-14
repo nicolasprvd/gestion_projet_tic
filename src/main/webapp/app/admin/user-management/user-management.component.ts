@@ -16,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjetService } from 'app/entities/projet/projet.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { IUserExtra } from 'app/shared/model/user-extra.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -34,6 +35,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   subject: string;
   content: string;
   userExtra: IUserExtra;
+  modification: string;
 
   constructor(
     private userService: UserService,
@@ -44,7 +46,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private translateService: TranslateService,
     protected projetService: ProjetService,
-    private userExtraService: UserExtraService
+    private userExtraService: UserExtraService,
+    private toastrService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -80,14 +83,18 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       this.userExtra.actif = isActivated;
       this.userExtraService.update(this.userExtra).subscribe();
     });
+
     if (isActivated === true) {
       this.subject = this.translateService.instant('global.email.compteValide.sujet');
       this.content = this.translateService.instant('global.email.compteValide.message');
+      this.modification = this.translateService.instant('global.toastr.activation', { prenom: user.firstName, nom: user.lastName });
     } else {
       this.subject = this.translateService.instant('global.email.compteNonValide.sujet');
       this.content = this.translateService.instant('global.email.compteNonValide.message');
+      this.modification = this.translateService.instant('global.toastr.desactivation', { prenom: user.firstName, nom: user.lastName });
     }
     this.projetService.sendMail(user.email, this.subject, this.content).subscribe();
+    this.toastrService.success(this.modification);
   }
 
   trackIdentity(index: number, item: User): any {
@@ -115,7 +122,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   deleteUser(user: User): void {
     const modalRef = this.modalService.open(UserManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.user = user;
-
     this.subject = this.translateService.instant('global.email.compteSupprimer.sujet');
     this.content = this.translateService.instant('global.email.compteSupprimer.message');
     this.projetService.sendMail(user.email, this.subject, this.content).subscribe();
