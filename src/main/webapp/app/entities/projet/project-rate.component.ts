@@ -50,7 +50,7 @@ export class ProjectRateComponent implements OnInit {
   specsRate = 0;
   specsCoef = 1;
   ganttsRate = 0;
-  ganntsCoef = 1;
+  ganttsCoef = 1;
   outputRate = 0;
   outputCoef = 1;
 
@@ -126,8 +126,8 @@ export class ProjectRateComponent implements OnInit {
     this.outputRate = +(+(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     if (this.isValidate()) {
       this.finalRate = +(
-        (this.specsRate * this.specsCoef + this.ganttsRate * this.ganntsCoef + this.outputRate * this.outputCoef) /
-        (this.outputCoef + this.ganntsCoef + this.specsCoef)
+        (this.specsRate * this.specsCoef + this.ganttsRate * this.ganttsCoef + this.outputRate * this.outputCoef) /
+        (this.outputCoef + this.ganttsCoef + this.specsCoef)
       ).toFixed(2);
     }
   }
