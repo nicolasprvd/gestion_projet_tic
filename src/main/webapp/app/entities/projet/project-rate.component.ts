@@ -38,16 +38,21 @@ export class ProjectRateComponent implements OnInit {
   client!: IUser;
   typeUtilisateur?: TypeUtilisateur;
   login!: string | undefined;
-  finalRate = 0;
-  specsRate = 0;
-  ganttsRate = 0;
-  outputRate = 0;
   isSaving = false;
   cdcDoc: IDocument = null;
   ganttDoc: IDocument = null;
   renduDoc: IDocument = null;
   idEvaluation: number;
   evaluation: IEvaluation;
+
+  // Marks
+  finalRate = 0;
+  specsRate = 0;
+  specsCoef = 1;
+  ganttsRate = 0;
+  ganntsCoef = 1;
+  outputRate = 0;
+  outputCoef = 1;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -120,7 +125,10 @@ export class ProjectRateComponent implements OnInit {
     this.ganttsRate = +(+(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     this.outputRate = +(+(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     if (this.isValidate()) {
-      this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
+      this.finalRate = +(
+        (this.specsRate * this.specsCoef + this.ganttsRate * this.ganntsCoef + this.outputRate * this.outputCoef) /
+        (this.outputCoef + this.ganntsCoef + this.specsCoef)
+      ).toFixed(2);
     }
   }
 

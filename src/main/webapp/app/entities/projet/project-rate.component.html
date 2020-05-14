@@ -50,15 +50,29 @@
             <hr>
 
             <div>
+                <!-- Edition des notes -->
+                    <!--  Première note -->
                 <label id="labelCdc" class="form-control-label"  for="specsRate" jhiTranslate="projetticApp.projet.rate.noteCahierDesCharges"></label>
                 <input type="text" class="form-control" name="specsRate" id="specsRate" (input)="calculateFinalRate()"/>
 
+                <label id="labelCoefCdc" class="form-control-label"  for="specsCoef" jhiTranslate="projetticApp.projet.rate.coefCahierDesCharges"></label>
+                <input type="text" class="form-control" name="specsCoef" id="specsCoef" (input)="calculateFinalRate()"/>
+
+                    <!--  Deuxième note -->
                 <label id="labelSoutenance" class="form-control-label" for="ganttsRate" jhiTranslate="projetticApp.projet.rate.noteSoutenance"></label>
                 <input type="text" class="form-control" name="ganttsRate" id="ganttsRate" (input)="calculateFinalRate()"/>
 
+                <label id="labelCoefgantts" class="form-control-label"  for="ganttsCoef" jhiTranslate="projetticApp.projet.rate.coefCahierDesCharges"></label>
+                <input type="text" class="form-control" name="ganttsCoef" id="ganttsCoef" (input)="calculateFinalRate()"/>
+
+                    <!--  Troisième note -->
                 <label id="labelRendu" class="form-control-label" for="outputRate" jhiTranslate="projetticApp.projet.rate.noteRendu"></label>
                 <input type="text" class="form-control" name="outputRate" id="outputRate" (input)="calculateFinalRate()"/>
 
+                <label id="labelCoefoutput" class="form-control-label"  for="outputCoef" jhiTranslate="projetticApp.projet.rate.coefCahierDesCharges"></label>
+                <input type="text" class="form-control" name="outputCoef" id="outputCoef" (input)="calculateFinalRate()"/>
+
+                    <!-- Note finale, non éditable -->
                 <label id="labelMoyenne" class="form-control-label" for="final" jhiTranslate="projetticApp.projet.rate.moyenne"></label>
                 <input type="number" class="form-control" name="final" id="final" disabled="disabled" [(ngModel)]="finalRate"/>
             </div>
