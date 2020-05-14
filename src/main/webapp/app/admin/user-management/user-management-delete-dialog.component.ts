@@ -6,6 +6,7 @@ import { User } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 
 @Component({
   selector: 'jhi-user-mgmt-delete-dialog',
@@ -16,6 +17,7 @@ export class UserManagementDeleteDialogComponent {
 
   constructor(
     private userService: UserService,
+    private userExtraService: UserExtraService,
     public activeModal: NgbActiveModal,
     private eventManager: JhiEventManager,
     private toastrService: ToastrService,
@@ -27,10 +29,14 @@ export class UserManagementDeleteDialogComponent {
   }
 
   confirmDelete(login: string): void {
-    this.userService.delete(login).subscribe(() => {
-      this.eventManager.broadcast('userListModification');
-      this.toastrService.success(this.translateService.instant('global.toastr.suppression', { login: login.toString() }));
-      this.activeModal.close();
+    this.userExtraService.delete(this.user.id).subscribe(() => {
+      this.userService.delete(login).subscribe(() => {
+        this.eventManager.broadcast('userListModification');
+        this.toastrService.success(
+          this.translateService.instant('global.toastr.suppression', { prenom: this.user.firstName, nom: this.user.lastName })
+        );
+        this.activeModal.close();
+      });
     });
   }
 }

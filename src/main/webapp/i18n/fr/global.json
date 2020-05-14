@@ -99,7 +99,7 @@
     "toastr": {
       "activation": "L'utilisateur {{prenom}} {{nom}} a bien été activé",
       "desactivation": "L'utilisateur {{prenom}} {{nom}} a bien été désactivé",
-      "suppression": "L'utilisateur {{login}} a bien été supprimé",
+      "suppression": "L'utilisateur {{prenom}} {{nom}} a bien été supprimé",
       "register": {
         "message": "Votre compte est en attente de validation par l'administrateur."
       },
