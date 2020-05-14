@@ -29,36 +29,42 @@
 
     <div class="table-responsive" id="entities" *ngIf="projets?.length > 0">
         <div class="filterButtons">
+            <button *ngIf="isClient()" id="filtreMesProjets" type="submit"
+                    (click)="switchMesProjets()"
+                    class="btn btn-danger btn-sm">
+                <fa-icon icon="asterisk"></fa-icon>
+                <span jhiTranslate="projetticApp.projet.filtre.mesprojets"></span>
+            </button>
             <button *ngIf="isClient()" id="filtreAucun" type="submit"
-                    (click)="reinitFiltreProjets()"
+                    (click)="filtrerProjetsSansCursus()"
                     class="btn btn-success btn-sm">
                 <fa-icon icon="ban"></fa-icon>
-                <span jhiTranslate="projetticApp.projet.filtre.aucun"></span>
+                <span jhiTranslate="projetticApp.projet.filtre.tous"></span>
             </button>
             <button *ngIf="isClient()" id="filtreL3" type="submit"
-                    (click)="filtrerProjets(L3)"
+                    (click)="filtrerProjetsParCursus(L3)"
                     class="btn btn-danger btn-sm">
                 <span>{{L3}}</span>
             </button>
             <button *ngIf="isClient()" id="filtreM1" type="submit"
-                    (click)="filtrerProjets(M1)"
+                    (click)="filtrerProjetsParCursus(M1)"
                     class="btn btn-danger btn-sm">
                 <span>{{M1}}</span>
             </button>
             <button *ngIf="isClient()" id="filtreM2" type="submit"
-                    (click)="filtrerProjets(M2)"
+                    (click)="filtrerProjetsParCursus(M2)"
                     class="btn btn-danger btn-sm">
                 <span>{{M2}}</span>
             </button>
         </div>
     </div>
 
-    <div class="alert alert-warning" id="no-result-client" *ngIf="projetsFiltres?.length === 0">
+    <div class="alert alert-warning" id="no-result-client" *ngIf="projetsAffiches?.length === 0">
         <span jhiTranslate="projetticApp.projet.home.notFound">No projets found</span>
     </div>
 
     <div class="table-responsive" *ngIf="projets?.length > 0">
-        <table class="table table-striped" aria-describedby="page-heading" *ngIf="projetsFiltres?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading" *ngIf="projetsAffiches?.length > 0">
             <thead>
             <tr>
                 <th scope="col" style="width: 23%"><span jhiTranslate="projetticApp.projet.nom">Nom</span></th>
@@ -71,7 +77,7 @@
             </tr>
             </thead>
             <tbody>
-            <ng-container *ngFor="let projet of projetsFiltres ;trackBy: trackId">
+            <ng-container *ngFor="let projet of projetsAffiches ;trackBy: trackId">
                 <tr *ngIf="isAffiche(projet)">
                     <td>{{ projet.nom }}</td>
                     <td>{{ getClient(projet.id) }}</td>

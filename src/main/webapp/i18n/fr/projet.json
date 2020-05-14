@@ -85,7 +85,8 @@
         "retractation": "Se rétracter"
       },
       "filtre": {
-        "aucun": "Aucun filtre"
+        "tous": "Tous les niveaux",
+        "mesprojets": "Mes projets"
       },
       "nom": "Nom du projet",
       "descriptionPDF": "Description PDF",
