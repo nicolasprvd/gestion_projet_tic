@@ -81,7 +81,8 @@
         "retractation": "Retract"
       },
       "filtre": {
-        "aucun": "No filter"
+        "tous": "All levels",
+        "mesprojets": "My projects"
       },
       "nom": "Project's name",
       "descriptionPDF": "PDF description",
