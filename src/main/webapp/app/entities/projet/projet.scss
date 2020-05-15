@@ -64,12 +64,26 @@
   margin: 0 3px 7px 0;
 }
 
-.filterButtons :nth-child(1n + 3) {
+.filterButtons button:focus {
+  box-shadow: none;
+}
+
+.filterButtons :nth-child(1n + 4) {
   width: 60px;
 }
 
+.vertical-line {
+  border-left: 1px solid;
+  margin: 0 15px 0 10px;
+}
+
 @media (max-width: 576px) {
-  .filterButtons :nth-child(1n + 3) {
-    width: 50px;
+  .filterButtons :nth-child(1n + 4) {
+    width: 40px;
+  }
+
+  .vertical-line {
+    border: 0;
+    margin-right: 50%;
   }
 }
