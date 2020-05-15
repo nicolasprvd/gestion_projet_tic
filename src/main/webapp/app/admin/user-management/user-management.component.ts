@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpHeaders} from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
@@ -12,10 +12,12 @@ import { Account } from 'app/core/user/account.model';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.model';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
+import {UserExtraService} from "app/entities/user-extra/user-extra.service";
 
 @Component({
   selector: 'jhi-user-mgmt',
-  templateUrl: './user-management.component.html'
+  templateUrl: './user-management.component.html',
+  styleUrls: ['./user-management.scss']
 })
 export class UserManagementComponent implements OnInit, OnDestroy {
   currentAccount: Account | null = null;
@@ -34,7 +36,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventManager: JhiEventManager,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private userExtraService: UserExtraService
   ) {}
 
   ngOnInit(): void {
@@ -95,13 +98,23 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   private loadAll(): void {
-    this.userService
-      .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe((res: HttpResponse<User[]>) => this.onSuccess(res.body, res.headers));
+    this.userService.findAllWithAuthorities().subscribe(res => {
+      res.forEach(user => {
+        this.userExtraService.find(user.id).subscribe(ue => {
+          user.typeUtilisateur = ue.body.typeUtilisateur;
+          user.cursus = ue.body.cursus;
+        });
+      });
+      res.sort((a, b) => (a.lastName < b.lastName ? -1 : 1));
+      this.users = res;
+    });
+    // this.userService
+    //   .query({
+    //     page: this.page - 1,
+    //     size: this.itemsPerPage,
+    //     sort: this.sort()
+    //   })
+    //   .subscribe((res: HttpResponse<User[]>) => this.onSuccess(res.body, res.headers));
   }
 
   private sort(): string[] {

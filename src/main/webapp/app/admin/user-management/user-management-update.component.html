@@ -1,8 +1,11 @@
 <div class="row">
     <div class="col-12">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="myUserLabel" jhiTranslate="userManagement.home.createOrEditLabel">
-                Create or edit a User
+            <h2 *ngIf="user.id === undefined" id="myUserLabel" jhiTranslate="userManagement.home.createLabel">
+                Create a User
+            </h2>
+            <h2 *ngIf="user.id !== undefined" id="myUserLabelEdit" jhiTranslate="userManagement.home.editLabel">
+                Edit a User
             </h2>
 
             <div *ngIf="user">
@@ -41,13 +44,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="userManagement.firstName">First Name</label>
-                    <input type="text" class="form-control" name="firstName"
-                           formControlName="firstName">
+                    <label jhiTranslate="userManagement.lastName">Last Name</label>
+                    <input type="text" class="form-control" name="lastName"
+                           formControlName="lastName">
 
-                    <div *ngIf="editForm.get('firstName')!.invalid && (editForm.get('firstName')!.dirty || editForm.get('firstName')!.touched)">
+                    <div *ngIf="editForm.get('lastName')!.invalid && (editForm.get('lastName')!.dirty || editForm.get('lastName')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('firstName')?.errors?.maxlength"
+                               *ngIf="editForm.get('lastName')?.errors?.maxlength"
                                jhiTranslate="entity.validation.maxlength"
                                [translateValues]="{ max: 50 }">
                             This field cannot be longer than 50 characters.
@@ -56,13 +59,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label jhiTranslate="userManagement.lastName">Last Name</label>
-                    <input type="text" class="form-control" name="lastName"
-                           formControlName="lastName">
+                    <label class="form-control-label" jhiTranslate="userManagement.firstName">First Name</label>
+                    <input type="text" class="form-control" name="firstName"
+                           formControlName="firstName">
 
-                    <div *ngIf="editForm.get('lastName')!.invalid && (editForm.get('lastName')!.dirty || editForm.get('lastName')!.touched)">
+                    <div *ngIf="editForm.get('firstName')!.invalid && (editForm.get('firstName')!.dirty || editForm.get('firstName')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('lastName')?.errors?.maxlength"
+                               *ngIf="editForm.get('firstName')?.errors?.maxlength"
                                jhiTranslate="entity.validation.maxlength"
                                [translateValues]="{ max: 50 }">
                             This field cannot be longer than 50 characters.
@@ -103,7 +106,7 @@
                     </div>
                 </div>
 
-                <div class="form-check">
+                <div class="form-check" *ngIf="user.id === undefined">
                     <label class="form-check-label" for="activated">
                         <input class="form-check-input" [attr.disabled]="user.id === undefined ? 'disabled' : null"
                                type="checkbox" id="activated" name="activated" formControlName="activated">

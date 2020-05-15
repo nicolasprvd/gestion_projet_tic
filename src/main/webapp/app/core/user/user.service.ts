@@ -49,7 +49,7 @@ export class UserService {
     return this.http.get<string[]>(SERVER_API_URL + 'api/users/authorities');
   }
 
-  findByIdWithAuthorities(id: number): Observable<IUser> {
-    return this.http.get<IUser>(`${this.resourceUrl}/authorities/${id}`);
+  findAllWithAuthorities(): Observable<IUser[]> {
+    return this.http.get<IUser[]>(`${this.resourceUrl}/authorities/all`);
   }
 }

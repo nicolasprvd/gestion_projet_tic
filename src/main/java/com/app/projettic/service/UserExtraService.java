@@ -1,6 +1,5 @@
 package com.app.projettic.service;
 
-import com.app.projettic.domain.UserExtra;
 import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.service.dto.UserExtraDTO;
 

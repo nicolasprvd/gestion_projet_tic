@@ -13,7 +13,6 @@ import com.app.projettic.repository.search.UserSearchRepository;
 import com.app.projettic.security.AuthoritiesConstants;
 import com.app.projettic.security.SecurityUtils;
 import com.app.projettic.service.dto.UserDTO;
-
 import io.github.jhipster.security.RandomUtil;
 
 import org.slf4j.Logger;
@@ -345,5 +344,15 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<UserDTO> findByActivated(boolean activated) {
         return userRepository.findByActivated(activated);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserDTO> findAllWithAuthorities() {
+        List<User> users = userRepository.findAll();
+
+        for(User user : users) {
+            user.setAuthorities(this.getUserWithAuthorities(user.getId()).get().getAuthorities());
+        }
+        return users.stream().map(UserDTO::new).collect(Collectors.toList());
     }
 }

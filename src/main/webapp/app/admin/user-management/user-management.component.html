@@ -15,41 +15,36 @@
         <table class="table table-striped" aria-describedby="user-management-page-heading">
             <thead>
                 <tr>
+                    <th scope="col"><span>Compte</span></th>
                     <th scope="col"><span jhiTranslate="userManagement.lastName">Lastname</span></th>
                     <th scope="col"><span jhiTranslate="userManagement.firstName">Firstname</span></th>
                     <th scope="col"><span jhiTranslate="userManagement.email">Email</span></th>
-<!--                    <th scope="col"><span jhiTranslate="userManagement.status">Status</span></th>-->
-<!--                    <th scope="col"><span jhiTranslate="userManagement.cursus">Grade</span></th>-->
-<!--                    <th scope="col"><span jhiTranslate="userManagement.profiles">Profiles</span></th>-->
+                    <th scope="col"><span jhiTranslate="userManagement.status">Status</span></th>
+                    <th scope="col"><span jhiTranslate="userManagement.cursus">Grade</span></th>
+                    <th scope="col"><span jhiTranslate="userManagement.profiles">Profiles</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody *ngIf="users">
                 <tr *ngFor="let user of users; trackBy: trackIdentity">
+                    <td class="usr-managt-compte">
+                        <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated"
+                                jhiTranslate="userManagement.deactivated">Deactivated</button>
+                        <button class="btn btn-success btn-sm" (click)="setActive(user, false)" *ngIf="user.activated"
+                                [disabled]="!currentAccount || currentAccount.login === user.login" jhiTranslate="userManagement.activated">Activated</button>
+                    </td>
                     <td>{{ user.lastName }}</td>
                     <td>{{ user.firstName }}</td>
                     <td>{{ user.email }}</td>
-<!--                    <td>{{ user.email }}</td>-->
-<!--                    <td>{{ user.email }}</td>-->
-<!--                    <td>-->
-<!--                        <div *ngFor="let authority of user?.authorities">-->
-<!--                            <span class="badge badge-info">{{ authority }}</span>-->
-<!--                        </div>-->
-<!--                    </td>-->
+                    <td>{{ user.typeUtilisateur }}</td>
+                    <td>{{ user.cursus }}</td>
+                    <td>
+                        <div *ngFor="let authority of user.authorities">
+                            <span class="badge badge-info">{{ authority }}</span>
+                        </div>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group">
-                            <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated"
-                                    jhiTranslate="userManagement.deactivated">Deactivated</button>
-                            <button class="btn btn-success btn-sm" (click)="setActive(user, false)" *ngIf="user.activated"
-                                    [disabled]="!currentAccount || currentAccount.login === user.login" jhiTranslate="userManagement.activated">Activated</button>
-
-                            <button type="submit"
-                                    [routerLink]="['./', user.login, 'view']"
-                                    class="btn btn-info btn-sm">
-                                <fa-icon icon="eye"></fa-icon>
-                                <span jhiTranslate="entity.action.view">View</span>
-                            </button>
-
                             <button type="submit"
                                     [routerLink]="['./', user.login, 'edit']"
                                     queryParamsHandling="merge"
