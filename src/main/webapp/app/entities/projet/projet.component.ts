@@ -445,15 +445,15 @@ export class ProjetComponent implements OnInit, OnDestroy {
     if (this.mesProjets) {
       document.getElementById('filtreMesProjets').setAttribute('class', 'btn btn-info btn-sm');
     } else {
-      document.getElementById('filtreMesProjets').setAttribute('class', 'btn btn-danger btn-sm');
+      document.getElementById('filtreMesProjets').setAttribute('class', 'btn btn-secondary btn-sm');
     }
   }
 
   modifierCouleurBoutonFiltre(niveau: TypeCursus): void {
-    document.getElementById('filtreAucun').setAttribute('class', 'btn btn-danger btn-sm');
-    document.getElementById('filtreL3').setAttribute('class', 'btn btn-danger btn-sm');
-    document.getElementById('filtreM1').setAttribute('class', 'btn btn-danger btn-sm');
-    document.getElementById('filtreM2').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreAucun').setAttribute('class', 'btn btn-secondary btn-sm');
+    document.getElementById('filtreL3').setAttribute('class', 'btn btn-secondary btn-sm');
+    document.getElementById('filtreM1').setAttribute('class', 'btn btn-secondary btn-sm');
+    document.getElementById('filtreM2').setAttribute('class', 'btn btn-secondary btn-sm');
     if (niveau === null) {
       document.getElementById('filtreAucun').setAttribute('class', 'btn btn-success btn-sm');
     } else if (niveau === TypeCursus.L3) {
