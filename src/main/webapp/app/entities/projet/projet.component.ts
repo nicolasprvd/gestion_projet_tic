@@ -443,7 +443,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
 
   changerCouleurBoutonMesProjets(): void {
     if (this.mesProjets) {
-      document.getElementById('filtreMesProjets').setAttribute('class', 'btn btn-info btn-sm');
+      document.getElementById('filtreMesProjets').setAttribute('class', 'btn btn-success btn-sm');
     } else {
       document.getElementById('filtreMesProjets').setAttribute('class', 'btn btn-secondary btn-sm');
     }
