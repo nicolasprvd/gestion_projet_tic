@@ -346,4 +346,9 @@ public class UserService {
     public List<UserDTO> findByActivated(boolean activated) {
         return userRepository.findByActivated(activated);
     }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
 }
