@@ -10,7 +10,7 @@ import { ProjetService } from 'app/entities/projet/projet.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { IUserExtra } from 'app/shared/model/user-extra.model';
-import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
+// import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserRouteAccessService implements CanActivate {

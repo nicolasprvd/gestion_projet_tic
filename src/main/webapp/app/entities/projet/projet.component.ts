@@ -35,8 +35,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
   isSaving = false;
   account: Account | null;
   typeUtilisateur: TypeUtilisateur;
-  projets: IProjet[];
-  projetsFiltres: IProjet[];
   authorities: string[] | undefined;
   groupeId: number;
   projetChoisiId: number;
@@ -50,6 +48,10 @@ export class ProjetComponent implements OnInit, OnDestroy {
   L3: TypeCursus = TypeCursus.L3;
   M1: TypeCursus = TypeCursus.M1;
   M2: TypeCursus = TypeCursus.M2;
+  projets: IProjet[];
+  projetsAffiches: IProjet[];
+  mesProjets = false;
+  niveauSelectionne: TypeCursus = null;
 
   constructor(
     protected projetService: ProjetService,
@@ -87,7 +89,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
         if (projets !== null && projets.body !== null) {
           this.projets = projets.body;
           this.allProjets = projets.body;
-          this.projetsFiltres = projets.body;
+          this.projetsAffiches = projets.body;
         }
       });
     } else {
@@ -104,7 +106,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
             this.datesArchive.push(date.year());
           }
         });
-        this.projetsFiltres = this.projets;
+        this.projetsAffiches = this.projets;
         this.datesArchive = [...new Set(this.datesArchive)];
         this.datesArchive = this.datesArchive.sort((a, b) => (a > b ? -1 : 1));
       });
@@ -118,7 +120,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   changeProjets(value: number): void {
     this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
       this.projets = [];
-      this.projetsFiltres = [];
+      this.projetsAffiches = [];
       this.allProjets = res.body;
       const annee: number = +value;
       let date = 0;
@@ -126,7 +128,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
         date = +moment(projet.dateCreation).year();
         if (date === annee && projet.archive) {
           this.projets.push(projet);
-          this.projetsFiltres.push(projet);
+          this.projetsAffiches.push(projet);
         }
       });
     });
@@ -395,19 +397,56 @@ export class ProjetComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  filtrerProjets(niveau: TypeCursus): void {
-    this.projetsFiltres = [];
-    for (const projet of this.projets) {
-      if (projet.cursus === niveau) {
-        this.projetsFiltres.push(projet);
+  filtrerProjetsParCursus(niveau: TypeCursus): void {
+    this.niveauSelectionne = niveau;
+    this.projetsAffiches = [];
+    if (this.mesProjets) {
+      for (const projet of this.projets) {
+        if (projet.userExtraId === this.accountExtra.id && projet.cursus === niveau) {
+          this.projetsAffiches.push(projet);
+        }
+      }
+    } else {
+      for (const projet of this.projets) {
+        if (projet.cursus === niveau) {
+          this.projetsAffiches.push(projet);
+        }
       }
     }
     this.modifierCouleurBoutonFiltre(niveau);
   }
 
-  reinitFiltreProjets(): void {
-    this.projetsFiltres = this.projets;
-    this.modifierCouleurBoutonFiltre(null);
+  filtrerProjetsSansCursus(): void {
+    this.niveauSelectionne = null;
+    this.projetsAffiches = [];
+    this.modifierCouleurBoutonFiltre(this.niveauSelectionne);
+    if (this.mesProjets) {
+      for (const projet of this.projets) {
+        if (projet.userExtraId === this.accountExtra.id) {
+          this.projetsAffiches.push(projet);
+        }
+      }
+    } else {
+      this.projetsAffiches = this.projets;
+    }
+  }
+
+  switchMesProjets(): void {
+    this.mesProjets = !this.mesProjets;
+    this.changerCouleurBoutonMesProjets();
+    if (this.niveauSelectionne === null) {
+      this.filtrerProjetsSansCursus();
+    } else {
+      this.filtrerProjetsParCursus(this.niveauSelectionne);
+    }
+  }
+
+  changerCouleurBoutonMesProjets(): void {
+    if (this.mesProjets) {
+      document.getElementById('filtreMesProjets').setAttribute('class', 'btn btn-info btn-sm');
+    } else {
+      document.getElementById('filtreMesProjets').setAttribute('class', 'btn btn-danger btn-sm');
+    }
   }
 
   modifierCouleurBoutonFiltre(niveau: TypeCursus): void {

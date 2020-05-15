@@ -355,4 +355,9 @@ public class UserService {
         }
         return users.stream().map(UserDTO::new).collect(Collectors.toList());
     }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
 }
