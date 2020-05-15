@@ -23,6 +23,15 @@ public class EvaluationDTO implements Serializable {
     private Double noteRendu;
 
     @NotNull
+    private Double coefCDC;
+
+    @NotNull
+    private Double coefSoutenance;
+
+    @NotNull
+    private Double coefRendu;
+
+    @NotNull
     private Double noteFinale;
 
     private Boolean actif;
@@ -85,6 +94,30 @@ public class EvaluationDTO implements Serializable {
         this.cursus = cursus;
     }
 
+    public Double getCoefCDC() {
+        return coefCDC;
+    }
+
+    public void setCoefCDC(Double coefCDC) {
+        this.coefCDC = coefCDC;
+    }
+
+    public Double getCoefSoutenance() {
+        return coefSoutenance;
+    }
+
+    public void setCoefSoutenance(Double coefSoutenance) {
+        this.coefSoutenance = coefSoutenance;
+    }
+
+    public Double getCoefRendu() {
+        return coefRendu;
+    }
+
+    public void setCoefRendu(Double coefRendu) {
+        this.coefRendu = coefRendu;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -111,8 +144,11 @@ public class EvaluationDTO implements Serializable {
         return "EvaluationDTO{" +
             "id=" + getId() +
             ", noteCDC=" + getNoteCDC() +
+            ", coefCDC=" + getCoefCDC() +
             ", noteSoutenance=" + getNoteSoutenance() +
+            ", coefSoutenance=" + getCoefSoutenance() +
             ", noteRendu=" + getNoteRendu() +
+            ", coefRendu=" + getCoefRendu() +
             ", noteFinale=" + getNoteFinale() +
             ", actif=" + isActif() +
             ", cursus=" + getCursus() +
