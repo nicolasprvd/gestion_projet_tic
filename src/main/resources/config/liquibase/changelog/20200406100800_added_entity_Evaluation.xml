@@ -25,6 +25,15 @@
             <column name="note_rendu" type="double">
                 <constraints nullable="false" />
             </column>
+            <column name="coef_cdc" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="coef_soutenance" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="coef_rendu" type="double">
+                <constraints nullable="false" />
+            </column>
             <column name="note_finale" type="double">
                 <constraints nullable="false" />
             </column>
