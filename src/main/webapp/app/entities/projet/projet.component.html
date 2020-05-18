@@ -31,10 +31,11 @@
         <div class="filterButtons">
             <button *ngIf="isClient()" id="filtreMesProjets" type="submit"
                     (click)="switchMesProjets()"
-                    class="btn btn-danger btn-sm">
+                    class="btn btn-secondary btn-sm">
                 <fa-icon icon="asterisk"></fa-icon>
                 <span jhiTranslate="projetticApp.projet.filtre.mesprojets"></span>
             </button>
+            <span class="vertical-line"></span>
             <button *ngIf="isClient()" id="filtreAucun" type="submit"
                     (click)="filtrerProjetsSansCursus()"
                     class="btn btn-success btn-sm">
@@ -43,17 +44,17 @@
             </button>
             <button *ngIf="isClient()" id="filtreL3" type="submit"
                     (click)="filtrerProjetsParCursus(L3)"
-                    class="btn btn-danger btn-sm">
+                    class="btn btn-secondary btn-sm">
                 <span>{{L3}}</span>
             </button>
             <button *ngIf="isClient()" id="filtreM1" type="submit"
                     (click)="filtrerProjetsParCursus(M1)"
-                    class="btn btn-danger btn-sm">
+                    class="btn btn-secondary btn-sm">
                 <span>{{M1}}</span>
             </button>
             <button *ngIf="isClient()" id="filtreM2" type="submit"
                     (click)="filtrerProjetsParCursus(M2)"
-                    class="btn btn-danger btn-sm">
+                    class="btn btn-secondary btn-sm">
                 <span>{{M2}}</span>
             </button>
         </div>

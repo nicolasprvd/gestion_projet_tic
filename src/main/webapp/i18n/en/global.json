@@ -7,11 +7,11 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "evaluation": "Evaluation",
+        "evaluation": "Rating",
         "userExtra": "User Extra",
         "document": "Document",
         "projet": "Projects",
-        "groupe": "Groupe",
+        "groupe": "Groups",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "subentities": {
           "projetsClient": "My projects",
