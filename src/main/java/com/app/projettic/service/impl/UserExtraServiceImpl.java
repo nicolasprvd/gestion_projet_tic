@@ -1,10 +1,12 @@
 package com.app.projettic.service.impl;
 
 import com.app.projettic.domain.enumeration.TypeCursus;
+import com.app.projettic.repository.UserRepository;
 import com.app.projettic.service.UserExtraService;
 import com.app.projettic.domain.UserExtra;
 import com.app.projettic.repository.UserExtraRepository;
 import com.app.projettic.repository.search.UserExtraSearchRepository;
+import com.app.projettic.service.UserService;
 import com.app.projettic.service.dto.UserExtraDTO;
 import com.app.projettic.service.mapper.UserExtraMapper;
 import org.slf4j.Logger;
@@ -12,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -107,6 +107,10 @@
         "projet": {
           "title": "Modification du projet {{nom}}",
           "message": "Vos modifications ont été enregistrées"
+        },
+        "userManagement": {
+          "title": "Modification de l'utilisateur {{prenom}} {{nom}}",
+          "message": "Les modifications ont été enregistrées"
         }
       },
       "creations": {
