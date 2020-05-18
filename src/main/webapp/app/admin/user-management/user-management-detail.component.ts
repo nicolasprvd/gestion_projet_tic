@@ -13,6 +13,9 @@ export class UserManagementDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ user }) => (this.user = user));
+    console.error(this.route);
+    this.route.data.subscribe(({ user }) => {
+      this.user = user;
+    });
   }
 }

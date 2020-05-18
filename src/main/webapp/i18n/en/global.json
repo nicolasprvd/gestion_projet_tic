@@ -107,6 +107,10 @@
         "projet": {
           "title": "Modification of the {{nom}} project",
           "message": "Your changes has been saved"
+        },
+        "userManagement": {
+          "title": "Modification of the {{prenom}} {{nom}} user",
+          "message": "Changes have been saved"
         }
       },
       "creations": {
