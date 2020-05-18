@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { LANGUAGES } from 'app/core/language/language.constants';
+import {ActivatedRoute, Router} from '@angular/router';
 import { User } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
+import {ToastrService} from "ngx-toastr";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'jhi-user-mgmt-update',
@@ -11,7 +12,6 @@ import { UserService } from 'app/core/user/user.service';
 })
 export class UserManagementUpdateComponent implements OnInit {
   user!: User;
-  languages = LANGUAGES;
   authorities: string[] = [];
   isSaving = false;
 
@@ -26,7 +26,14 @@ export class UserManagementUpdateComponent implements OnInit {
     authorities: []
   });
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private toastrService: ToastrService,
+    private translateService: TranslateService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ user }) => {
@@ -52,13 +59,22 @@ export class UserManagementUpdateComponent implements OnInit {
     this.updateUser(this.user);
     if (this.user.id !== undefined) {
       this.userService.update(this.user).subscribe(
-        () => this.onSaveSuccess(),
-        () => this.onSaveError()
-      );
-    } else {
-      this.userService.create(this.user).subscribe(
-        () => this.onSaveSuccess(),
-        () => this.onSaveError()
+        () => {
+          this.isSaving = false;
+          this.toastrService.success(
+            this.translateService.instant('global.toastr.modifications.userManagement.message'),
+            this.translateService.instant('global.toastr.modifications.userManagement.title', { prenom: this.user.firstName, nom: this.user.lastName }),
+          );
+          this.router.navigate(['/admin/user-management']);
+        },
+        () => {
+          this.isSaving = false;
+          this.toastrService.error(
+            this.translateService.instant('global.toastr.erreur.message'),
+            this.translateService.instant('global.toastr.erreur.title')
+          );
+          this.router.navigate(['/admin/user-management']);
+        }
       );
     }
   }
@@ -84,14 +100,5 @@ export class UserManagementUpdateComponent implements OnInit {
     user.activated = this.editForm.get(['activated'])!.value;
     user.langKey = this.editForm.get(['langKey'])!.value;
     user.authorities = this.editForm.get(['authorities'])!.value;
-  }
-
-  private onSaveSuccess(): void {
-    this.isSaving = false;
-    this.previousState();
-  }
-
-  private onSaveError(): void {
-    this.isSaving = false;
   }
 }

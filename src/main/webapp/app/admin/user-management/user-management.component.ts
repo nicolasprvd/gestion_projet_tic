@@ -4,8 +4,6 @@ import { Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
-
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { UserService } from 'app/core/user/user.service';
@@ -26,8 +24,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   currentAccount: Account | null = null;
   users: User[] | null = [];
   userListSubscription?: Subscription;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
   page!: number;
   predicate!: string;
   previousPage!: number;
@@ -104,24 +100,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
   trackIdentity(index: number, item: User): any {
     return item.id;
-  }
-
-  loadPage(page: number): void {
-    if (page !== this.previousPage) {
-      this.previousPage = page;
-      this.transition();
-    }
-  }
-
-  transition(): void {
-    this.router.navigate(['./'], {
-      relativeTo: this.activatedRoute.parent,
-      queryParams: {
-        page: this.page,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
-    });
-    this.loadAll();
   }
 
   deleteUser(user: User): void {

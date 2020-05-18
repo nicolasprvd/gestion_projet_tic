@@ -27,6 +27,7 @@
     "lastModifiedBy": "Modified by",
     "lastModifiedDate": "Modified date",
     "status": "Status",
-    "cursus": "Grade"
+    "cursus": "Grade",
+    "account": "Account"
   }
 }
