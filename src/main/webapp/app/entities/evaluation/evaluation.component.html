@@ -40,8 +40,11 @@
                     <th scope="col" ><span jhiTranslate="projetticApp.evaluation.etudiant"></span></th>
                     <th scope="col" ><span jhiTranslate="projetticApp.evaluation.projet"></span></th>
                     <th scope="col" ><span jhiTranslate="projetticApp.evaluation.noteCDC">Note CDC</span></th>
+                    <th scope="col" ><span jhiTranslate="projetticApp.evaluation.coefCDC">Coef CDC</span></th>
                     <th scope="col" ><span jhiTranslate="projetticApp.evaluation.noteSoutenance">Note Soutenance</span></th>
+                    <th scope="col" ><span jhiTranslate="projetticApp.evaluation.coefSoutenance">Coef Soutenance</span></th>
                     <th scope="col" ><span jhiTranslate="projetticApp.evaluation.noteRendu">Note Rendu</span></th>
+                    <th scope="col" ><span jhiTranslate="projetticApp.evaluation.coefRendu">Coef Rendu</span></th>
                     <th scope="col" ><span jhiTranslate="projetticApp.evaluation.noteFinale">Note Finale</span></th>
                 </tr>
             </thead>
@@ -54,8 +57,11 @@
                             <span *ngIf="projetActuelId === null" [textContent]="projetActuelNom"></span>
                         </td>
                         <td [textContent]="getNoteCDC()"></td>
+                        <td [textContent]="getCoefCDC()"></td>
                         <td [textContent]="getNoteSoutenance()"></td>
+                        <td [textContent]="getCoefSoutenance()"></td>
                         <td [textContent]="getNoteRendu()"></td>
+                        <td [textContent]="getCoefRendu()"></td>
                         <td [textContent]="getNoteFinale()"></td>
                     </tr>
                 </ng-container>
