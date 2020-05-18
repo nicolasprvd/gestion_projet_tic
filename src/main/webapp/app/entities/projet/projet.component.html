@@ -35,7 +35,7 @@
                 <fa-icon icon="asterisk"></fa-icon>
                 <span jhiTranslate="projetticApp.projet.filtre.mesprojets"></span>
             </button>
-            <span class="vertical-line"></span>
+            <span *ngIf="isClient()" class="vertical-line"></span>
             <button *ngIf="isClient()" id="filtreAucun" type="submit"
                     (click)="filtrerProjetsSansCursus()"
                     class="btn btn-success btn-sm">

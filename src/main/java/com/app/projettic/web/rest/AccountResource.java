@@ -68,7 +68,6 @@ public class AccountResource {
         }
 
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.getTypeUtilisateur(), managedUserVM.getCursus());
-        // mailService.sendActivationEmail(user);
         if (!user.getActivated()) {
             List<User> list = this.userService.findAll();
             for (User usr : list) {
@@ -82,11 +81,6 @@ public class AccountResource {
             }
         }
     }
-
-
-
-
-
 
     /**
      * {@code GET  /activate} : activate the registered user.
