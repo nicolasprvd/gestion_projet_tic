@@ -7,11 +7,11 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "evaluation": "Evaluation",
+        "evaluation": "Rating",
         "userExtra": "User Extra",
         "document": "Document",
         "projet": "Projects",
-        "groupe": "Groupe",
+        "groupe": "Groups",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "subentities": {
           "projetsClient": "My projects",
@@ -97,6 +97,9 @@
     },
     "item-count": "Showing {{first}} - {{second}} of {{total}} items.",
     "toastr": {
+      "activation": "The user {{prenom}} {{nom}} has been activated",
+      "desactivation": "The user {{prenom}} {{nom}} has been disabled",
+      "suppression": "The user {{prenom}} {{nom}} has been deleted",
       "register": {
         "message": "Your account is pending validation by the administrator."
       },
@@ -104,6 +107,10 @@
         "projet": {
           "title": "Modification of the {{nom}} project",
           "message": "Your changes has been saved"
+        },
+        "userManagement": {
+          "title": "Modification of the {{prenom}} {{nom}} user",
+          "message": "Changes have been saved"
         }
       },
       "creations": {
@@ -165,8 +172,16 @@
     },
     "email": {
       "compteValide": {
-        "sujet": "Validation of your account",
-        "message": "Hello, your account has been validated. You can go to the website to connect to it."
+        "sujet": "Activation of your account",
+        "message": "Hello, your account has been activated. You can go to the website to connect to it."
+      },
+      "compteNonValide": {
+        "sujet": "Deactivation of your account",
+        "message": "Hello, your account has been deactivated. If this is an error, please contact the project manager."
+      },
+      "compteSupprimer": {
+        "sujet": "Deleting of your account",
+        "message": "Hello, your account has been deleted. If this is an error, please contact the project manager."
       },
       "suppressionProjet": {
         "sujet": "Negative answer - project award",

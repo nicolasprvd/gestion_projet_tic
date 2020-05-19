@@ -37,6 +37,18 @@ public class Evaluation implements Serializable {
     private Double noteRendu;
 
     @NotNull
+    @Column(name = "coef_cdc", nullable = false)
+    private Double coefCDC;
+
+    @NotNull
+    @Column(name = "coef_soutenance", nullable = false)
+    private Double coefSoutenance;
+
+    @NotNull
+    @Column(name = "coef_rendu", nullable = false)
+    private Double coefRendu;
+
+    @NotNull
     @Column(name = "note_finale", nullable = false)
     private Double noteFinale;
 
@@ -152,6 +164,30 @@ public class Evaluation implements Serializable {
         this.cursus = cursus;
     }
 
+    public Double getCoefCDC() {
+        return coefCDC;
+    }
+
+    public void setCoefCDC(Double coefCDC) {
+        this.coefCDC = coefCDC;
+    }
+
+    public Double getCoefSoutenance() {
+        return coefSoutenance;
+    }
+
+    public void setCoefSoutenance(Double coefSoutenance) {
+        this.coefSoutenance = coefSoutenance;
+    }
+
+    public Double getCoefRendu() {
+        return coefRendu;
+    }
+
+    public void setCoefRendu(Double coefRendu) {
+        this.coefRendu = coefRendu;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -173,8 +209,11 @@ public class Evaluation implements Serializable {
         return "Evaluation{" +
             "id=" + getId() +
             ", noteCDC=" + getNoteCDC() +
+            ", coefCDC=" + getCoefCDC() +
             ", noteSoutenance=" + getNoteSoutenance() +
+            ", coefSoutenance=" + getCoefSoutenance() +
             ", noteRendu=" + getNoteRendu() +
+            ", coefRendu=" + getCoefRendu() +
             ", noteFinale=" + getNoteFinale() +
             ", actif=" + isActif() +
             ", cursus=" + getCursus() +

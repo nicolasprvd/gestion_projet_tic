@@ -70,6 +70,9 @@
         "noteCahierDesCharges": "Specification mark",
         "noteSoutenance": "Defense mark",
         "noteRendu": "Report mark",
+        "coefCahierDesCharges": "Specification coefficient",
+        "coefSoutenance": "Defense coefficient",
+        "coefRendu": "Report coefficient",
         "ouvrir": "Open",
         "noter": "Rate",
         "manquant": "Missing document :",
@@ -81,7 +84,8 @@
         "retractation": "Retract"
       },
       "filtre": {
-        "aucun": "No filter"
+        "tous": "All levels",
+        "mesprojets": "My projects"
       },
       "nom": "Project's name",
       "descriptionPDF": "PDF description",

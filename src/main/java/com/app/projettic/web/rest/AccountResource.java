@@ -1,7 +1,9 @@
 package com.app.projettic.web.rest;
 
+import com.app.projettic.domain.Authority;
 import com.app.projettic.domain.User;
 import com.app.projettic.repository.UserRepository;
+import com.app.projettic.security.AuthoritiesConstants;
 import com.app.projettic.security.SecurityUtils;
 import com.app.projettic.service.MailService;
 import com.app.projettic.service.UserService;
@@ -60,16 +62,23 @@ public class AccountResource {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
 
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.getTypeUtilisateur(), managedUserVM.getCursus());
-        // mailService.sendActivationEmail(user);
-        if (user.getActivated() == false) {
-            String subject = "Compte client à valider";
-            String content = "Le client " + user.getFirstName() + " " + user.getLastName() + " a créé un compte sur le site de gestion des projets. Rendez-vous sur celui-ci pour valider le compte.";
-            mailService.sendEmail("audrey.balat028@gmail.com", subject, content, false, false);
+        if (!user.getActivated()) {
+            List<User> list = this.userService.findAll();
+            for (User usr : list) {
+                for (Authority droit : usr.getAuthorities()) {
+                    if (droit.getName().equals(AuthoritiesConstants.ADMIN)) {
+                         String subject = "Compte client à valider";
+                         String content = "Le client " + user.getFirstName() + " " + user.getLastName() + " a créé un compte sur le site de gestion des projets MIAGE. Rendez-vous sur l'onglet Gestion des Utilisateurs afin de valider ou refuser le compte.";
+                         mailService.sendEmail(usr.getEmail(), subject, content, false, false);
+                    }
+                }
+            }
         }
     }
 

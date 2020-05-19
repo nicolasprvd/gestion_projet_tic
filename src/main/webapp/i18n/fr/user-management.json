@@ -3,7 +3,7 @@
     "home": {
       "title": "Utilisateurs",
       "createLabel": "Créer un nouvel utilisateur",
-      "createOrEditLabel": "Créer ou éditer un utilisateur"
+      "editLabel": "Modifier un utilisateur"
     },
     "created": "L'utilisateur {{ param }} a été créé.",
     "updated": "L'utilisateur {{ param }} a été mis à jour.",
@@ -25,6 +25,9 @@
     "createdBy": "Créé par",
     "createdDate": "Créé le",
     "lastModifiedBy": "Modifié par",
-    "lastModifiedDate": "Modifié le"
+    "lastModifiedDate": "Modifié le",
+    "status": "Statut",
+    "cursus": "Niveau",
+    "account": "Compte"
   }
 }
