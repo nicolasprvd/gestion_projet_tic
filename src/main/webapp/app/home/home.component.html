@@ -31,7 +31,7 @@
             <li class="text" jhiTranslate="home.student.three">  </li>
         </ul>
     </div>
-    <div class="col-sm-12" id="nouvelleAnnee" *ngIf="isAdmin() && isEtudiantActif() && !isDesactive">
+    <div class="col-sm-12" id="nouvelleAnnee" *ngIf="isAdmin() && isEvaluationActif() && !isDesactive">
         <button id="boutonNouvelleAnnee" class="btn btn-danger btn-sm" (click)="nouvelleAnnee()">
             <span jhiTranslate="home.newYear.titre"></span>
         </button>

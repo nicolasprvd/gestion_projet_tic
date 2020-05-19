@@ -85,7 +85,8 @@
           "required": "Votre email est requis.",
           "minlength": "Votre email doit comporter au moins 5 caractères.",
           "maxlength": "Votre email ne doit pas comporter plus de 50 caractères.",
-          "invalid": "Votre email n'est pas valide."
+          "invalid": "Votre email n'est pas valide.",
+          "pattern": "Votre email doit être valide et doit se terminer par @etu.u-bordeaux.fr"
         }
       }
     },
@@ -111,6 +112,10 @@
         "userManagement": {
           "title": "Modification de l'utilisateur {{prenom}} {{nom}}",
           "message": "Les modifications ont été enregistrées"
+        },
+        "redoubler": {
+          "title": "Modification de l'utilisateur {{prenom}} {{nom}}",
+          "message": "Le redoublement a bien été pris en compte"
         }
       },
       "creations": {
@@ -165,6 +170,10 @@
       "erreur": {
         "title": "Erreur",
         "message": "Une erreur est survenue"
+      },
+      "nouvelleAnnee": {
+        "title": "Une nouvelle année universitaire a débuté",
+        "message": "La base de données a été mise à jour"
       }
     },
     "champs": {
@@ -211,7 +220,8 @@
       "save": "Sauvegarder",
       "view": "Voir",
       "attribuate": "Attribuer",
-      "rate": "Noter"
+      "rate": "Noter",
+      "redoubler": "Redoubler"
     },
     "detail": {
       "field": "Champs",

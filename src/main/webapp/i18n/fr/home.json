@@ -24,8 +24,9 @@
     },
     "newYear": {
       "titre": "Démarrer une nouvelle année universitaire",
-      "detail": "Attention, démarrer une nouvelle année universitaire va désactiver tous les groupes / évaluations / documents / étudiants actifs. Ceux-ci seront tout de même conservés.",
+      "detail": "Attention, démarrer une nouvelle année universitaire va désactiver tous les groupes / évaluations / documents / étudiants en M2 et faire changer d'année tous les étudiants en L3 & M1 <br> Ceux-ci seront tout de même conservés.",
       "question": "Êtes-vous sûr de vouloir démarrer une nouvelle année universitaire ?",
+      "retakingStudents": " Pour faire redoubler quelqu'un, appuyer sur 'démarrer', ensuite il vous faudra gérer au cas par cas tous les étudiants dans 'Gestion des utilisateurs'. <br> Il suffit de cliquer sur 'redoublement' dans la ligne des élèves concernés. <br> Pour faire redoubler un M2, il faut d'abords réactiver son compte sur la même page",
       "confirmation": "Démarrer"
     }
   }

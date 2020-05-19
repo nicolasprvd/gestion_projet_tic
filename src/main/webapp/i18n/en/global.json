@@ -85,7 +85,8 @@
           "required": "Your email is required.",
           "invalid": "Your email is invalid.",
           "minlength": "Your email is required to be at least 5 characters.",
-          "maxlength": "Your email cannot be longer than 50 characters."
+          "maxlength": "Your email cannot be longer than 50 characters.",
+          "pattern": "Your email must be valid and must end by @etu.u-bordeaux.fr"
         }
       }
     },
@@ -109,6 +110,10 @@
           "message": "Your changes has been saved"
         },
         "userManagement": {
+          "title": "Modification of the {{prenom}} {{nom}} user",
+          "message": "Changes have been saved"
+        },
+        "redoubler": {
           "title": "Modification of the {{prenom}} {{nom}} user",
           "message": "Changes have been saved"
         }
@@ -165,6 +170,10 @@
       "erreur": {
         "title": "Error",
         "message": "An error has occured"
+      },
+      "nouvelleAnnee": {
+        "title": "A new academic has begun",
+        "message": "Database has been updated"
       }
     },
     "champs": {
@@ -211,7 +220,8 @@
       "save": "Save",
       "view": "View",
       "attribuate": "Assign",
-      "rate": "Rate"
+      "rate": "Rate",
+      "redoubler": "Repeat a year"
     },
     "detail": {
       "field": "Field",
