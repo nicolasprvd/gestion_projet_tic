@@ -111,6 +111,10 @@
         "userManagement": {
           "title": "Modification de l'utilisateur {{prenom}} {{nom}}",
           "message": "Les modifications ont été enregistrées"
+        },
+        "redoubler": {
+          "title": "Modification de l'utilisateur {{prenom}} {{nom}}",
+          "message": "Le redoublement a bien été pris en compte"
         }
       },
       "creations": {
@@ -165,6 +169,10 @@
       "erreur": {
         "title": "Erreur",
         "message": "Une erreur est survenue"
+      },
+      "nouvelleAnnee": {
+        "title": "Une nouvelle année universitaire a débuté",
+        "message": "La base de données a été mise à jour"
       }
     },
     "champs": {
@@ -211,7 +219,8 @@
       "save": "Sauvegarder",
       "view": "Voir",
       "attribuate": "Attribuer",
-      "rate": "Noter"
+      "rate": "Noter",
+      "redoubler": "Redoubler"
     },
     "detail": {
       "field": "Champs",
