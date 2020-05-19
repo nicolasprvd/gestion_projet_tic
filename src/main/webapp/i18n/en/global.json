@@ -112,6 +112,10 @@
         "userManagement": {
           "title": "Modification of the {{prenom}} {{nom}} user",
           "message": "Changes have been saved"
+        },
+        "redoubler": {
+          "title": "Modification of the {{prenom}} {{nom}} user",
+          "message": "Changes have been saved"
         }
       },
       "creations": {
@@ -166,6 +170,10 @@
       "erreur": {
         "title": "Error",
         "message": "An error has occured"
+      },
+      "nouvelleAnnee": {
+        "title": "A new academic has begun",
+        "message": "Database has been updated"
       }
     },
     "champs": {
@@ -212,7 +220,8 @@
       "save": "Save",
       "view": "View",
       "attribuate": "Assign",
-      "rate": "Rate"
+      "rate": "Rate",
+      "redoubler": "Repeat a year"
     },
     "detail": {
       "field": "Field",

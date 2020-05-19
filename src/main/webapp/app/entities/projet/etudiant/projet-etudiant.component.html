@@ -3,17 +3,17 @@
     <h2>{{ projet?.nom }}</h2>
     <hr>
     <dl class="row-md jh-entity-details">
-        <dt><label class="form-control-label" for="client" jhiTranslate="projetticApp.projet.client"></label></dt>
+        <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.client"></label></dt>
         <dd>
-            <input type="text" class="form-control" id="client" name="client" disabled="disabled" value="{{ client?.firstName }} {{ client?.lastName }}">
+            <span>{{ client?.firstName }} {{ client?.lastName }}</span>
         </dd>
-        <dt><label class="form-control-label" for="email" jhiTranslate="projetticApp.projet.email"></label></dt>
+        <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.email"></label></dt>
         <dd>
-            <input type="text" class="form-control" id="email" name="email" disabled="disabled" value="{{ client?.email }}">
+            <span>{{ client?.email }}</span>
         </dd>
-        <dt><label class="form-control-label" for="nbetu" jhiTranslate="projetticApp.projet.nbEtudiant"></label></dt>
+        <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.nbEtudiant"></label></dt>
         <dd>
-            <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled" value="{{ projet?.nbEtudiant }}">
+            <span>{{ projet?.nbEtudiant }}</span>
         </dd>
         <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label></dt>
         <ng-container>
