@@ -3,8 +3,6 @@
         <span id="user-management-page-heading" jhiTranslate="userManagement.home.title">Users</span>
     </h2>
 
-    <jhi-alert-error></jhi-alert-error>
-
     <div class="table-responsive" *ngIf="users">
         <table class="table table-striped" aria-describedby="user-management-page-heading">
             <thead>
@@ -13,9 +11,8 @@
                     <th scope="col"><span jhiTranslate="userManagement.lastName">Lastname</span></th>
                     <th scope="col"><span jhiTranslate="userManagement.firstName">Firstname</span></th>
                     <th scope="col"><span jhiTranslate="userManagement.email">Email</span></th>
-                    <th scope="col"><span jhiTranslate="userManagement.status">Status</span></th>
+                    <th scope="col"><span jhiTranslate="userManagement.status">Role</span></th>
                     <th scope="col"><span jhiTranslate="userManagement.cursus">Grade</span></th>
-                    <th scope="col"><span jhiTranslate="userManagement.profiles">Profiles</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -30,15 +27,25 @@
                     <td>{{ user.lastName }}</td>
                     <td>{{ user.firstName }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.typeUtilisateur }}</td>
-                    <td>{{ user.cursus }}</td>
-                    <td>
-                        <div *ngFor="let authority of user.authorities">
-                            <span class="badge badge-info">{{ authority }}</span>
-                        </div>
+                    <td class="text-center">
+                        <span [ngClass]="user.authorities.includes('ROLE_ETUDIANT') ? 'badge-primary' : 'badge-info'" class="badge">{{ user.typeUtilisateur }}</span>
+                        <span *ngIf="user.authorities.includes('ROLE_ADMIN')">
+                            <span class="badge badge-danger">ADMIN</span>
+                        </span>
                     </td>
+                    <td class="text-center">{{ user.cursus }}</td>
+
                     <td class="usr-mangt-btn">
                         <div class="btn-group">
+
+                            <button type="button" *ngIf="isEtudiantMaster(user)"
+                                    (click)="redoubler(user)"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="book"></fa-icon>
+                                <span jhiTranslate="entity.action.redoubler"></span>
+                            </button>
+
+
                             <button type="submit"
                                     [routerLink]="['./', user.login, 'edit']"
                                     queryParamsHandling="merge"

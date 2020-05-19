@@ -24,8 +24,9 @@
     },
     "newYear": {
       "titre": "Start a new academic year",
-      "detail": "Be careful, starting a new academic year will disable all active groups / evaluations / documents / students. These will still be kept.",
+      "detail": "Be careful, starting a new academic year will disable all active groups / evaluations / documents / M2 students and change the year for L3 and M1 students. <br> These will still be kept.",
       "question": "Are you sure you want to start a new academic year?",
+      "retakingStudents": "To make someone repeat a grade, press 'Start', then you will have to manage all the students in 'User Management' on a case-by-case basis. <br> Just click on 'repeat' in the line of the students concerned. <br> To make an M2 repeat a year, you must first reactivate his account on the same page.",
       "confirmation": "Start"
     }
   }

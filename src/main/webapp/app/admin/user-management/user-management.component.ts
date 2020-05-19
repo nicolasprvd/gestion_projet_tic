@@ -1,19 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
-import { JhiEventManager } from 'ng-jhipster';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/user/account.model';
-import { UserService } from 'app/core/user/user.service';
-import {User} from 'app/core/user/user.model';
-import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Subscription} from 'rxjs';
+import {flatMap} from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
+import {JhiEventManager} from 'ng-jhipster';
+import {AccountService} from 'app/core/auth/account.service';
+import {Account} from 'app/core/user/account.model';
+import {UserService} from 'app/core/user/user.service';
+import {IUser, User} from 'app/core/user/user.model';
+import {UserManagementDeleteDialogComponent} from './user-management-delete-dialog.component';
 import {UserExtraService} from "app/entities/user-extra/user-extra.service";
-import { TranslateService } from '@ngx-translate/core';
-import { ProjetService } from 'app/entities/projet/projet.service';
-import { IUserExtra } from 'app/shared/model/user-extra.model';
-import { ToastrService } from 'ngx-toastr';
+import {TranslateService} from '@ngx-translate/core';
+import {ProjetService} from 'app/entities/projet/projet.service';
+import {IUserExtra} from 'app/shared/model/user-extra.model';
+import {ToastrService} from 'ngx-toastr';
+import {TypeCursus} from "app/shared/model/enumerations/type-cursus.model";
+import {TypeUtilisateur} from "app/shared/model/enumerations/type-utilisateur.model";
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -36,7 +38,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     key: number,
     value: IUserExtra
   }[] = [];
-
 
   constructor(
     private userService: UserService,
@@ -141,5 +142,35 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  public isEtudiantMaster(user: IUser): boolean {
+    return user.typeUtilisateur === TypeUtilisateur.ETUDIANT && user.cursus !== TypeCursus.L3;
+  }
+
+  public redoubler(user: IUser): void {
+    if(this.isEtudiantMaster(this.usersExtraArray[user.id].value)) {
+      if(this.usersExtraArray[user.id].value.cursus === TypeCursus.M1) {
+        this.usersExtraArray[user.id].value.cursus = TypeCursus.L3;
+      }
+
+      if(this.usersExtraArray[user.id].value.cursus === TypeCursus.M2 && user.activated) {
+        this.usersExtraArray[user.id].value.cursus = TypeCursus.M1;
+      }
+
+      if(this.usersExtraArray[user.id].value.cursus === TypeCursus.M2 && !user.activated) {
+        user.activated = true;
+        this.usersExtraArray[user.id].value.actif = true;
+        this.userService.update(user).subscribe();
+      }
+      this.userExtraService.update(this.usersExtraArray[user.id].value).subscribe(() => {
+        this.toastrService.success(
+          this.translateService.instant('global.toastr.modifications.redoubler.message'),
+          this.translateService.instant('global.toastr.modifications.redoubler.title', { prenom: user.firstName, nom: user.lastName}),
+        );
+        this.loadAll();
+      });
+    }
+
   }
 }
