@@ -39,7 +39,7 @@
       "success": "<strong>Compte enregistré !</strong> Merci de vérifier votre email de confirmation.",
       "error": {
         "fail": "<strong>Compte non créé !</strong> Merci d'essayer à nouveau plus tard.",
-        "userexists": "<strong>Ce compte utilisateur existe déjà !</strong> Veuillez en choisir un autre.",
+        "userexists": "<strong>Ce nom d'utilisateur existe déjà !</strong> Veuillez en choisir un autre.",
         "emailexists": "<strong>Cet email est déjà utilisé !</strong> Veuillez en choisir un autre."
       }
     }
