@@ -16,7 +16,6 @@ import { ProjetService } from 'app/entities/projet/projet.service';
 import { IProjet } from 'app/shared/model/projet.model';
 import { TranslateService } from '@ngx-translate/core';
 import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
-import { debuglog } from 'util';
 
 @Component({
   selector: 'jhi-evaluation',

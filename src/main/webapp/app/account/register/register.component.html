@@ -146,6 +146,11 @@
                                jhiTranslate="global.messages.validate.email.maxlength">
                             Your email cannot be longer than 100 characters.
                         </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="registerForm.get('email')?.errors?.pattern"
+                               jhiTranslate="global.messages.validate.email.pattern">
+                        </small>
                     </div>
                 </div>
 
