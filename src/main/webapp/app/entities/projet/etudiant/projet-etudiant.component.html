@@ -1,31 +1,39 @@
 <div class="table-responsive" id="entities">
-
     <h2>{{ projet?.nom }}</h2>
     <hr>
-    <dl class="row-md jh-entity-details">
-        <dt><label class="form-control-label" for="client" jhiTranslate="projetticApp.projet.client"></label></dt>
-        <dd>
-            <input type="text" class="form-control" id="client" name="client" disabled="disabled" value="{{ client?.firstName }} {{ client?.lastName }}">
-        </dd>
-        <dt><label class="form-control-label" for="email" jhiTranslate="projetticApp.projet.email"></label></dt>
-        <dd>
-            <input type="text" class="form-control" id="email" name="email" disabled="disabled" value="{{ client?.email }}">
-        </dd>
-        <dt><label class="form-control-label" for="nbetu" jhiTranslate="projetticApp.projet.nbEtudiant"></label></dt>
-        <dd>
-            <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled" value="{{ projet?.nbEtudiant }}">
-        </dd>
-        <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label></dt>
+    <div class="jh-entity-details">
+        <div>
+            <label class="form-control-label bold" jhiTranslate="projetticApp.projet.client"></label>
+            <span>{{ client?.firstName }} {{ client?.lastName }}</span>
+        </div>
+        <div>
+            <label class="form-control-label bold" jhiTranslate="projetticApp.projet.email"></label>
+            <span>{{ client?.email }}</span>
+        </div>
+    </div>
+
+    <div class="mtl">
+        <div>
+            <label class="form-control-label bold" jhiTranslate="projetticApp.projet.nbEtudiant"></label>
+            <span>{{ projet?.nbEtudiant }}</span>
+        </div>
+
+        <div>
+            <label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label>
         <ng-container>
-            <dd *ngFor="let membre of membres">
+            <div *ngFor="let membre of membres">
                 <span *ngIf="groupe.userExtraId === membre.id"><span jhiTranslate="projetticApp.projet.form.label.chef"></span> : {{ membre.firstName + " " + membre.lastName }}</span>
                 <span *ngIf="groupe.userExtraId !== membre.id">{{ membre.firstName + " " + membre.lastName }}</span>
                 <br>
-            </dd>
+            </div>
         </ng-container>
-        <dt><label class="form-control-label" jhiTranslate="projetticApp.projet.documents.title"></label></dt>
-        <dd>
-            <form name="editForm" role="form" novalidate [formGroup]="documentFormCDC">
+        </div>
+    </div>
+
+    <div class="mtl">
+        <label class="form-control-label bold" jhiTranslate="projetticApp.projet.documents.title"></label>
+        <div class="row">
+            <form class="col-sm-3" name="editForm" role="form" novalidate [formGroup]="documentFormCDC">
                 <!-- Document CDC -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.cdc" for="field_documentCDC"></label>
@@ -47,7 +55,7 @@
                 </div>
             </form>
 
-            <form name="editForm" role="form" novalidate [formGroup]="documentFormGANTT">
+            <form class="col-sm-3" name="editForm" role="form" novalidate [formGroup]="documentFormGANTT">
                 <!-- Document GANTT -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.gantt" for="field_documentGANTT"></label>
@@ -69,7 +77,7 @@
                 </div>
             </form>
 
-            <form name="editForm" role="form" novalidate [formGroup]="documentFormRF">
+            <form class="col-sm-3" name="editForm" role="form" novalidate [formGroup]="documentFormRF">
                 <!-- Document RF -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.rendu" for="field_documentRF"></label>
@@ -90,13 +98,12 @@
                            formControlName="documentRFContentType" />
                 </div>
             </form>
-        </dd>
-
-        <div>
-            <button type="button" id="save-entity" class="btn btn-primary" (click)="handleSubmitForm()" >
-                <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save"></span>
-            </button>
         </div>
-    </dl>
-</div>
+    </div>
 
+    <div>
+        <button type="button" id="save-entity" class="btn btn-primary" (click)="handleSubmitForm()" >
+            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save"></span>
+        </button>
+    </div>
+</div>

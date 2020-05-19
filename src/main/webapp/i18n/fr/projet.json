@@ -67,7 +67,7 @@
         "cahierDesCharges": "Cahier des charges",
         "soutenance": "Soutenance",
         "rendu": "Rendu",
-        "moyenne": "Note finale",
+        "moyenne": "Note finale :",
         "noteCahierDesCharges": "Note cahier des charges",
         "noteSoutenance": "Note soutenance",
         "noteRendu": "Note rendu",
@@ -97,8 +97,8 @@
       "groupe": "Groupe",
       "userExtra": "User Extra",
       "document": "Document",
-      "client": "Client",
-      "email": "Email",
+      "client": "Client :",
+      "email": "Email :",
       "etudiantProjet": {
         "title": "Mon projet"
       }

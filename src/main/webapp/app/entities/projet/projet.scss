@@ -36,22 +36,6 @@
   margin-bottom: 20px;
 }
 
-#labelCdc {
-  margin-top: 15px;
-}
-
-#labelSoutenance {
-  margin-top: 15px;
-}
-
-#labelRendu {
-  margin-top: 15px;
-}
-
-#labelMoyenne {
-  margin-top: 15px;
-}
-
 #boutonsDocuments label {
   margin-left: 10px;
 }
@@ -85,5 +69,31 @@
   .vertical-line {
     border: 0;
     margin-right: 50%;
+  }
+}
+
+/* Notation projet */
+#labelMoyenne {
+  margin-top: 20px;
+}
+
+@media (min-width: 577px) {
+  #labelCoefCdc,
+  #labelCoefgantts,
+  #labelCoefoutput {
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  #soutenance,
+  #rendu {
+    margin-top: 20px;
+  }
+
+  #labelCoefCdc,
+  #labelCoefgantts,
+  #labelCoefoutput {
+    margin-top: 5px;
   }
 }
