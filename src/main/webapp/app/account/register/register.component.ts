@@ -172,7 +172,8 @@ export class RegisterComponent implements AfterViewInit {
         Validators.required,
         Validators.minLength(5),
         Validators.maxLength(254),
-        Validators.email
+        Validators.email,
+        Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
       ]);
     } else {
       document.getElementById('divCursus').style.display = 'block';
@@ -185,5 +186,9 @@ export class RegisterComponent implements AfterViewInit {
       ]);
     }
     this.registerForm.controls['email'].updateValueAndValidity();
+  }
+
+  isClient(): boolean {
+    return this.registerForm.get(['typeUtilisateur'])!.value === TypeUtilisateur.CLIENT;
   }
 }
