@@ -148,7 +148,12 @@
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="registerForm.get('email')?.errors?.pattern"
+                               *ngIf="registerForm.get('email')?.errors?.pattern && isClient()"
+                               jhiTranslate="global.messages.validate.email.invalid">
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="registerForm.get('email')?.errors?.pattern && !isClient()"
                                jhiTranslate="global.messages.validate.email.pattern">
                         </small>
                     </div>
