@@ -85,7 +85,8 @@
           "required": "Your email is required.",
           "invalid": "Your email is invalid.",
           "minlength": "Your email is required to be at least 5 characters.",
-          "maxlength": "Your email cannot be longer than 50 characters."
+          "maxlength": "Your email cannot be longer than 50 characters.",
+          "pattern": "Your email must be valid and must end by @etu.u-bordeaux.fr"
         }
       }
     },
