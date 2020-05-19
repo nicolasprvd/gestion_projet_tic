@@ -10,6 +10,9 @@ export interface IEvaluation {
   userExtras?: IUserExtra[];
   actif?: boolean;
   cursus?: TypeCursus;
+  coefCDC?: number;
+  coefSoutenance?: number;
+  coefRendu?: number;
 }
 
 export class Evaluation implements IEvaluation {
@@ -21,6 +24,9 @@ export class Evaluation implements IEvaluation {
     public noteFinale?: number,
     public userExtras?: IUserExtra[],
     public actif?: boolean,
-    public cursus?: TypeCursus
+    public cursus?: TypeCursus,
+    public coefCDC?: number,
+    public coefSoutenance?: number,
+    public coefRendu?: number
   ) {}
 }

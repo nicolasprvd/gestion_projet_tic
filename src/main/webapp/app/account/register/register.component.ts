@@ -36,7 +36,16 @@ export class RegisterComponent implements AfterViewInit {
 
   registerForm = this.fb.group({
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern('^[_.@A-Za-z0-9-]*$')]],
-    email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(254),
+        Validators.email,
+        Validators.pattern('^[A-Za-z0-9](\\.?[A-Za-z0-9]){2,}@etu\\.u-bordeaux\\.fr$')
+      ]
+    ],
     firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(254)]],
     lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(254)]],
     typeUtilisateur: [''],
@@ -84,7 +93,10 @@ export class RegisterComponent implements AfterViewInit {
       this.doNotMatch = true;
     } else {
       const login = this.registerForm.get(['login'])!.value;
-      const email = this.registerForm.get(['email'])!.value;
+      const email = this.registerForm
+        .get(['email'])!
+        .value.toString()
+        .toLowerCase();
       const firstName = this.registerForm.get(['firstName'])!.value;
       const lastName = this.registerForm.get(['lastName'])!.value;
       const typeUtilisateur = this.registerForm.get(['typeUtilisateur'])!.value;
@@ -156,8 +168,22 @@ export class RegisterComponent implements AfterViewInit {
     const typeUtilisateur = this.registerForm.get(['typeUtilisateur'])!.value;
     if (typeUtilisateur === TypeUtilisateur.CLIENT) {
       document.getElementById('divCursus').style.display = 'none';
+      this.registerForm.controls['email'].setValidators([
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(254),
+        Validators.email
+      ]);
     } else {
       document.getElementById('divCursus').style.display = 'block';
+      this.registerForm.controls['email'].setValidators([
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(254),
+        Validators.email,
+        Validators.pattern('^[A-Za-z0-9](\\.?[A-Za-z0-9]){2,}@etu\\.u-bordeaux\\.fr$')
+      ]);
     }
+    this.registerForm.controls['email'].updateValueAndValidity();
   }
 }
