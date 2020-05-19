@@ -243,13 +243,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - the current user is an administrator
    * - the project was created by the current user
    */
-  isAutorise(projet: IProjet): boolean {
-    if (this.authorities !== null && this.authorities !== undefined) {
-      for (const droit of this.authorities) {
-        if (Authority.ADMIN === droit && projet.archive) {
-          return true;
-        }
-      }
+  isAutorise(projet: IProjet, noter: boolean): boolean {
+    if(this.isAdmin() && noter) {
+      return true;
     }
     if (this.isClient()) {
       return projet.userExtraId === this.accountExtra.id;
