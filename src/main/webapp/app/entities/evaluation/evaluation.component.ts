@@ -31,8 +31,11 @@ export class EvaluationComponent implements OnInit, OnDestroy {
   extrasFiltres: IUserExtra[] = [];
   projets: IProjet[] = [];
   noteCDC: string;
+  coefCDC: string;
   noteSoutenance: string;
+  coefSoutenance: string;
   noteRendu: string;
+  coefRendu: string;
   noteFinale: string;
   projetActuelId: number;
   projetActuelNom: string;
@@ -61,6 +64,7 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.evaluationService.findByActif(true).subscribe(evaluations => {
       if (evaluations !== null && evaluations.body !== null) {
         this.evaluations = evaluations.body;
+        console.error(this.evaluations);
       }
     });
   }
@@ -143,15 +147,21 @@ export class EvaluationComponent implements OnInit, OnDestroy {
 
   getEvaluation(evaluation: number): void {
     this.noteCDC = null;
+    this.coefCDC = null;
     this.noteSoutenance = null;
+    this.coefSoutenance = null;
     this.noteRendu = null;
+    this.coefRendu = null;
     this.noteFinale = null;
     if (this.evaluations !== null && this.evaluations !== undefined) {
       for (const eva of this.evaluations) {
         if (eva.id === evaluation) {
           this.noteCDC = eva.noteCDC.toString();
+          this.coefCDC = eva.coefCDC.toString();
           this.noteSoutenance = eva.noteSoutenance.toString();
+          this.coefSoutenance = eva.coefSoutenance.toString();
           this.noteRendu = eva.noteRendu.toString();
+          this.coefRendu = eva.coefRendu.toString();
           this.noteFinale = eva.noteFinale.toString();
           return;
         }
@@ -166,6 +176,13 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     return '-';
   }
 
+  getCoefCDC(): string {
+    if (this.coefCDC) {
+      return this.coefCDC;
+    }
+    return '-';
+  }
+
   getNoteSoutenance(): string {
     if (this.noteSoutenance) {
       return this.noteSoutenance;
@@ -173,9 +190,23 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     return '-';
   }
 
+  getCoefSoutenance(): string {
+    if (this.coefSoutenance) {
+      return this.coefSoutenance;
+    }
+    return '-';
+  }
+
   getNoteRendu(): string {
     if (this.noteRendu) {
       return this.noteRendu;
+    }
+    return '-';
+  }
+
+  getCoefRendu(): string {
+    if (this.coefRendu) {
+      return this.coefRendu;
     }
     return '-';
   }
@@ -219,11 +250,15 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     let donnees = '';
     let nomFichier = '';
     if (this.translate.currentLang === this.translate.getLangs()[0]) {
-      donnees = 'Étudiant;Projet;Note CDC;Note Soutenance;Note Rendu;Note Finale';
-      nomFichier = this.cursusSelectionne + '_evaluation_projet_tic.csv';
+      donnees =
+        'Étudiant;Projet;Note cahier des charges;Coefficient cahier des charges;' +
+        'Note soutenance;Coefficient soutenance;Note rendu;Coefficient rendu;Note finale';
+      nomFichier = this.cursusSelectionne + '_evaluation_projets.csv';
     } else {
-      donnees = 'Student;Project;Specification mark;Defense mark;Rendering mark;Final mark';
-      nomFichier = this.cursusSelectionne + '_rating_tic_project.csv';
+      donnees =
+        'Student;Project;Specification mark;Specification coefficient;Defense mark;' +
+        'Defense coefficient;Rendering mark;Rendering coefficient;Final mark';
+      nomFichier = this.cursusSelectionne + '_rating_projects.csv';
     }
     const rows = table.rows;
     for (let i = 0; i < rows.length; i++) {
@@ -241,7 +276,13 @@ export class EvaluationComponent implements OnInit, OnDestroy {
         ';' +
         row.cells[4].textContent.trim() +
         ';' +
-        row.cells[5].textContent.trim();
+        row.cells[5].textContent.trim() +
+        ';' +
+        row.cells[6].textContent.trim() +
+        ';' +
+        row.cells[7].textContent.trim() +
+        ';' +
+        row.cells[8].textContent.trim();
     }
     const blob = new Blob([donnees], { type: 'type/txt' });
     const url = window.URL.createObjectURL(blob);

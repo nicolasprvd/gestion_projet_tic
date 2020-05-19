@@ -38,16 +38,22 @@ export class ProjectRateComponent implements OnInit {
   client!: IUser;
   typeUtilisateur?: TypeUtilisateur;
   login!: string | undefined;
-  finalRate = 0;
-  specsRate = 0;
-  ganttsRate = 0;
-  outputRate = 0;
   isSaving = false;
   cdcDoc: IDocument = null;
   ganttDoc: IDocument = null;
   renduDoc: IDocument = null;
   idEvaluation: number;
   evaluation: IEvaluation;
+
+  // Marks
+  specsRate = 0;
+  specsCoef = 1;
+  ganttsRate = 0;
+  ganttsCoef = 1;
+  outputRate = 0;
+  outputCoef = 1;
+
+  finalRate = 0;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -119,8 +125,14 @@ export class ProjectRateComponent implements OnInit {
     this.specsRate = +(+(document.getElementById('specsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     this.ganttsRate = +(+(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     this.outputRate = +(+(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.specsCoef = +(+(document.getElementById('specsCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.ganttsCoef = +(+(document.getElementById('ganttsCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.outputCoef = +(+(document.getElementById('outputCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     if (this.isValidate()) {
-      this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
+      this.finalRate = +(
+        (this.specsRate * this.specsCoef + this.ganttsRate * this.ganttsCoef + this.outputRate * this.outputCoef) /
+        (this.outputCoef + this.ganttsCoef + this.specsCoef)
+      ).toFixed(2);
     }
   }
 
@@ -200,6 +212,9 @@ export class ProjectRateComponent implements OnInit {
       noteCDC: this.specsRate,
       noteRendu: this.outputRate,
       noteSoutenance: this.ganttsRate,
+      coefCDC: this.specsCoef,
+      coefRendu: this.outputCoef,
+      coefSoutenance: this.ganttsCoef,
       noteFinale: this.finalRate,
       actif: true,
       cursus: this.project.cursus

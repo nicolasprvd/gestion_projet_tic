@@ -72,10 +72,10 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
                       }
                     }
                     this.users.sort((n1: User, n2: User) => {
-                      if (n1.firstName > n2.firstName) {
+                      if (n1.lastName > n2.lastName) {
                         return 1;
                       }
-                      if (n1.firstName < n2.firstName) {
+                      if (n1.lastName < n2.lastName) {
                         return -1;
                       }
                       return 0;
