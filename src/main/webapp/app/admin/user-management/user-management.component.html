@@ -28,10 +28,10 @@
                     <td>{{ user.firstName }}</td>
                     <td>{{ user.email }}</td>
                     <td class="text-center">
-                        <span [ngClass]="user.authorities.includes('ROLE_ETUDIANT') ? 'badge-primary' : 'badge-info'" class="badge">{{ user.typeUtilisateur }}</span>
                         <span *ngIf="user.authorities.includes('ROLE_ADMIN')">
                             <span class="badge badge-danger">ADMIN</span>
                         </span>
+                        <span [ngClass]="user.authorities.includes('ROLE_ETUDIANT') ? 'badge-primary' : 'badge-info'" class="badge">{{ user.typeUtilisateur }}</span>
                     </td>
                     <td class="text-center">{{ user.cursus }}</td>
 

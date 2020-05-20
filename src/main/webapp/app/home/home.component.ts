@@ -18,8 +18,8 @@ import { UserService } from 'app/core/user/user.service';
 import { ProjetService } from 'app/entities/projet/projet.service';
 import { HomeNouvelleAnneeComponent } from 'app/home/home-nouvelleAnnee.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {ToastrService} from "ngx-toastr";
-import {TranslateService} from "@ngx-translate/core";
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-home',
@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.isDesactive = value;
       this.toastrService.success(
         this.translateService.instant('global.toastr.nouvelleAnnee.message'),
-        this.translateService.instant('global.toastr.nouvelleAnnee.title'),
+        this.translateService.instant('global.toastr.nouvelleAnnee.title')
       );
     });
   }
