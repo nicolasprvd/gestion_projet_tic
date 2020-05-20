@@ -36,22 +36,6 @@
   margin-bottom: 20px;
 }
 
-#labelCdc {
-  margin-top: 15px;
-}
-
-#labelSoutenance {
-  margin-top: 15px;
-}
-
-#labelRendu {
-  margin-top: 15px;
-}
-
-#labelMoyenne {
-  margin-top: 15px;
-}
-
 #boutonsDocuments label {
   margin-left: 10px;
 }
@@ -77,6 +61,18 @@
   margin: 0 15px 0 10px;
 }
 
+.colNomProjet {
+  width: 38%;
+}
+
+.colClientProjet {
+  width: 19%;
+}
+
+.colCenter {
+  text-align: center;
+}
+
 @media (max-width: 576px) {
   .filterButtons :nth-child(1n + 4) {
     width: 40px;
@@ -88,14 +84,28 @@
   }
 }
 
-.colNomProjet {
-  width: 38%;
+/* Notation projet */
+#labelMoyenne {
+  margin-top: 20px;
 }
 
-.colClientProjet {
-  width: 19%;
+@media (min-width: 577px) {
+  #labelCoefCdc,
+  #labelCoefgantts,
+  #labelCoefoutput {
+    margin-top: 15px;
+  }
 }
 
-.colCenter {
-  text-align: center;
+@media (max-width: 576px) {
+  #soutenance,
+  #rendu {
+    margin-top: 20px;
+  }
+
+  #labelCoefCdc,
+  #labelCoefgantts,
+  #labelCoefoutput {
+    margin-top: 5px;
+  }
 }

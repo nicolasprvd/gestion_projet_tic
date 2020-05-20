@@ -17,7 +17,8 @@
         "label": {
           "dateArchive": "Archives",
           "dateArchiveSelect": "Choose a date",
-          "chef": "Project manager"
+          "chef": "Project manager",
+          "memnbres": "Members : "
         },
         "button": {
           "reprise": "Take over"
@@ -66,7 +67,7 @@
         "cahierDesCharges": "Specification",
         "soutenance": "Defense",
         "rendu": "Report",
-        "moyenne": "Final mark",
+        "moyenne": "Final mark:",
         "noteCahierDesCharges": "Specification mark",
         "noteSoutenance": "Defense mark",
         "noteRendu": "Report mark",
@@ -96,8 +97,8 @@
       "groupe": "Group",
       "userExtra": "User Extra",
       "document": "Document",
-      "client": "Customer",
-      "email": "Email",
+      "client": "Customer:",
+      "email": "Email:",
       "etudiantProjet": {
         "title": "My project"
       }

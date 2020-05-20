@@ -244,7 +244,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - the project was created by the current user
    */
   isAutorise(projet: IProjet, noter: boolean): boolean {
-    if(this.isAdmin() && noter) {
+    if (this.isAdmin() && noter) {
       return true;
     }
     if (this.isClient()) {
