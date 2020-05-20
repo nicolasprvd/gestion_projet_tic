@@ -3,13 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
 import { IProjet } from 'app/shared/model/projet.model';
-import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { UserService } from 'app/core/user/user.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { DocumentService } from 'app/entities/document/document.service';
 import { Account } from 'app/core/user/account.model';
-import { IUser } from 'app/core/user/user.model';
 import { Evaluation, IEvaluation } from 'app/shared/model/evaluation.model';
 import { SERVER_API_URL } from 'app/app.constants';
 import { HttpClient } from '@angular/common/http';
@@ -30,29 +28,19 @@ export class ProjectRateComponent implements OnInit {
 
   project!: IProjet;
   account!: Account | null;
-  authorities: string[] | undefined;
-  allUsers: UserExtra[] = [];
-  groupUsers: UserExtra[] = [];
+  groupMembers: UserExtra[] = [];
   groupId: number;
-  user!: IUser;
-  client!: IUser;
-  typeUtilisateur?: TypeUtilisateur;
-  login!: string | undefined;
   isSaving = false;
-  cdcDoc: IDocument = null;
+  specsDoc: IDocument = null;
   ganttDoc: IDocument = null;
-  renduDoc: IDocument = null;
-  idEvaluation: number;
-  evaluation: IEvaluation;
-
-  // Marks
+  outputDoc: IDocument = null;
+  ratingId: number;
   specsRate = 0;
   specsCoef = 1;
-  ganttsRate = 0;
-  ganttsCoef = 1;
+  ganttRate = 0;
+  ganttCoef = 1;
   outputRate = 0;
   outputCoef = 1;
-
   finalRate = 0;
 
   constructor(
@@ -70,25 +58,24 @@ export class ProjectRateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ projet }) => (this.project = projet));
+    this.activatedRoute.data.subscribe(({ project }) => (this.project = project));
     this.accountService.getAuthenticationState().subscribe(account => {
       if (account !== null) {
         this.account = account;
-        this.authorities = account.authorities;
       }
     });
 
     this.documentService.findByProjetId(this.project.id).subscribe(documents => {
       if (documents !== null) {
-        for (const doc of documents.body) {
-          if (doc.typeDocument === TypeDocument.CDC) {
-            this.cdcDoc = doc;
+        for (const document of documents.body) {
+          if (document.typeDocument === TypeDocument.CDC) {
+            this.specsDoc = document;
           }
-          if (doc.typeDocument === TypeDocument.GANTT) {
-            this.ganttDoc = doc;
+          if (document.typeDocument === TypeDocument.GANTT) {
+            this.ganttDoc = document;
           }
-          if (doc.typeDocument === TypeDocument.RF) {
-            this.renduDoc = doc;
+          if (document.typeDocument === TypeDocument.RF) {
+            this.outputDoc = document;
           }
         }
       }
@@ -97,49 +84,53 @@ export class ProjectRateComponent implements OnInit {
     this.userExtraService.findByActif(true).subscribe(userExtras => {
       if (userExtras !== null) {
         this.groupId = this.project.groupeId;
-        this.allUsers = userExtras.body;
-        for (const extra of this.allUsers) {
+        for (const extra of userExtras.body) {
           if (extra.groupeId === this.groupId) {
-            this.groupUsers.push(extra);
+            this.groupMembers.push(extra);
             if (extra.evaluationId !== null) {
-              this.idEvaluation = extra.evaluationId;
+              this.ratingId = extra.evaluationId;
             } else {
-              this.idEvaluation = undefined;
+              this.ratingId = undefined;
             }
           }
-        }
-        if (this.idEvaluation !== undefined) {
-          this.evaluationService.find(this.idEvaluation).subscribe(evaluation => {
-            this.evaluation = evaluation.body;
-          });
         }
       }
     });
   }
 
+  /**
+   * Used for tests
+   * @param base64String
+   */
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
 
+  /**
+   * Calculate the final grade based on the form data
+   */
   calculateFinalRate(): void {
     this.specsRate = +(+(document.getElementById('specsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
-    this.ganttsRate = +(+(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.ganttRate = +(+(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     this.outputRate = +(+(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     this.specsCoef = +(+(document.getElementById('specsCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
-    this.ganttsCoef = +(+(document.getElementById('ganttsCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.ganttCoef = +(+(document.getElementById('ganttsCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     this.outputCoef = +(+(document.getElementById('outputCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     if (this.isValidate()) {
       this.finalRate = +(
-        (this.specsRate * this.specsCoef + this.ganttsRate * this.ganttsCoef + this.outputRate * this.outputCoef) /
-        (this.outputCoef + this.ganttsCoef + this.specsCoef)
+        (this.specsRate * this.specsCoef + this.ganttRate * this.ganttCoef + this.outputRate * this.outputCoef) /
+        (this.outputCoef + this.ganttCoef + this.specsCoef)
       ).toFixed(2);
     }
   }
 
+  /**
+   * Insert a new Evaluation object into the database
+   */
   evaluate(): void {
     if (this.isValidate()) {
       this.isSaving = true;
-      if (this.idEvaluation !== undefined) {
+      if (this.ratingId !== undefined) {
         const newEvaluation = this.createEvaluation(false);
         this.evaluationService.update(newEvaluation).subscribe(
           () => {
@@ -163,7 +154,7 @@ export class ProjectRateComponent implements OnInit {
         this.evaluationService.create(newEvaluation).subscribe(
           evaluation => {
             this.isSaving = false;
-            for (const usr of this.groupUsers) {
+            for (const usr of this.groupMembers) {
               usr.evaluationId = evaluation.body.id;
               this.userExtraService.update(usr).subscribe();
             }
@@ -185,6 +176,9 @@ export class ProjectRateComponent implements OnInit {
     }
   }
 
+  /**
+   * Check if form datas are valid
+   */
   isValidate(): boolean {
     document.getElementById('specsRate').setAttribute('style', 'background-color:white');
     document.getElementById('ganttsRate').setAttribute('style', 'background-color:white');
@@ -197,7 +191,7 @@ export class ProjectRateComponent implements OnInit {
       document.getElementById('specsRate').setAttribute('style', 'background-color:#d65959');
       valide = false;
     }
-    if (isNaN(this.ganttsRate) || this.ganttsRate < 0 || this.ganttsRate > 20) {
+    if (isNaN(this.ganttRate) || this.ganttRate < 0 || this.ganttRate > 20) {
       document.getElementById('ganttsRate').setAttribute('style', 'background-color:#d65959');
       valide = false;
     }
@@ -209,7 +203,7 @@ export class ProjectRateComponent implements OnInit {
       document.getElementById('specsCoef').setAttribute('style', 'background-color:#d65959');
       valide = false;
     }
-    if (isNaN(this.ganttsCoef) || this.ganttsCoef < 0) {
+    if (isNaN(this.ganttCoef) || this.ganttCoef < 0) {
       document.getElementById('ganttsCoef').setAttribute('style', 'background-color:#d65959');
       valide = false;
     }
@@ -220,26 +214,38 @@ export class ProjectRateComponent implements OnInit {
     return !isNaN(this.finalRate) && this.finalRate >= 0 && this.finalRate <= 20 && valide;
   }
 
+  /**
+   * Create an Evaluation object from form data
+   * @param create
+   */
   private createEvaluation(create: boolean): IEvaluation {
     return {
       ...new Evaluation(),
-      id: create ? undefined : this.idEvaluation,
+      id: create ? undefined : this.ratingId,
       noteCDC: this.specsRate,
       noteRendu: this.outputRate,
-      noteSoutenance: this.ganttsRate,
+      noteSoutenance: this.ganttRate,
       coefCDC: this.specsCoef,
       coefRendu: this.outputCoef,
-      coefSoutenance: this.ganttsCoef,
+      coefSoutenance: this.ganttCoef,
       noteFinale: this.finalRate,
       actif: true,
       cursus: this.project.cursus
     };
   }
 
+  /**
+   * Redirect to the previous page
+   */
   previousState(): void {
     window.history.back();
   }
 
+  /**
+   * Open a file into the browser
+   * @param docContentType
+   * @param doc
+   */
   openFile(docContentType: string, doc: string): void {
     this.dataUtils.openFile(docContentType, doc);
   }

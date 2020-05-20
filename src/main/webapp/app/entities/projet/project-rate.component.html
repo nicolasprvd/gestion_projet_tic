@@ -2,19 +2,19 @@
     <div class="col-12">
         <h2>{{project.nom}}</h2>
         <div>
-            <div id="boutonsDocuments" class="row">
+            <div id="docButtons" class="row">
                 <div class="col-xl-4">
-                    <button *ngIf="cdcDoc !== null" type="button"
-                            (click)="openFile(cdcDoc.docContentType, cdcDoc.doc)"
+                    <button *ngIf="specsDoc !== null" type="button"
+                            (click)="openFile(specsDoc.docContentType, specsDoc.doc)"
                             class="btn btn-primary">
                         <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <button *ngIf="cdcDoc === null" type="button"
+                    <button *ngIf="specsDoc === null" type="button"
                             disabled="disabled"
                             class="btn btn-danger">
                         <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <label *ngIf="cdcDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
+                    <label *ngIf="specsDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
                     <label jhiTranslate="projetticApp.projet.rate.cahierDesCharges"></label>
                 </div>
                 <div class="col-xl-4">
@@ -32,17 +32,17 @@
                     <label jhiTranslate="projetticApp.projet.rate.gantt"></label>
                 </div>
                 <div class="col-xl-4">
-                    <button *ngIf="renduDoc !== null" type="button"
-                            (click)="openFile(renduDoc.docContentType, renduDoc.doc)"
+                    <button *ngIf="outputDoc !== null" type="button"
+                            (click)="openFile(outputDoc.docContentType, outputDoc.doc)"
                             class="btn btn-primary">
                         <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <button *ngIf="renduDoc === null" type="button"
+                    <button *ngIf="outputDoc === null" type="button"
                             disabled="disabled"
                             class="btn btn-danger">
                         <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <label *ngIf="renduDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
+                    <label *ngIf="outputDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
                     <label jhiTranslate="projetticApp.projet.rate.rendu"></label>
                 </div>
             </div>
@@ -71,7 +71,7 @@
 
                     <div>
                         <label id="labelCoefgantts" class="form-control-label bold"  for="ganttsCoef" jhiTranslate="projetticApp.projet.rate.coefSoutenance"></label>
-                        <input type="text" class="form-control" name="ganttsCoef" id="ganttsCoef" [(ngModel)]="ganttsCoef" (input)="calculateFinalRate()"/>
+                        <input type="text" class="form-control" name="ganttsCoef" id="ganttsCoef" [(ngModel)]="ganttCoef" (input)="calculateFinalRate()"/>
                     </div>
                 </div>
 
@@ -102,12 +102,12 @@
                     <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
                 </button>
 
-                <button *ngIf="cdcDoc !== null && ganttDoc !== null && renduDoc !== null" type="button"
+                <button *ngIf="specsDoc !== null && ganttDoc !== null && outputDoc !== null" type="button"
                         (click)="evaluate()"
                         class="btn btn-primary">
                     <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>
                 </button>
-                <button *ngIf="cdcDoc === null || ganttDoc === null || renduDoc === null" type="button"
+                <button *ngIf="specsDoc === null || ganttDoc === null || outputDoc === null" type="button"
                         disabled="disabled"
                         class="btn btn-danger">
                     <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>

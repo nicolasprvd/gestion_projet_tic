@@ -112,7 +112,7 @@ export const projetRoute: Routes = [
     path: ':id/rate',
     component: ProjectRateComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.CLIENT, Authority.ADMIN],
