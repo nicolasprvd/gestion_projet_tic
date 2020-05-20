@@ -53,6 +53,11 @@ export class UserRouteAccessService implements CanActivate {
                   this.router.navigate(['404']);
                   return false;
                 } else if (this.user.typeUtilisateur === TypeUtilisateur.CLIENT) {
+                  if(url.split('/')[3] === 'rate') {
+                    if(authorities.includes('ROLE_ADMIN')) {
+                      return true;
+                    }
+                  }
                   const idProjet = url.split('/')[2];
                   this.projetService.find(+idProjet).subscribe(projet => {
                     if (projet.body.userExtraId !== this.user.id) {
