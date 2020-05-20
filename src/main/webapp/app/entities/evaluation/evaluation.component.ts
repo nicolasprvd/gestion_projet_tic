@@ -64,7 +64,6 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.evaluationService.findByActif(true).subscribe(evaluations => {
       if (evaluations !== null && evaluations.body !== null) {
         this.evaluations = evaluations.body;
-        console.error(this.evaluations);
       }
     });
   }
@@ -99,11 +98,6 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     if (this.eventSubscriber) {
       this.eventManager.destroy(this.eventSubscriber);
     }
-  }
-
-  trackId(index: number, item: IEvaluation): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    return item.id!;
   }
 
   registerChangeInEvaluations(): void {
