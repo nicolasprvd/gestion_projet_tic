@@ -189,6 +189,9 @@ export class ProjectRateComponent implements OnInit {
     document.getElementById('specsRate').setAttribute('style', 'background-color:white');
     document.getElementById('ganttsRate').setAttribute('style', 'background-color:white');
     document.getElementById('outputRate').setAttribute('style', 'background-color:white');
+    document.getElementById('specsCoef').setAttribute('style', 'background-color:white');
+    document.getElementById('ganttsCoef').setAttribute('style', 'background-color:white');
+    document.getElementById('outputCoef').setAttribute('style', 'background-color:white');
     let valide = true;
     if (isNaN(this.specsRate) || this.specsRate < 0 || this.specsRate > 20) {
       document.getElementById('specsRate').setAttribute('style', 'background-color:#d65959');
@@ -200,6 +203,18 @@ export class ProjectRateComponent implements OnInit {
     }
     if (isNaN(this.outputRate) || this.outputRate < 0 || this.outputRate > 20) {
       document.getElementById('outputRate').setAttribute('style', 'background-color:#d65959');
+      valide = false;
+    }
+    if (isNaN(this.specsCoef) || this.specsCoef < 0) {
+      document.getElementById('specsCoef').setAttribute('style', 'background-color:#d65959');
+      valide = false;
+    }
+    if (isNaN(this.ganttsCoef) || this.ganttsCoef < 0) {
+      document.getElementById('ganttsCoef').setAttribute('style', 'background-color:#d65959');
+      valide = false;
+    }
+    if (isNaN(this.outputCoef) || this.outputCoef < 0) {
+      document.getElementById('outputCoef').setAttribute('style', 'background-color:#d65959');
       valide = false;
     }
     return !isNaN(this.finalRate) && this.finalRate >= 0 && this.finalRate <= 20 && valide;
