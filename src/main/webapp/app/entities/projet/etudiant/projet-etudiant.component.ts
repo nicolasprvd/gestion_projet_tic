@@ -19,7 +19,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-projet-etudiant',
-  templateUrl: './projet-etudiant.component.html'
+  templateUrl: './projet-etudiant.component.html',
+  styleUrls: ['./projet-etudiant.scss']
 })
 export class ProjetEtudiantComponent implements OnInit {
   projet: IProjet;

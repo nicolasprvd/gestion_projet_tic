@@ -1,7 +1,6 @@
-<div class="table-responsive" id="entities">
+<div id="entities">
     <h2>{{ projet?.nom }}</h2>
     <hr>
-<<<<<<< HEAD
     <div class="jh-entity-details">
         <div>
             <label class="form-control-label bold" jhiTranslate="projetticApp.projet.client"></label>
@@ -20,21 +19,24 @@
         </div>
 
         <div>
-            <label class="form-control-label" jhiTranslate="projetticApp.projet.groupe"></label>
-        <ng-container>
+            <label class="man bold" jhiTranslate="projetticApp.projet.groupe"></label>
             <div *ngFor="let membre of membres">
                 <span *ngIf="groupe.userExtraId === membre.id"><span jhiTranslate="projetticApp.projet.form.label.chef"></span> : {{ membre.firstName + " " + membre.lastName }}</span>
-                <span *ngIf="groupe.userExtraId !== membre.id">{{ membre.firstName + " " + membre.lastName }}</span>
-                <br>
             </div>
-        </ng-container>
+            <div class="membres">
+                <span class="man" jhiTranslate="projetticApp.projet.form.label.membres"></span>
+                <div *ngFor="let membre of membres">
+                    <span *ngIf="groupe.userExtraId !== membre.id && membre !== membres[membres.length -1]">{{ membre.firstName + " " + membre.lastName + "," + " "}}</span>
+                    <span *ngIf="groupe.userExtraId !== membre.id && membre == membres[membres.length -1]">{{ membre.firstName + " " + membre.lastName}}</span>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="mtl">
-        <label class="form-control-label bold" jhiTranslate="projetticApp.projet.documents.title"></label>
+        <label class="man bold" jhiTranslate="projetticApp.projet.documents.title"></label>
         <div class="row">
-            <form class="col-sm-3" name="editForm" role="form" novalidate [formGroup]="documentFormCDC">
+            <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormCDC">
                 <!-- Document CDC -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.cdc" for="field_documentCDC"></label>
@@ -56,7 +58,7 @@
                 </div>
             </form>
 
-            <form class="col-sm-3" name="editForm" role="form" novalidate [formGroup]="documentFormGANTT">
+            <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormGANTT">
                 <!-- Document GANTT -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.gantt" for="field_documentGANTT"></label>
@@ -78,7 +80,7 @@
                 </div>
             </form>
 
-            <form class="col-sm-3" name="editForm" role="form" novalidate [formGroup]="documentFormRF">
+            <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormRF">
                 <!-- Document RF -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.rendu" for="field_documentRF"></label>

@@ -17,7 +17,8 @@
         "label": {
           "dateArchive": "Archives",
           "dateArchiveSelect": "Choose a date",
-          "chef": "Project manager"
+          "chef": "Project manager",
+          "memnbres": "Members : "
         },
         "button": {
           "reprise": "Take over"
