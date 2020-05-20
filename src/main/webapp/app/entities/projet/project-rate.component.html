@@ -50,7 +50,7 @@
             <hr>
 
             <div class="row">
-                <!-- Edition des notes -->
+                <!-- Mark edition -->
                 <div id="cdc" class="col-sm-4">
                     <div>
                         <label id="labelCdc" class="form-control-label bold"  for="specsRate" jhiTranslate="projetticApp.projet.rate.noteCahierDesCharges"></label>
@@ -87,14 +87,13 @@
                     </div>
                 </div>
 
-                <!-- Note finale, non éditable -->
                 <div class="col-sm-3 bold">
                     <label id="labelMoyenne" class="form-control-label" jhiTranslate="projetticApp.projet.rate.moyenne"></label>
                     <span>{{ this.finalRate }}</span>
                 </div>
             </div>
 
-            <!-- Boutons -->
+            <!-- BUTTONS -->
             <div>
                 <button type="submit"
                         (click)="previousState()"

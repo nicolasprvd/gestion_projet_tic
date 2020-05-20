@@ -9,7 +9,6 @@ import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { DocumentService } from 'app/entities/document/document.service';
 import { Account } from 'app/core/user/account.model';
 import { Evaluation, IEvaluation } from 'app/shared/model/evaluation.model';
-import { SERVER_API_URL } from 'app/app.constants';
 import { HttpClient } from '@angular/common/http';
 import { UserExtra } from 'app/shared/model/user-extra.model';
 import { EvaluationService } from 'app/entities/evaluation/evaluation.service';
@@ -24,8 +23,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./projet.scss']
 })
 export class ProjectRateComponent implements OnInit {
-  public resourceUrl = SERVER_API_URL + 'api/projets';
-
   project!: IProjet;
   account!: Account | null;
   groupMembers: UserExtra[] = [];
@@ -98,10 +95,6 @@ export class ProjectRateComponent implements OnInit {
     });
   }
 
-  /**
-   * Used for tests
-   * @param base64String
-   */
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
@@ -177,7 +170,7 @@ export class ProjectRateComponent implements OnInit {
   }
 
   /**
-   * Check if form datas are valid
+   * Check if form data are valid
    */
   isValidate(): boolean {
     document.getElementById('specsRate').setAttribute('style', 'background-color:white');
@@ -186,32 +179,32 @@ export class ProjectRateComponent implements OnInit {
     document.getElementById('specsCoef').setAttribute('style', 'background-color:white');
     document.getElementById('ganttsCoef').setAttribute('style', 'background-color:white');
     document.getElementById('outputCoef').setAttribute('style', 'background-color:white');
-    let valide = true;
+    let valid = true;
     if (isNaN(this.specsRate) || this.specsRate < 0 || this.specsRate > 20) {
       document.getElementById('specsRate').setAttribute('style', 'background-color:#d65959');
-      valide = false;
+      valid = false;
     }
     if (isNaN(this.ganttRate) || this.ganttRate < 0 || this.ganttRate > 20) {
       document.getElementById('ganttsRate').setAttribute('style', 'background-color:#d65959');
-      valide = false;
+      valid = false;
     }
     if (isNaN(this.outputRate) || this.outputRate < 0 || this.outputRate > 20) {
       document.getElementById('outputRate').setAttribute('style', 'background-color:#d65959');
-      valide = false;
+      valid = false;
     }
     if (isNaN(this.specsCoef) || this.specsCoef < 0) {
       document.getElementById('specsCoef').setAttribute('style', 'background-color:#d65959');
-      valide = false;
+      valid = false;
     }
     if (isNaN(this.ganttCoef) || this.ganttCoef < 0) {
       document.getElementById('ganttsCoef').setAttribute('style', 'background-color:#d65959');
-      valide = false;
+      valid = false;
     }
     if (isNaN(this.outputCoef) || this.outputCoef < 0) {
       document.getElementById('outputCoef').setAttribute('style', 'background-color:#d65959');
-      valide = false;
+      valid = false;
     }
-    return !isNaN(this.finalRate) && this.finalRate >= 0 && this.finalRate <= 20 && valide;
+    return !isNaN(this.finalRate) && this.finalRate >= 0 && this.finalRate <= 20 && valid;
   }
 
   /**
@@ -234,18 +227,10 @@ export class ProjectRateComponent implements OnInit {
     };
   }
 
-  /**
-   * Redirect to the previous page
-   */
   previousState(): void {
     window.history.back();
   }
 
-  /**
-   * Open a file into the browser
-   * @param docContentType
-   * @param doc
-   */
   openFile(docContentType: string, doc: string): void {
     this.dataUtils.openFile(docContentType, doc);
   }
