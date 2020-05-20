@@ -549,3 +549,33 @@ Responsive
     width: 100px;
   }
 }
+
+/* ==========================================================================
+Pagination
+========================================================================== */
+.pagination {
+  float: right;
+  margin: 10px 0;
+}
+
+a.page-link {
+  background: #375a7f;
+}
+
+a.page-link,
+.page-item.disabled a.page-link {
+  border-left: 1px solid #578090;
+}
+
+a.page-link:hover {
+  background: #cbe3ed;
+  color: #000000c7;
+}
+
+.page-item.active a.page-link {
+  background: #0883b4;
+}
+
+.page-item.disabled a.page-link {
+  background: #444;
+}

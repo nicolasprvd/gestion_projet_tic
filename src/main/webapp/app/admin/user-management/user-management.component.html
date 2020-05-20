@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody *ngIf="users">
-                <tr *ngFor="let user of users; trackBy: trackIdentity">
+                <tr *ngFor="let user of users | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; trackBy: trackIdentity">
                     <td class="usr-managt-compte">
                         <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated"
                                 jhiTranslate="userManagement.deactivated">Deactivated</button>
@@ -65,4 +65,10 @@
             </tbody>
         </table>
     </div>
+
+    <ngb-pagination
+        [(page)]="page"
+        [pageSize]="pageSize"
+        [collectionSize]="users.length"
+        [boundaryLinks]="true"></ngb-pagination>
 </div>
