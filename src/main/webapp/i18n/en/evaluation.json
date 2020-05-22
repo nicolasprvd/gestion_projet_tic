@@ -17,6 +17,13 @@
       "detail": {
         "title": "Rating"
       },
+      "export": {
+        "title": "Evaluation's export",
+        "warning": "Did you check every coefficient before exporting?",
+        "tips": "You can change coefficients by clicking on the project's name in the evaluation's table.",
+        "question": "do you still want to export evaluations?",
+        "accept": "exporter"
+      },
       "noteCDC": "Specification mark",
       "coefCDC": "Specification coefficient",
       "noteSoutenance": "Defense mark",
