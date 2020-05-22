@@ -11,6 +11,7 @@ import { PasswordResetInitComponent } from './password-reset/init/password-reset
 import { PasswordResetFinishComponent } from './password-reset/finish/password-reset-finish.component';
 import { SettingsComponent } from './settings/settings.component';
 import { accountState } from './account.route';
+import { LoginForgotComponent } from 'app/account/login-forgot/login-forgot.component';
 
 @NgModule({
   imports: [ProjetticSharedModule, RouterModule.forChild(accountState)],
@@ -21,6 +22,7 @@ import { accountState } from './account.route';
     PasswordStrengthBarComponent,
     PasswordResetInitComponent,
     PasswordResetFinishComponent,
+    LoginForgotComponent,
     SettingsComponent
   ]
 })
