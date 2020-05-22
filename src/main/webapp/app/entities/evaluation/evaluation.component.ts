@@ -16,6 +16,8 @@ import { ProjetService } from 'app/entities/projet/projet.service';
 import { IProjet } from 'app/shared/model/projet.model';
 import { TranslateService } from '@ngx-translate/core';
 import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
+import { EvaluationExportComponent } from 'app/entities/evaluation/evaluation_export.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'jhi-evaluation',
@@ -52,7 +54,9 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     protected userExtraService: UserExtraService,
     protected userService: UserService,
     protected projetService: ProjetService,
-    protected translate: TranslateService
+    protected translate: TranslateService,
+    private toastrService: ToastrService,
+    private translateService: TranslateService
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -64,7 +68,6 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.evaluationService.findByActif(true).subscribe(evaluations => {
       if (evaluations !== null && evaluations.body !== null) {
         this.evaluations = evaluations.body;
-        console.error(this.evaluations);
       }
     });
   }
@@ -99,11 +102,6 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     if (this.eventSubscriber) {
       this.eventManager.destroy(this.eventSubscriber);
     }
-  }
-
-  trackId(index: number, item: IEvaluation): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    return item.id!;
   }
 
   registerChangeInEvaluations(): void {
@@ -284,15 +282,22 @@ export class EvaluationComponent implements OnInit, OnDestroy {
         ';' +
         row.cells[8].textContent.trim();
     }
-    const blob = new Blob([donnees], { type: 'type/txt' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = nomFichier;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+    const modalRef = this.modalService.open(EvaluationExportComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.passEntry.subscribe((value: boolean) => {
+      if (value) {
+        const blob = new Blob([donnees], { type: 'type/txt' });
+        const url = window.URL.createObjectURL(blob);
+        const doc = document.createElement('a');
+        doc.href = url;
+        doc.download = nomFichier;
+        document.body.appendChild(doc);
+        doc.click();
+        document.body.removeChild(doc);
+        window.URL.revokeObjectURL(url);
+      } else {
+        console.error('');
+      }
+    });
   }
 
   filtrerEtudiant(niveau: TypeCursus): void {

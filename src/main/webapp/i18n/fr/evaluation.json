@@ -17,6 +17,13 @@
       "detail": {
         "title": "Evaluation"
       },
+      "export": {
+        "title": "Export des évaluations",
+        "warning": "Avez-vous bien vérifié les coefficients de tous les projets ?",
+        "tips": "Vous pouvez changer les coefficients / notes en cliquant sur le nom des projets dans le tableau",
+        "question": "Voulez-vous toujours exporter les évaluations ?",
+        "accept": "Exporter"
+      },
       "noteCDC": "Note cahier des charges",
       "coefCDC": "Coefficient cahier des charges",
       "noteSoutenance": "Note soutenance",

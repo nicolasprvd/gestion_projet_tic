@@ -26,7 +26,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   currentAccount: Account | null = null;
   users: User[] | null = [];
   userListSubscription?: Subscription;
-  page!: number;
+  page = 1;
   predicate!: string;
   previousPage!: number;
   ascending!: boolean;
@@ -38,6 +38,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     key: number;
     value: IUserExtra;
   }[] = [];
+  items: number[] = [];
+  pageSize = 20;
 
   constructor(
     private userService: UserService,
@@ -69,6 +71,11 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe();
+
+    for(let i = 0; i < 20; i++) {
+      this.items.push(i);
+    }
+
   }
 
   ngOnDestroy(): void {
