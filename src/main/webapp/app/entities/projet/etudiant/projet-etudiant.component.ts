@@ -28,9 +28,11 @@ export class ProjetEtudiantComponent implements OnInit {
   groupeId: number;
   client: IUser;
   usersExtra: IUser[];
+  projectManager: IUser[];
   membres: IUser[];
   users: IUser[];
   groupe: Groupe;
+  test: number;
   typeDocument: TypeDocument;
   documentCDC: IDocument;
   documentGANTT: IDocument;
@@ -121,10 +123,15 @@ export class ProjetEtudiantComponent implements OnInit {
             this.usersExtra = membres.body;
             this.userService.findAll().subscribe(users => {
               this.users = users;
+              this.projectManager = [];
               this.membres = [];
               this.usersExtra.forEach(ue => {
                 this.userService.findById(ue.id).subscribe(m => {
-                  this.membres.push(m);
+                  if (this.groupe.userExtraId === m.id) {
+                    this.projectManager.push(m);
+                  } else {
+                    this.membres.push(m);
+                  }
                 });
               });
             });

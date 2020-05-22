@@ -11,9 +11,14 @@
 }
 
 #infos-documents {
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 #infos-student {
   margin-top: 15px;
+}
+
+.test:nth-child(1n + 2):not(:last-child):after {
+  content: ',';
+  float: right;
 }

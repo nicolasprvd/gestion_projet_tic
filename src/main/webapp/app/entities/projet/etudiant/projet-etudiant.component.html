@@ -20,14 +20,13 @@
 
         <div>
             <label class="man bold" jhiTranslate="projetticApp.projet.groupe"></label>
-            <div *ngFor="let membre of membres">
+            <div *ngFor="let membre of projectManager">
                 <span *ngIf="groupe.userExtraId === membre.id"><span class="colon" jhiTranslate="projetticApp.projet.form.label.chef"></span>{{ membre.firstName + " " + membre.lastName }}</span>
             </div>
             <div class="members">
                 <span class="colon" jhiTranslate="projetticApp.projet.form.label.membres"></span>
-                <div *ngFor="let membre of membres">
-                    <span *ngIf="groupe.userExtraId !== membre.id && membre !== membres[membres.length -1]">{{ membre.firstName + " " + membre.lastName + "," + " "}}</span>
-                    <span *ngIf="groupe.userExtraId !== membre.id && membre == membres[membres.length -1]">{{ membre.firstName + " " + membre.lastName}}</span>
+                <div class="test" *ngFor="let membre of membres">
+                    <span *ngIf="groupe.userExtraId !== membre.id">{{ membre.firstName + " " + membre.lastName}}</span>
                 </div>
             </div>
         </div>
