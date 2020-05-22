@@ -218,8 +218,8 @@ export class ProjetComponent implements OnInit, OnDestroy {
    */
   delete(project: IProjet): void {
     const modalRef = this.modalService.open(ProjetDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.projet = project;
-    modalRef.componentInstance.groupes = this.groups;
+    modalRef.componentInstance.project = project;
+    modalRef.componentInstance.groups = this.groups;
     modalRef.componentInstance.extras = this.extras;
     modalRef.componentInstance.users = this.users;
   }

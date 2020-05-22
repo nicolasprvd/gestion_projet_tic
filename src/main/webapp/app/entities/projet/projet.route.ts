@@ -52,7 +52,7 @@ export const projetRoute: Routes = [
     path: ':id/view',
     component: ProjetDetailComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.USER],
@@ -64,7 +64,7 @@ export const projetRoute: Routes = [
     path: 'new',
     component: ProjetUpdateComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.ADMIN, Authority.CLIENT],
@@ -76,7 +76,7 @@ export const projetRoute: Routes = [
     path: ':id/edit',
     component: ProjetUpdateComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.ADMIN, Authority.CLIENT],

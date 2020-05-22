@@ -7,7 +7,6 @@ import { ProjetService } from './projet.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { IGroupe } from 'app/shared/model/groupe.model';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
-import { IUserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
@@ -22,12 +21,11 @@ import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 })
 export class ProjetUpdateComponent implements OnInit {
   isSaving = false;
-  groupes: IGroupe[] = [];
-  userextras: IUserExtra[] = [];
+  groups: IGroupe[] = [];
   account!: Account | null;
-  nbEtudiantDefault: number;
-  cursus: string[];
-  cursusDefault: TypeCursus;
+  defaultStudentNumber: number;
+  grade: string[];
+  defaultGrade: TypeCursus;
 
   editForm = this.fb.group({
     id: [],
@@ -56,27 +54,19 @@ export class ProjetUpdateComponent implements OnInit {
     private toastrService: ToastrService,
     private translateService: TranslateService
   ) {
-    this.nbEtudiantDefault = 2;
-    this.cursus = [TypeCursus.L3, TypeCursus.M1, TypeCursus.M2];
-    this.cursusDefault = TypeCursus.L3;
+    this.defaultStudentNumber = 2;
+    this.grade = [TypeCursus.L3, TypeCursus.M1, TypeCursus.M2];
+    this.defaultGrade = TypeCursus.L3;
   }
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ projet }) => {
-      this.updateForm(projet);
-
-      this.groupeService.findByActif(true).subscribe(groupes => {
-        if (groupes !== null && groupes.body !== null) {
-          this.groupes = groupes.body;
+    this.activatedRoute.data.subscribe(({ project }) => {
+      this.updateForm(project);
+      this.groupeService.findByActif(true).subscribe(groups => {
+        if (groups !== null && groups.body !== null) {
+          this.groups = groups.body;
         }
       });
-
-      this.userExtraService.findByActif(true).subscribe(userExtras => {
-        if (userExtras !== null && userExtras.body !== null) {
-          this.userextras = userExtras.body;
-        }
-      });
-
       this.accountService.getAuthenticationState().subscribe(account => {
         if (account !== null) {
           this.account = account;
@@ -85,20 +75,24 @@ export class ProjetUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(projet: IProjet): void {
+  /**
+   * Set the project form with the project's values
+   * @param project
+   */
+  updateForm(project: IProjet): void {
     this.editForm.patchValue({
-      id: projet.id,
-      nom: projet.nom,
-      descriptionPDF: projet.descriptionPDF,
-      descriptionPDFContentType: projet.descriptionPDFContentType,
-      descriptionTexte: projet.descriptionTexte,
-      nbEtudiant: projet.nbEtudiant,
-      cursus: projet.cursus,
-      automatique: projet.automatique,
-      archive: projet.archive,
-      groupeId: projet.groupeId,
+      id: project.id,
+      nom: project.nom,
+      descriptionPDF: project.descriptionPDF,
+      descriptionPDFContentType: project.descriptionPDFContentType,
+      descriptionTexte: project.descriptionTexte,
+      nbEtudiant: project.nbEtudiant,
+      cursus: project.cursus,
+      automatique: project.automatique,
+      archive: project.archive,
+      groupeId: project.groupeId,
       userExtraId: this.account?.id,
-      dateCreation: projet.dateCreation
+      dateCreation: project.dateCreation
     });
   }
 
@@ -122,17 +116,20 @@ export class ProjetUpdateComponent implements OnInit {
     window.history.back();
   }
 
-  save(): void {
+  /**
+   * Insert or update a Projet object into database
+   */
+  saveProject(): void {
     this.isSaving = true;
     if (this.editForm.get(['id']).value !== undefined) {
-      const projet = this.createFromForm(false);
-      this.projetService.update(projet).subscribe(
+      const project = this.createFromForm(false);
+      this.projetService.update(project).subscribe(
         () => {
-          this.translateService.instant('global.toastr.modifications.projet.title', { nom: projet.nom });
+          this.translateService.instant('global.toastr.modifications.projet.title', { nom: project.nom });
           this.isSaving = false;
           this.toastrService.success(
             this.translateService.instant('global.toastr.modifications.projet.message'),
-            this.translateService.instant('global.toastr.modifications.projet.title', { nom: projet.nom })
+            this.translateService.instant('global.toastr.modifications.projet.title', { nom: project.nom })
           );
           this.previousState();
         },
@@ -145,13 +142,13 @@ export class ProjetUpdateComponent implements OnInit {
         }
       );
     } else {
-      const projet = this.createFromForm(true);
-      this.projetService.create(projet).subscribe(
+      const project = this.createFromForm(true);
+      this.projetService.create(project).subscribe(
         () => {
           this.isSaving = false;
           this.toastrService.success(
             this.translateService.instant('global.toastr.creations.projet.message'),
-            this.translateService.instant('global.toastr.creations.projet.title', { nom: projet.nom })
+            this.translateService.instant('global.toastr.creations.projet.title', { nom: project.nom })
           );
           this.previousState();
         },
@@ -166,6 +163,10 @@ export class ProjetUpdateComponent implements OnInit {
     }
   }
 
+  /**
+   * Create a Projet object based on form values
+   * @param create
+   */
   private createFromForm(create: boolean): IProjet {
     return {
       ...new Projet(),

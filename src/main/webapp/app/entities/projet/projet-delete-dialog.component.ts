@@ -16,8 +16,8 @@ import { IUser } from 'app/core/user/user.model';
   templateUrl: './projet-delete-dialog.component.html'
 })
 export class ProjetDeleteDialogComponent {
-  projet?: IProjet;
-  groupes: Groupe[] = [];
+  project?: IProjet;
+  groups: Groupe[] = [];
   extras: IUserExtra[] = [];
   users: IUser[] = [];
   subject: string;
@@ -37,17 +37,21 @@ export class ProjetDeleteDialogComponent {
     this.activeModal.dismiss();
   }
 
-  confirmDelete(id: number): void {
-    for (const groupe of this.groupes) {
-      if (groupe.projetId === id) {
+  /**
+   * Archive the project and delete the group that applied for it
+   * @param id
+   */
+  deleteProject(id: number): void {
+    for (const group of this.groups) {
+      if (group.projetId === id) {
         for (const extra of this.extras) {
-          if (extra.groupeId === groupe.id) {
+          if (extra.groupeId === group.id) {
             extra.groupeId = null;
             this.userExtraService.update(extra).subscribe();
-            this.envoiMailProjetSupprime(extra.id);
+            this.sendEmailProjectDeleted(extra.id);
           }
         }
-        this.groupeService.delete(groupe.id).subscribe();
+        this.groupeService.delete(group.id).subscribe();
       }
     }
     this.projetService.delete(id).subscribe(
@@ -56,7 +60,7 @@ export class ProjetDeleteDialogComponent {
         this.activeModal.close();
         this.toastrService.success(
           this.translateService.instant('global.toastr.suppressions.projet.message'),
-          this.translateService.instant('global.toastr.suppressions.projet.title', { nom: this.projet.nom })
+          this.translateService.instant('global.toastr.suppressions.projet.title', { nom: this.project.nom })
         );
       },
       () => {
@@ -68,11 +72,15 @@ export class ProjetDeleteDialogComponent {
     );
   }
 
-  envoiMailProjetSupprime(extra: number): void {
+  /**
+   * Send an email to all members of the deleted group
+   * @param extra
+   */
+  sendEmailProjectDeleted(extra: number): void {
     for (const u of this.users) {
       if (u.id === extra) {
         this.subject = this.translateService.instant('global.email.suppressionProjet.sujet');
-        this.content = this.translateService.instant('global.email.suppressionProjet.message', { nom: this.projet.nom });
+        this.content = this.translateService.instant('global.email.suppressionProjet.message', { nom: this.project.nom });
         this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
       }
     }
