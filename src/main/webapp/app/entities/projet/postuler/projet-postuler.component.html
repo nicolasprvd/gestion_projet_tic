@@ -1,9 +1,9 @@
 <div>
     <div class="row justify-content">
         <div class="col-sm-12">
-            <h2>{{ projet.nom }}</h2>
+            <h2>{{ project.nom }}</h2>
             <hr>
-            <div jhiTranslate="projetticApp.projet.apply.description" [translateValues]="{nb: projet.nbEtudiant}"></div>
+            <div jhiTranslate="projetticApp.projet.apply.description" [translateValues]="{nb: project.nbEtudiant}"></div>
             <div id="formulaireGroupe" class="row justify-content">
                 <div class="col-sm-12">
                     <label class="form-control-label" for="chef" jhiTranslate="projetticApp.projet.apply.chef"></label>
@@ -12,35 +12,24 @@
                 <div id="divSelectBox" class="col-sm-7">
                     <label jhiTranslate="projetticApp.projet.apply.etudiants"></label>
                 </div>
-                <div class="col-sm-12" *ngFor="let i of nbEtuArray">
+                <div class="col-sm-12" *ngFor="let i of numberStudentOfProjectArray">
                     <div class="form-group">
                         <label class="form-control-label projet-label-postuler" for="etu{{i}}">
                             <select class="form-control" id="etu{{i}}" name="etu{{i}}" ngModel="etu{{i}}">
 
-                                <ng-container *ngFor="let utilisateur of users">
-                                    <option value="{{utilisateur.id}}">{{utilisateur.firstName}} {{utilisateur.lastName}}</option>
+                                <ng-container *ngFor="let user of users">
+                                    <option value="{{user.id}}">{{user.firstName}} {{user.lastName}}</option>
                                 </ng-container>
                             </select>
                         </label>
                     </div>
                 </div>
-<!--                <div class="col-sm-12">-->
-<!--                    <div class="form-text text-danger"-->
-<!--                         *ngIf="valideEmpty"-->
-<!--                         jhiTranslate="projetticApp.projet.postuler.messages.empty">-->
-<!--                    </div>-->
-
-<!--                    <div class="form-text text-danger"-->
-<!--                         *ngIf="valideInclude"-->
-<!--                         jhiTranslate="projetticApp.projet.postuler.messages.include">-->
-<!--                    </div>-->
-<!--                </div>-->
             </div>
             <div class="col-sm-7" id="boutonValidation">
                 <button type="submit" (click)="previousState()" class="btn btn-info">
                     <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
                 </button>
-                <button type="submit" class="btn btn-primary" jhiTranslate="projetticApp.projet.apply.boutonValidation" (click)="postuler()"></button>
+                <button type="submit" class="btn btn-primary" jhiTranslate="projetticApp.projet.apply.boutonValidation" (click)="apply()"></button>
             </div>
         </div>
     </div>

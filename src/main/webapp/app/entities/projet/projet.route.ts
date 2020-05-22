@@ -52,7 +52,7 @@ export const projetRoute: Routes = [
     path: ':id/view',
     component: ProjetDetailComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.USER],
@@ -64,7 +64,7 @@ export const projetRoute: Routes = [
     path: 'new',
     component: ProjetUpdateComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.ADMIN, Authority.CLIENT],
@@ -76,7 +76,7 @@ export const projetRoute: Routes = [
     path: ':id/edit',
     component: ProjetUpdateComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.ADMIN, Authority.CLIENT],
@@ -88,7 +88,7 @@ export const projetRoute: Routes = [
     path: ':id/postuler',
     component: ProjetPostulerComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.ETUDIANT],
@@ -100,7 +100,7 @@ export const projetRoute: Routes = [
     path: ':id/attribuer',
     component: ProjetAttribuerComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.CLIENT, Authority.ADMIN],
@@ -112,7 +112,7 @@ export const projetRoute: Routes = [
     path: ':id/rate',
     component: ProjectRateComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.CLIENT, Authority.ADMIN],

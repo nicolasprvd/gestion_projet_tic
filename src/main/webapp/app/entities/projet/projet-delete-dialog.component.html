@@ -1,4 +1,4 @@
-<form *ngIf="projet" class="popin" name="deleteForm" (ngSubmit)="confirmDelete(projet?.id!)">
+<form *ngIf="project" class="popin" name="deleteForm" (ngSubmit)="deleteProject(project?.id!)">
     <div class="modal-header">
         <h4 class="modal-title" jhiTranslate="entity.delete.title">Confirm delete operation</h4>
 
@@ -9,7 +9,7 @@
     <div class="modal-body">
         <hr>
         <p id="jhi-delete-projet-heading-details" jhiTranslate="projetticApp.projet.delete.detail"></p>
-        <p id="jhi-delete-projet-heading" jhiTranslate="projetticApp.projet.delete.question" [translateValues]="{ nom: projet.nom }"></p>
+        <p id="jhi-delete-projet-heading" jhiTranslate="projetticApp.projet.delete.question" [translateValues]="{ nom: project.nom }"></p>
     </div>
 
     <div class="modal-footer">

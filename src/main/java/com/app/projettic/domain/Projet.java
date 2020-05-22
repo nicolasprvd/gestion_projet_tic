@@ -289,6 +289,7 @@ public class Projet implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "Projet{" +
             "id=" + getId() +
             ", nom='" + getNom() + "'" +
@@ -299,7 +300,7 @@ public class Projet implements Serializable {
             ", automatique='" + isAutomatique() + "'" +
             ", archive='" + isArchive() + "'" +
             ", dateCreation=" + getDateCreation() +
-            ", cursus=" + getCursus() +
+            ", cursus=" + grade +
             "}";
     }
 }
