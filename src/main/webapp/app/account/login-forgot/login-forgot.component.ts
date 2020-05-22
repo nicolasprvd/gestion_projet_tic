@@ -27,9 +27,6 @@ export class LoginForgotComponent implements AfterViewInit {
   }
 
   requestLogin(): void {
-    this.loginForgotService.save(this.loginRequestForm.get(['email'])!.value).subscribe(res => {
-      this.success = true;
-      console.error('je suis triste');
-    });
+    this.loginForgotService.save(this.loginRequestForm.get(['email'])!.value).subscribe(() => (this.success = true));
   }
 }

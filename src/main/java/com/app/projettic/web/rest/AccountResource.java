@@ -207,15 +207,12 @@ public class AccountResource {
      */
     @PostMapping(path = "/account/login-forgot")
     public void loginForgot(@RequestBody String mail) {
-        log.error("slt");
         Optional<User> user = userService.requestPasswordReset(mail);
-        log.error("Bien la famille");
         if (user.isPresent()) {
-            log.debug("Bien à vous!");
             mailService.sendEmail(
                 user.get().getEmail(),
                 "Récupération de votre login",
-                "Votre login est " + user.get().getLogin(),
+                "Votre login est : " + user.get().getLogin(),
                 false,
                 false
             );

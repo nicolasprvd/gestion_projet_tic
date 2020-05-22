@@ -9,7 +9,6 @@ export class LoginForgotService {
   constructor(private http: HttpClient) {}
 
   save(mail: string): Observable<{}> {
-    console.error('hey');
     return this.http.post(SERVER_API_URL + 'api/account/login-forgot', mail);
   }
 }
