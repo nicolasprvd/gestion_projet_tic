@@ -206,6 +206,7 @@ public class Evaluation implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "Evaluation{" +
             "id=" + getId() +
             ", noteCDC=" + getNoteCDC() +
@@ -216,7 +217,7 @@ public class Evaluation implements Serializable {
             ", coefRendu=" + getCoefRendu() +
             ", noteFinale=" + getNoteFinale() +
             ", actif=" + isActif() +
-            ", cursus=" + getCursus() +
+            ", cursus=" + grade +
             "}";
     }
 }

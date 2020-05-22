@@ -157,6 +157,7 @@ public class ProjetDTO implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "ProjetDTO{" +
             "id=" + getId() +
             ", nom='" + getNom() + "'" +
@@ -168,7 +169,7 @@ public class ProjetDTO implements Serializable {
             ", dateCreation=" + getDateCreation() +
             ", groupeId=" + getGroupeId() +
             ", userExtraId=" + getUserExtraId() +
-            ", cursus=" + getCursus() +
+            ", cursus=" + grade +
             "}";
     }
 }

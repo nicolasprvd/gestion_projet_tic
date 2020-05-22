@@ -43,7 +43,7 @@ describe('Component Tests', () => {
 
       // THEN
       expect(service.query).toHaveBeenCalled();
-      expect(comp.projets && comp.projets[0]).toEqual(jasmine.objectContaining({ id: 123 }));
+      expect(comp.projects && comp.projects[0]).toEqual(jasmine.objectContaining({ id: 123 }));
     });
   });
 });

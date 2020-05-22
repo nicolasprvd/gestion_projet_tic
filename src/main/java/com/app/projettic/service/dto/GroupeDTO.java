@@ -96,13 +96,14 @@ public class GroupeDTO implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "GroupeDTO{" +
             "id=" + getId() +
             ", valide='" + isValide() + "'" +
             ", actif=" + isActif() +
             ", userExtraId=" + getUserExtraId() +
             ", projetId=" + getProjetId() +
-            ", cursus=" + getCursus() +
+            ", cursus=" + grade +
             "}";
     }
 }

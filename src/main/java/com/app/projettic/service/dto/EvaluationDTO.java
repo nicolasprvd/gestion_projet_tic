@@ -141,6 +141,7 @@ public class EvaluationDTO implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "EvaluationDTO{" +
             "id=" + getId() +
             ", noteCDC=" + getNoteCDC() +
@@ -151,7 +152,7 @@ public class EvaluationDTO implements Serializable {
             ", coefRendu=" + getCoefRendu() +
             ", noteFinale=" + getNoteFinale() +
             ", actif=" + isActif() +
-            ", cursus=" + getCursus() +
+            ", cursus=" + grade +
             "}";
     }
 }

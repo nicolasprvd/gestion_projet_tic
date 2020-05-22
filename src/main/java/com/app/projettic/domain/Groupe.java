@@ -190,11 +190,12 @@ public class Groupe implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "Groupe{" +
             "id=" + getId() +
             ", valide='" + isValide() + "'" +
             ", actif=" + isActif() +
-            ", cursus=" + getCursus() +
+            ", cursus=" + grade +
             "}";
     }
 }

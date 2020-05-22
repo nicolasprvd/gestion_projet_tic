@@ -1,11 +1,11 @@
 <div>
-    <div *ngIf="projet">
-        <h2 jhiTranslate="projetticApp.projet.attribuate.titre" [translateValues]="{titre: projet.nom}">
+    <div *ngIf="project">
+        <h2 jhiTranslate="projetticApp.projet.attribuate.titre" [translateValues]="{titre: project.nom}">
             Attribution </h2>
 
         <br>
 
-        <div class="table-responsive" id="entities" *ngIf="groupes?.length > 0">
+        <div class="table-responsive" id="entities" *ngIf="groups?.length > 0">
 
             <table class="table table-striped" aria-describedby="page-heading">
                 <thead>
@@ -16,11 +16,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let groupe of groupes ;">
+                <tr *ngFor="let group of groups ;">
 
                     <td>
                         <div *ngFor="let u of users">
-                            <div *ngIf="u.id === groupe.userExtraId">
+                            <div *ngIf="u.id === group.userExtraId">
                                 <span> {{ u.firstName }} {{ u.lastName }} </span>
                             </div>
                         </div>
@@ -28,7 +28,7 @@
 
                     <td>
                         <div *ngFor="let ue of usersExtra">
-                            <div *ngIf="ue.groupeId === groupe.id && ue.userId != groupe.userExtraId">
+                            <div *ngIf="ue.groupeId === group.id && ue.userId != group.userExtraId">
                                 <div *ngFor="let u of users">
                                     <div *ngIf="u.id === ue.id">
                                         <span> {{ u.firstName }} {{ u.lastName }}<br> </span>
@@ -41,7 +41,7 @@
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="button"
-                                    (click)="attribution(groupe.id)"
+                                    (click)="assign(group.id)"
                                     class="btn btn-success btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span jhiTranslate="projetticApp.projet.attribuate.attribGroupe"></span>

@@ -1,33 +1,33 @@
 <div id="entities">
-    <h2>{{ projet?.nom }}</h2>
+    <h2>{{ project?.nom }}</h2>
     <hr>
     <div class="jh-entity-details">
         <div>
             <label class="form-control-label bold" jhiTranslate="projetticApp.projet.client"></label>
-            <span>{{ client?.firstName }} {{ client?.lastName }}</span>
+            <span>{{ customer?.firstName }} {{ customer?.lastName }}</span>
         </div>
         <div>
             <label class="form-control-label bold" jhiTranslate="projetticApp.projet.email"></label>
-            <span>{{ client?.email }}</span>
+            <span>{{ customer?.email }}</span>
         </div>
     </div>
 
     <div class="mtl">
         <div>
             <label class="form-control-label bold" jhiTranslate="projetticApp.projet.nbEtudiant"></label>
-            <span>{{ projet?.nbEtudiant }}</span>
+            <span>{{ project?.nbEtudiant }}</span>
         </div>
 
         <div>
             <label class="man bold" jhiTranslate="projetticApp.projet.groupe"></label>
-            <div *ngFor="let membre of membres">
-                <span *ngIf="groupe.userExtraId === membre.id"><span jhiTranslate="projetticApp.projet.form.label.chef"></span> : {{ membre.firstName + " " + membre.lastName }}</span>
+            <div *ngFor="let membre of members">
+                <span *ngIf="group.userExtraId === membre.id"><span jhiTranslate="projetticApp.projet.form.label.chef"></span> : {{ membre.firstName + " " + membre.lastName }}</span>
             </div>
             <div class="membres">
                 <span class="man" jhiTranslate="projetticApp.projet.form.label.membres"></span>
-                <div *ngFor="let membre of membres">
-                    <span *ngIf="groupe.userExtraId !== membre.id && membre !== membres[membres.length -1]">{{ membre.firstName + " " + membre.lastName + "," + " "}}</span>
-                    <span *ngIf="groupe.userExtraId !== membre.id && membre == membres[membres.length -1]">{{ membre.firstName + " " + membre.lastName}}</span>
+                <div *ngFor="let membre of members">
+                    <span *ngIf="group.userExtraId !== membre.id && membre !== members[members.length -1]">{{ membre.firstName + " " + membre.lastName + "," + " "}}</span>
+                    <span *ngIf="group.userExtraId !== membre.id && membre == members[members.length -1]">{{ membre.firstName + " " + membre.lastName}}</span>
                 </div>
             </div>
         </div>

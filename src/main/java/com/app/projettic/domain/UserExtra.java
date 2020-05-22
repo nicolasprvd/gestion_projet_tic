@@ -209,11 +209,12 @@ public class UserExtra implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "UserExtra{" +
             "id=" + getId() +
             ", actif='" + isActif() + "'" +
             ", typeUtilisateur='" + getTypeUtilisateur() + "'" +
-            ", cursus=" + getCursus() +
+            ", cursus=" + grade +
             "}";
     }
 }
