@@ -44,15 +44,15 @@
   margin-bottom: 3px;
 }
 
-.filterButtons button {
+.filterButtonsProject button {
   margin: 0 3px 7px 0;
 }
 
-.filterButtons button:focus {
+.filterButtonsProject button:focus {
   box-shadow: none;
 }
 
-.filterButtons :nth-child(1n + 4) {
+.filterButtonsProject :nth-child(1n + 4) {
   width: 60px;
 }
 
@@ -74,7 +74,7 @@
 }
 
 @media (max-width: 576px) {
-  .filterButtons :nth-child(1n + 4) {
+  .filterButtonsProject :nth-child(1n + 4) {
     width: 40px;
   }
 

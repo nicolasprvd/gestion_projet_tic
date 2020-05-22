@@ -87,6 +87,7 @@
       },
       "filtre": {
         "tous": "Tous les niveaux",
+        "customer": "Client",
         "mesprojets": "Mes projets"
       },
       "nom": "Nom du projet",

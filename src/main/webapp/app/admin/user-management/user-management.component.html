@@ -3,7 +3,38 @@
         <span id="user-management-page-heading" jhiTranslate="userManagement.home.title">Users</span>
     </h2>
 
-    <div class="table-responsive" *ngIf="users">
+    <div class="table-responsive" *ngIf="users?.length > 0">
+        <div class="filterButtons">
+            <button id="filtreAucun" type="submit"
+                    (click)="reinitFiltreGroupes()"
+                    class="btn btn-success btn-sm">
+                <fa-icon icon="ban"></fa-icon>
+                <span jhiTranslate="projetticApp.projet.filtre.aucun"></span>
+            </button>
+            <button id="filtreClient" type="submit"
+                    (click)="filtrerGroupes(null)"
+                    class="btn btn-danger btn-sm">
+                <span jhiTranslate="projetticApp.projet.filtre.customer"></span>
+            </button>
+            <button id="filtreL3" type="submit"
+                    (click)="filtrerGroupes(L3)"
+                    class="btn btn-danger btn-sm">
+                <span>{{L3}}</span>
+            </button>
+            <button id="filtreM1" type="submit"
+                    (click)="filtrerGroupes(M1)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M1}}</span>
+            </button>
+            <button id="filtreM2" type="submit"
+                    (click)="filtrerGroupes(M2)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M2}}</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive" *ngIf="users?.length > 0">
         <table class="table table-striped" aria-describedby="user-management-page-heading">
             <thead>
                 <tr>
@@ -17,7 +48,7 @@
                 </tr>
             </thead>
             <tbody *ngIf="users">
-                <tr *ngFor="let user of users | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; trackBy: trackIdentity">
+                <tr *ngFor="let user of usersFilter | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; trackBy: trackIdentity">
                     <td class="usr-managt-compte">
                         <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated"
                                 jhiTranslate="userManagement.deactivated">Deactivated</button>
@@ -69,6 +100,6 @@
     <ngb-pagination
         [(page)]="page"
         [pageSize]="pageSize"
-        [collectionSize]="users.length"
+        [collectionSize]="usersFilter.length"
         [boundaryLinks]="true"></ngb-pagination>
 </div>

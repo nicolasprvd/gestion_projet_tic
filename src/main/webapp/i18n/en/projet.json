@@ -86,6 +86,7 @@
       },
       "filtre": {
         "tous": "All levels",
+        "customer": "Customer",
         "mesprojets": "My projects"
       },
       "nom": "Project's name",

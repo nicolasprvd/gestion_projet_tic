@@ -25,6 +25,7 @@ import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.
 export class UserManagementComponent implements OnInit, OnDestroy {
   currentAccount: Account | null = null;
   users: User[] | null = [];
+  usersFilter: User[] | null = [];
   userListSubscription?: Subscription;
   page = 1;
   predicate!: string;
@@ -40,6 +41,11 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }[] = [];
   items: number[] = [];
   pageSize = 20;
+  L3: TypeCursus = TypeCursus.L3;
+  M1: TypeCursus = TypeCursus.M1;
+  M2: TypeCursus = TypeCursus.M2;
+  cursusSelectionne: TypeCursus;
+  allUsers: boolean;
 
   constructor(
     private userService: UserService,
@@ -72,10 +78,9 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       )
       .subscribe();
 
-    for(let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
       this.items.push(i);
     }
-
   }
 
   ngOnDestroy(): void {
@@ -133,6 +138,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
             });
             const allUsers = this.usersExtraArray;
             this.users = users;
+            this.usersFilter = users;
             this.users.sort(function(user1, user2): number {
               if (allUsers[user1.id].value.cursus === allUsers[user2.id].value.cursus) {
                 return user1.lastName.localeCompare(user2.lastName);
@@ -176,6 +182,44 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         );
         this.loadAll();
       });
+    }
+  }
+
+  filtrerGroupes(niveau: TypeCursus): void {
+    this.allUsers = false;
+    this.cursusSelectionne = niveau;
+    this.usersFilter = [];
+    for (const user of this.users) {
+      if (user.cursus === niveau) {
+        this.usersFilter.push(user);
+      }
+    }
+    this.modifierCouleurBoutonFiltre(niveau);
+  }
+
+  reinitFiltreGroupes(): void {
+    this.allUsers = true;
+    this.cursusSelectionne = null;
+    this.usersFilter = this.users;
+    this.modifierCouleurBoutonFiltre(null);
+  }
+
+  modifierCouleurBoutonFiltre(niveau: TypeCursus): void {
+    document.getElementById('filtreAucun').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreClient').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreL3').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreM1').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreM2').setAttribute('class', 'btn btn-danger btn-sm');
+    if (niveau === null && this.allUsers) {
+      document.getElementById('filtreAucun').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (niveau === null && !this.allUsers) {
+      document.getElementById('filtreClient').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (niveau === TypeCursus.L3) {
+      document.getElementById('filtreL3').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (niveau === TypeCursus.M1) {
+      document.getElementById('filtreM1').setAttribute('class', 'btn btn-success btn-sm');
+    } else {
+      document.getElementById('filtreM2').setAttribute('class', 'btn btn-success btn-sm');
     }
   }
 }
