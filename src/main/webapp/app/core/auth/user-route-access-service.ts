@@ -53,18 +53,23 @@ export class UserRouteAccessService implements CanActivate {
                   this.router.navigate(['404']);
                   return false;
                 } else if (this.user.typeUtilisateur === TypeUtilisateur.CLIENT) {
+                  if(url.split('/')[3] === 'rate') {
+                    if(authorities.includes('ROLE_ADMIN')) {
+                      return true;
+                    }
+                  }
                   const idProjet = url.split('/')[2];
                   this.projetService.find(+idProjet).subscribe(projet => {
                     if (projet.body.userExtraId !== this.user.id) {
                       this.router.navigate(['404']);
                       return false;
                     } else {
-                      if(url.split('/')[3] === 'rate') {
+                      if (url.split('/')[3] === 'rate') {
                         this.groupeService.findByProjetId(projet.body.id).subscribe(groupe => {
                           if (groupe.body === null) {
                             this.router.navigate(['404']);
                             return false;
-                          }else {
+                          } else {
                             return true;
                           }
                         });
@@ -107,7 +112,7 @@ export class UserRouteAccessService implements CanActivate {
                   });
                 }
               } else if (url.split('/')[3] === 'postuler') {
-                if(this.user.groupeId !== null) {
+                if (this.user.groupeId !== null) {
                   this.router.navigate(['404']);
                   return false;
                 }
@@ -120,7 +125,7 @@ export class UserRouteAccessService implements CanActivate {
                     if (!groupe.body.valide) {
                       this.router.navigate(['404']);
                       return false;
-                    }else {
+                    } else {
                       return true;
                     }
                   });

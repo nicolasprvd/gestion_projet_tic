@@ -104,11 +104,6 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: IEvaluation): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    return item.id!;
-  }
-
   registerChangeInEvaluations(): void {
     this.eventSubscriber = this.eventManager.subscribe('evaluationListModification', () => this.loadAll());
   }
