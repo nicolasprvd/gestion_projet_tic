@@ -77,7 +77,11 @@ public class UserExtraDTO implements Serializable {
     }
 
     public TypeCursus getCursus() {
-        return cursus;
+        if(cursus != null) {
+            return cursus;
+        }else {
+            return null;
+        }
     }
 
     public void setCursus(TypeCursus cursus) {
