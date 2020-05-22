@@ -88,7 +88,7 @@ export const projetRoute: Routes = [
     path: ':id/postuler',
     component: ProjetPostulerComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.ETUDIANT],
@@ -100,7 +100,7 @@ export const projetRoute: Routes = [
     path: ':id/attribuer',
     component: ProjetAttribuerComponent,
     resolve: {
-      projet: ProjetResolve
+      project: ProjetResolve
     },
     data: {
       authorities: [Authority.CLIENT, Authority.ADMIN],
