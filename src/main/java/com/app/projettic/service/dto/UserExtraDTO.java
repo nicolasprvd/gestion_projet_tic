@@ -107,6 +107,7 @@ public class UserExtraDTO implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "UserExtraDTO{" +
             "id=" + getId() +
             ", actif='" + isActif() + "'" +
@@ -114,7 +115,7 @@ public class UserExtraDTO implements Serializable {
             ", userId=" + getUserId() +
             ", evaluationId=" + getEvaluationId() +
             ", groupeId=" + getGroupeId() +
-            ", cursus=" + getCursus() +
+            ", cursus=" + grade +
             "}";
     }
 }

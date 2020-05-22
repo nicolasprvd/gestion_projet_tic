@@ -5,7 +5,6 @@ import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } 
 import { IProjet, Projet } from 'app/shared/model/projet.model';
 import { ProjetService } from './projet.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IGroupe } from 'app/shared/model/groupe.model';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { AccountService } from 'app/core/auth/account.service';
@@ -21,7 +20,6 @@ import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 })
 export class ProjetUpdateComponent implements OnInit {
   isSaving = false;
-  groups: IGroupe[] = [];
   account!: Account | null;
   defaultStudentNumber: number;
   grade: string[];
@@ -62,11 +60,6 @@ export class ProjetUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ project }) => {
       this.updateForm(project);
-      this.groupeService.findByActif(true).subscribe(groups => {
-        if (groups !== null && groups.body !== null) {
-          this.groups = groups.body;
-        }
-      });
       this.accountService.getAuthenticationState().subscribe(account => {
         if (account !== null) {
           this.account = account;
