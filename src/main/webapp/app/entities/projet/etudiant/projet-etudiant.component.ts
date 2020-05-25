@@ -32,42 +32,10 @@ export class ProjetEtudiantComponent implements OnInit {
   users: IUser[];
   group: Groupe;
   typeDocument: TypeDocument;
-  documentCDC: IDocument;
-  documentGANTT: IDocument;
-  documentRF: IDocument;
   documentZIP: IDocument;
-  isSavingCDC: boolean;
-  isSavingGANTT: boolean;
-  isSavingRF: boolean;
-  isSavingZIP: boolean;
-  isCreatedCDC: boolean;
-  isCreatedGANTT: boolean;
-  isCreatedRF: boolean;
-  isCreatedZIP: boolean;
-
-  documentFormCDC = this.fb.group({
-    id: [],
-    documentCDC: [],
-    documentCDCContentType: [],
-    typeDocument: [],
-    projetId: []
-  });
-
-  documentFormGANTT = this.fb.group({
-    id: [],
-    documentGANTT: [],
-    documentGANTTContentType: [],
-    typeDocument: [],
-    projetId: []
-  });
-
-  documentFormRF = this.fb.group({
-    id: [],
-    documentRF: [],
-    documentRFContentType: [],
-    typeDocument: [],
-    projetId: []
-  });
+  isSaving: boolean;
+  isCreated: boolean;
+  filename: string;
 
   documentFormZIP = this.fb.group({
     id: [],
@@ -96,13 +64,6 @@ export class ProjetEtudiantComponent implements OnInit {
       this.account = account;
     });
 
-    this.isSavingCDC = false;
-    this.isSavingGANTT = false;
-    this.isSavingRF = false;
-    this.isCreatedCDC = false;
-    this.isCreatedGANTT = false;
-    this.isCreatedRF = false;
-
     this.userExtraService.find(this.account.id).subscribe(etudiant => {
       this.groupId = etudiant.body.groupeId;
       this.groupeService.find(this.groupId).subscribe(groupe => {
@@ -113,16 +74,8 @@ export class ProjetEtudiantComponent implements OnInit {
         this.documentService.findByProjetId(+this.project.id).subscribe(documents => {
           if (documents.body.length > 0) {
             documents.body.forEach(document => {
-              if (document.typeDocument === TypeDocument.CDC) {
-                this.documentCDC = document;
-              } else if (document.typeDocument === TypeDocument.GANTT) {
-                this.documentGANTT = document;
-              } else if (document.typeDocument === TypeDocument.RF) {
-                this.documentRF = document;
-              } else {
-                this.documentZIP = document;
-                this.updateFormZIP(this.documentZIP);
-              }
+              this.documentZIP = document;
+              this.updateForm(this.documentZIP);
             });
           }
         });
@@ -145,7 +98,7 @@ export class ProjetEtudiantComponent implements OnInit {
     });
   }
 
-  updateFormZIP(document: IDocument): void {
+  updateForm(document: IDocument): void {
     this.documentFormZIP.patchValue({
       id: document.id,
       documentZIP: document.doc,
@@ -156,54 +109,32 @@ export class ProjetEtudiantComponent implements OnInit {
   }
 
   openFile(contentType: string, base64String: string): void {
-    // return this.dataUtils.openFile(contentType, base64String);
-    const filename = '';
-    return this.dataUtils.downloadFile(contentType, base64String, filename); // (contentType: string, data: string, fileName: string)
+    console.error(this.filename);
+    this.filename = this.project.nom;
+    return this.dataUtils.downloadFile(contentType, base64String, this.filename);
   }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
 
-  setFileData(event: Event, field: string, isImage: boolean, typeDocument: string): void {
-    if (typeDocument === 'CDC') {
-      this.isSavingCDC = true;
-      this.dataUtils.loadFileToForm(event, this.documentFormCDC, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-        this.eventManager.broadcast(
-          new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
-        );
-      });
-    } else if (typeDocument === 'GANTT') {
-      this.isSavingGANTT = true;
-      this.dataUtils.loadFileToForm(event, this.documentFormGANTT, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-        this.eventManager.broadcast(
-          new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
-        );
-      });
-    } else if (typeDocument === 'RF') {
-      this.isSavingRF = true;
-      this.dataUtils.loadFileToForm(event, this.documentFormRF, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-        this.eventManager.broadcast(
-          new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
-        );
-      });
-    } else {
-      this.isSavingZIP = true;
-      this.dataUtils.loadFileToForm(event, this.documentFormZIP, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-        this.eventManager.broadcast(
-          new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
-        );
-      });
-    }
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    const target = event.target as HTMLInputElement;
+    const file: File = target.files[0];
+    this.filename = file.name.toString();
+    console.error(file, this.filename);
+    this.isSaving = true;
+    this.dataUtils.loadFileToForm(event, this.documentFormZIP, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
+      this.eventManager.broadcast(
+        new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
+      );
+    });
   }
 
   handleSubmitForm(): void {
-    this.saveDocumentCDC();
-    this.saveDocumentGANTT();
-    this.saveDocumentRF();
-    this.saveDocumentZIP();
+    this.saveDocument();
 
-    if (!this.isSavingCDC || !this.isSavingGANTT || !this.isSavingRF || !this.isSavingZIP) {
+    if (!this.isSaving) {
       this.toastrService.success(
         this.translateService.instant('global.toastr.documents.depot.message'),
         this.translateService.instant('global.toastr.documents.depot.title')
@@ -211,111 +142,31 @@ export class ProjetEtudiantComponent implements OnInit {
     }
   }
 
-  saveDocumentCDC(): void {
-    if (this.isSavingCDC) {
-      if (this.documentFormCDC.get(['id']).value !== null || this.isCreatedCDC) {
-        const documentCDC = this.createFromForm(false, TypeDocument.CDC);
-        this.documentService.update(documentCDC).subscribe();
-      } else {
-        if (!this.isCreatedCDC) {
-          const documentCDC = this.createFromForm(true, TypeDocument.CDC);
-          this.documentService.create(documentCDC).subscribe();
-          this.isCreatedCDC = true;
-        }
-      }
-      this.isSavingCDC = false;
-    }
-  }
-
-  saveDocumentRF(): void {
-    if (this.isSavingRF) {
-      if (this.documentFormRF.get(['id']).value !== null || this.isCreatedRF) {
-        const documentRF = this.createFromForm(false, TypeDocument.RF);
-        this.documentService.update(documentRF).subscribe();
-      } else {
-        if (!this.isCreatedRF) {
-          const documentRF = this.createFromForm(true, TypeDocument.RF);
-          this.documentService.create(documentRF).subscribe();
-          this.isCreatedRF = true;
-        }
-      }
-    }
-    this.isSavingRF = false;
-  }
-
-  saveDocumentGANTT(): void {
-    if (this.isSavingGANTT) {
-      if (this.documentFormGANTT.get(['id']).value !== null || this.isCreatedGANTT) {
-        const documentGANTT = this.createFromForm(false, TypeDocument.GANTT);
-        this.documentService.update(documentGANTT).subscribe();
-      } else {
-        if (!this.isCreatedGANTT) {
-          const documentGANTT = this.createFromForm(true, TypeDocument.GANTT);
-          this.documentService.create(documentGANTT).subscribe();
-          this.isCreatedGANTT = true;
-        }
-      }
-      this.isSavingGANTT = false;
-    }
-  }
-
-  saveDocumentZIP(): void {
-    if (this.isSavingZIP) {
-      if (this.documentFormZIP.get(['id']).value !== null || this.isCreatedZIP) {
-        const documentZIP = this.createFromForm(false, TypeDocument.ZIP);
+  saveDocument(): void {
+    if (this.isSaving) {
+      if (this.documentFormZIP.get(['id']).value !== null || this.isCreated) {
+        const documentZIP = this.createFromForm(false);
         this.documentService.update(documentZIP).subscribe();
       } else {
-        if (!this.isCreatedZIP) {
-          const documentZIP = this.createFromForm(true, TypeDocument.ZIP);
+        if (!this.isCreated) {
+          const documentZIP = this.createFromForm(true);
           this.documentService.create(documentZIP).subscribe();
-          this.isCreatedZIP = true;
+          this.isCreated = true;
         }
       }
-      this.isSavingZIP = false;
+      this.isSaving = false;
     }
   }
 
-  createFromForm(create: boolean, typeDocument: TypeDocument): IDocument {
-    if (typeDocument === TypeDocument.CDC) {
-      return {
-        ...new Document(),
-        id: create ? undefined : this.documentFormCDC.get(['id']).value,
-        docContentType: this.documentFormCDC.get(['documentCDCContentType']).value,
-        doc: this.documentFormCDC.get(['documentCDC']).value,
-        typeDocument: TypeDocument.CDC,
-        projetId: this.project.id,
-        actif: true
-      };
-    } else if (typeDocument === TypeDocument.GANTT) {
-      return {
-        ...new Document(),
-        id: create ? undefined : this.documentFormGANTT.get(['id']).value,
-        docContentType: this.documentFormGANTT.get(['documentGANTTContentType']).value,
-        doc: this.documentFormGANTT.get(['documentGANTT']).value,
-        typeDocument: TypeDocument.GANTT,
-        projetId: this.project.id,
-        actif: true
-      };
-    } else if (typeDocument === TypeDocument.RF) {
-      return {
-        ...new Document(),
-        id: create ? undefined : this.documentFormRF.get(['id']).value,
-        docContentType: this.documentFormRF.get(['documentRFContentType']).value,
-        doc: this.documentFormRF.get(['documentRF']).value,
-        typeDocument: TypeDocument.RF,
-        projetId: this.project.id,
-        actif: true
-      };
-    } else {
-      return {
-        ...new Document(),
-        id: create ? undefined : this.documentFormZIP.get(['id']).value,
-        docContentType: this.documentFormZIP.get(['documentZIPContentType']).value,
-        doc: this.documentFormZIP.get(['documentZIP']).value,
-        typeDocument: TypeDocument.ZIP,
-        projetId: this.project.id,
-        actif: true
-      };
-    }
+  createFromForm(create: boolean): IDocument {
+    return {
+      ...new Document(),
+      id: create ? undefined : this.documentFormZIP.get(['id']).value,
+      docContentType: this.documentFormZIP.get(['documentZIPContentType']).value,
+      doc: this.documentFormZIP.get(['documentZIP']).value,
+      typeDocument: TypeDocument.ZIP,
+      projetId: this.project.id,
+      actif: true
+    };
   }
 }
