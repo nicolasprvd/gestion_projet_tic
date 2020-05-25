@@ -196,6 +196,10 @@
         "sujet": "Negative answer - project award",
         "message": "The {{nom}} project has not been assigned to your group because it has been deleted. Please go to the site to choose a different one."
       },
+      "editionProjet": {
+        "sujet": "Negative answer - project award",
+        "message": "The {{nom}} project has not been assigned to your group because it has been edited. Please go to the site to apply again or to choose a different one."
+      },
       "assignProject": {
         "negative": {
           "subject": "Negative answer - project assignation",
