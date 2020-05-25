@@ -52,6 +52,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   displayedProjects: IProjet[];
   displayMyProjects = false;
   gradeSelected: TypeCursus = null;
+  displayAssignButton: boolean;
 
   constructor(
     protected projetService: ProjetService,
@@ -222,6 +223,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.groups = this.groups;
     modalRef.componentInstance.extras = this.extras;
     modalRef.componentInstance.users = this.users;
+    modalRef.componentInstance.passEntry.subscribe((value: boolean) => {
+      if(value) {
+        this.displayAssignButton = false;
+      }
+    });
   }
 
   /**
@@ -238,6 +244,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
     if (this.groups !== null && this.groups !== undefined) {
       for (const g of this.groups) {
         if (g.projetId === idProject) {
+          this.displayAssignButton = true;
           return true;
         }
       }

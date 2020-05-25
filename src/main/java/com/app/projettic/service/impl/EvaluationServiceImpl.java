@@ -51,6 +51,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     public EvaluationDTO save(EvaluationDTO evaluationDTO) {
         log.debug("Request to save Evaluation : {}", evaluationDTO);
         Evaluation evaluation = evaluationMapper.toEntity(evaluationDTO);
+        log.debug("ici entity : {}", evaluation);
         evaluation = evaluationRepository.save(evaluation);
         EvaluationDTO result = evaluationMapper.toDto(evaluation);
         evaluationSearchRepository.save(evaluation);

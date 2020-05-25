@@ -109,7 +109,7 @@
                                 <span jhiTranslate="entity.action.edit">Edit</span>
                             </button>
 
-                            <button *ngIf="isAllowed(projet, false) && projet.groupeId === null && isChoosenByGroup(projet.id)===true" type="button"
+                            <button *ngIf="isAllowed(projet, false) && projet.groupeId === null && isChoosenByGroup(projet.id)===true && displayAssignButton" type="button"
                                     [routerLink]="['/projet', projet.id, 'attribuer']"
                                     class="btn btn-success btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.attribuate">Attribuer</span>
