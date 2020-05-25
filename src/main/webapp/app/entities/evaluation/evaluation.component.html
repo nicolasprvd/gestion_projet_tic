@@ -2,7 +2,7 @@
     <h2 id="page-heading">
         <span jhiTranslate="projetticApp.evaluation.home.title">Evaluations</span>
 
-        <button type="submit" (click)="exporter()" class="btn btn-success float-right">
+        <button *ngIf="extrasFiltres?.length > 0" type="submit" (click)="exporter()" class="btn btn-success float-right">
             <fa-icon icon="book"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
         </button>
     </h2>
@@ -10,10 +10,6 @@
     <jhi-alert-error></jhi-alert-error>
 
     <hr>
-
-    <div class="alert alert-warning" id="no-result" *ngIf="!isEvaluationAffiche()">
-        <span jhiTranslate="projetticApp.evaluation.home.notFound">No evaluations found</span>
-    </div>
 
     <div class="table-responsive" id="entities" *ngIf="isEvaluationAffiche()">
         <div class="filterButtonsEvaluation">
@@ -34,7 +30,11 @@
             </button>
         </div>
 
-        <table class="table table-striped" aria-describedby="page-heading">
+        <div class="alert alert-warning" id="no-result" *ngIf="extrasFiltres?.length === 0">
+            <span jhiTranslate="projetticApp.evaluation.home.notFound">No evaluations found</span>
+        </div>
+
+        <table *ngIf="extrasFiltres?.length > 0" class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr>
                     <th scope="col" ><span jhiTranslate="projetticApp.evaluation.etudiant"></span></th>
