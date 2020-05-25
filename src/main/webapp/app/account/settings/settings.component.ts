@@ -53,7 +53,7 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  save(): void {
+  saveSettings(): void {
     this.success = false;
 
     this.account.firstName = this.settingsForm.get('firstName')!.value;

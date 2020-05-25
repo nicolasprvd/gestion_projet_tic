@@ -199,4 +199,28 @@ public class AccountResource {
             password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
             password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH;
     }
+
+    /**
+     * {@code POST   /account/login-forgot} : Send an email to get user's login.
+     *
+     * @param mail the mail of the user.
+     */
+    @PostMapping(path = "/account/login-forgot")
+    public void loginForgot(@RequestBody String mail) {
+        Optional<User> user = userService.requestPasswordReset(mail);
+        if (user.isPresent()) {
+            mailService.sendEmail(
+                user.get().getEmail(),
+                "Récupération de votre login",
+                "Votre login est : " + user.get().getLogin(),
+                false,
+                false
+            );
+        } else {
+            log.warn("Login requested for non existing mail '{}'", mail);
+        }
+    }
+
+
+
 }
