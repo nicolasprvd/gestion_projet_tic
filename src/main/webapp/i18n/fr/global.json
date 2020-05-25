@@ -196,6 +196,10 @@
         "sujet": "Réponse négative - attribution du projet",
         "message": "Le projet {{nom}} n'a pas été attribué à votre groupe car il a été supprimé. Veuillez vous rendre sur le site pour en choisir un autre."
       },
+      "editionProjet": {
+        "sujet": "Réponse négative - attribution du projet",
+        "message": "Le projet {{nom}} n'a pas été attribué à votre groupe car il a été modifié. Veuillez vous rendre sur le site pour postuler à nouveau dessus ou pour en choisir un autre."
+      },
       "assignProject": {
         "negative": {
           "subject": "Assignation du projet - réponse négative",

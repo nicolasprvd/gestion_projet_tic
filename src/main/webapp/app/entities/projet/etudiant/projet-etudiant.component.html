@@ -36,30 +36,28 @@
     <div class="mtl">
         <label class="man bold" jhiTranslate="projetticApp.projet.documents.title"></label>
         <div class="row">
-            <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormCDC">
-                <!-- Document CDC -->
+            <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormZIP">
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.cdc" for="field_documentCDC"></label>
+                    <!-- <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.cdc" for="field_documentCDC"></label> -->
                     <div>
-                        <div *ngIf="documentFormCDC.get('documentCDC')!.value" class="form-text text-danger clearfix">
-                            <a class="pull-left" (click)="openFile(documentFormCDC.get('documentCDCContentType')!.value, documentFormCDC.get('documentCDC')!.value)" jhiTranslate="entity.action.open">open</a><br>
-                            <span class="pull-left">{{ documentFormCDC.get('documentCDCContentType')!.value }}, {{ byteSize(documentFormCDC.get('documentCDC')!.value) }}</span>
-                            <button type="button" (click)="documentFormCDC.patchValue({documentCDC: null});documentFormCDC.patchValue({documentCDCContentType: null});"
+                        <div *ngIf="documentFormZIP.get('documentZIP')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(documentFormZIP.get('documentZIPContentType')!.value, documentFormZIP.get('documentZIP')!.value)" jhiTranslate="entity.action.open">open</a><br>
+                            <span class="pull-left">{{ documentFormZIP.get('documentZIPContentType')!.value }}, {{ byteSize(documentFormZIP.get('documentZIP')!.value) }}</span>
+                            <button type="button" (click)="documentFormZIP.patchValue({documentZIP: null});documentFormZIP.patchValue({documentZIPContentType: null});"
                                     class="btn btn-secondary btn-xs pull-right">
                                 <fa-icon icon="times"></fa-icon>
                             </button>
                         </div>
-                        <input type="file" id="file_documentCDC" (change)="setFileData($event, 'documentCDC', false, 'CDC')" jhiTranslate="entity.action.addblob"/>
+                        <input type="file" id="file_documentZIP" (change)="setFileData($event, 'documentZIP', false)" jhiTranslate="entity.action.addblob"/>
                     </div>
-                    <input type="hidden" class="form-control" name="documentCDC" id="field_documentCDC"
-                           formControlName="documentCDC"/>
-                    <input type="hidden" class="form-control" name="documentCDCContentType" id="field_documentCDCContentType"
-                           formControlName="documentCDCContentType" />
+                    <input type="hidden" class="form-control" name="documentZIP" id="field_documentZIP"
+                           formControlName="documentZIP"/>
+                    <input type="hidden" class="form-control" name="documentZIPContentType" id="field_documentZIPContentType"
+                           formControlName="documentZIPContentType" />
                 </div>
             </form>
-
+            <!--
             <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormGANTT">
-                <!-- Document GANTT -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.gantt" for="field_documentGANTT"></label>
                     <div>
@@ -81,7 +79,6 @@
             </form>
 
             <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormRF">
-                <!-- Document RF -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.rendu" for="field_documentRF"></label>
                     <div>
@@ -101,6 +98,7 @@
                            formControlName="documentRFContentType" />
                 </div>
             </form>
+             -->
         </div>
     </div>
 

@@ -49,7 +49,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
   M1: TypeCursus = TypeCursus.M1;
   M2: TypeCursus = TypeCursus.M2;
   projects: IProjet[];
-  displayedProjects: IProjet[];
+  displayedProjects: IProjet[] = [];
   displayMyProjects = false;
   gradeSelected: TypeCursus = null;
 
@@ -92,7 +92,11 @@ export class ProjetComponent implements OnInit, OnDestroy {
         if (projects !== null && projects.body !== null) {
           this.projects = projects.body;
           this.allProjets = projects.body;
-          this.displayedProjects = projects.body;
+          for (const project of projects.body) {
+            if (project.groupeId === null) {
+              this.displayedProjects.push(project);
+            }
+          }
         }
       });
     } else {
