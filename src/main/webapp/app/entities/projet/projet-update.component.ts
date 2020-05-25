@@ -100,6 +100,8 @@ export class ProjetUpdateComponent implements OnInit {
    * @param project
    */
   updateForm(project: IProjet): void {
+    this.defaultStudentNumber = project.nbEtudiant;
+    this.defaultGrade = project.cursus;
     this.editForm.patchValue({
       id: project.id,
       nom: project.nom,
