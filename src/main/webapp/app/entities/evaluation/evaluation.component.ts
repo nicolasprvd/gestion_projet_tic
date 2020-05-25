@@ -30,21 +30,21 @@ export class EvaluationComponent implements OnInit, OnDestroy {
   currentSearch: string;
   users: IUser[] = [];
   extras: IUserExtra[] = [];
-  extrasFiltres: IUserExtra[] = [];
-  projets: IProjet[] = [];
-  noteCDC: string;
+  filteredExtra: IUserExtra[] = [];
+  projects: IProjet[] = [];
+  markCDC: string;
   coefCDC: string;
-  noteSoutenance: string;
-  coefSoutenance: string;
-  noteRendu: string;
-  coefRendu: string;
-  noteFinale: string;
-  projetActuelId: number;
-  projetActuelNom: string;
+  markDefense: string;
+  coefDefense: string;
+  markRendering: string;
+  coefRendering: string;
+  finalMark: string;
+  currentProjectId: number;
+  currentProjectName: string;
   L3: TypeCursus = TypeCursus.L3;
   M1: TypeCursus = TypeCursus.M1;
   M2: TypeCursus = TypeCursus.M2;
-  cursusSelectionne: TypeCursus;
+  selectedGrade: TypeCursus;
 
   constructor(
     protected evaluationService: EvaluationService,
@@ -88,12 +88,12 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     this.userExtraService.findByActif(true).subscribe(extras => {
       if (extras !== null) {
         this.extras = extras.body;
-        this.filtrerEtudiant(this.L3);
+        this.filterStudents(this.L3);
       }
     });
     this.projetService.findAll().subscribe(projets => {
       if (projets !== null) {
-        this.projets = projets;
+        this.projects = projets;
       }
     });
   }
@@ -113,7 +113,10 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.evaluation = evaluation;
   }
 
-  isEvaluationAffiche(): boolean {
+  /**
+   * Return true if a student exist
+   */
+  isDisplayedEvaluation(): boolean {
     if (this.extras !== null) {
       for (const extra of this.extras) {
         if (extra.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
@@ -124,56 +127,74 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  isEtudiantActif(extra: IUserExtra): boolean {
+  /**
+   * Return true if the user is an active student
+   * @param extra
+   */
+  isActiveStudent(extra: IUserExtra): boolean {
     if (extra !== null) {
       return extra.actif && extra.typeUtilisateur === TypeUtilisateur.ETUDIANT;
     }
     return false;
   }
 
-  getEtudiant(extra: IUserExtra): string {
+  /**
+   * Return the name of the user
+   * @param extra
+   */
+  getStudentName(extra: IUserExtra): string {
     if (extra !== null && this.users !== null && this.users !== undefined) {
       for (const user of this.users) {
         if (user.id === extra.id) {
           this.getEvaluation(extra.evaluationId);
-          return this.formatNom(user.firstName) + ' ' + user.lastName.toUpperCase();
+          return this.formatName(user.firstName) + ' ' + user.lastName.toUpperCase();
         }
       }
     }
     return '';
   }
 
+  /**
+   * Search and set all parameters of the evaluation param
+   * @param evaluation
+   */
   getEvaluation(evaluation: number): void {
-    this.noteCDC = null;
+    this.markCDC = null;
     this.coefCDC = null;
-    this.noteSoutenance = null;
-    this.coefSoutenance = null;
-    this.noteRendu = null;
-    this.coefRendu = null;
-    this.noteFinale = null;
+    this.markDefense = null;
+    this.coefDefense = null;
+    this.markRendering = null;
+    this.coefRendering = null;
+    this.finalMark = null;
     if (this.evaluations !== null && this.evaluations !== undefined) {
       for (const eva of this.evaluations) {
         if (eva.id === evaluation) {
-          this.noteCDC = eva.noteCDC.toString();
+          this.markCDC = eva.noteCDC.toString();
           this.coefCDC = eva.coefCDC.toString();
-          this.noteSoutenance = eva.noteSoutenance.toString();
-          this.coefSoutenance = eva.coefSoutenance.toString();
-          this.noteRendu = eva.noteRendu.toString();
-          this.coefRendu = eva.coefRendu.toString();
-          this.noteFinale = eva.noteFinale.toString();
+          this.markDefense = eva.noteSoutenance.toString();
+          this.coefDefense = eva.coefSoutenance.toString();
+          this.markRendering = eva.noteRendu.toString();
+          this.coefRendering = eva.coefRendu.toString();
+          this.finalMark = eva.noteFinale.toString();
           return;
         }
       }
     }
   }
 
-  getNoteCDC(): string {
-    if (this.noteCDC) {
-      return this.noteCDC;
+  /**
+   * Return the CDC mark
+   */
+  getMarkCDC(): string {
+    if (this.markCDC) {
+      return this.markCDC;
     }
     return '-';
   }
 
+  /**
+   * Return the CDC coefficient
+   */
   getCoefCDC(): string {
     if (this.coefCDC) {
       return this.coefCDC;
@@ -181,137 +202,175 @@ export class EvaluationComponent implements OnInit, OnDestroy {
     return '-';
   }
 
-  getNoteSoutenance(): string {
-    if (this.noteSoutenance) {
-      return this.noteSoutenance;
+  /**
+   * Return the defense mark
+   */
+  getMarkDefense(): string {
+    if (this.markDefense) {
+      return this.markDefense;
     }
     return '-';
   }
 
-  getCoefSoutenance(): string {
-    if (this.coefSoutenance) {
-      return this.coefSoutenance;
+  /**
+   * Return the defense coefficient
+   */
+  getCoefDefense(): string {
+    if (this.coefDefense) {
+      return this.coefDefense;
     }
     return '-';
   }
 
-  getNoteRendu(): string {
-    if (this.noteRendu) {
-      return this.noteRendu;
+  /**
+   * Return the rendering mark
+   */
+  getMarkRendering(): string {
+    if (this.markRendering) {
+      return this.markRendering;
     }
     return '-';
   }
 
-  getCoefRendu(): string {
-    if (this.coefRendu) {
-      return this.coefRendu;
+  /**
+   * Return the rendering coefficient
+   */
+  getCoefRendering(): string {
+    if (this.coefRendering) {
+      return this.coefRendering;
     }
     return '-';
   }
 
-  getNoteFinale(): string {
-    if (this.noteFinale) {
-      return this.noteFinale;
+  /**
+   * Return the final mark
+   */
+  getFinalMark(): string {
+    if (this.finalMark) {
+      return this.finalMark;
     }
     return '-';
   }
 
-  formatNom(str: string): string {
+  /**
+   * Format the name
+   * entry : aaaaaaa
+   * return : Aaaaaaa
+   * @param str
+   */
+  formatName(str: string): string {
     str = str.toLowerCase();
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  getProjet(groupe: number): boolean {
-    this.projetActuelId = null;
-    this.projetActuelNom = null;
-    if (groupe !== null) {
-      if (this.projets !== null && this.projets !== undefined) {
-        for (const projet of this.projets) {
-          if (projet.groupeId === groupe) {
-            if (projet.nom === null || projet.nom === '') {
-              this.projetActuelNom = '-';
+  /**
+   * Return the project name of the param group
+   * @param group
+   */
+  getProject(group: number): boolean {
+    this.currentProjectId = null;
+    this.currentProjectName = null;
+    if (group !== null) {
+      if (this.projects !== null && this.projects !== undefined) {
+        for (const project of this.projects) {
+          if (project.groupeId === group) {
+            if (project.nom === null || project.nom === '') {
+              this.currentProjectName = '-';
               return true;
             }
-            this.projetActuelId = projet.id;
-            this.projetActuelNom = projet.nom;
+            this.currentProjectId = project.id;
+            this.currentProjectName = project.nom;
             return true;
           }
         }
       }
     }
-    this.projetActuelNom = '-';
+    this.currentProjectName = '-';
     return true;
   }
 
-  exporter(): void {
+  /**
+   * Generate the csv file based on the evaluation table
+   */
+  export(): void {
     const table = document.getElementById('data') as HTMLTableElement;
-    let donnees = '';
-    let nomFichier = '';
+    let data = '';
+    let fileName = '';
     if (this.translate.currentLang === this.translate.getLangs()[0]) {
-      donnees =
+      data =
         'Étudiant;Projet;Note cahier des charges;Coefficient cahier des charges;' +
         'Note soutenance;Coefficient soutenance;Note rendu;Coefficient rendu;Note finale';
-      nomFichier = this.cursusSelectionne + '_evaluation_projets.csv';
+      fileName = this.selectedGrade + '_evaluation_projets.csv';
     } else {
-      donnees =
+      data =
         'Student;Project;Specification mark;Specification coefficient;Defense mark;' +
         'Defense coefficient;Rendering mark;Rendering coefficient;Final mark';
-      nomFichier = this.cursusSelectionne + '_rating_projects.csv';
+      fileName = this.selectedGrade + '_rating_projects.csv';
     }
-    const rows = table.rows;
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i];
-      donnees =
-        donnees +
-        '\r\n' +
-        row.cells[0].textContent.trim() +
-        ';' +
-        row.cells[1].textContent.trim() +
-        ';' +
-        row.cells[2].textContent.trim() +
-        ';' +
-        row.cells[3].textContent.trim() +
-        ';' +
-        row.cells[4].textContent.trim() +
-        ';' +
-        row.cells[5].textContent.trim() +
-        ';' +
-        row.cells[6].textContent.trim() +
-        ';' +
-        row.cells[7].textContent.trim() +
-        ';' +
-        row.cells[8].textContent.trim();
-    }
-    const modalRef = this.modalService.open(EvaluationExportComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.passEntry.subscribe((value: boolean) => {
-      if (value) {
-        const blob = new Blob([donnees], { type: 'type/txt' });
-        const url = window.URL.createObjectURL(blob);
-        const doc = document.createElement('a');
-        doc.href = url;
-        doc.download = nomFichier;
-        document.body.appendChild(doc);
-        doc.click();
-        document.body.removeChild(doc);
-        window.URL.revokeObjectURL(url);
-      } else {
-        console.error('');
+    if (table !== null) {
+      const rows = table.rows;
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        data =
+          data +
+          '\r\n' +
+          row.cells[0].textContent.trim() +
+          ';' +
+          row.cells[1].textContent.trim() +
+          ';' +
+          row.cells[2].textContent.trim() +
+          ';' +
+          row.cells[3].textContent.trim() +
+          ';' +
+          row.cells[4].textContent.trim() +
+          ';' +
+          row.cells[5].textContent.trim() +
+          ';' +
+          row.cells[6].textContent.trim() +
+          ';' +
+          row.cells[7].textContent.trim() +
+          ';' +
+          row.cells[8].textContent.trim();
       }
-    });
+      const modalRef = this.modalService.open(EvaluationExportComponent, { size: 'lg', backdrop: 'static' });
+      modalRef.componentInstance.passEntry.subscribe((value: boolean) => {
+        if (value) {
+          const blob = new Blob([data], { type: 'type/txt' });
+          const url = window.URL.createObjectURL(blob);
+          const doc = document.createElement('a');
+          doc.href = url;
+          doc.download = fileName;
+          document.body.appendChild(doc);
+          doc.click();
+          document.body.removeChild(doc);
+          window.URL.revokeObjectURL(url);
+        } else {
+          console.error('');
+        }
+      });
+    }
   }
 
-  filtrerEtudiant(niveau: TypeCursus): void {
-    this.cursusSelectionne = niveau;
-    this.extrasFiltres = [];
+  /**
+   * Filter students bu grade
+   * @param grade
+   */
+  filterStudents(grade: TypeCursus): void {
+    this.selectedGrade = grade;
+    this.filteredExtra = [];
     for (const extra of this.extras) {
-      if (extra.cursus === niveau) {
-        this.extrasFiltres.push(extra);
+      if (extra.cursus === grade) {
+        this.filteredExtra.push(extra);
       }
     }
-    this.modifierCouleurBoutonFiltre(niveau);
+    this.changeColorFilterButtons(grade);
   }
 
-  modifierCouleurBoutonFiltre(niveau: TypeCursus): void {
+  /**
+   * Change color buttons based on the pushed grade button
+   * @param grade
+   */
+  changeColorFilterButtons(grade: TypeCursus): void {
     if (
       document.getElementById('filtreL3') !== null &&
       document.getElementById('filtreM1') !== null &&
@@ -320,9 +379,9 @@ export class EvaluationComponent implements OnInit, OnDestroy {
       document.getElementById('filtreL3').setAttribute('class', 'btn btn-danger btn-sm');
       document.getElementById('filtreM1').setAttribute('class', 'btn btn-danger btn-sm');
       document.getElementById('filtreM2').setAttribute('class', 'btn btn-danger btn-sm');
-      if (niveau === TypeCursus.L3) {
+      if (grade === TypeCursus.L3) {
         document.getElementById('filtreL3').setAttribute('class', 'btn btn-success btn-sm');
-      } else if (niveau === TypeCursus.M1) {
+      } else if (grade === TypeCursus.M1) {
         document.getElementById('filtreM1').setAttribute('class', 'btn btn-success btn-sm');
       } else {
         document.getElementById('filtreM2').setAttribute('class', 'btn btn-success btn-sm');

@@ -12,7 +12,7 @@
       "updated": "Le Evaluation avec l'identifiant {{ param }} a été mis à jour",
       "deleted": "Le Evaluation avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Evaluation {{ id }} ?"
+        "question": "Êtes-vous certain de vouloir supprimer le Evaluation {{ id }} ?"
       },
       "detail": {
         "title": "Evaluation"

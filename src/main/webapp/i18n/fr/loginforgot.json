@@ -1,0 +1,18 @@
+{
+  "loginforgot": {
+    "request": {
+      "title": "Récupérer son nom d'utilisateur",
+      "form": {
+        "button": "Récupérer son nom d'utilisateur"
+      },
+      "messages": {
+        "info": "Veuillez renseigner l'adresse email utilisée pour vous enregistrer",
+        "success": "Veuillez vérifier vos emails. Votre nom d'utilisateur vous a été envoyé"
+      },
+      "email": {
+        "subject": "Récupération de votre login",
+        "content": "Votre login est {{login}}"
+      }
+    }
+  }
+}

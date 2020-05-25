@@ -148,12 +148,12 @@
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="registerForm.get('email')?.errors?.pattern && isClient()"
+                               *ngIf="registerForm.get('email')?.errors?.pattern && isCustomer()"
                                jhiTranslate="global.messages.validate.email.invalid">
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="registerForm.get('email')?.errors?.pattern && !isClient()"
+                               *ngIf="registerForm.get('email')?.errors?.pattern && !isCustomer()"
                                jhiTranslate="global.messages.validate.email.pattern">
                         </small>
                     </div>
@@ -163,8 +163,8 @@
                 <div class="form-group">
                     <label class="form-control-label" for="typeUtilisateur" jhiTranslate="register.form.label.typeUtilisateur"></label>
 
-                    <select name="typeUtilisateur" id="typeUtilisateur" class="form-control" formControlName="typeUtilisateur" [(ngModel)]="typeUtilisateurDefault" (change)="afficherCursus()">
-                        <option *ngFor="let statut of typeUtilisateurs" [value]="statut">{{ statut }}</option>
+                    <select name="typeUtilisateur" id="typeUtilisateur" class="form-control" formControlName="typeUtilisateur" [(ngModel)]="userTypeDefault" (change)="displayGrade()">
+                        <option *ngFor="let statut of userType" [value]="statut">{{ statut }}</option>
                     </select>
                 </div>
 
@@ -172,8 +172,8 @@
                 <div id="divCursus" class="form-group">
                     <label class="form-control-label" for="cursus" jhiTranslate="register.form.label.cursus"></label>
 
-                    <select name="cursus" id="cursus" class="form-control" formControlName="cursus" [(ngModel)]="cursusDefault">
-                        <option *ngFor="let niveau of cursus" [value]="niveau">{{ niveau }}</option>
+                    <select name="cursus" id="cursus" class="form-control" formControlName="cursus" [(ngModel)]="gradeDefault">
+                        <option *ngFor="let niveau of grade" [value]="niveau">{{ niveau }}</option>
                     </select>
                 </div>
 

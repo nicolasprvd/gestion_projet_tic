@@ -2,7 +2,7 @@
     <h2 id="page-heading">
         <span jhiTranslate="projetticApp.evaluation.home.title">Evaluations</span>
 
-        <button type="submit" (click)="exporter()" class="btn btn-success float-right">
+        <button *ngIf="filteredExtra?.length > 0" type="submit" (click)="export()" class="btn btn-success float-right">
             <fa-icon icon="book"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
         </button>
     </h2>
@@ -11,30 +11,30 @@
 
     <hr>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="!isEvaluationAffiche()">
-        <span jhiTranslate="projetticApp.evaluation.home.notFound">No evaluations found</span>
-    </div>
-
-    <div class="table-responsive" id="entities" *ngIf="isEvaluationAffiche()">
+    <div class="table-responsive" id="entities" *ngIf="isDisplayedEvaluation()">
         <div class="filterButtonsEvaluation">
             <button id="filtreL3" type="submit"
-                    (click)="filtrerEtudiant(L3)"
+                    (click)="filterStudents(L3)"
                     class="btn btn-success btn-sm">
                 <span>{{L3}}</span>
             </button>
             <button id="filtreM1" type="submit"
-                    (click)="filtrerEtudiant(M1)"
+                    (click)="filterStudents(M1)"
                     class="btn btn-danger btn-sm">
                 <span>{{M1}}</span>
             </button>
             <button id="filtreM2" type="submit"
-                    (click)="filtrerEtudiant(M2)"
+                    (click)="filterStudents(M2)"
                     class="btn btn-danger btn-sm">
                 <span>{{M2}}</span>
             </button>
         </div>
 
-        <table class="table table-striped" aria-describedby="page-heading">
+        <div class="alert alert-warning" id="no-result" *ngIf="filteredExtra?.length === 0">
+            <span jhiTranslate="projetticApp.evaluation.home.notFound">No evaluations found</span>
+        </div>
+
+        <table *ngIf="filteredExtra?.length > 0" class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr>
                     <th scope="col" ><span jhiTranslate="projetticApp.evaluation.etudiant"></span></th>
@@ -49,20 +49,20 @@
                 </tr>
             </thead>
             <tbody id="data">
-                <ng-container *ngFor="let extra of extrasFiltres">
-                    <tr *ngIf="isEtudiantActif(extra)">
-                        <td [textContent]="getEtudiant(extra)"></td>
-                        <td *ngIf="getProjet(extra.groupeId)">
-                            <a *ngIf="projetActuelId !== null" [textContent]="projetActuelNom" [routerLink]="['/projet', projetActuelId , 'view']"></a>
-                            <span *ngIf="projetActuelId === null" [textContent]="projetActuelNom"></span>
+                <ng-container *ngFor="let extra of filteredExtra">
+                    <tr *ngIf="isActiveStudent(extra)">
+                        <td [textContent]="getStudentName(extra)"></td>
+                        <td *ngIf="getProject(extra.groupeId)">
+                            <a *ngIf="currentProjectId !== null" [textContent]="currentProjectName" [routerLink]="['/projet', currentProjectId , 'view']"></a>
+                            <span *ngIf="currentProjectId === null" [textContent]="currentProjectName"></span>
                         </td>
-                        <td [textContent]="getNoteCDC()"></td>
+                        <td [textContent]="getMarkCDC()"></td>
                         <td [textContent]="getCoefCDC()"></td>
-                        <td [textContent]="getNoteSoutenance()"></td>
-                        <td [textContent]="getCoefSoutenance()"></td>
-                        <td [textContent]="getNoteRendu()"></td>
-                        <td [textContent]="getCoefRendu()"></td>
-                        <td [textContent]="getNoteFinale()"></td>
+                        <td [textContent]="getMarkDefense()"></td>
+                        <td [textContent]="getCoefDefense()"></td>
+                        <td [textContent]="getMarkRendering()"></td>
+                        <td [textContent]="getCoefRendering()"></td>
+                        <td [textContent]="getFinalMark()"></td>
                     </tr>
                 </ng-container>
             </tbody>

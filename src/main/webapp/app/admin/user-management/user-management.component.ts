@@ -72,10 +72,9 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       )
       .subscribe();
 
-    for(let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
       this.items.push(i);
     }
-
   }
 
   ngOnDestroy(): void {
@@ -150,12 +149,12 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  public isEtudiantMaster(user: IUser): boolean {
+  public isMasterStudent(user: IUser): boolean {
     return user.typeUtilisateur === TypeUtilisateur.ETUDIANT && user.cursus !== TypeCursus.L3;
   }
 
-  public redoubler(user: IUser): void {
-    if (this.isEtudiantMaster(this.usersExtraArray[user.id].value)) {
+  public repeatYear(user: IUser): void {
+    if (this.isMasterStudent(this.usersExtraArray[user.id].value)) {
       if (this.usersExtraArray[user.id].value.cursus === TypeCursus.M1) {
         this.usersExtraArray[user.id].value.cursus = TypeCursus.L3;
       }

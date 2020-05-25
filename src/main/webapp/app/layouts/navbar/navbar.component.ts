@@ -29,9 +29,9 @@ export class NavbarComponent implements OnInit {
   account: Account;
   authSubscription: Subscription;
   user: IUser;
-  afficheProjet: boolean;
+  displayProject: boolean;
   student: boolean;
-  typeUtilisateur: TypeUtilisateur;
+  userType: TypeUtilisateur;
 
   constructor(
     private loginService: LoginService,
@@ -48,7 +48,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.afficheProjet = false;
+    this.displayProject = false;
     this.profileService.getProfileInfo().subscribe(profileInfo => {
       this.inProduction = profileInfo.inProduction;
       this.swaggerEnabled = profileInfo.swaggerEnabled;
@@ -57,7 +57,7 @@ export class NavbarComponent implements OnInit {
       if (account !== null) {
         this.account = account;
         this.student = false;
-        this.typeUtilisateur = null;
+        this.userType = null;
         if (this.isAuthenticated()) {
           this.userExtraService.find(account.id).subscribe(ue => {
             if (ue.body.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
@@ -66,7 +66,7 @@ export class NavbarComponent implements OnInit {
                 this.groupeService.find(ue.body.groupeId).subscribe(grp => {
                   if (grp !== null && grp.body !== null) {
                     if (grp.body.valide === true) {
-                      this.afficheProjet = true;
+                      this.displayProject = true;
                     }
                   }
                 });
@@ -97,7 +97,7 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     this.collapseNavbar();
-    this.afficheProjet = false;
+    this.displayProject = false;
     this.loginService.logout();
     this.router.navigate(['']);
   }
