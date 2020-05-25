@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+        <form name="editForm" role="form" novalidate (ngSubmit)="saveProject()" [formGroup]="editForm">
             <div *ngIf="!editForm.get('id')!.value">
                 <h2 jhiTranslate="projetticApp.projet.home.create"></h2>
             </div>
@@ -54,7 +54,7 @@
                <!-- Nombre d'étudiant -->
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.nbEtudiant" for="field_nbEtudiant"></label>
-                    <select id="field_nbEtudiant" class="form-control" name="nbEtudiant"  formControlName="nbEtudiant" [(ngModel)]="nbEtudiantDefault">
+                    <select id="field_nbEtudiant" class="form-control" name="nbEtudiant"  formControlName="nbEtudiant" [(ngModel)]="defaultStudentNumber">
                         <option *ngFor="let index of [2,3,4,5,6,7,8,9,10]" >{{ index }} </option>
                     </select>
                 </div>
@@ -63,8 +63,8 @@
                 <div id="" class="form-group">
                     <label class="form-control-label" for="cursus" jhiTranslate="register.form.label.cursus"></label>
 
-                    <select name="cursus" id="cursus" class="form-control" formControlName="cursus" [(ngModel)]="cursusDefault">
-                        <option *ngFor="let niveau of cursus" [value]="niveau">{{ niveau }}</option>
+                    <select name="cursus" id="cursus" class="form-control" formControlName="cursus" [(ngModel)]="defaultGrade">
+                        <option *ngFor="let niveau of grade" [value]="niveau">{{ niveau }}</option>
                     </select>
                 </div>
 

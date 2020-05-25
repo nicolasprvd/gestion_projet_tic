@@ -1,32 +1,32 @@
 <div id="entities">
-    <h2>{{ projet?.nom }}</h2>
+    <h2>{{ project?.nom }}</h2>
     <hr>
     <div class="jh-entity-details">
         <div>
-            <label class="bold colon" jhiTranslate="projetticApp.projet.client"></label>
-            <span>{{ client?.firstName }} {{ client?.lastName }}</span>
+            <label class="colon bold" jhiTranslate="projetticApp.projet.client"></label>
+            <span>{{ customer?.firstName }} {{ customer?.lastName }}</span>
         </div>
         <div>
-            <label class="bold colon" jhiTranslate="projetticApp.projet.email"></label>
-            <span>{{ client?.email }}</span>
+            <label class="colon bold" jhiTranslate="projetticApp.projet.email"></label>
+            <span>{{ customer?.email }}</span>
         </div>
     </div>
 
     <div id="infos-student">
         <div>
-            <label class="bold colon" jhiTranslate="projetticApp.projet.nbEtudiant"></label>
-            <span>{{ projet?.nbEtudiant }}</span>
+            <label class="colon bold" jhiTranslate="projetticApp.projet.nbEtudiant"></label>
+            <span>{{ project?.nbEtudiant }}</span>
         </div>
 
         <div>
             <label class="man bold" jhiTranslate="projetticApp.projet.groupe"></label>
-            <div *ngFor="let membre of projectManager">
-                <span *ngIf="groupe.userExtraId === membre.id"><span class="colon" jhiTranslate="projetticApp.projet.form.label.chef"></span>{{ membre.firstName + " " + membre.lastName }}</span>
+            <div *ngFor="let member of projectManager">
+                <span *ngIf="group.userExtraId === member.id"><span class="colon" jhiTranslate="projetticApp.projet.form.label.chef"></span>{{ member.firstName + " " + member.lastName }}</span>
             </div>
             <div class="members">
                 <span class="colon" jhiTranslate="projetticApp.projet.form.label.membres"></span>
-                <div class="test" *ngFor="let membre of membres">
-                    <span *ngIf="groupe.userExtraId !== membre.id">{{ membre.firstName + " " + membre.lastName}}</span>
+                <div class="test" *ngFor="let member of members">
+                    <span *ngIf="group.userExtraId !== member.id">{{ member.firstName + " " + member.lastName}}</span>
                 </div>
             </div>
         </div>

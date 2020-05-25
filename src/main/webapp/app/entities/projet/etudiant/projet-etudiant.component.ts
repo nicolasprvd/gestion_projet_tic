@@ -23,16 +23,15 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./projet-etudiant.scss']
 })
 export class ProjetEtudiantComponent implements OnInit {
-  projet: IProjet;
+  project: IProjet;
   account: Account;
-  groupeId: number;
-  client: IUser;
+  groupId: number;
+  customer: IUser;
   usersExtra: IUser[];
   projectManager: IUser[];
-  membres: IUser[];
+  members: IUser[];
   users: IUser[];
-  groupe: Groupe;
-  test: number;
+  group: Groupe;
   typeDocument: TypeDocument;
   documentCDC: IDocument;
   documentGANTT: IDocument;
@@ -95,13 +94,13 @@ export class ProjetEtudiantComponent implements OnInit {
     this.isCreatedRF = false;
 
     this.userExtraService.find(this.account.id).subscribe(etudiant => {
-      this.groupeId = etudiant.body.groupeId;
-      this.groupeService.find(this.groupeId).subscribe(groupe => {
-        this.groupe = groupe.body;
+      this.groupId = etudiant.body.groupeId;
+      this.groupeService.find(this.groupId).subscribe(groupe => {
+        this.group = groupe.body;
       });
-      this.projetService.findByGroupeId(+this.groupeId).subscribe(projet => {
-        this.projet = projet.body;
-        this.documentService.findByProjetId(+this.projet.id).subscribe(documents => {
+      this.projetService.findByGroupeId(+this.groupId).subscribe(projet => {
+        this.project = projet.body;
+        this.documentService.findByProjetId(+this.project.id).subscribe(documents => {
           if (documents.body.length > 0) {
             documents.body.forEach(document => {
               if (document.typeDocument === TypeDocument.CDC) {
@@ -117,20 +116,20 @@ export class ProjetEtudiantComponent implements OnInit {
             });
           }
         });
-        this.userService.findById(+this.projet.userExtraId).subscribe(client => {
-          this.client = client;
-          this.userExtraService.findByGroupeId(+this.groupeId).subscribe(membres => {
+        this.userService.findById(+this.project.userExtraId).subscribe(client => {
+          this.customer = client;
+          this.userExtraService.findByGroupeId(+this.groupId).subscribe(membres => {
             this.usersExtra = membres.body;
             this.userService.findAll().subscribe(users => {
               this.users = users;
               this.projectManager = [];
-              this.membres = [];
+              this.members = [];
               this.usersExtra.forEach(ue => {
                 this.userService.findById(ue.id).subscribe(m => {
-                  if (this.groupe.userExtraId === m.id) {
+                  if (this.group.userExtraId === m.id) {
                     this.projectManager.push(m);
                   } else {
-                    this.membres.push(m);
+                    this.members.push(m);
                   }
                 });
               });
@@ -273,7 +272,7 @@ export class ProjetEtudiantComponent implements OnInit {
         docContentType: this.documentFormCDC.get(['documentCDCContentType']).value,
         doc: this.documentFormCDC.get(['documentCDC']).value,
         typeDocument: TypeDocument.CDC,
-        projetId: this.projet.id,
+        projetId: this.project.id,
         actif: true
       };
     } else if (typeDocument === TypeDocument.GANTT) {
@@ -283,7 +282,7 @@ export class ProjetEtudiantComponent implements OnInit {
         docContentType: this.documentFormGANTT.get(['documentGANTTContentType']).value,
         doc: this.documentFormGANTT.get(['documentGANTT']).value,
         typeDocument: TypeDocument.GANTT,
-        projetId: this.projet.id,
+        projetId: this.project.id,
         actif: true
       };
     } else {
@@ -293,7 +292,7 @@ export class ProjetEtudiantComponent implements OnInit {
         docContentType: this.documentFormRF.get(['documentRFContentType']).value,
         doc: this.documentFormRF.get(['documentRF']).value,
         typeDocument: TypeDocument.RF,
-        projetId: this.projet.id,
+        projetId: this.project.id,
         actif: true
       };
     }
