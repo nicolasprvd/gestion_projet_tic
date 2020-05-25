@@ -16,6 +16,8 @@ import { IDocument } from 'app/shared/model/document.model';
 import { TypeDocument } from 'app/shared/model/enumerations/type-document.model';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder } from '@angular/forms';
+import { IUser } from 'app/core/user/user.model';
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -26,6 +28,7 @@ export class ProjectRateComponent implements OnInit {
   project!: IProjet;
   account!: Account | null;
   groupMembers: UserExtra[] = [];
+  groupMembersNames: IUser[] = [];
   groupId: number;
   isSaving = false;
   specsDoc: IDocument = null;
@@ -39,6 +42,16 @@ export class ProjectRateComponent implements OnInit {
   outputRate = 0;
   outputCoef = 1;
   finalRate = 0;
+  filename: string;
+  documentZIP: IDocument = null;
+
+  document = this.fb.group({
+    id: [],
+    documentZIP: [],
+    documentZIPContentType: [],
+    typeDocument: [],
+    projetId: []
+  });
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -51,7 +64,8 @@ export class ProjectRateComponent implements OnInit {
     private evaluationService: EvaluationService,
     private router: Router,
     private toastrService: ToastrService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -64,17 +78,10 @@ export class ProjectRateComponent implements OnInit {
 
     this.documentService.findByProjetId(this.project.id).subscribe(documents => {
       if (documents !== null) {
-        for (const document of documents.body) {
-          if (document.typeDocument === TypeDocument.CDC) {
-            this.specsDoc = document;
-          }
-          if (document.typeDocument === TypeDocument.GANTT) {
-            this.ganttDoc = document;
-          }
-          if (document.typeDocument === TypeDocument.RF) {
-            this.outputDoc = document;
-          }
-        }
+        documents.body.forEach(document => {
+          this.documentZIP = document;
+          this.updateDocument(document);
+        });
       }
     });
 
@@ -92,6 +99,28 @@ export class ProjectRateComponent implements OnInit {
           }
         }
       }
+      this.userService.findByActivated(true).subscribe(users => {
+        if (users != null) {
+          for (const member of this.groupMembers) {
+            for (const user of users) {
+              if (member.id === user.id) {
+                this.groupMembersNames.push(user);
+              }
+            }
+          }
+        }
+      });
+    });
+    console.error(this.groupMembers);
+  }
+
+  updateDocument(document: IDocument): void {
+    this.document.patchValue({
+      id: document.id,
+      documentZIP: document.doc,
+      documentZIPContentType: document.docContentType,
+      typeDocument: document.typeDocument,
+      projetId: document.projetId
     });
   }
 
@@ -231,7 +260,12 @@ export class ProjectRateComponent implements OnInit {
     window.history.back();
   }
 
-  openFile(docContentType: string, doc: string): void {
-    this.dataUtils.openFile(docContentType, doc);
+  openFile(contentType: string, base64String: string): void {
+    this.filename = this.project.cursus + '_';
+    this.groupMembersNames.forEach(member => {
+      this.filename += member.lastName.toUpperCase() + '_';
+    });
+    this.filename = this.filename.substring(0, this.filename.length - 1);
+    return this.dataUtils.downloadFile(contentType, base64String, this.filename);
   }
 }

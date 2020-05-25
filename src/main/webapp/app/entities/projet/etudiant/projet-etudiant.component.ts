@@ -111,7 +111,7 @@ export class ProjetEtudiantComponent implements OnInit {
   openFile(contentType: string, base64String: string): void {
     this.filename = this.project.cursus + '_';
     this.members.forEach(membre => {
-      this.filename += membre.lastName + '_';
+      this.filename += membre.lastName.toUpperCase() + '_';
     });
     this.filename = this.filename.substring(0, this.filename.length - 1);
     return this.dataUtils.downloadFile(contentType, base64String, this.filename);
