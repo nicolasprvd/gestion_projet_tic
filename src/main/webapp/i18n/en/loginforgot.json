@@ -1,0 +1,18 @@
+{
+  "loginforgot": {
+    "request": {
+      "title": "Retrieve username",
+      "form": {
+        "button": "Retrieve username"
+      },
+      "messages": {
+        "info": "Enter the email address you used to register",
+        "success": "Check your emails. Your username has been sent to you"
+      },
+      "email": {
+        "subject": "Recovering your login",
+        "content": "Your login is {{login}}"
+      }
+    }
+  }
+}
