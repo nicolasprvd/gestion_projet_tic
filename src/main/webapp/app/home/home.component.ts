@@ -28,15 +28,15 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   isSaving = false;
-  isDesactive: boolean;
+  isDisabled: boolean;
   account: Account | null = null;
   authSubscription?: Subscription;
   userExtras: IUserExtra[] = [];
   documents: IDocument[] = [];
   evaluations: IEvaluation[] = [];
-  groupes: IGroupe[] = [];
+  groups: IGroupe[] = [];
   users: IUser[] = [];
-  projets: IProjet[] = [];
+  projects: IProjet[] = [];
 
   constructor(
     private accountService: AccountService,
@@ -76,17 +76,17 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.users = users;
           }
         });
-        this.groupeService.findByActif(true).subscribe(groupes => {
-          if (groupes !== null && groupes.body !== null) {
-            this.groupes = groupes.body;
+        this.groupeService.findByActif(true).subscribe(groups => {
+          if (groups !== null && groups.body !== null) {
+            this.groups = groups.body;
           }
         });
-        this.projetService.findByArchive(false).subscribe(projets => {
-          if (projets !== null && projets.body !== null) {
-            this.projets = projets.body;
+        this.projetService.findByArchive(false).subscribe(projects => {
+          if (projects !== null && projects.body !== null) {
+            this.projects = projects.body;
           }
         });
-        this.isDesactive = false;
+        this.isDisabled = false;
       }
     });
   }
@@ -97,30 +97,36 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Return true if the current account si an administrator
+   */
   isAdmin(): boolean {
     if (this.account === null || this.account.authorities === null) {
       return false;
     }
-    for (const droit of this.account.authorities) {
-      if (Authority.ADMIN === droit) {
+    for (const authority of this.account.authorities) {
+      if (Authority.ADMIN === authority) {
         return true;
       }
     }
     return false;
   }
 
-  nouvelleAnnee(): void {
+  /**
+   * Open the popin home-nouvelleAnnee.component
+   */
+  startNewAcademicYear(): void {
     const modalRef = this.modalService.open(HomeNouvelleAnneeComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.account = this.account;
     modalRef.componentInstance.userExtras = this.userExtras;
     modalRef.componentInstance.documents = this.documents;
     modalRef.componentInstance.evaluations = this.evaluations;
-    modalRef.componentInstance.groupes = this.groupes;
+    modalRef.componentInstance.groups = this.groups;
     modalRef.componentInstance.users = this.users;
-    modalRef.componentInstance.projets = this.projets;
-    modalRef.componentInstance.isDesactive = this.isDesactive;
+    modalRef.componentInstance.projects = this.projects;
+    modalRef.componentInstance.isDisabled = this.isDisabled;
     modalRef.componentInstance.passEntry.subscribe((value: boolean) => {
-      this.isDesactive = value;
+      this.isDisabled = value;
       this.toastrService.success(
         this.translateService.instant('global.toastr.nouvelleAnnee.message'),
         this.translateService.instant('global.toastr.nouvelleAnnee.title')
@@ -128,7 +134,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  isEvaluationActif(): boolean {
+  isActiveEvaluation(): boolean {
     return this.evaluations && this.evaluations.length > 0;
   }
 }
