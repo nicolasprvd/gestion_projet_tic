@@ -109,8 +109,11 @@ export class ProjetEtudiantComponent implements OnInit {
   }
 
   openFile(contentType: string, base64String: string): void {
-    console.error(this.filename);
-    this.filename = this.project.nom;
+    this.filename = this.project.cursus + '_';
+    this.members.forEach(membre => {
+      this.filename += membre.lastName + '_';
+    });
+    this.filename = this.filename.substring(0, this.filename.length - 1);
     return this.dataUtils.downloadFile(contentType, base64String, this.filename);
   }
 
@@ -119,10 +122,6 @@ export class ProjetEtudiantComponent implements OnInit {
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
-    const target = event.target as HTMLInputElement;
-    const file: File = target.files[0];
-    this.filename = file.name.toString();
-    console.error(file, this.filename);
     this.isSaving = true;
     this.dataUtils.loadFileToForm(event, this.documentFormZIP, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
       this.eventManager.broadcast(
