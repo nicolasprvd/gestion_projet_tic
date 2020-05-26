@@ -3,37 +3,36 @@
     <hr>
     <div class="jh-entity-details">
         <div>
-            <label class="form-control-label bold" jhiTranslate="projetticApp.projet.client"></label>
+            <label class="colon bold" jhiTranslate="projetticApp.projet.client"></label>
             <span>{{ customer?.firstName }} {{ customer?.lastName }}</span>
         </div>
         <div>
-            <label class="form-control-label bold" jhiTranslate="projetticApp.projet.email"></label>
+            <label class="colon bold" jhiTranslate="projetticApp.projet.email"></label>
             <span>{{ customer?.email }}</span>
         </div>
     </div>
 
-    <div class="mtl">
+    <div id="infos-student">
         <div>
-            <label class="form-control-label bold" jhiTranslate="projetticApp.projet.nbEtudiant"></label>
+            <label class="colon bold" jhiTranslate="projetticApp.projet.nbEtudiant"></label>
             <span>{{ project?.nbEtudiant }}</span>
         </div>
 
         <div>
             <label class="man bold" jhiTranslate="projetticApp.projet.groupe"></label>
-            <div *ngFor="let membre of members">
-                <span *ngIf="group.userExtraId === membre.id"><span jhiTranslate="projetticApp.projet.form.label.chef"></span> : {{ membre.firstName + " " + membre.lastName }}</span>
+            <div *ngFor="let member of projectManager">
+                <span *ngIf="group.userExtraId === member.id"><span class="colon" jhiTranslate="projetticApp.projet.form.label.chef"></span>{{ member.firstName + " " + member.lastName }}</span>
             </div>
-            <div class="membres">
-                <span class="man" jhiTranslate="projetticApp.projet.form.label.membres"></span>
-                <div *ngFor="let membre of members">
-                    <span *ngIf="group.userExtraId !== membre.id && membre !== members[members.length -1]">{{ membre.firstName + " " + membre.lastName + "," + " "}}</span>
-                    <span *ngIf="group.userExtraId !== membre.id && membre == members[members.length -1]">{{ membre.firstName + " " + membre.lastName}}</span>
+            <div class="members">
+                <span class="colon" jhiTranslate="projetticApp.projet.form.label.membres"></span>
+                <div class="test" *ngFor="let member of members">
+                    <span *ngIf="group.userExtraId !== member.id">{{ member.firstName + " " + member.lastName}}</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="mtl">
+    <div id="infos-documents">
         <label class="man bold" jhiTranslate="projetticApp.projet.documents.title"></label>
         <div class="row">
             <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormZIP">

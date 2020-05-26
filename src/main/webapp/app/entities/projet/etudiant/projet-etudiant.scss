@@ -1,7 +1,24 @@
-.membres {
+.colon:after {
+  content: ' : ';
+}
+
+.members {
   display: flex;
 }
 
-.membres div {
+.members div {
   padding-left: 2px;
+}
+
+#infos-documents {
+  margin-top: 25px;
+}
+
+#infos-student {
+  margin-top: 15px;
+}
+
+.test:nth-child(1n + 2):not(:last-child):after {
+  content: ',';
+  float: right;
 }

@@ -28,6 +28,7 @@ export class ProjetEtudiantComponent implements OnInit {
   groupId: number;
   customer: IUser;
   usersExtra: IUser[];
+  projectManager: IUser[];
   members: IUser[];
   users: IUser[];
   group: Groupe;
@@ -85,10 +86,15 @@ export class ProjetEtudiantComponent implements OnInit {
             this.usersExtra = membres.body;
             this.userService.findAll().subscribe(users => {
               this.users = users;
+              this.projectManager = [];
               this.members = [];
               this.usersExtra.forEach(ue => {
                 this.userService.findById(ue.id).subscribe(m => {
-                  this.members.push(m);
+                  if (this.group.userExtraId === m.id) {
+                    this.projectManager.push(m);
+                  } else {
+                    this.members.push(m);
+                  }
                 });
               });
             });

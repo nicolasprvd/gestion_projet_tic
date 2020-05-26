@@ -3,7 +3,37 @@
         <span id="user-management-page-heading" jhiTranslate="userManagement.home.title">Users</span>
     </h2>
 
-    <div class="table-responsive" *ngIf="users">
+    <div class="table-responsive" *ngIf="users?.length > 0">
+        <div class="filterButtons">
+            <button id="filtreAucun" type="submit"
+                    (click)="reinitFiltreGroupes()"
+                    class="btn btn-success btn-sm">
+                <span jhiTranslate="projetticApp.projet.filtre.tous"></span>
+            </button>
+            <button id="filtreClient" type="submit"
+                    (click)="filtrerGroupes(null)"
+                    class="btn btn-danger btn-sm">
+                <span jhiTranslate="projetticApp.projet.filtre.customer"></span>
+            </button>
+            <button id="filtreL3" type="submit"
+                    (click)="filtrerGroupes(L3)"
+                    class="btn btn-danger btn-sm">
+                <span>{{L3}}</span>
+            </button>
+            <button id="filtreM1" type="submit"
+                    (click)="filtrerGroupes(M1)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M1}}</span>
+            </button>
+            <button id="filtreM2" type="submit"
+                    (click)="filtrerGroupes(M2)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M2}}</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive" *ngIf="users?.length > 0">
         <table class="table table-striped" aria-describedby="user-management-page-heading">
             <thead>
                 <tr>
@@ -17,7 +47,7 @@
                 </tr>
             </thead>
             <tbody *ngIf="users">
-                <tr *ngFor="let user of users | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; trackBy: trackIdentity">
+                <tr *ngFor="let user of usersFilter | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; trackBy: trackIdentity">
                     <td class="usr-managt-compte">
                         <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated"
                                 jhiTranslate="userManagement.deactivated">Deactivated</button>
@@ -41,7 +71,7 @@
                             <button type="button" *ngIf="isMasterStudent(user)"
                                     (click)="repeatYear(user)"
                                     class="btn btn-info btn-sm">
-                                <fa-icon icon="book"></fa-icon>
+                                <fa-icon icon="sync"></fa-icon>
                                 <span jhiTranslate="entity.action.redoubler"></span>
                             </button>
 
@@ -50,13 +80,13 @@
                                     [routerLink]="['./', user.login, 'edit']"
                                     queryParamsHandling="merge"
                                     class="btn btn-primary btn-sm">
-                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <fa-icon icon="edit"></fa-icon>
                                 <span jhiTranslate="entity.action.edit">Edit</span>
                             </button>
 
                             <button type="button" (click)="deleteUser(user)"
                                     class="btn btn-danger btn-sm" [disabled]="!currentAccount || currentAccount.login === user.login">
-                                <fa-icon icon="times"></fa-icon>
+                                <fa-icon icon="trash"></fa-icon>
                                 <span jhiTranslate="entity.action.delete">Delete</span>
                             </button>
                         </div>
@@ -69,6 +99,6 @@
     <ngb-pagination
         [(page)]="page"
         [pageSize]="pageSize"
-        [collectionSize]="users.length"
+        [collectionSize]="usersFilter.length"
         [boundaryLinks]="true"></ngb-pagination>
 </div>
