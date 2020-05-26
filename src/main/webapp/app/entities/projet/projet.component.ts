@@ -361,10 +361,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
     );
   }
 
-  previousState(): void {
-    window.location.reload();
-  }
-
   /**
    * Return true if :
    * - the current user is an administrator

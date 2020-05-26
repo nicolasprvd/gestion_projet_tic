@@ -47,7 +47,7 @@ public interface DocumentService {
      * @param projetId the id of the project.
      * @return the entity.
      */
-    List<DocumentDTO> findByProjetId(Long projetId);
+    Optional<DocumentDTO> findByProjetId(Long projetId);
 
     /**
      * Delete the "id" document.
