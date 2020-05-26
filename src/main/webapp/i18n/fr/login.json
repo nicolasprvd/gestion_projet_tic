@@ -14,6 +14,9 @@
     },
     "password": {
       "forgot": "Avez-vous oublié votre mot de passe ?"
+    },
+    "login": {
+      "forgot": "Avez-vous oublié votre nom d'utilisateur?"
     }
   }
 }

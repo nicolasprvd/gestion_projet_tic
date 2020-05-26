@@ -8,7 +8,7 @@
         }
       },
       "documents": {
-        "title": "Documents",
+        "title": "Document",
         "cdc": "Cahier des charges",
         "gantt": "Gantt",
         "rendu": "Rendu final"
@@ -77,8 +77,9 @@
         "coefRendu": "Coefficient du rendu",
         "ouvrir": "Ouvrir",
         "noter": "Noter",
-        "manquant": "Document manquant :",
-        "gantt": "Gantt"
+        "manquant": "Document manquant",
+        "gantt": "Gantt",
+        "deliverable": "Livrable"
       },
       "bouton": {
         "choisir": "Postuler",

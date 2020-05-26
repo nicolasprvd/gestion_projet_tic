@@ -55,7 +55,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="projetticApp.projet.nbEtudiant" for="field_nbEtudiant"></label>
                     <select id="field_nbEtudiant" class="form-control" name="nbEtudiant"  formControlName="nbEtudiant" [(ngModel)]="defaultStudentNumber">
-                        <option *ngFor="let index of [2,3,4,5,6,7,8,9,10]" >{{ index }} </option>
+                        <option *ngFor="let index of [2,3,4,5,6,7,8,9,10]" [selected]="index === defaultStudentNumber">{{ index }} </option>
                     </select>
                 </div>
 

@@ -39,7 +39,7 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-                    <li *ngIf="!afficheProjet">
+                    <li *ngIf="!displayProject">
                         <a class="dropdown-item" routerLink="projet" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="folder-open" fixedWidth="true"></fa-icon>
@@ -63,7 +63,7 @@
                 </ul>
             </li>
             <!-- Entities (student without group) -->
-            <li *ngIf="!afficheProjet && student && isAuthenticated()" class="nav-item mls" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <li *ngIf="!displayProject && student && isAuthenticated()" class="nav-item mls" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                 <a class="nav-link hoverable upper" routerLink="projet"  (click)="collapseNavbar()">
                    <span>
                        <fa-icon icon="folder-open" fixedWidth="true"></fa-icon>
@@ -72,7 +72,7 @@
                 </a>
             </li>
             <!-- Entities (student with group) -->
-            <li *ngIf="afficheProjet && student && isAuthenticated()" class="nav-item mls" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <li *ngIf="displayProject && student && isAuthenticated()" class="nav-item mls" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                 <a class="nav-link hoverable upper" routerLink="projet/etudiant"  (click)="collapseNavbar()">
                    <span>
                        <fa-icon icon="folder" fixedWidth="true"></fa-icon>

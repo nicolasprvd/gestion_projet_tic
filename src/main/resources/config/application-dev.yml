@@ -72,12 +72,12 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: gestion.projets.tic@gmail.com
-    password: gestionprojettic
+    username: gestion.projet.miage@gmail.com
+    password: GestionProjetMIAGE123
     protocol: smtp
     tls: true
     auth: true
-    from: gestion.projets.tic@gmail.com
+    from: gestion.projet.miage@gmail.com
     properties.mail.smtp:
       auth: true
       starttls.enable: true

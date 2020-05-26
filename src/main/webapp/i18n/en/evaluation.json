@@ -21,8 +21,8 @@
         "title": "Evaluation's export",
         "warning": "Did you check every coefficient before exporting?",
         "tips": "You can change coefficients by clicking on the project's name in the evaluation's table.",
-        "question": "do you still want to export evaluations?",
-        "accept": "exporter"
+        "question": "Do you still want to export evaluations?",
+        "accept": "Export"
       },
       "noteCDC": "Specification mark",
       "coefCDC": "Specification coefficient",

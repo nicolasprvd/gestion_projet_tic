@@ -28,11 +28,11 @@ export class RegisterComponent implements AfterViewInit {
   errorEmailExists = false;
   errorUserExists = false;
   success = false;
-  typeUtilisateurs: string[];
-  typeUtilisateurDefault: TypeUtilisateur;
+  userType: string[];
+  userTypeDefault: TypeUtilisateur;
   active = true;
-  cursus: string[];
-  cursusDefault: TypeCursus;
+  grade: string[];
+  gradeDefault: TypeCursus;
 
   registerForm = this.fb.group({
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern('^[_.@A-Za-z0-9-]*$')]],
@@ -67,10 +67,10 @@ export class RegisterComponent implements AfterViewInit {
     private translateService: TranslateService,
     private router: Router
   ) {
-    this.typeUtilisateurs = [TypeUtilisateur.ETUDIANT, TypeUtilisateur.CLIENT];
-    this.typeUtilisateurDefault = TypeUtilisateur.ETUDIANT;
-    this.cursus = [TypeCursus.L3, TypeCursus.M1, TypeCursus.M2];
-    this.cursusDefault = TypeCursus.L3;
+    this.userType = [TypeUtilisateur.ETUDIANT, TypeUtilisateur.CLIENT];
+    this.userTypeDefault = TypeUtilisateur.ETUDIANT;
+    this.grade = [TypeCursus.L3, TypeCursus.M1, TypeCursus.M2];
+    this.gradeDefault = TypeCursus.L3;
   }
 
   ngAfterViewInit(): void {
@@ -164,9 +164,12 @@ export class RegisterComponent implements AfterViewInit {
     }
   }
 
-  afficherCursus(): void {
-    const typeUtilisateur = this.registerForm.get(['typeUtilisateur'])!.value;
-    if (typeUtilisateur === TypeUtilisateur.CLIENT) {
+  /**
+   * Display or not the grade based on the user type selected
+   */
+  displayGrade(): void {
+    const userType = this.registerForm.get(['typeUtilisateur'])!.value;
+    if (userType === TypeUtilisateur.CLIENT) {
       document.getElementById('divCursus').style.display = 'none';
       this.registerForm.controls['email'].setValidators([
         Validators.required,
@@ -188,7 +191,10 @@ export class RegisterComponent implements AfterViewInit {
     this.registerForm.controls['email'].updateValueAndValidity();
   }
 
-  isClient(): boolean {
+  /**
+   * Return true if the form field 'user type' is a customer
+   */
+  isCustomer(): boolean {
     return this.registerForm.get(['typeUtilisateur'])!.value === TypeUtilisateur.CLIENT;
   }
 }

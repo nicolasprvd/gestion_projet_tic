@@ -2,7 +2,7 @@
     <h2 id="page-heading">
         <span jhiTranslate="projetticApp.groupe.home.title">Groupes</span>
 
-        <button *ngIf="groupes?.length > 0" type="submit" (click)="exporter()" class="btn btn-success float-right">
+        <button *ngIf="filteredGroups?.length > 0" type="submit" (click)="export()" class="btn btn-success float-right">
             <fa-icon icon="file-download"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
         </button>
     </h2>
@@ -14,34 +14,34 @@
     <div class="table-responsive" id="entities" *ngIf="groupes?.length > 0">
         <div class="filterButtons">
             <button id="filtreAucun" type="submit"
-                    (click)="reinitFiltreGroupes()"
+                    (click)="reinitGroupsFilter()"
                     class="btn btn-success btn-sm">
                 <span jhiTranslate="projetticApp.projet.filtre.tous"></span>
             </button>
             <button id="filtreL3" type="submit"
-                    (click)="filtrerGroupes(L3)"
+                    (click)="filterGroups(L3)"
                     class="btn btn-danger btn-sm">
                 <span>{{L3}}</span>
             </button>
             <button id="filtreM1" type="submit"
-                    (click)="filtrerGroupes(M1)"
+                    (click)="filterGroups(M1)"
                     class="btn btn-danger btn-sm">
                 <span>{{M1}}</span>
             </button>
             <button id="filtreM2" type="submit"
-                    (click)="filtrerGroupes(M2)"
+                    (click)="filterGroups(M2)"
                     class="btn btn-danger btn-sm">
                 <span>{{M2}}</span>
             </button>
         </div>
     </div>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="groupesFiltres?.length === 0">
+    <div class="alert alert-warning" id="no-result" *ngIf="!validGroup || filteredGroups?.length === 0">
         <span jhiTranslate="projetticApp.groupe.home.notFound">No groupes found</span>
     </div>
 
-    <div class="table-responsive" *ngIf="groupes?.length > 0">
-        <table class="table table-striped" aria-describedby="page-heading" *ngIf="groupesFiltres?.length > 0">
+    <div class="table-responsive" *ngIf="validGroup && groupes?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading" *ngIf="filteredGroups?.length > 0">
             <thead>
                 <tr>
                     <th scope="col" ><span jhiTranslate="projetticApp.groupe.projet"></span></th>
@@ -51,27 +51,27 @@
                 </tr>
             </thead>
             <tbody id="data">
-                <ng-container *ngFor="let groupe of groupesFiltres">
+                <ng-container *ngFor="let groupe of filteredGroups">
                     <tr *ngIf="groupe.valide">
                         <td>
                             <div *ngIf="groupe.projetId">
-                                <a [routerLink]="['/projet', groupe.projetId , 'view']" [textContent]="getNomProjet(groupe.projetId)"></a>
+                                <a [routerLink]="['/projet', groupe.projetId , 'view']" [textContent]="getProjectName(groupe.projetId)"></a>
                             </div>
                         </td>
                         <td>
                             <div>
-                                <span [textContent]="getClient(groupe.projetId)"></span>
+                                <span [textContent]="getCustomer(groupe.projetId)"></span>
                             </div>
                         </td>
                         <td>
                             <div *ngIf="groupe.userExtraId">
-                                <span [textContent]="getChefProjet(groupe.userExtraId)"></span>
+                                <span [textContent]="getProjectChief(groupe.userExtraId)"></span>
                             </div>
                         </td>
                         <td>
                             <div *ngFor="let extra of userExtras">
-                                <ng-container *ngIf="isMembreGroupe(extra, groupe) && !isChef(extra, groupe)">
-                                    <span [textContent]="getMembreProjet(extra)"></span>
+                                <ng-container *ngIf="isGroupMember(extra, groupe) && !isChief(extra, groupe)">
+                                    <span [textContent]="getuserName(extra)"></span>
                                 </ng-container>
                             </div>
                         </td>
