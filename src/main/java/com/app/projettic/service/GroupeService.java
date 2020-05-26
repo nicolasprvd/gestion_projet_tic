@@ -46,7 +46,7 @@ public interface GroupeService {
      * @param projetId
      * @return
      */
-    Optional<GroupeDTO> findByProjetId(Long projetId);
+    List<GroupeDTO> findByProjetId(Long projetId);
 
     /**
      * Delete the "id" groupe.

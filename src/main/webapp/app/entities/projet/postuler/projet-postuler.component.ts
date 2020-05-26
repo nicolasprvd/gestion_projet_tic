@@ -52,31 +52,33 @@ export class ProjetPostulerComponent implements OnInit, OnDestroy {
         this.userExtraService.find(this.account.id).subscribe(currentUser => {
           if (currentUser !== null && currentUser.body !== undefined) {
             this.accountExtra = currentUser.body;
-            this.userExtraService.findByActifAndCursus(true, currentUser.body.cursus).subscribe(userExtras => {
-              if (userExtras !== null && userExtras.body !== null) {
-                this.userExtras = userExtras.body;
-                this.userService.findByActivated(true).subscribe(users => {
-                  if (users !== null) {
-                    for (const u of users) {
-                      if (u.id !== this.account?.id && this.isActiveUser(u.id) && !this.alreadyHasGroup(u.id)) {
-                        u.firstName = this.formatNom(u.firstName);
-                        u.lastName = u.lastName.toUpperCase();
-                        this.users.push(u);
+            if(currentUser.body.cursus !== null) {
+              this.userExtraService.findByActifAndCursus(true, currentUser.body.cursus).subscribe(userExtras => {
+                if (userExtras !== null && userExtras.body !== null) {
+                  this.userExtras = userExtras.body;
+                  this.userService.findByActivated(true).subscribe(users => {
+                    if (users !== null) {
+                      for (const u of users) {
+                        if (u.id !== this.account?.id && this.isActiveUser(u.id) && !this.alreadyHasGroup(u.id)) {
+                          u.firstName = this.formatNom(u.firstName);
+                          u.lastName = u.lastName.toUpperCase();
+                          this.users.push(u);
+                        }
                       }
+                      this.users.sort((n1: User, n2: User) => {
+                        if (n1.lastName > n2.lastName) {
+                          return 1;
+                        }
+                        if (n1.lastName < n2.lastName) {
+                          return -1;
+                        }
+                        return 0;
+                      });
                     }
-                    this.users.sort((n1: User, n2: User) => {
-                      if (n1.lastName > n2.lastName) {
-                        return 1;
-                      }
-                      if (n1.lastName < n2.lastName) {
-                        return -1;
-                      }
-                      return 0;
-                    });
-                  }
-                });
-              }
-            });
+                  });
+                }
+              });
+            }
           }
         });
       }

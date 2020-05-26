@@ -150,7 +150,7 @@ public class GroupeResource {
      * @return object groupe dto
      */
     @GetMapping("/groupes/projet/{projetId}")
-    public Optional<GroupeDTO> findByProjetId(@PathVariable Long projetId) {
+    public List<GroupeDTO> findByProjetId(@PathVariable Long projetId) {
         log.debug("REST request to get Groupe from projet id : {}", projetId);
         return groupeService.findByProjetId(projetId);
     }

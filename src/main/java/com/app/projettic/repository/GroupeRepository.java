@@ -15,5 +15,5 @@ import java.util.Optional;
 @Repository
 public interface GroupeRepository extends JpaRepository<Groupe, Long> {
     List<Groupe> findByActif(boolean actif);
-    Optional<Groupe> findByProjetId(Long projetId);
+    List<Groupe> findByProjetId(Long projetId);
 }

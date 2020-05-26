@@ -38,7 +38,12 @@ export class UserExtraService {
   }
 
   findByActifAndCursus(actif: boolean, cursus: TypeCursus): Observable<EntityArrayResponseType> {
-    return this.http.get<IUserExtra[]>(`${this.resourceUrl}/cursus/${actif}/${cursus}`, { observe: 'response' });
+    if(cursus !== null) {
+      return this.http.get<IUserExtra[]>(`${this.resourceUrl}/cursus/${actif}/${cursus}`, { observe: 'response' });
+    }else {
+      return null;
+    }
+    // return this.http.get<IUserExtra[]>(`${this.resourceUrl}/cursus/${actif}/${cursus}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

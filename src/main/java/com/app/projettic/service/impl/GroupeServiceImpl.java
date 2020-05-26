@@ -134,10 +134,10 @@ public class GroupeServiceImpl implements GroupeService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Optional<GroupeDTO> findByProjetId(Long projetId) {
+    public List<GroupeDTO> findByProjetId(Long projetId) {
         log.debug("Request to get Groupe from projet id : {}", projetId);
-        return groupeRepository.findByProjetId(projetId)
-            .map(groupeMapper::toDto);
+        return groupeRepository.findByProjetId(projetId).stream()
+            .map(groupeMapper::toDto).collect(Collectors.toList());
     }
 
 
