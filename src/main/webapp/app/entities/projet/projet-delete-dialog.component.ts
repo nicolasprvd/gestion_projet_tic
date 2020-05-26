@@ -1,4 +1,4 @@
-import {Component, EventEmitter} from '@angular/core';
+import {Component} from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -22,7 +22,6 @@ export class ProjetDeleteDialogComponent {
   users: IUser[] = [];
   subject: string;
   content: string;
-  passEntry: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
     protected projetService: ProjetService,
@@ -59,7 +58,6 @@ export class ProjetDeleteDialogComponent {
       () => {
         this.eventManager.broadcast('projetListModification');
         this.activeModal.close();
-        this.passEntry.emit(true);
         this.toastrService.success(
           this.translateService.instant('global.toastr.suppressions.projet.message'),
           this.translateService.instant('global.toastr.suppressions.projet.title', { nom: this.project.nom })
