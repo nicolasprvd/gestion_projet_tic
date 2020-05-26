@@ -26,19 +26,17 @@ export class ProjetEtudiantComponent implements OnInit {
   project: IProjet;
   account: Account;
   customer: IUser;
-  usersExtra: IUser[];
-  projectManager: IUser[];
-  members: IUser[];
-  users: IUser[];
-  group: Groupe;
+  usersExtra: IUser[] = [];
+  projectManager: IUser;
+  members: IUser[] = [];
+  users: IUser[] = [];
+  group: IGroupe;
   typeDocument: TypeDocument;
   documentZIP: IDocument;
   isSaving: boolean;
   isCreated: boolean;
   filename: string;
-  membersWithoutChief: IUser[] = [];
   @ViewChild('file_documentZIP') file_documentZIP: any;
-  fileDocumentZIPBackup: any;
 
   documentFormZIP = this.fb.group({
     id: [],
@@ -95,8 +93,8 @@ export class ProjetEtudiantComponent implements OnInit {
                           if (user.id === member.id) {
                             user = this.formatFirstnameLastname(user);
                             this.members.push(user);
-                            if (user.id !== this.group.userExtraId) {
-                              this.membersWithoutChief.push(user);
+                            if (user.id === this.group.userExtraId) {
+                              this.projectManager = user;
                             }
                           }
                         }
