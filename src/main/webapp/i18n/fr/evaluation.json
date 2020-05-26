@@ -20,7 +20,7 @@
       "export": {
         "title": "Export des évaluations",
         "warning": "Avez-vous bien vérifié les coefficients de tous les projets ?",
-        "tips": "Vous pouvez changer les coefficients / notes en cliquant sur le nom des projets dans le tableau",
+        "tips": "Vous pouvez changer les coefficients / notes en cliquant sur le nom du projet dans le tableau, vous serez redirigé vers la page de notation",
         "question": "Voulez-vous toujours exporter les évaluations ?",
         "accept": "Exporter"
       },

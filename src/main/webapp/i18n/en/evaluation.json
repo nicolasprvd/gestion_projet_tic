@@ -20,7 +20,7 @@
       "export": {
         "title": "Evaluation's export",
         "warning": "Did you check every coefficient before exporting?",
-        "tips": "You can change coefficients by clicking on the project's name in the evaluation's table.",
+        "tips": "You can change coefficients by clicking on the project's name in the evaluation's table. It will redirect you to the projetct's notation page",
         "question": "Do you still want to export evaluations?",
         "accept": "Export"
       },
