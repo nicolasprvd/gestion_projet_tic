@@ -26,10 +26,12 @@ export class ProjetEtudiantComponent implements OnInit {
   project: IProjet;
   account: Account;
   customer: IUser;
-  members: IUser[] = [];
-  users: IUser[] = [];
-  group: IGroupe;
-  docType: TypeDocument;
+  usersExtra: IUser[];
+  projectManager: IUser[];
+  members: IUser[];
+  users: IUser[];
+  group: Groupe;
+  typeDocument: TypeDocument;
   documentZIP: IDocument;
   isSaving: boolean;
   isCreated: boolean;

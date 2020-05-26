@@ -3,7 +3,7 @@
         <span jhiTranslate="projetticApp.groupe.home.title">Groupes</span>
 
         <button *ngIf="filteredGroups?.length > 0" type="submit" (click)="export()" class="btn btn-success float-right">
-            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
+            <fa-icon icon="file-download"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.groupe.exporter"></span>
         </button>
     </h2>
 
@@ -16,7 +16,6 @@
             <button id="filtreAucun" type="submit"
                     (click)="reinitGroupsFilter()"
                     class="btn btn-success btn-sm">
-                <fa-icon icon="ban"></fa-icon>
                 <span jhiTranslate="projetticApp.projet.filtre.tous"></span>
             </button>
             <button id="filtreL3" type="submit"
