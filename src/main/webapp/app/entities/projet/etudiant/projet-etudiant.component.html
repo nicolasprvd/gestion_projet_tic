@@ -25,9 +25,9 @@
             </div>
             <div class="membres">
                 <span class="man" jhiTranslate="projetticApp.projet.form.label.membres"></span>
-                <div *ngFor="let membre of members">
-                    <span *ngIf="group.userExtraId !== membre.id && membre !== members[members.length -1]">{{ membre.firstName + " " + membre.lastName + "," + " "}}</span>
-                    <span *ngIf="group.userExtraId !== membre.id && membre == members[members.length -1]">{{ membre.firstName + " " + membre.lastName}}</span>
+                <div *ngFor="let membre of membersWithoutChief">
+                    <span *ngIf="membre !== membersWithoutChief[membersWithoutChief.length -1]">{{ membre.firstName + " " + membre.lastName + "," + " "}}</span>
+                    <span *ngIf="membre === membersWithoutChief[membersWithoutChief.length -1]">{{ membre.firstName + " " + membre.lastName}}</span>
                 </div>
             </div>
         </div>
@@ -38,72 +38,25 @@
         <div class="row">
             <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormZIP">
                 <div class="form-group">
-                    <!-- <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.cdc" for="field_documentCDC"></label> -->
                     <div>
                         <div *ngIf="documentFormZIP.get('documentZIP')!.value" class="form-text text-danger clearfix">
                             <a class="pull-left" (click)="openFile(documentFormZIP.get('documentZIPContentType')!.value, documentFormZIP.get('documentZIP')!.value)" jhiTranslate="entity.action.open">open</a><br>
                             <span class="pull-left">{{ documentFormZIP.get('documentZIPContentType')!.value }}, {{ byteSize(documentFormZIP.get('documentZIP')!.value) }}</span>
-                            <button type="button" (click)="documentFormZIP.patchValue({documentZIP: null});documentFormZIP.patchValue({documentZIPContentType: null});"
+                            <button type="button"
+                                    (click)="deleteDoc();setFileData($event, 'documentZIP', false)"
                                     class="btn btn-secondary btn-xs pull-right">
                                 <fa-icon icon="times"></fa-icon>
                             </button>
                         </div>
-                        <input type="file" id="file_documentZIP" (change)="setFileData($event, 'documentZIP', false)" jhiTranslate="entity.action.addblob"/>
+                        <input type="file" #file_documentZIP id="file_documentZIP" (change)="setFileData($event, 'documentZIP', false)" jhiTranslate="entity.action.addblob"/>
                     </div>
-                    <input type="hidden" class="form-control" name="documentZIP" id="field_documentZIP"
-                           formControlName="documentZIP"/>
-                    <input type="hidden" class="form-control" name="documentZIPContentType" id="field_documentZIPContentType"
-                           formControlName="documentZIPContentType" />
                 </div>
             </form>
-            <!--
-            <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormGANTT">
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.gantt" for="field_documentGANTT"></label>
-                    <div>
-                        <div *ngIf="documentFormGANTT.get('documentGANTT')!.value" class="form-text text-danger clearfix">
-                            <a class="pull-left" (click)="openFile(documentFormGANTT.get('documentGANTTContentType')!.value, documentFormGANTT.get('documentGANTT')!.value)" jhiTranslate="entity.action.open">open</a><br>
-                            <span class="pull-left">{{ documentFormGANTT.get('documentGANTTContentType')!.value }}, {{ byteSize(documentFormGANTT.get('documentGANTT')!.value) }}</span>
-                            <button type="button" (click)="documentFormGANTT.patchValue({documentGANTT: null});documentFormGANTT.patchValue({documentGANTTContentType: null});"
-                                    class="btn btn-secondary btn-xs pull-right">
-                                <fa-icon icon="times"></fa-icon>
-                            </button>
-                        </div>
-                        <input type="file" id="file_documentGANTT" (change)="setFileData($event, 'documentGANTT', false, 'GANTT')" jhiTranslate="entity.action.addblob"/>
-                    </div>
-                    <input type="hidden" class="form-control" name="documentGANTT" id="field_documentGANTT"
-                           formControlName="documentGANTT"/>
-                    <input type="hidden" class="form-control" name="documentGANTTContentType" id="field_documentGANTTContentType"
-                           formControlName="documentGANTTContentType" />
-                </div>
-            </form>
-
-            <form class="col-sm-4" name="editForm" role="form" novalidate [formGroup]="documentFormRF">
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="projetticApp.projet.documents.rendu" for="field_documentRF"></label>
-                    <div>
-                        <div *ngIf="documentFormRF.get('documentRF')!.value" class="form-text text-danger clearfix">
-                            <a class="pull-left" (click)="openFile(documentFormRF.get('documentRFContentType')!.value, documentFormRF.get('documentRF')!.value)" jhiTranslate="entity.action.open">open</a><br>
-                            <span class="pull-left">{{ documentFormRF.get('documentRFContentType')!.value }}, {{ byteSize(documentFormRF.get('documentRF')!.value) }}</span>
-                            <button type="button" (click)="documentFormRF.patchValue({documentRF: null});documentFormRF.patchValue({documentRFContentType: null});"
-                                    class="btn btn-secondary btn-xs pull-right">
-                                <fa-icon icon="times"></fa-icon>
-                            </button>
-                        </div>
-                        <input type="file" id="file_documentRF" (change)="setFileData($event, 'documentRF', false, 'RF')" jhiTranslate="entity.action.addblob"/>
-                    </div>
-                    <input type="hidden" class="form-control" name="documentRF" id="field_documentRF"
-                           formControlName="documentRF"/>
-                    <input type="hidden" class="form-control" name="documentRFContentType" id="field_documentRFContentType"
-                           formControlName="documentRFContentType" />
-                </div>
-            </form>
-             -->
         </div>
     </div>
 
     <div>
-        <button type="button" id="save-entity" class="btn btn-primary" (click)="handleSubmitForm()" >
+        <button type="button" id="save-entity" class="btn btn-primary" (click)="saveDocument()" >
             <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save"></span>
         </button>
     </div>

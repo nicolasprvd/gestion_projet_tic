@@ -13,7 +13,6 @@ import { HttpClient } from '@angular/common/http';
 import { UserExtra } from 'app/shared/model/user-extra.model';
 import { EvaluationService } from 'app/entities/evaluation/evaluation.service';
 import { IDocument } from 'app/shared/model/document.model';
-import { TypeDocument } from 'app/shared/model/enumerations/type-document.model';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder } from '@angular/forms';
@@ -31,9 +30,6 @@ export class ProjectRateComponent implements OnInit {
   groupMembersNames: IUser[] = [];
   groupId: number;
   isSaving = false;
-  specsDoc: IDocument = null;
-  ganttDoc: IDocument = null;
-  outputDoc: IDocument = null;
   ratingId: number;
   specsRate = 0;
   specsCoef = 1;
@@ -76,12 +72,10 @@ export class ProjectRateComponent implements OnInit {
       }
     });
 
-    this.documentService.findByProjetId(this.project.id).subscribe(documents => {
-      if (documents !== null) {
-        documents.body.forEach(document => {
-          this.documentZIP = document;
-          this.updateDocument(document);
-        });
+    this.documentService.findByProjetId(this.project.id).subscribe(document => {
+      if (document !== null) {
+        this.documentZIP = document.body;
+        this.updateDocument(document.body);
       }
     });
 
@@ -111,7 +105,6 @@ export class ProjectRateComponent implements OnInit {
         }
       });
     });
-    console.error(this.groupMembers);
   }
 
   updateDocument(document: IDocument): void {

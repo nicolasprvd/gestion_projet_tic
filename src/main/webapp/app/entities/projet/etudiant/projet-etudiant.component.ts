@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IProjet } from 'app/shared/model/projet.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
@@ -8,7 +8,7 @@ import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
-import { Groupe } from 'app/shared/model/groupe.model';
+import { IGroupe } from 'app/shared/model/groupe.model';
 import { FormBuilder } from '@angular/forms';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { TypeDocument } from 'app/shared/model/enumerations/type-document.model';
@@ -25,17 +25,18 @@ import { TranslateService } from '@ngx-translate/core';
 export class ProjetEtudiantComponent implements OnInit {
   project: IProjet;
   account: Account;
-  groupId: number;
   customer: IUser;
-  usersExtra: IUser[];
-  members: IUser[];
-  users: IUser[];
-  group: Groupe;
-  typeDocument: TypeDocument;
+  members: IUser[] = [];
+  users: IUser[] = [];
+  group: IGroupe;
+  docType: TypeDocument;
   documentZIP: IDocument;
   isSaving: boolean;
   isCreated: boolean;
   filename: string;
+  membersWithoutChief: IUser[] = [];
+  @ViewChild('file_documentZIP') file_documentZIP: any;
+  fileDocumentZIPBackup: any;
 
   documentFormZIP = this.fb.group({
     id: [],
@@ -61,40 +62,51 @@ export class ProjetEtudiantComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
-    });
-
-    this.userExtraService.find(this.account.id).subscribe(etudiant => {
-      this.groupId = etudiant.body.groupeId;
-      this.groupeService.find(this.groupId).subscribe(groupe => {
-        this.group = groupe.body;
-      });
-      this.projetService.findByGroupeId(+this.groupId).subscribe(projet => {
-        this.project = projet.body;
-        this.documentService.findByProjetId(+this.project.id).subscribe(documents => {
-          if (documents.body.length > 0) {
-            documents.body.forEach(document => {
-              this.documentZIP = document;
-              this.updateForm(this.documentZIP);
+      if (account !== null) {
+        this.account = account;
+        this.userExtraService.find(this.account.id).subscribe(accountExtra => {
+          if (accountExtra) {
+            this.projetService.findByGroupeId(accountExtra.body.groupeId).subscribe(project => {
+              this.project = project.body;
+              this.userService.findById(this.project.userExtraId).subscribe(customer => {
+                if (customer !== null) {
+                  this.customer = customer;
+                }
+              });
+              this.documentService.findByProjetId(this.project.id).subscribe(document => {
+                if (document && document.body) {
+                  this.documentZIP = document.body;
+                  this.updateForm(this.documentZIP);
+                }
+              });
+              this.groupeService.findByProjetId(this.project.id).subscribe(group => {
+                if (group && group.body) {
+                  this.group = group.body;
+                }
+              });
+              this.userExtraService.findByGroupeId(project.body.groupeId).subscribe(members => {
+                if (members && members.body) {
+                  this.userService.findByActivated(true).subscribe(users => {
+                    if (users) {
+                      for (const member of members.body) {
+                        for (let user of users) {
+                          if (user.id === member.id) {
+                            user = this.formatFirstnameLastname(user);
+                            this.members.push(user);
+                            if (user.id !== this.group.userExtraId) {
+                              this.membersWithoutChief.push(user);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  });
+                }
+              });
             });
           }
         });
-        this.userService.findById(+this.project.userExtraId).subscribe(client => {
-          this.customer = client;
-          this.userExtraService.findByGroupeId(+this.groupId).subscribe(membres => {
-            this.usersExtra = membres.body;
-            this.userService.findAll().subscribe(users => {
-              this.users = users;
-              this.members = [];
-              this.usersExtra.forEach(ue => {
-                this.userService.findById(ue.id).subscribe(m => {
-                  this.members.push(m);
-                });
-              });
-            });
-          });
-        });
-      });
+      }
     });
   }
 
@@ -110,8 +122,8 @@ export class ProjetEtudiantComponent implements OnInit {
 
   openFile(contentType: string, base64String: string): void {
     this.filename = this.project.cursus + '_';
-    this.members.forEach(membre => {
-      this.filename += membre.lastName.toUpperCase() + '_';
+    this.members.forEach(member => {
+      this.filename += member.lastName.toUpperCase() + '_';
     });
     this.filename = this.filename.substring(0, this.filename.length - 1);
     return this.dataUtils.downloadFile(contentType, base64String, this.filename);
@@ -123,6 +135,7 @@ export class ProjetEtudiantComponent implements OnInit {
 
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.isSaving = true;
+    this.documentFormZIP.patchValue({ documentZIP: null });
     this.dataUtils.loadFileToForm(event, this.documentFormZIP, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
       this.eventManager.broadcast(
         new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
@@ -130,27 +143,38 @@ export class ProjetEtudiantComponent implements OnInit {
     });
   }
 
-  handleSubmitForm(): void {
-    this.saveDocument();
-
-    if (!this.isSaving) {
-      this.toastrService.success(
-        this.translateService.instant('global.toastr.documents.depot.message'),
-        this.translateService.instant('global.toastr.documents.depot.title')
-      );
-    }
-  }
-
   saveDocument(): void {
     if (this.isSaving) {
       if (this.documentFormZIP.get(['id']).value !== null || this.isCreated) {
         const documentZIP = this.createFromForm(false);
-        this.documentService.update(documentZIP).subscribe();
+        if (documentZIP.doc) {
+          this.documentService.update(documentZIP).subscribe(updatedDoc => {
+            this.documentFormZIP.patchValue({ documentZIP: updatedDoc.body.doc });
+            this.toastrService.success(
+              this.translateService.instant('global.toastr.documents.depot.message'),
+              this.translateService.instant('global.toastr.documents.depot.title')
+            );
+            this.documentZIP = updatedDoc.body;
+          });
+        }
       } else {
         if (!this.isCreated) {
           const documentZIP = this.createFromForm(true);
-          this.documentService.create(documentZIP).subscribe();
-          this.isCreated = true;
+          if (documentZIP.doc) {
+            this.documentService.create(documentZIP).subscribe(newDoc => {
+              this.documentFormZIP.patchValue({
+                id: newDoc.body.id,
+                documentZIPContentType: newDoc.body.docContentType,
+                documentZIP: newDoc.body.doc
+              });
+              this.toastrService.success(
+                this.translateService.instant('global.toastr.documents.depot.message'),
+                this.translateService.instant('global.toastr.documents.depot.title')
+              );
+              this.documentZIP = newDoc.body;
+            });
+            this.isCreated = true;
+          }
         }
       }
       this.isSaving = false;
@@ -167,5 +191,36 @@ export class ProjetEtudiantComponent implements OnInit {
       projetId: this.project.id,
       actif: true
     };
+  }
+
+  deleteDoc(): void {
+    const doDelete = this.documentZIP && this.documentZIP.id;
+    if (doDelete) {
+      this.documentService.delete(this.documentZIP.id).subscribe(() => {
+        this.documentFormZIP.patchValue({ id: null });
+        this.toastrService.success(
+          this.translateService.instant('global.toastr.documents.delete.message'),
+          this.translateService.instant('global.toastr.documents.delete.title')
+        );
+      });
+    }
+    this.documentFormZIP.patchValue({ documentZIP: null, documentZIPContentType: null });
+    this.isCreated = false;
+    this.documentZIP = null;
+    this.file_documentZIP.nativeElement.value = null;
+  }
+
+  /**
+   * Format the firstname and lastname of the user param
+   * entry : aaaaaaa
+   * return : Aaaaaaa
+   * @param user
+   */
+  formatFirstnameLastname(user: IUser): IUser {
+    user.firstName = user.firstName.toLowerCase();
+    user.firstName = user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1);
+    user.lastName = user.lastName.toLowerCase();
+    user.lastName = user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1);
+    return user;
   }
 }
