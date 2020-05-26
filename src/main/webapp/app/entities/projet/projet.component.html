@@ -28,18 +28,16 @@
     <hr>
 
     <div class="table-responsive" id="entities" *ngIf="projects?.length > 0">
-        <div class="filterButtons">
+        <div class="filterButtonsProject">
             <button *ngIf="isCustomer()" id="filtreMesProjets" type="submit"
                     (click)="filterMyProjects()"
                     class="btn btn-secondary btn-sm">
-                <fa-icon icon="asterisk"></fa-icon>
                 <span jhiTranslate="projetticApp.projet.filtre.mesprojets"></span>
             </button>
             <span *ngIf="isCustomer()" class="vertical-line"></span>
             <button *ngIf="isCustomer()" id="filtreAucun" type="submit"
                     (click)="filterProjectsWithoutGrade()"
                     class="btn btn-success btn-sm">
-                <fa-icon icon="ban"></fa-icon>
                 <span jhiTranslate="projetticApp.projet.filtre.tous"></span>
             </button>
             <button *ngIf="isCustomer()" id="filtreL3" type="submit"
@@ -95,6 +93,11 @@
 
                     <td class="colCenter">
                         <div class="btn-group">
+                            <button id="boutonPostule" *ngIf="!isCustomer() && alreadyHasGroup() && isMySelectedProject(projet) && !isRetracted"
+                                    class="btn btn-success btn-sm" disabled="disabled">
+                                <span jhiTranslate="projetticApp.projet.bouton.etatCandidature"></span>
+                            </button>
+
                             <button type="submit"
                                     [routerLink]="['/projet', projet.id, 'view']"
                                     class="btn btn-info btn-sm">
@@ -105,19 +108,20 @@
                             <button *ngIf="isAllowed(projet, false) && !(projet.archive) && projet.groupeId === null" type="submit"
                                     [routerLink]="['/projet', projet.id, 'edit']"
                                     class="btn btn-primary btn-sm">
-                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <fa-icon icon="edit"></fa-icon>
                                 <span jhiTranslate="entity.action.edit">Edit</span>
                             </button>
 
                             <button *ngIf="isAllowed(projet, false) && projet.groupeId === null && isChoosenByGroup(projet.id)===true && !projet.archive" type="button"
                                     [routerLink]="['/projet', projet.id, 'attribuer']"
                                     class="btn btn-success btn-sm">
-                                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.attribuate">Attribuer</span>
+                                <fa-icon icon="user-check"></fa-icon>
+                                <span jhiTranslate="entity.action.attribuate">Attribuer</span>
                             </button>
 
                             <button *ngIf="(isAllowed(projet, false) || isAdmin()) && projet.archive" type="submit" (click)="recovery(projet)"
                                     class="btn btn-danger btn-sm">
-                                <fa-icon icon="times"></fa-icon>
+                                <fa-icon icon="arrow-left"></fa-icon>
                                 <span jhiTranslate="projetticApp.projet.form.button.reprise"></span>
                             </button>
 
@@ -130,23 +134,19 @@
 
                             <button *ngIf="isAllowed(projet, false) && !(projet.archive) && projet.groupeId === null" type="submit" (click)="delete(projet)"
                                     class="btn btn-danger btn-sm">
-                                <fa-icon icon="times"></fa-icon>
+                                <fa-icon icon="trash"></fa-icon>
                                 <span jhiTranslate="entity.action.delete">Delete</span>
                             </button>
 
                             <button *ngIf="!isCustomer() && !alreadyHasGroup() || isRetracted" type="submit" [routerLink]="['/projet', projet.id, 'postuler']"
                                     class="btn btn-primary btn-sm">
-                                <fa-icon icon="book"></fa-icon>
+                                <fa-icon icon="bookmark"></fa-icon>
                                 <span jhiTranslate="projetticApp.projet.bouton.choisir"></span>
-                            </button>
-
-                            <button id="boutonPostule" *ngIf="!isCustomer() && alreadyHasGroup() && isMySelectedProject(projet) && !isRetracted"
-                                    class="btn btn-success btn-sm" disabled="disabled">
-                                <span jhiTranslate="projetticApp.projet.bouton.etatCandidature"></span>
                             </button>
 
                             <button *ngIf="!isCustomer() && alreadyHasGroup() && isMySelectedProject(projet) && !isRetracted"
                                     class="btn btn-danger btn-sm" (click)="retract()">
+                                <fa-icon icon="times"></fa-icon>
                                 <span jhiTranslate="projetticApp.projet.bouton.retractation"></span>
                             </button>
                         </div>

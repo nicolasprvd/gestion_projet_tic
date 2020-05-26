@@ -8,7 +8,7 @@
         }
       },
       "documents": {
-        "title": "Documents",
+        "title": "Document",
         "cdc": "Cahier des charges",
         "gantt": "Gantt",
         "rendu": "Rendu final"
@@ -18,7 +18,7 @@
           "dateArchive": "Archives",
           "dateArchiveSelect": "Sélectionner une date",
           "chef": "Chef de projet",
-          "membres": "Membres : "
+          "membres": "Membres"
         },
         "button": {
           "reprise": "Reprendre"
@@ -77,8 +77,9 @@
         "coefRendu": "Coefficient du rendu",
         "ouvrir": "Ouvrir",
         "noter": "Noter",
-        "manquant": "Document manquant :",
-        "gantt": "Gantt"
+        "manquant": "Document manquant",
+        "gantt": "Gantt",
+        "deliverable": "Livrable"
       },
       "bouton": {
         "choisir": "Postuler",
@@ -87,19 +88,20 @@
       },
       "filtre": {
         "tous": "Tous les niveaux",
+        "customer": "Client",
         "mesprojets": "Mes projets"
       },
       "nom": "Nom du projet",
       "descriptionPDF": "Description PDF",
       "descriptionTexte": "Description texte",
-      "nbEtudiant": "Nombre d'etudiants :",
+      "nbEtudiant": "Nombre d'etudiants",
       "automatique": "Attribution automatique",
       "archive": "Archive",
-      "groupe": "Groupe :",
+      "groupe": "Groupe",
       "userExtra": "User Extra",
       "document": "Document",
-      "client": "Client :",
-      "email": "Email :",
+      "client": "Client",
+      "email": "Email",
       "etudiantProjet": {
         "title": "Mon projet"
       }

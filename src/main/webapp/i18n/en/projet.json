@@ -8,7 +8,7 @@
         }
       },
       "documents": {
-        "title": "Documents",
+        "title": "Document",
         "cdc": "Requirements specification",
         "gantt": "Gantt",
         "rendu": "Final result"
@@ -76,8 +76,9 @@
         "coefRendu": "Report coefficient",
         "ouvrir": "Open",
         "noter": "Rate",
-        "manquant": "Missing document :",
-        "gantt": "Gantt"
+        "manquant": "Missing document",
+        "gantt": "Gantt",
+        "deliverable": "Deliverable"
       },
       "bouton": {
         "choisir": "Apply",
@@ -86,6 +87,7 @@
       },
       "filtre": {
         "tous": "All levels",
+        "customer": "Customer",
         "mesprojets": "My projects"
       },
       "nom": "Project's name",
@@ -97,8 +99,8 @@
       "groupe": "Group",
       "userExtra": "User Extra",
       "document": "Document",
-      "client": "Customer:",
-      "email": "Email:",
+      "client": "Customer",
+      "email": "Email",
       "etudiantProjet": {
         "title": "My project"
       }

@@ -8,12 +8,15 @@ import {
   faBan,
   faTimes,
   faArrowLeft,
+  faArrowRight,
   faSave,
   faPlus,
   faPencilAlt,
   faBars,
   faThList,
   faUserPlus,
+  faUserCheck,
+  faUserFriends,
   faRoad,
   faTachometerAlt,
   faHeart,
@@ -32,7 +35,16 @@ import {
   faTrashAlt,
   faAsterisk,
   faTasks,
-  faHome
+  faMarker,
+  faEdit,
+  faBookmark,
+  faCheck,
+  faFileAlt,
+  faFolder,
+  faFolderOpen,
+  faFileDownload,
+  faHome,
+  faTrash
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -46,6 +58,7 @@ export const fontAwesomeIcons = [
   faBan,
   faTimes,
   faArrowLeft,
+  faArrowRight,
   faSave,
   faPlus,
   faPencilAlt,
@@ -53,6 +66,8 @@ export const fontAwesomeIcons = [
   faHome,
   faThList,
   faUserPlus,
+  faUserCheck,
+  faUserFriends,
   faRoad,
   faTachometerAlt,
   faHeart,
@@ -70,6 +85,15 @@ export const fontAwesomeIcons = [
   faCalendarAlt,
   faSearch,
   faTrashAlt,
+  faMarker,
+  faEdit,
+  faTrash,
+  faBookmark,
+  faCheck,
+  faFileAlt,
+  faFolder,
+  faFolderOpen,
+  faFileDownload,
   faAsterisk
   // jhipster-needle-add-icon-import
 ];

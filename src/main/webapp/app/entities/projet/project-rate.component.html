@@ -4,47 +4,20 @@
         <div>
             <div id="docButtons" class="row">
                 <div class="col-xl-4">
-                    <button *ngIf="specsDoc !== null" type="button"
-                            (click)="openFile(specsDoc.docContentType, specsDoc.doc)"
+                    <button *ngIf="documentZIP !== null" type="button"
+                            (click)="openFile(document.get('documentZIPContentType')!.value, document.get('documentZIP')!.value)" jhiTranslate="entity.action.open"
                             class="btn btn-primary">
                         <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <button *ngIf="specsDoc === null" type="button"
+                    <button *ngIf="documentZIP === null" type="button"
                             disabled="disabled"
                             class="btn btn-danger">
                         <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
                     </button>
-                    <label *ngIf="specsDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
-                    <label jhiTranslate="projetticApp.projet.rate.cahierDesCharges"></label>
+                    <label *ngIf="documentZIP === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
+                    <label jhiTranslate="projetticApp.projet.rate.deliverable"></label>
                 </div>
-                <div class="col-xl-4">
-                    <button *ngIf="ganttDoc !== null" type="button"
-                            (click)="openFile(ganttDoc.docContentType, ganttDoc.doc)"
-                            class="btn btn-primary">
-                        <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
-                    </button>
-                    <button *ngIf="ganttDoc === null" type="button"
-                            disabled="disabled"
-                            class="btn btn-danger">
-                        <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
-                    </button>
-                    <label *ngIf="ganttDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
-                    <label jhiTranslate="projetticApp.projet.rate.gantt"></label>
-                </div>
-                <div class="col-xl-4">
-                    <button *ngIf="outputDoc !== null" type="button"
-                            (click)="openFile(outputDoc.docContentType, outputDoc.doc)"
-                            class="btn btn-primary">
-                        <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
-                    </button>
-                    <button *ngIf="outputDoc === null" type="button"
-                            disabled="disabled"
-                            class="btn btn-danger">
-                        <span jhiTranslate="projetticApp.projet.rate.ouvrir"></span>
-                    </button>
-                    <label *ngIf="outputDoc === null" jhiTranslate="projetticApp.projet.rate.manquant"></label>
-                    <label jhiTranslate="projetticApp.projet.rate.rendu"></label>
-                </div>
+
             </div>
             <jhi-alert-error></jhi-alert-error>
             <hr>
