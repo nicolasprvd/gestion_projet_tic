@@ -211,10 +211,10 @@ export class GroupeComponent implements OnInit, OnDestroy {
     }
     if (this.translate.currentLang === this.translate.getLangs()[0]) {
       data = 'Projet;Client;Chef de projet;Membres';
-      fileName = fileNameGrade + '_groupes_projet_tic.csv';
+      fileName = fileNameGrade + '_groupes_projet_miage.csv';
     } else {
       data = 'Project;Customer;Project manager;Members';
-      fileName = fileNameGrade + '_groups_tic_project.csv';
+      fileName = fileNameGrade + '_groups_miage_project.csv';
     }
     if (table !== null) {
       const rows = table.rows;
