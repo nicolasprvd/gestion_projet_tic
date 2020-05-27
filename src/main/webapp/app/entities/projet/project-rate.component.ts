@@ -166,7 +166,6 @@ export class ProjectRateComponent implements OnInit {
         );
       } else {
         const newEvaluation = this.createEvaluation(true);
-        console.error(newEvaluation);
         this.evaluationService.create(newEvaluation).subscribe(
           evaluation => {
             this.isSaving = false;
