@@ -16,6 +16,7 @@ import { IUserExtra } from 'app/shared/model/user-extra.model';
 import { ToastrService } from 'ngx-toastr';
 import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
+import { IProjet } from 'app/shared/model/projet.model';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -46,6 +47,9 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   M2: TypeCursus = TypeCursus.M2;
   cursusSelectionne: TypeCursus;
   allUsers: boolean;
+  userDeleted: IUser;
+  projects: IProjet[] = [];
+  extras: IUserExtra[] = [];
 
   constructor(
     private userService: UserService,
@@ -72,7 +76,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
             this.predicate = data.pagingParams.predicate;
             this.currentAccount = account;
             this.loadAll();
-            this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.loadAll());
+            this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.reloadAll());
           }
         )
       )
@@ -81,6 +85,17 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     for (let i = 0; i < 20; i++) {
       this.items.push(i);
     }
+    this.projetService.findAll().subscribe(projects => {
+      if (projects) {
+        this.projects = projects;
+      }
+    });
+
+    this.userExtraService.findAll().subscribe(ue => {
+      if (ue !== null) {
+        this.extras = ue;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -121,9 +136,11 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.subject = this.translateService.instant('global.email.compteSupprimer.sujet');
     this.content = this.translateService.instant('global.email.compteSupprimer.message');
     this.projetService.sendMail(user.email, this.subject, this.content).subscribe();
+    this.userDeleted = user;
   }
 
   private loadAll(): void {
+    this.usersExtraArray = [];
     this.userExtraService.findAll().subscribe(ue => {
       if (ue !== null) {
         this.usersExtraArray.push({ key: 0, value: null });
@@ -140,14 +157,14 @@ export class UserManagementComponent implements OnInit, OnDestroy {
             this.users = users;
             this.usersFilter = users;
             this.users.sort(function(user1, user2): number {
-              if (allUsers[user1.id].value.cursus === allUsers[user2.id].value.cursus) {
+              if (allUsers[user1.id]?.value.cursus === allUsers[user2.id]?.value.cursus) {
                 return user1.lastName.localeCompare(user2.lastName);
-              } else if (allUsers[user1.id].value.cursus === null) {
+              } else if (allUsers[user1.id]?.value.cursus === null) {
                 return -1;
-              } else if (allUsers[user2.id].value.cursus === null) {
+              } else if (allUsers[user2.id]?.value.cursus === null) {
                 return 1;
               } else {
-                return allUsers[user1.id].value.cursus.localeCompare(allUsers[user2.id].value.cursus);
+                return allUsers[user1.id]?.value.cursus.localeCompare(allUsers[user2.id]?.value.cursus);
               }
             });
           }
@@ -220,6 +237,31 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       document.getElementById('filtreM1').setAttribute('class', 'btn btn-success btn-sm');
     } else {
       document.getElementById('filtreM2').setAttribute('class', 'btn btn-success btn-sm');
+    }
+  }
+
+  private reloadAll(): void {
+    this.users.forEach((user, index) => {
+      if (user === this.userDeleted) this.users.splice(index, 1);
+    });
+    this.usersFilter.forEach((user, index) => {
+      if (user === this.userDeleted) this.usersFilter.splice(index, 1);
+    });
+  }
+
+  canDelete(user: User): any {
+    if (user.typeUtilisateur === TypeUtilisateur.CLIENT) {
+      for (const project of this.projects) {
+        if (project.userExtraId === user.id) {
+          return false;
+        }
+      }
+    } else {
+      for (const extra of this.extras) {
+        if (extra.id === user.id) {
+          return extra.groupeId === null;
+        }
+      }
     }
   }
 }
