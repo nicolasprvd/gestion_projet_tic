@@ -126,8 +126,12 @@
       },
       "documents": {
         "depot": {
-          "message": "Les documents ont bien été déposés",
-          "title": "Dépôt des documents"
+          "message": "Le document a bien été déposé",
+          "title": "Dépôt du document"
+        },
+        "delete": {
+          "message": "Le document a bien été retiré",
+          "title": "Retrait du document"
         }
       },
       "noter": {

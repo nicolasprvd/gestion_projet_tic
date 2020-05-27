@@ -516,6 +516,10 @@ jhi-login-modal,
   color: #000000c7;
 }
 
+.close:hover {
+  color: black;
+}
+
 /* ==========================================================================
 Responsive
 ========================================================================== */
@@ -547,6 +551,23 @@ Responsive
     border-radius: 0;
     margin-left: 0;
     width: 100px;
+  }
+}
+
+/* ==========================================================================
+Filtres cursus
+========================================================================== */
+.filterButtons button {
+  margin: 0 3px 7px 0;
+}
+
+.filterButtons :nth-child(1n + 2) {
+  width: 60px;
+}
+
+@media (max-width: 576px) {
+  .filterButtons :nth-child(1n + 2) {
+    width: 50px;
   }
 }
 

@@ -28,8 +28,8 @@ export class DocumentService {
     return this.http.get<IDocument>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  findByProjetId(projetId: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IDocument[]>(`${this.resourceUrl}/projet/${projetId}`, { observe: 'response' });
+  findByProjetId(projetId: number): Observable<EntityResponseType> {
+    return this.http.get<IDocument>(`${this.resourceUrl}/projet/${projetId}`, { observe: 'response' });
   }
 
   findByActif(actif: boolean): Observable<EntityArrayResponseType> {

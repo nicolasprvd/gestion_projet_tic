@@ -93,12 +93,12 @@ public class DocumentResource {
     }
 
     /**
-     * {@code GET  /documents} : get all the documents with the project id.
+     * {@code GET  /documents} : get the document with the project id.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of documents in body.
      */
     @GetMapping("/documents/projet/{projetId}")
-    public List<DocumentDTO> findByProjetId(@PathVariable Long projetId) {
+    public Optional<DocumentDTO> findByProjetId(@PathVariable Long projetId) {
         log.debug("REST request to get all Documents");
         return documentService.findByProjetId(projetId);
     }

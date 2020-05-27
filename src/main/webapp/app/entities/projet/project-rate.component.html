@@ -74,12 +74,12 @@
                     <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
                 </button>
 
-                <button *ngIf="specsDoc !== null && ganttDoc !== null && outputDoc !== null" type="button"
+                <button *ngIf="documentZIP !== null" type="button"
                         (click)="evaluate()"
                         class="btn btn-primary">
                     <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>
                 </button>
-                <button *ngIf="specsDoc === null || ganttDoc === null || outputDoc === null" type="button"
+                <button *ngIf="documentZIP === null" type="button"
                         disabled="disabled"
                         class="btn btn-danger">
                     <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="projetticApp.projet.rate.noter"></span>

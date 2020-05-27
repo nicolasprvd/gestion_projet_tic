@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data  repository for the Document entity.
@@ -13,6 +14,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
-    List<Document> findByProjetId(Long projetId);
+    Optional<Document> findByProjetId(Long projetId);
     List<Document> findByActif(boolean actif);
 }

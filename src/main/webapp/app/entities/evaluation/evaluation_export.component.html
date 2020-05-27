@@ -3,7 +3,7 @@
         <h4 class="modal-title" jhiTranslate="projetticApp.evaluation.export.title"></h4>
 
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                (click)="cancel()">X</button>
+                (click)="cancel()">&times;</button>
     </div>
 
     <div class="modal-body">
@@ -14,10 +14,12 @@
 
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+           <fa-icon icon="times"></fa-icon>
             <span jhiTranslate="entity.action.cancel"></span>
         </button>
 
-        <button type="submit" class="btn btn-danger" (click)="onSaveSuccess()">
+        <button type="submit" class="btn btn-success" (click)="onSaveSuccess()">
+            <fa-icon icon="file-download"></fa-icon>
             <span jhiTranslate="projetticApp.evaluation.export.accept"></span>
         </button>
     </div>

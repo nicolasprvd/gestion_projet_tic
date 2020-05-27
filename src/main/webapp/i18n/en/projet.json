@@ -87,6 +87,7 @@
       },
       "filtre": {
         "tous": "All levels",
+        "customer": "Customer",
         "mesprojets": "My projects"
       },
       "nom": "Project's name",
@@ -98,8 +99,8 @@
       "groupe": "Group",
       "userExtra": "User Extra",
       "document": "Document",
-      "client": "Customer:",
-      "email": "Email:",
+      "client": "Customer",
+      "email": "Email",
       "etudiantProjet": {
         "title": "My project"
       }

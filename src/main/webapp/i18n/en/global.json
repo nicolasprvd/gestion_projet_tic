@@ -126,8 +126,12 @@
       },
       "documents": {
         "depot": {
-          "message": "The documents have been filed",
-          "title": "Filing of documents"
+          "message": "The document have been filed",
+          "title": "Filing of document"
+        },
+        "delete": {
+          "message": "The document have been deleted",
+          "title": "Filing of document"
         }
       },
       "noter": {
