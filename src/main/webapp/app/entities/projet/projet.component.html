@@ -112,7 +112,7 @@
                                 <span jhiTranslate="entity.action.edit">Edit</span>
                             </button>
 
-                            <button *ngIf="isAllowed(projet, false) && projet.groupeId === null && isChoosenByGroup(projet.id)===true" type="button"
+                            <button *ngIf="isAllowed(projet, false) && projet.groupeId === null && isChoosenByGroup(projet.id)===true && !projet.archive" type="button"
                                     [routerLink]="['/projet', projet.id, 'attribuer']"
                                     class="btn btn-success btn-sm">
                                 <fa-icon icon="user-check"></fa-icon>
@@ -156,4 +156,12 @@
             </tbody>
         </table>
     </div>
+
+    <ngb-pagination *ngIf="isArchived"
+        [(page)]="page"
+        [pageSize]="pageSize"
+        [maxSize]="5"
+        [rotate]="true"
+        [collectionSize]="projects.length"
+        [boundaryLinks]="true"></ngb-pagination>
 </div>

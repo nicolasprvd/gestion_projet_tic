@@ -86,19 +86,22 @@ export class UserRouteAccessService implements CanActivate {
                   return false;
                 } else if (this.user.typeUtilisateur === TypeUtilisateur.CLIENT) {
                   const idProjet = url.split('/')[2];
-                  this.groupeService.findByProjetId(+idProjet).subscribe(groupe => {
-                    if (groupe.body !== null) {
-                      // Si le projet est attribué
-                      if (groupe.body.valide) {
-                        this.router.navigate(['404']);
-                        return false;
-                      } else {
-                        return true;
-                      }
-                    } else {
+                  this.groupeService.findAllByProjetId(+idProjet).subscribe(groups => {
+                    if(groups.body.length > 0) {
+                      groups.body.forEach(group => {
+                        // If the project is assigned
+                        if(group.valide) {
+                          this.router.navigate(['404']);
+                          return false;
+                        }else {
+                          return true;
+                        }
+                      });
+                    }else {
                       this.router.navigate(['404']);
                       return false;
                     }
+                    return true;
                   });
 
                   // Si le projet appartient au client

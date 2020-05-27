@@ -64,7 +64,7 @@
                     <label class="form-control-label" for="cursus" jhiTranslate="register.form.label.cursus"></label>
 
                     <select name="cursus" id="cursus" class="form-control" formControlName="cursus" [(ngModel)]="defaultGrade">
-                        <option *ngFor="let niveau of grade" [value]="niveau">{{ niveau }}</option>
+                        <option *ngFor="let niveau of grade; index as i" [selected]="niveau === defaultGrade">{{ niveau }}</option>
                     </select>
                 </div>
 

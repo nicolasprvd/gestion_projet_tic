@@ -1,22 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
-import { IProjet, Projet } from 'app/shared/model/projet.model';
-import { ProjetService } from './projet.service';
-import { AlertError } from 'app/shared/alert/alert-error.model';
-import { GroupeService } from 'app/entities/groupe/groupe.service';
-import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/user/account.model';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
+import {IProjet, Projet} from 'app/shared/model/projet.model';
+import {ProjetService} from './projet.service';
+import {AlertError} from 'app/shared/alert/alert-error.model';
+import {GroupeService} from 'app/entities/groupe/groupe.service';
+import {UserExtraService} from 'app/entities/user-extra/user-extra.service';
+import {AccountService} from 'app/core/auth/account.service';
+import {Account} from 'app/core/user/account.model';
 import * as moment from 'moment';
-import { ToastrService } from 'ngx-toastr';
-import { TranslateService } from '@ngx-translate/core';
-import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
-import { Groupe } from 'app/shared/model/groupe.model';
-import { IUserExtra } from 'app/shared/model/user-extra.model';
-import { IUser } from 'app/core/user/user.model';
-import { UserService } from 'app/core/user/user.service';
+import {ToastrService} from 'ngx-toastr';
+import {TranslateService} from '@ngx-translate/core';
+import {TypeCursus} from 'app/shared/model/enumerations/type-cursus.model';
+import {Groupe} from 'app/shared/model/groupe.model';
+import {IUserExtra} from 'app/shared/model/user-extra.model';
+import {IUser} from 'app/core/user/user.model';
+import {UserService} from 'app/core/user/user.service';
 
 @Component({
   selector: 'jhi-projet-update',
@@ -41,7 +41,7 @@ export class ProjetUpdateComponent implements OnInit {
     descriptionPDF: [],
     descriptionPDFContentType: [],
     descriptionTexte: [],
-    nbEtudiant: [null, [Validators.required]],
+    nbEtudiant: [],
     cursus: [''],
     automatique: [],
     archive: [],

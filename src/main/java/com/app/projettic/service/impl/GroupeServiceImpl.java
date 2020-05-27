@@ -140,5 +140,17 @@ public class GroupeServiceImpl implements GroupeService {
             .map(groupeMapper::toDto);
     }
 
+    /**
+     * Get groupes from project id
+     * @param projetId
+     * @return object groupe
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<GroupeDTO> findAllByProjetIdAndActifIsTrue(Long projetId) {
+        log.debug("Request to get Groupes from projet id : {}", projetId);
+        return groupeRepository.findAllByProjetIdAndActifIsTrue(projetId).stream().map(groupeMapper::toDto).collect(Collectors.toList());
+    }
+
 
 }

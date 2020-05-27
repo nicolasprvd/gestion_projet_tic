@@ -57,39 +57,6 @@
                     class="btn btn-info">
                 <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
             </button>
-
-            <button *ngIf="isAuthorized(project) && project.groupeId === null" type="button"
-                    [routerLink]="['/projet', project.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-            </button>
-
-            <button *ngIf="isAuthorized(project) && project.groupeId === null && isSelected(project.id)===true" type="button"
-                    [routerLink]="['/projet', project.id, 'attribuer']"
-                    class="btn btn-success">
-                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span
-                jhiTranslate="entity.action.attribuate">Attribuer</span>
-            </button>
-
-            <button *ngIf="isAuthorized(project) && project.groupeId != null  && !project.archive" type="submit"
-                    [routerLink]="['/projet', project.id, 'rate']"
-                    class="btn btn-success">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span jhiTranslate="entity.action.rate">Rate</span>
-            </button>
-
-            <button *ngIf="!isCustomer() && !alreadyHasGroup()" type="button"
-                    [routerLink]="['/projet', project.id, 'postuler']"
-                    class="btn btn-primary">
-                <fa-icon icon="book"></fa-icon>&nbsp;<span
-                jhiTranslate="projetticApp.projet.bouton.choisir">Apply</span>
-            </button>
-
-            <button *ngIf="!isCustomer() && alreadyHasGroup() && isMyProject(project)" type="button"
-                    (click)="retract()"
-                    class="btn btn-danger">
-                <span jhiTranslate="projetticApp.projet.bouton.retractation"></span>
-            </button>
         </div>
     </div>
 </div>

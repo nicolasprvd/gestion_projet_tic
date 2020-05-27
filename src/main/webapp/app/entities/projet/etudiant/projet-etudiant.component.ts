@@ -66,44 +66,46 @@ export class ProjetEtudiantComponent implements OnInit {
         this.account = account;
         this.userExtraService.find(this.account.id).subscribe(accountExtra => {
           if (accountExtra) {
-            this.projetService.findByGroupeId(accountExtra.body.groupeId).subscribe(project => {
-              this.project = project.body;
-              this.userService.findById(this.project.userExtraId).subscribe(customer => {
-                if (customer !== null) {
-                  this.customer = customer;
-                }
-              });
-              this.documentService.findByProjetId(this.project.id).subscribe(document => {
-                if (document && document.body) {
-                  this.documentZIP = document.body;
-                  this.updateForm(this.documentZIP);
-                }
-              });
-              this.groupeService.findByProjetId(this.project.id).subscribe(group => {
-                if (group && group.body) {
-                  this.group = group.body;
-                }
-              });
-              this.userExtraService.findByGroupeId(project.body.groupeId).subscribe(members => {
-                if (members && members.body) {
-                  this.userService.findByActivated(true).subscribe(users => {
-                    if (users) {
-                      for (const member of members.body) {
-                        for (let user of users) {
-                          if (user.id === member.id) {
-                            user = this.formatFirstnameLastname(user);
-                            this.members.push(user);
-                            if (user.id === this.group.userExtraId) {
-                              this.projectManager = user;
+            if(accountExtra.body.groupeId) {
+              this.projetService.findByGroupeId(accountExtra.body.groupeId).subscribe(project => {
+                this.project = project.body;
+                this.userService.findById(this.project.userExtraId).subscribe(customer => {
+                  if (customer !== null) {
+                    this.customer = customer;
+                  }
+                });
+                this.documentService.findByProjetId(this.project.id).subscribe(document => {
+                  if (document && document.body) {
+                    this.documentZIP = document.body;
+                    this.updateForm(this.documentZIP);
+                  }
+                });
+                this.groupeService.findByProjetId(this.project.id).subscribe(group => {
+                  if (group && group.body) {
+                    this.group = group.body;
+                  }
+                });
+                this.userExtraService.findByGroupeId(project.body.groupeId).subscribe(members => {
+                  if (members && members.body) {
+                    this.userService.findByActivated(true).subscribe(users => {
+                      if (users) {
+                        for (const member of members.body) {
+                          for (let user of users) {
+                            if (user.id === member.id) {
+                              user = this.formatFirstnameLastname(user);
+                              this.members.push(user);
+                              if (user.id === this.group.userExtraId) {
+                                this.projectManager = user;
+                              }
                             }
                           }
                         }
                       }
-                    }
-                  });
-                }
+                    });
+                  }
+                });
               });
-            });
+            }
           }
         });
       }
