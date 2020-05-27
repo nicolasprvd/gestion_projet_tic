@@ -109,11 +109,11 @@ export class ProjectRateComponent implements OnInit {
 
   updateDocument(document: IDocument): void {
     this.document.patchValue({
-      id: document.id,
-      documentZIP: document.doc,
-      documentZIPContentType: document.docContentType,
-      typeDocument: document.typeDocument,
-      projetId: document.projetId
+      id: document?.id,
+      documentZIP: document?.doc,
+      documentZIPContentType: document?.docContentType,
+      typeDocument: document?.typeDocument,
+      projetId: document?.projetId
     });
   }
 
