@@ -52,6 +52,9 @@ export class ProjetComponent implements OnInit, OnDestroy {
   displayedProjects: IProjet[] = [];
   displayMyProjects = false;
   gradeSelected: TypeCursus = null;
+  pageSize = 20;
+  page = 1;
+  isArchived: boolean;
 
   constructor(
     protected projetService: ProjetService,
@@ -125,6 +128,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * @param value
    */
   changeProjects(value: number): void {
+    this.isArchived = true;
     this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
       this.projects = [];
       this.displayedProjects = [];
@@ -146,6 +150,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
    */
   reset(): void {
     this.isReset = true;
+    this.isArchived = false;
   }
 
   search(query: string): void {
@@ -173,6 +178,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
             }
           });
         }
+        this.isArchived = false;
         this.loadAll();
       }
     });
