@@ -1,16 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable, of, EMPTY } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-
-import { Authority } from 'app/shared/constants/authority.constants';
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { IUserExtra, UserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from './user-extra.service';
-import { UserExtraComponent } from './user-extra.component';
-import { UserExtraDetailComponent } from './user-extra-detail.component';
-import { UserExtraUpdateComponent } from './user-extra-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class UserExtraResolve implements Resolve<IUserExtra> {
@@ -33,51 +27,3 @@ export class UserExtraResolve implements Resolve<IUserExtra> {
     return of(new UserExtra());
   }
 }
-
-export const userExtraRoute: Routes = [
-  {
-    path: '',
-    component: UserExtraComponent,
-    data: {
-      authorities: [Authority.ADMIN],
-      pageTitle: 'projetticApp.userExtra.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: ':id/view',
-    component: UserExtraDetailComponent,
-    resolve: {
-      userExtra: UserExtraResolve
-    },
-    data: {
-      authorities: [Authority.ADMIN],
-      pageTitle: 'projetticApp.userExtra.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'new',
-    component: UserExtraUpdateComponent,
-    resolve: {
-      userExtra: UserExtraResolve
-    },
-    data: {
-      authorities: [Authority.ADMIN],
-      pageTitle: 'projetticApp.userExtra.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: ':id/edit',
-    component: UserExtraUpdateComponent,
-    resolve: {
-      userExtra: UserExtraResolve
-    },
-    data: {
-      authorities: [Authority.ADMIN],
-      pageTitle: 'projetticApp.userExtra.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  }
-];

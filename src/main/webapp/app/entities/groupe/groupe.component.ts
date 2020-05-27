@@ -3,10 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { IGroupe } from 'app/shared/model/groupe.model';
 import { GroupeService } from './groupe.service';
-import { GroupeDeleteDialogComponent } from './groupe-delete-dialog.component';
 import { ProjetService } from 'app/entities/projet/projet.service';
 import { IProjet } from 'app/shared/model/projet.model';
 import { UserService } from 'app/core/user/user.service';
@@ -94,11 +92,6 @@ export class GroupeComponent implements OnInit, OnDestroy {
 
   registerChangeInGroupes(): void {
     this.eventSubscriber = this.eventManager.subscribe('groupeListModification', () => this.loadAll());
-  }
-
-  delete(group: IGroupe): void {
-    const modalRef = this.modalService.open(GroupeDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.groupe = group;
   }
 
   /**
