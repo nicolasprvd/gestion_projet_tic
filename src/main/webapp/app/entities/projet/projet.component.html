@@ -156,4 +156,12 @@
             </tbody>
         </table>
     </div>
+
+    <ngb-pagination *ngIf="isArchived"
+        [(page)]="page"
+        [pageSize]="pageSize"
+        [maxSize]="5"
+        [rotate]="true"
+        [collectionSize]="projects.length"
+        [boundaryLinks]="true"></ngb-pagination>
 </div>

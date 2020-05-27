@@ -40,7 +40,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     key: number;
     value: IUserExtra;
   }[] = [];
-  items: number[] = [];
   pageSize = 20;
   L3: TypeCursus = TypeCursus.L3;
   M1: TypeCursus = TypeCursus.M1;
@@ -81,10 +80,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe();
-
-    for (let i = 0; i < 20; i++) {
-      this.items.push(i);
-    }
     this.projetService.findAll().subscribe(projects => {
       if (projects) {
         this.projects = projects;
