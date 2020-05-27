@@ -43,7 +43,6 @@ export class UserExtraService {
     }else {
       return null;
     }
-    // return this.http.get<IUserExtra[]>(`${this.resourceUrl}/cursus/${actif}/${cursus}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

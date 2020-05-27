@@ -36,8 +36,12 @@ export class GroupeService {
     return this.http.get<IGroupe[]>(`${this.resourceUrl}/actif/${actif}`, { observe: 'response' });
   }
 
-  findByProjetId(id: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IGroupe[]>(`${this.resourceUrl}/projet/${id}`, { observe: 'response' });
+  findByProjetId(id: number): Observable<EntityResponseType> {
+    return this.http.get<IGroupe>(`${this.resourceUrl}/projet/${id}`, { observe: 'response' });
+  }
+
+  findAllByProjetId(id: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IGroupe[]>(`${this.resourceUrl}/projet/${id}/all`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

@@ -144,14 +144,26 @@ public class GroupeResource {
     }
 
     /**
-     * {@code GET  /groupes/projet/:projetId} : get the "projetId" groupe.
+     * {@code GET  /groupes/projet/projetId} : get the "projetId" groupe
      *
      * @param projetId the id of the project to retrieve.
      * @return object groupe dto
      */
     @GetMapping("/groupes/projet/{projetId}")
-    public List<GroupeDTO> findByProjetId(@PathVariable Long projetId) {
+    public Optional<GroupeDTO> findByProjetId(@PathVariable Long projetId) {
         log.debug("REST request to get Groupe from projet id : {}", projetId);
         return groupeService.findByProjetId(projetId);
+    }
+
+    /**
+     * {@code GET  /groupes/projet/projetId/all} : get the "projetId" groupes
+     *
+     * @param projetId the id of the projects to retrieve.
+     * @return object list groupe dto
+     */
+    @GetMapping("/groupes/projet/{projetId}/all")
+    public List<GroupeDTO> findAllByProjetIdAndActifIsTrue(@PathVariable Long projetId) {
+        log.debug("REST request to get all groupes from projet id : {}", projetId);
+        return groupeService.findAllByProjetIdAndActifIsTrue(projetId);
     }
 }
