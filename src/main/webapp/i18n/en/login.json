@@ -12,11 +12,13 @@
         "authentication": "<strong>Failed to sign in!</strong> Please check your credentials and try again."
       }
     },
-    "password": {
-      "forgot": "Did you forget your password?"
-    },
+    "info": "Have you forgotten ",
+    "or": " or ",
     "login": {
-      "forgot": "Did you forget your username?"
+      "forgot": "your login"
+    },
+    "password": {
+      "forgot": "your password"
     }
   }
 }
