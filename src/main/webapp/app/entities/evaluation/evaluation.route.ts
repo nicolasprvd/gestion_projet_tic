@@ -3,14 +3,11 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 import { Evaluation, IEvaluation } from 'app/shared/model/evaluation.model';
 import { EvaluationService } from './evaluation.service';
 import { EvaluationComponent } from './evaluation.component';
-import { EvaluationDetailComponent } from './evaluation-detail.component';
-import { EvaluationUpdateComponent } from './evaluation-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class EvaluationResolve implements Resolve<IEvaluation> {
@@ -38,42 +35,6 @@ export const evaluationRoute: Routes = [
   {
     path: '',
     component: EvaluationComponent,
-    data: {
-      authorities: [Authority.ADMIN, Authority.CLIENT],
-      pageTitle: 'projetticApp.evaluation.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: ':id/view',
-    component: EvaluationDetailComponent,
-    resolve: {
-      evaluation: EvaluationResolve
-    },
-    data: {
-      authorities: [Authority.ADMIN, Authority.CLIENT],
-      pageTitle: 'projetticApp.evaluation.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: 'new',
-    component: EvaluationUpdateComponent,
-    resolve: {
-      evaluation: EvaluationResolve
-    },
-    data: {
-      authorities: [Authority.ADMIN, Authority.CLIENT],
-      pageTitle: 'projetticApp.evaluation.home.title'
-    },
-    canActivate: [UserRouteAccessService]
-  },
-  {
-    path: ':id/edit',
-    component: EvaluationUpdateComponent,
-    resolve: {
-      evaluation: EvaluationResolve
-    },
     data: {
       authorities: [Authority.ADMIN, Authority.CLIENT],
       pageTitle: 'projetticApp.evaluation.home.title'

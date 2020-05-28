@@ -6,7 +6,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IEvaluation } from 'app/shared/model/evaluation.model';
 import { EvaluationService } from './evaluation.service';
-import { EvaluationDeleteDialogComponent } from './evaluation-delete-dialog.component';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { UserService } from 'app/core/user/user.service';
 import { IUser } from 'app/core/user/user.model';
@@ -106,11 +105,6 @@ export class EvaluationComponent implements OnInit, OnDestroy {
 
   registerChangeInEvaluations(): void {
     this.eventSubscriber = this.eventManager.subscribe('evaluationListModification', () => this.loadAll());
-  }
-
-  delete(evaluation: IEvaluation): void {
-    const modalRef = this.modalService.open(EvaluationDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.evaluation = evaluation;
   }
 
   /**
