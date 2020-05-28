@@ -207,11 +207,11 @@
       "assignProject": {
         "negative": {
           "subject": "Assignation du projet - réponse négative",
-          "content": "Le projet {{nom}} vous a été assigné, vous pouvez postuler à un autre projet sur le site"
+          "content": "Le projet {{nom}} ne vous a pas été assigné, vous pouvez postuler sur un autre projet sur le site"
         },
         "positive": {
           "subject": "Assignation du projet - réponse positive",
-          "content": "Le projet {{nom}} vous a été assigné, vous avez maintenant accès à la page pour rendre les documents."
+          "content": "Le projet {{nom}} vous a été assigné, vous avez maintenant accès à la page de votre projet."
         }
       }
     }
