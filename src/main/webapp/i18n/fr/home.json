@@ -11,7 +11,7 @@
     "student": {
       "role": "Si vous êtes un étudiant :",
       "one": "Visualiser les projets proposés par les différents clients",
-      "two": "Se positioner sur un ou plusieurs projet (et renseigner les membres du groupe)",
+      "two": "Se positioner sur des projets (et renseigner les membres du groupe)",
       "three": "Visualiser son projet une fois ce dernier attribué, ainsi que déposer les documents demandés"
     },
     "client": {

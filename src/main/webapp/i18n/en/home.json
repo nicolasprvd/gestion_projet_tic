@@ -11,7 +11,7 @@
     "student": {
       "role": "If you are a student :",
       "one": "View the projects proposed by the different customers",
-      "two": "Take a position on one or more projects (and inform the members of the group)",
+      "two": "Take a position on projects (and inform the members of the group)",
       "three": "View your project once it has been assigned, and submit the required documents."
     },
     "client": {
