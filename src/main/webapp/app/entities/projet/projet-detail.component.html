@@ -24,9 +24,9 @@
                     <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled"
                            value="{{ project.nbEtudiant }}">
                 </dd>
-                <dt *ngIf="project.groupeId !== null"><label class="form-control-label"
+                <dt *ngIf="project.groupeId !== null && !project.archive"><label class="form-control-label"
                                                              jhiTranslate="projetticApp.projet.groupe"></label></dt>
-                <ng-container *ngIf="project.groupeId !== null">
+                <ng-container *ngIf="project.groupeId !== null && !project.archive">
                     <dd *ngFor="let extra of userExtras">
                         <div *ngIf="extra.groupeId === project.groupeId">
                             <span [textContent]="getFirstnameLastname(extra)"></span>
