@@ -53,6 +53,11 @@
         "question": "Comment transférer les documents demandés ?",
         "answer": "Rendez-vous sur la page dédiée à votre projet, qui vous permettra de mettre à disposition tous les documents requis."
       }
+    },
+    "team": {
+      "role": "Autre",
+      "title": "Par qui a été créé ce site ?",
+      "message": "Ce site a été réalisé par BALAT Audrey, BUREAU Tiffany, KIRCH Florent, MONGE Maxime, PREVERAUD Nicolas, promotion 2020."
     }
   }
 }

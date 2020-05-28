@@ -21,7 +21,7 @@
           "required": "Votre nom d'utilisateur est obligatoire.",
           "minlength": "Votre nom d'utilisateur doit contenir plus d'un caractère.",
           "maxlength": "Votre nom d'utilisateur ne peut pas contenir plus de 50 caractères.",
-          "pattern": "Votre nom d'utilisateur ne peut contenir que des lettres minuscules ou des nombres."
+          "pattern": "Votre nom d'utilisateur ne peut contenir que des lettres ou des nombres."
         },
         "firstName": {
           "required": "Votre prénom est obligatoire.",
