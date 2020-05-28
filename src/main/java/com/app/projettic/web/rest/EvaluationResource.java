@@ -1,6 +1,8 @@
 package com.app.projettic.web.rest;
 
+import com.app.projettic.domain.Projet;
 import com.app.projettic.service.EvaluationService;
+import com.app.projettic.service.dto.ProjetDTO;
 import com.app.projettic.web.rest.errors.BadRequestAlertException;
 import com.app.projettic.service.dto.EvaluationDTO;
 
@@ -140,5 +142,16 @@ public class EvaluationResource {
     public List<EvaluationDTO> findByActif(@PathVariable boolean actif) {
         log.debug("REST request to get all evaluations");
         return evaluationService.findByActif(actif);
+    }
+
+    /**
+     * {@code GET  /evaluations/projet} : get the evaluations with the projet status.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of evaluations in body.
+     */
+    @GetMapping("/evaluations/projet/{projet}")
+    public Optional<EvaluationDTO> findByProjet(@PathVariable Long projet) {
+        log.debug("REST request to get evaluation");
+        return evaluationService.findByProjet(projet);
     }
 }

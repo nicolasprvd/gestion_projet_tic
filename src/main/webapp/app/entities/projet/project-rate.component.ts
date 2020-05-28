@@ -31,12 +31,12 @@ export class ProjectRateComponent implements OnInit {
   groupId: number;
   isSaving = false;
   ratingId: number;
-  specsRate = 0;
-  specsCoef = 1;
-  ganttRate = 0;
-  ganttCoef = 1;
-  outputRate = 0;
-  outputCoef = 1;
+  specificationRate = 0;
+  specificationCoef = 1;
+  defenseRate = 0;
+  defenseCoef = 1;
+  reportRate = 0;
+  reportCoef = 1;
   finalRate = 0;
   filename: string;
   documentZIP: IDocument = null;
@@ -105,6 +105,17 @@ export class ProjectRateComponent implements OnInit {
         }
       });
     });
+    this.evaluationService.findByProjet(this.project.id).subscribe(evaluation => {
+      if (evaluation && evaluation.body) {
+        this.specificationRate = +evaluation.body.noteCDC;
+        this.specificationCoef = +evaluation.body.coefCDC;
+        this.defenseRate = +evaluation.body.noteSoutenance;
+        this.defenseCoef = +evaluation.body.coefSoutenance;
+        this.reportRate = +evaluation.body.noteRendu;
+        this.reportCoef = +evaluation.body.coefRendu;
+        this.finalRate = +evaluation.body.noteFinale;
+      }
+    });
   }
 
   updateDocument(document: IDocument): void {
@@ -125,16 +136,16 @@ export class ProjectRateComponent implements OnInit {
    * Calculate the final grade based on the form data
    */
   calculateFinalRate(): void {
-    this.specsRate = +(+(document.getElementById('specsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
-    this.ganttRate = +(+(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
-    this.outputRate = +(+(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
-    this.specsCoef = +(+(document.getElementById('specsCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
-    this.ganttCoef = +(+(document.getElementById('ganttsCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
-    this.outputCoef = +(+(document.getElementById('outputCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.specificationRate = +(+(document.getElementById('specificationRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.defenseRate = +(+(document.getElementById('defenseRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.reportRate = +(+(document.getElementById('reportRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.specificationCoef = +(+(document.getElementById('specificationCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.defenseCoef = +(+(document.getElementById('defenseCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.reportCoef = +(+(document.getElementById('reportCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     if (this.isValidate()) {
       this.finalRate = +(
-        (this.specsRate * this.specsCoef + this.ganttRate * this.ganttCoef + this.outputRate * this.outputCoef) /
-        (this.outputCoef + this.ganttCoef + this.specsCoef)
+        (this.specificationRate * this.specificationCoef + this.defenseRate * this.defenseCoef + this.reportRate * this.reportCoef) /
+        (this.reportCoef + this.defenseCoef + this.specificationCoef)
       ).toFixed(2);
     }
   }
@@ -195,35 +206,35 @@ export class ProjectRateComponent implements OnInit {
    * Check if form data are valid
    */
   isValidate(): boolean {
-    document.getElementById('specsRate').setAttribute('style', 'background-color:white');
-    document.getElementById('ganttsRate').setAttribute('style', 'background-color:white');
-    document.getElementById('outputRate').setAttribute('style', 'background-color:white');
-    document.getElementById('specsCoef').setAttribute('style', 'background-color:white');
-    document.getElementById('ganttsCoef').setAttribute('style', 'background-color:white');
-    document.getElementById('outputCoef').setAttribute('style', 'background-color:white');
+    document.getElementById('specificationRate').setAttribute('style', 'background-color:white');
+    document.getElementById('defenseRate').setAttribute('style', 'background-color:white');
+    document.getElementById('reportRate').setAttribute('style', 'background-color:white');
+    document.getElementById('specificationCoef').setAttribute('style', 'background-color:white');
+    document.getElementById('defenseCoef').setAttribute('style', 'background-color:white');
+    document.getElementById('reportCoef').setAttribute('style', 'background-color:white');
     let valid = true;
-    if (isNaN(this.specsRate) || this.specsRate < 0 || this.specsRate > 20) {
-      document.getElementById('specsRate').setAttribute('style', 'background-color:#d65959');
+    if (isNaN(this.specificationRate) || this.specificationRate < 0 || this.specificationRate > 20) {
+      document.getElementById('specificationRate').setAttribute('style', 'background-color:#d65959');
       valid = false;
     }
-    if (isNaN(this.ganttRate) || this.ganttRate < 0 || this.ganttRate > 20) {
-      document.getElementById('ganttsRate').setAttribute('style', 'background-color:#d65959');
+    if (isNaN(this.defenseRate) || this.defenseRate < 0 || this.defenseRate > 20) {
+      document.getElementById('defenseRate').setAttribute('style', 'background-color:#d65959');
       valid = false;
     }
-    if (isNaN(this.outputRate) || this.outputRate < 0 || this.outputRate > 20) {
-      document.getElementById('outputRate').setAttribute('style', 'background-color:#d65959');
+    if (isNaN(this.reportRate) || this.reportRate < 0 || this.reportRate > 20) {
+      document.getElementById('reportRate').setAttribute('style', 'background-color:#d65959');
       valid = false;
     }
-    if (isNaN(this.specsCoef) || this.specsCoef < 0) {
-      document.getElementById('specsCoef').setAttribute('style', 'background-color:#d65959');
+    if (isNaN(this.specificationCoef) || this.specificationCoef < 0) {
+      document.getElementById('specificationCoef').setAttribute('style', 'background-color:#d65959');
       valid = false;
     }
-    if (isNaN(this.ganttCoef) || this.ganttCoef < 0) {
-      document.getElementById('ganttsCoef').setAttribute('style', 'background-color:#d65959');
+    if (isNaN(this.defenseCoef) || this.defenseCoef < 0) {
+      document.getElementById('defenseCoef').setAttribute('style', 'background-color:#d65959');
       valid = false;
     }
-    if (isNaN(this.outputCoef) || this.outputCoef < 0) {
-      document.getElementById('outputCoef').setAttribute('style', 'background-color:#d65959');
+    if (isNaN(this.reportCoef) || this.reportCoef < 0) {
+      document.getElementById('reportCoef').setAttribute('style', 'background-color:#d65959');
       valid = false;
     }
     return !isNaN(this.finalRate) && this.finalRate >= 0 && this.finalRate <= 20 && valid;
@@ -237,12 +248,12 @@ export class ProjectRateComponent implements OnInit {
     return {
       ...new Evaluation(),
       id: create ? undefined : this.ratingId,
-      noteCDC: this.specsRate,
-      noteRendu: this.outputRate,
-      noteSoutenance: this.ganttRate,
-      coefCDC: this.specsCoef,
-      coefRendu: this.outputCoef,
-      coefSoutenance: this.ganttCoef,
+      noteCDC: this.specificationRate,
+      noteRendu: this.reportRate,
+      noteSoutenance: this.defenseRate,
+      coefCDC: this.specificationCoef,
+      coefRendu: this.reportCoef,
+      coefSoutenance: this.defenseCoef,
       noteFinale: this.finalRate,
       actif: true,
       cursus: this.project.cursus
