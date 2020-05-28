@@ -32,14 +32,14 @@
             </form>
 
             <div class="mt-3 alert alert-warning">
-                <a class="alert-link" (click)="requestLogin()" jhiTranslate="login.login.forgot"></a>
+                    <span jhiTranslate="login.info"></span>
+                    <a class="alert-link" (click)="requestLogin()" jhiTranslate="login.login.forgot"></a>
+                    <span jhiTranslate="login.or"></span>
+                    <a class="alert-link" (click)="requestResetPassword()" jhiTranslate="login.password.forgot"></a>
+                    <span> ?</span>
             </div>
 
-            <div class="mt-3 alert alert-warning">
-                <a class="alert-link" (click)="requestResetPassword()" jhiTranslate="login.password.forgot">Did you forget your password?</a>
-            </div>
-
-            <div class="alert alert-warning">
+            <div class="alert btn-success">
                 <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>
                 <a class="alert-link" (click)="register()" jhiTranslate="global.messages.info.register.link">Register a new account</a>
             </div>
