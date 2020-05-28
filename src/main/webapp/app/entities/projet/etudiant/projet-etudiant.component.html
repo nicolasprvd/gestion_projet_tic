@@ -24,10 +24,7 @@
                 <span><span class="colon" jhiTranslate="projetticApp.projet.form.label.chef"></span>{{ projectManager?.firstName + " " + projectManager?.lastName }}</span>
             </div>
             <div class="membres">
-                <span class="man" jhiTranslate="projetticApp.projet.form.label.membres"></span> :
-                <div *ngFor="let member of members">
-                    <span *ngIf="member !== projectManager">{{ member.firstName + " " + member.lastName}}</span>
-                </div>
+                <span><span class="man" jhiTranslate="projetticApp.projet.form.label.membres"></span> : {{ membersList}}</span>
             </div>
         </div>
     </div>

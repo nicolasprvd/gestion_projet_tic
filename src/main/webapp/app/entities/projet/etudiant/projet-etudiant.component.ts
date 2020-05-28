@@ -36,6 +36,7 @@ export class ProjetEtudiantComponent implements OnInit {
   isSaving: boolean;
   isCreated: boolean;
   filename: string;
+  membersList = '';
   @ViewChild('file_documentZIP') file_documentZIP: any;
 
   documentFormZIP = this.fb.group({
@@ -66,7 +67,7 @@ export class ProjetEtudiantComponent implements OnInit {
         this.account = account;
         this.userExtraService.find(this.account.id).subscribe(accountExtra => {
           if (accountExtra) {
-            if(accountExtra.body.groupeId) {
+            if (accountExtra.body.groupeId) {
               this.projetService.findByGroupeId(accountExtra.body.groupeId).subscribe(project => {
                 this.project = project.body;
                 this.userService.findById(this.project.userExtraId).subscribe(customer => {
@@ -96,10 +97,13 @@ export class ProjetEtudiantComponent implements OnInit {
                               this.members.push(user);
                               if (user.id === this.group.userExtraId) {
                                 this.projectManager = user;
+                              } else {
+                                this.membersList += user.firstName + ' ' + user.lastName + ', ';
                               }
                             }
                           }
                         }
+                        this.membersList = this.membersList.slice(0, this.membersList.length - 2);
                       }
                     });
                   }
