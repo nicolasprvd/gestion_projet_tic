@@ -3,13 +3,13 @@
     "home": {
       "title": "Utilisateurs",
       "createLabel": "Créer un nouvel utilisateur",
-      "createOrEditLabel": "Créer ou éditer un utilisateur"
+      "editLabel": "Modifier un utilisateur"
     },
     "created": "L'utilisateur {{ param }} a été créé.",
     "updated": "L'utilisateur {{ param }} a été mis à jour.",
     "deleted": "L'utilisateur {{ param }} a été supprimé.",
     "delete": {
-      "question": "Etes-vous certain de vouloir supprimer l'utilisateur {{ login }} ?"
+      "question": "Etes-vous certain de vouloir supprimer l'utilisateur {{ firstName }} {{ lastName }} ?"
     },
     "detail": {
       "title": "Utilisateur"
@@ -25,6 +25,9 @@
     "createdBy": "Créé par",
     "createdDate": "Créé le",
     "lastModifiedBy": "Modifié par",
-    "lastModifiedDate": "Modifié le"
+    "lastModifiedDate": "Modifié le",
+    "status": "Role",
+    "cursus": "Niveau",
+    "account": "Compte"
   }
 }

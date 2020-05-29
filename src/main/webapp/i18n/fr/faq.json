@@ -5,7 +5,7 @@
       "role": "Général",
       "one": {
         "question": "Quel est l'objectif de ce site ?",
-        "answer": "Le site permet de faciliter l'attribution des projets TIC aux étudiants."
+        "answer": "Le site permet de faciliter l'attribution des projets aux étudiants du cursus MIAGE."
       },
       "two": {
         "question": "Comment obtenir mes identifiants ?",
@@ -50,9 +50,14 @@
         "answer": "Vous êtes averti par mail que le projet ne vous a pas été attribué. Vous pouvez par la suite vous connecter au site, et postuler de nouveau à un projet encore disponible."
       },
       "five": {
-        "question": "Comment transfèrer les documents demandés ?",
+        "question": "Comment transférer les documents demandés ?",
         "answer": "Rendez-vous sur la page dédiée à votre projet, qui vous permettra de mettre à disposition tous les documents requis."
       }
+    },
+    "team": {
+      "role": "Autre",
+      "title": "Par qui a été créé ce site ?",
+      "message": "Ce site a été réalisé par BALAT Audrey, BUREAU Tiffany, KIRCH Florent, MONGE Maxime, PREVERAUD Nicolas, promotion 2020."
     }
   }
 }

@@ -1,5 +1,6 @@
 package com.app.projettic.domain;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
@@ -53,6 +54,10 @@ public class Projet implements Serializable {
 
     @Column(name = "date_creation")
     private Instant dateCreation;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cursus")
+    private TypeCursus cursus;
 
     @OneToMany(mappedBy = "projet")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -258,6 +263,14 @@ public class Projet implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
+    public TypeCursus getCursus() {
+        return cursus;
+    }
+
+    public void setCursus(TypeCursus cursus) {
+        this.cursus = cursus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -276,6 +289,7 @@ public class Projet implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "Projet{" +
             "id=" + getId() +
             ", nom='" + getNom() + "'" +
@@ -286,6 +300,7 @@ public class Projet implements Serializable {
             ", automatique='" + isAutomatique() + "'" +
             ", archive='" + isArchive() + "'" +
             ", dateCreation=" + getDateCreation() +
+            ", cursus=" + grade +
             "}";
     }
 }

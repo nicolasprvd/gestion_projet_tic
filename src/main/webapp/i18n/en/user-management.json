@@ -3,13 +3,13 @@
     "home": {
       "title": "Users",
       "createLabel": "Create a new user",
-      "createOrEditLabel": "Create or edit a user"
+      "editLabel": "Edit a user"
     },
     "created": "A new user is created with identifier {{ param }}",
     "updated": "A user is updated with identifier {{ param }}",
     "deleted": "A user is deleted with identifier {{ param }}",
     "delete": {
-      "question": "Are you sure you want to delete user {{ login }}?"
+      "question": "Are you sure you want to delete user {{ firstName }} {{ lastName}}?"
     },
     "detail": {
       "title": "User"
@@ -25,6 +25,9 @@
     "createdBy": "Created by",
     "createdDate": "Created date",
     "lastModifiedBy": "Modified by",
-    "lastModifiedDate": "Modified date"
+    "lastModifiedDate": "Modified date",
+    "status": "Role",
+    "cursus": "Grade",
+    "account": "Account"
   }
 }

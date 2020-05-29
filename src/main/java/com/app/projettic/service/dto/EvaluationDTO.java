@@ -1,5 +1,7 @@
 package com.app.projettic.service.dto;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -21,10 +23,20 @@ public class EvaluationDTO implements Serializable {
     private Double noteRendu;
 
     @NotNull
+    private Double coefCDC;
+
+    @NotNull
+    private Double coefSoutenance;
+
+    @NotNull
+    private Double coefRendu;
+
+    @NotNull
     private Double noteFinale;
 
     private Boolean actif;
 
+    private TypeCursus cursus;
 
     public Long getId() {
         return id;
@@ -74,6 +86,38 @@ public class EvaluationDTO implements Serializable {
         this.actif = actif;
     }
 
+    public TypeCursus getCursus() {
+        return cursus;
+    }
+
+    public void setCursus(TypeCursus cursus) {
+        this.cursus = cursus;
+    }
+
+    public Double getCoefCDC() {
+        return coefCDC;
+    }
+
+    public void setCoefCDC(Double coefCDC) {
+        this.coefCDC = coefCDC;
+    }
+
+    public Double getCoefSoutenance() {
+        return coefSoutenance;
+    }
+
+    public void setCoefSoutenance(Double coefSoutenance) {
+        this.coefSoutenance = coefSoutenance;
+    }
+
+    public Double getCoefRendu() {
+        return coefRendu;
+    }
+
+    public void setCoefRendu(Double coefRendu) {
+        this.coefRendu = coefRendu;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -97,13 +141,18 @@ public class EvaluationDTO implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "EvaluationDTO{" +
             "id=" + getId() +
             ", noteCDC=" + getNoteCDC() +
+            ", coefCDC=" + getCoefCDC() +
             ", noteSoutenance=" + getNoteSoutenance() +
+            ", coefSoutenance=" + getCoefSoutenance() +
             ", noteRendu=" + getNoteRendu() +
+            ", coefRendu=" + getCoefRendu() +
             ", noteFinale=" + getNoteFinale() +
             ", actif=" + isActif() +
+            ", cursus=" + grade +
             "}";
     }
 }

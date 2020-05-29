@@ -12,15 +12,25 @@
       "updated": "Le Evaluation avec l'identifiant {{ param }} a été mis à jour",
       "deleted": "Le Evaluation avec l'identifiant {{ param }} a été supprimé",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Evaluation {{ id }} ?"
+        "question": "Êtes-vous certain de vouloir supprimer le Evaluation {{ id }} ?"
       },
       "detail": {
         "title": "Evaluation"
       },
-      "noteCDC": "Note CDC",
-      "noteSoutenance": "Note Soutenance",
-      "noteRendu": "Note Rendu",
-      "noteFinale": "Note Finale",
+      "export": {
+        "title": "Export des évaluations",
+        "warning": "Avez-vous bien vérifié les coefficients de tous les projets ?",
+        "tips": "Vous pouvez changer les coefficients / notes en cliquant sur le nom des projets dans le tableau",
+        "question": "Voulez-vous toujours exporter les évaluations ?",
+        "accept": "Exporter"
+      },
+      "noteCDC": "Note cahier des charges",
+      "coefCDC": "Coefficient cahier des charges",
+      "noteSoutenance": "Note soutenance",
+      "coefSoutenance": "Coefficient soutenance",
+      "noteRendu": "Note rendu",
+      "coefRendu": "Coefficient rendu",
+      "noteFinale": "Note finale",
       "userExtra": "User Extra",
       "etudiant": "Étudiant",
       "projet": "Projet"

@@ -3,22 +3,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
 import { IProjet } from 'app/shared/model/projet.model';
-import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { UserService } from 'app/core/user/user.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { DocumentService } from 'app/entities/document/document.service';
 import { Account } from 'app/core/user/account.model';
-import { IUser } from 'app/core/user/user.model';
 import { Evaluation, IEvaluation } from 'app/shared/model/evaluation.model';
-import { SERVER_API_URL } from 'app/app.constants';
 import { HttpClient } from '@angular/common/http';
 import { UserExtra } from 'app/shared/model/user-extra.model';
 import { EvaluationService } from 'app/entities/evaluation/evaluation.service';
 import { IDocument } from 'app/shared/model/document.model';
-import { TypeDocument } from 'app/shared/model/enumerations/type-document.model';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder } from '@angular/forms';
+import { IUser } from 'app/core/user/user.model';
 
 @Component({
   selector: 'jhi-projet-detail',
@@ -26,28 +24,30 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./projet.scss']
 })
 export class ProjectRateComponent implements OnInit {
-  public resourceUrl = SERVER_API_URL + 'api/projets';
-
   project!: IProjet;
   account!: Account | null;
-  authorities: string[] | undefined;
-  allUsers: UserExtra[] = [];
-  groupUsers: UserExtra[] = [];
+  groupMembers: UserExtra[] = [];
+  groupMembersNames: IUser[] = [];
   groupId: number;
-  user!: IUser;
-  client!: IUser;
-  typeUtilisateur?: TypeUtilisateur;
-  login!: string | undefined;
-  finalRate = 0;
-  specsRate = 0;
-  ganttsRate = 0;
-  outputRate = 0;
   isSaving = false;
-  cdcDoc: IDocument = null;
-  ganttDoc: IDocument = null;
-  renduDoc: IDocument = null;
-  idEvaluation: number;
-  evaluation: IEvaluation;
+  ratingId: number;
+  specificationRate = 0;
+  specificationCoef = 1;
+  defenseRate = 0;
+  defenseCoef = 1;
+  reportRate = 0;
+  reportCoef = 1;
+  finalRate = 0;
+  filename: string;
+  documentZIP: IDocument = null;
+
+  document = this.fb.group({
+    id: [],
+    documentZIP: [],
+    documentZIPContentType: [],
+    typeDocument: [],
+    projetId: []
+  });
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -60,54 +60,71 @@ export class ProjectRateComponent implements OnInit {
     private evaluationService: EvaluationService,
     private router: Router,
     private toastrService: ToastrService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ projet }) => (this.project = projet));
+    this.activatedRoute.data.subscribe(({ project }) => (this.project = project));
     this.accountService.getAuthenticationState().subscribe(account => {
       if (account !== null) {
         this.account = account;
-        this.authorities = account.authorities;
       }
     });
 
-    this.documentService.findByProjetId(this.project.id).subscribe(documents => {
-      if (documents !== null) {
-        for (const doc of documents.body) {
-          if (doc.typeDocument === TypeDocument.CDC) {
-            this.cdcDoc = doc;
-          }
-          if (doc.typeDocument === TypeDocument.GANTT) {
-            this.ganttDoc = doc;
-          }
-          if (doc.typeDocument === TypeDocument.RF) {
-            this.renduDoc = doc;
-          }
-        }
+    this.documentService.findByProjetId(this.project.id).subscribe(document => {
+      if (document !== null) {
+        this.documentZIP = document.body;
+        this.updateDocument(document.body);
       }
     });
 
     this.userExtraService.findByActif(true).subscribe(userExtras => {
       if (userExtras !== null) {
         this.groupId = this.project.groupeId;
-        this.allUsers = userExtras.body;
-        for (const extra of this.allUsers) {
+        for (const extra of userExtras.body) {
           if (extra.groupeId === this.groupId) {
-            this.groupUsers.push(extra);
+            this.groupMembers.push(extra);
             if (extra.evaluationId !== null) {
-              this.idEvaluation = extra.evaluationId;
+              this.ratingId = extra.evaluationId;
             } else {
-              this.idEvaluation = undefined;
+              this.ratingId = undefined;
             }
           }
         }
-        if (this.idEvaluation !== undefined) {
-          this.evaluationService.find(this.idEvaluation).subscribe(evaluation => {
-            this.evaluation = evaluation.body;
-          });
-        }
       }
+      this.userService.findByActivated(true).subscribe(users => {
+        if (users != null) {
+          for (const member of this.groupMembers) {
+            for (const user of users) {
+              if (member.id === user.id) {
+                this.groupMembersNames.push(user);
+              }
+            }
+          }
+        }
+      });
+    });
+    this.evaluationService.findByProjet(this.project.id).subscribe(evaluation => {
+      if (evaluation && evaluation.body) {
+        this.specificationRate = +evaluation.body.noteCDC;
+        this.specificationCoef = +evaluation.body.coefCDC;
+        this.defenseRate = +evaluation.body.noteSoutenance;
+        this.defenseCoef = +evaluation.body.coefSoutenance;
+        this.reportRate = +evaluation.body.noteRendu;
+        this.reportCoef = +evaluation.body.coefRendu;
+        this.finalRate = +evaluation.body.noteFinale;
+      }
+    });
+  }
+
+  updateDocument(document: IDocument): void {
+    this.document.patchValue({
+      id: document?.id,
+      documentZIP: document?.doc,
+      documentZIPContentType: document?.docContentType,
+      typeDocument: document?.typeDocument,
+      projetId: document?.projetId
     });
   }
 
@@ -115,19 +132,31 @@ export class ProjectRateComponent implements OnInit {
     return this.dataUtils.byteSize(base64String);
   }
 
+  /**
+   * Calculate the final grade based on the form data
+   */
   calculateFinalRate(): void {
-    this.specsRate = +(+(document.getElementById('specsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
-    this.ganttsRate = +(+(document.getElementById('ganttsRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
-    this.outputRate = +(+(document.getElementById('outputRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.specificationRate = +(+(document.getElementById('specificationRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.defenseRate = +(+(document.getElementById('defenseRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.reportRate = +(+(document.getElementById('reportRate') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.specificationCoef = +(+(document.getElementById('specificationCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.defenseCoef = +(+(document.getElementById('defenseCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
+    this.reportCoef = +(+(document.getElementById('reportCoef') as HTMLInputElement).value.replace(',', '.')).toFixed(2);
     if (this.isValidate()) {
-      this.finalRate = +((this.specsRate + this.ganttsRate + this.outputRate) / 3).toFixed(2);
+      this.finalRate = +(
+        (this.specificationRate * this.specificationCoef + this.defenseRate * this.defenseCoef + this.reportRate * this.reportCoef) /
+        (this.reportCoef + this.defenseCoef + this.specificationCoef)
+      ).toFixed(2);
     }
   }
 
+  /**
+   * Insert a new Evaluation object into the database
+   */
   evaluate(): void {
     if (this.isValidate()) {
       this.isSaving = true;
-      if (this.idEvaluation !== undefined) {
+      if (this.ratingId !== undefined) {
         const newEvaluation = this.createEvaluation(false);
         this.evaluationService.update(newEvaluation).subscribe(
           () => {
@@ -151,7 +180,7 @@ export class ProjectRateComponent implements OnInit {
         this.evaluationService.create(newEvaluation).subscribe(
           evaluation => {
             this.isSaving = false;
-            for (const usr of this.groupUsers) {
+            for (const usr of this.groupMembers) {
               usr.evaluationId = evaluation.body.id;
               this.userExtraService.update(usr).subscribe();
             }
@@ -173,35 +202,61 @@ export class ProjectRateComponent implements OnInit {
     }
   }
 
+  /**
+   * Check if form data are valid
+   */
   isValidate(): boolean {
-    document.getElementById('specsRate').setAttribute('style', 'background-color:white');
-    document.getElementById('ganttsRate').setAttribute('style', 'background-color:white');
-    document.getElementById('outputRate').setAttribute('style', 'background-color:white');
-    let valide = true;
-    if (isNaN(this.specsRate) || this.specsRate < 0 || this.specsRate > 20) {
-      document.getElementById('specsRate').setAttribute('style', 'background-color:#d65959');
-      valide = false;
+    document.getElementById('specificationRate').setAttribute('style', 'background-color:white');
+    document.getElementById('defenseRate').setAttribute('style', 'background-color:white');
+    document.getElementById('reportRate').setAttribute('style', 'background-color:white');
+    document.getElementById('specificationCoef').setAttribute('style', 'background-color:white');
+    document.getElementById('defenseCoef').setAttribute('style', 'background-color:white');
+    document.getElementById('reportCoef').setAttribute('style', 'background-color:white');
+    let valid = true;
+    if (isNaN(this.specificationRate) || this.specificationRate < 0 || this.specificationRate > 20) {
+      document.getElementById('specificationRate').setAttribute('style', 'background-color:#d65959');
+      valid = false;
     }
-    if (isNaN(this.ganttsRate) || this.ganttsRate < 0 || this.ganttsRate > 20) {
-      document.getElementById('ganttsRate').setAttribute('style', 'background-color:#d65959');
-      valide = false;
+    if (isNaN(this.defenseRate) || this.defenseRate < 0 || this.defenseRate > 20) {
+      document.getElementById('defenseRate').setAttribute('style', 'background-color:#d65959');
+      valid = false;
     }
-    if (isNaN(this.outputRate) || this.outputRate < 0 || this.outputRate > 20) {
-      document.getElementById('outputRate').setAttribute('style', 'background-color:#d65959');
-      valide = false;
+    if (isNaN(this.reportRate) || this.reportRate < 0 || this.reportRate > 20) {
+      document.getElementById('reportRate').setAttribute('style', 'background-color:#d65959');
+      valid = false;
     }
-    return !isNaN(this.finalRate) && this.finalRate >= 0 && this.finalRate <= 20 && valide;
+    if (isNaN(this.specificationCoef) || this.specificationCoef < 0) {
+      document.getElementById('specificationCoef').setAttribute('style', 'background-color:#d65959');
+      valid = false;
+    }
+    if (isNaN(this.defenseCoef) || this.defenseCoef < 0) {
+      document.getElementById('defenseCoef').setAttribute('style', 'background-color:#d65959');
+      valid = false;
+    }
+    if (isNaN(this.reportCoef) || this.reportCoef < 0) {
+      document.getElementById('reportCoef').setAttribute('style', 'background-color:#d65959');
+      valid = false;
+    }
+    return !isNaN(this.finalRate) && this.finalRate >= 0 && this.finalRate <= 20 && valid;
   }
 
+  /**
+   * Create an Evaluation object from form data
+   * @param create
+   */
   private createEvaluation(create: boolean): IEvaluation {
     return {
       ...new Evaluation(),
-      id: create ? undefined : this.idEvaluation,
-      noteCDC: this.specsRate,
-      noteRendu: this.outputRate,
-      noteSoutenance: this.ganttsRate,
+      id: create ? undefined : this.ratingId,
+      noteCDC: this.specificationRate,
+      noteRendu: this.reportRate,
+      noteSoutenance: this.defenseRate,
+      coefCDC: this.specificationCoef,
+      coefRendu: this.reportCoef,
+      coefSoutenance: this.defenseCoef,
       noteFinale: this.finalRate,
-      actif: true
+      actif: true,
+      cursus: this.project.cursus
     };
   }
 
@@ -209,7 +264,12 @@ export class ProjectRateComponent implements OnInit {
     window.history.back();
   }
 
-  openFile(docContentType: string, doc: string): void {
-    this.dataUtils.openFile(docContentType, doc);
+  openFile(contentType: string, base64String: string): void {
+    this.filename = this.project.cursus + '_';
+    this.groupMembersNames.forEach(member => {
+      this.filename += member.lastName.toUpperCase() + '_';
+    });
+    this.filename = this.filename.substring(0, this.filename.length - 1);
+    return this.dataUtils.downloadFile(contentType, base64String, this.filename);
   }
 }

@@ -24,20 +24,20 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ProjetDetailComponent implements OnInit {
   isSaving = false;
-  projet: IProjet;
+  project: IProjet;
   account: Account | null;
   authorities: string[] | undefined;
-  groupeId: number;
+  groupId: number;
   user: IUser;
   users: IUser[];
-  client: IUser;
+  customer: IUser;
   userExtras: IUserExtra[];
-  typeUtilisateur: TypeUtilisateur;
+  userType: TypeUtilisateur;
   login: string | undefined;
-  monProjetId: number;
-  groupes: Groupe[] = [];
-  chefGroupeId: number;
-  isRetracte: boolean;
+  myProjectId: number;
+  groups: Groupe[] = [];
+  chiefGroupId: number;
+  isRetracted: boolean;
 
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -54,7 +54,7 @@ export class ProjetDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
+    this.activatedRoute.data.subscribe(({ project }) => (this.project = project));
     this.accountService.getAuthenticationState().subscribe(account => {
       if (account !== null) {
         this.account = account;
@@ -66,20 +66,20 @@ export class ProjetDetailComponent implements OnInit {
         this.userExtras = userExtras.body;
         for (const userExtra of this.userExtras) {
           if (this.account.id === userExtra.id) {
-            this.typeUtilisateur = userExtra.typeUtilisateur;
-            this.groupeId = userExtra.groupeId;
-            if (this.groupeId !== null && this.groupeId !== undefined) {
-              this.groupeService.find(this.groupeId).subscribe(groupe => {
-                this.monProjetId = groupe.body.projetId;
+            this.userType = userExtra.typeUtilisateur;
+            this.groupId = userExtra.groupeId;
+            if (this.groupId !== null && this.groupId !== undefined) {
+              this.groupeService.find(this.groupId).subscribe(group => {
+                this.myProjectId = group.body.projetId;
               });
             }
           }
-          if (userExtra.id === this.projet?.userExtraId) {
-            this.userService.findById(userExtra.userId).subscribe(client => {
-              if (client !== null) {
-                client.firstName = this.formatNom(client.firstName);
-                client.lastName = client.lastName.toUpperCase();
-                this.client = client;
+          if (userExtra.id === this.project?.userExtraId) {
+            this.userService.findById(userExtra.userId).subscribe(customer => {
+              if (customer !== null) {
+                customer.firstName = this.formatName(customer.firstName);
+                customer.lastName = customer.lastName.toUpperCase();
+                this.customer = customer;
               }
             });
           }
@@ -91,17 +91,17 @@ export class ProjetDetailComponent implements OnInit {
         this.users = users;
       }
     });
-    this.groupeService.findByActif(true).subscribe(groupes => {
-      if (groupes !== null && groupes.body !== null) {
-        this.groupes = groupes.body;
-        for (const grp of groupes.body) {
-          if (grp.projetId === this.projet.id) {
-            this.chefGroupeId = grp.userExtraId;
+    this.groupeService.findByActif(true).subscribe(groups => {
+      if (groups !== null && groups.body !== null) {
+        this.groups = groups.body;
+        for (const grp of groups.body) {
+          if (grp.projetId === this.project.id) {
+            this.chiefGroupId = grp.userExtraId;
           }
         }
       }
     });
-    this.isRetracte = false;
+    this.isRetracted = false;
   }
 
   byteSize(base64String: string): string {
@@ -122,17 +122,17 @@ export class ProjetDetailComponent implements OnInit {
   /**
    * Return true if the current user is a CLIENT
    */
-  isClient(): boolean {
-    return this.typeUtilisateur === TypeUtilisateur.CLIENT;
+  isCustomer(): boolean {
+    return this.userType === TypeUtilisateur.CLIENT;
   }
 
   /**
-   * Return true studients have apply to this project
+   * Return true students have apply to this project
    */
-  isChoisi(idProjet: number): boolean {
-    if (this.groupes !== null && this.groupes !== undefined) {
-      for (const g of this.groupes) {
-        if (g.projetId === idProjet) {
+  isSelected(projectId: number): boolean {
+    if (this.groups !== null && this.groups !== undefined) {
+      for (const g of this.groups) {
+        if (g.projetId === projectId) {
           return true;
         }
       }
@@ -145,16 +145,16 @@ export class ProjetDetailComponent implements OnInit {
    * - the current user is an administrator
    * - the project was created by the current user
    */
-  isAutorise(projet: IProjet): boolean {
+  isAuthorized(project: IProjet): boolean {
     if (this.authorities !== null && this.authorities !== undefined) {
-      for (const droit of this.authorities) {
-        if (Authority.ADMIN === droit) {
+      for (const authority of this.authorities) {
+        if (Authority.ADMIN === authority) {
           return true;
         }
       }
     }
-    if (this.isClient()) {
-      return projet.userExtraId === this.account.id;
+    if (this.isCustomer()) {
+      return project.userExtraId === this.account.id;
     }
     return false;
   }
@@ -162,16 +162,16 @@ export class ProjetDetailComponent implements OnInit {
   /**
    * Return true if the current user have a group
    */
-  aDejaUnGroupe(): boolean {
-    return this.groupeId !== null;
+  alreadyHasGroup(): boolean {
+    return this.groupId !== null;
   }
 
   /**
    * Return true if the param project is the current user's project
-   * @param projet
+   * @param project
    */
-  isMonProjetChoisi(projet: IProjet): boolean {
-    return projet.id === this.monProjetId;
+  isMyProject(project: IProjet): boolean {
+    return project.id === this.myProjectId;
   }
 
   /**
@@ -179,24 +179,24 @@ export class ProjetDetailComponent implements OnInit {
    * - deletion of the group in the Group table
    * - modify the group id of each user (extra) to set it to null
    */
-  retractation(): void {
-    this.projetService.find(this.monProjetId).subscribe(projet => {
-      let compteur = projet.body.nbEtudiant;
-      const idMonGroupe: number = this.groupeId;
-      this.userExtraService.findByGroupeId(idMonGroupe).subscribe(
-        userextras => {
-          if (userextras !== null && userextras.body !== null) {
-            for (const userextra of userextras.body) {
-              userextra.groupeId = null;
-              this.userExtraService.update(userextra).subscribe(() => {
-                compteur--;
-                if (compteur === 0) {
-                  this.groupeService.delete(idMonGroupe).subscribe(() => {
-                    this.isRetracte = true;
+  retract(): void {
+    this.projetService.find(this.myProjectId).subscribe(project => {
+      let counter = project.body.nbEtudiant;
+      const myGroupId: number = this.groupId;
+      this.userExtraService.findByGroupeId(myGroupId).subscribe(
+        extras => {
+          if (extras !== null && extras.body !== null) {
+            for (const extra of extras.body) {
+              extra.groupeId = null;
+              this.userExtraService.update(extra).subscribe(() => {
+                counter--;
+                if (counter === 0) {
+                  this.groupeService.delete(myGroupId).subscribe(() => {
+                    this.isRetracted = true;
                     this.isSaving = false;
                     this.toastrService.success(
                       this.translateService.instant('global.toastr.retractation.projet.message'),
-                      this.translateService.instant('global.toastr.retractation.projet.title', { nom: projet.body.nom })
+                      this.translateService.instant('global.toastr.retractation.projet.title', { nom: project.body.nom })
                     );
                     this.router.navigate(['/projet']);
                   });
@@ -216,39 +216,47 @@ export class ProjetDetailComponent implements OnInit {
     });
   }
 
-  protected onSaveError(): void {
-    this.isSaving = false;
+  /**
+   * Return true if the project has a text description
+   * @param project
+   */
+  isTextDescription(project: IProjet): boolean {
+    return project.descriptionTexte !== null && project.descriptionTexte !== '';
   }
 
-  isDescriptionTexte(projet: IProjet): boolean {
-    return projet.descriptionTexte !== null && projet.descriptionTexte !== '';
+  /**
+   * Return true if the project has a PDF description
+   * @param project
+   */
+  isPDFDescription(project: IProjet): boolean {
+    return project.descriptionPDF !== null;
   }
 
-  isDescriptionPDF(projet: IProjet): boolean {
-    return projet.descriptionPDF !== null;
-  }
-
-  getNomPrenomUser(extra: IUserExtra): string {
+  /**
+   * Return the firstname and lastname of the user
+   * @param extra
+   */
+  getFirstnameLastname(extra: IUserExtra): string {
     if (this.users !== null && this.users !== undefined) {
       for (const usr of this.users) {
         if (usr.id === extra.id) {
-          if (this.chefGroupeId === extra.id) {
+          if (this.chiefGroupId === extra.id) {
             return (
               this.translate.instant('projetticApp.projet.detail.chefDeProjet') +
               ' : ' +
-              this.formatNom(usr.firstName) +
+              this.formatName(usr.firstName) +
               ' ' +
               usr.lastName.toUpperCase()
             );
           }
-          return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+          return this.formatName(usr.firstName) + ' ' + usr.lastName.toUpperCase();
         }
       }
     }
     return '';
   }
 
-  formatNom(str: string): string {
+  formatName(str: string): string {
     str = str.toLowerCase();
     return str.charAt(0).toUpperCase() + str.slice(1);
   }

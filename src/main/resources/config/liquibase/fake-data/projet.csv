@@ -1,13 +1,13 @@
-id;nom;description_pdf;description_pdf_content_type;description_texte;nb_etudiant;automatique;archive;user_extra_id
-1;Journée entreprises;../fake-data/blob/hipster.png;image/png;Ce projet a pour but d'organiser la journée entreprise de la MIAGE afin décrocher un stage, une alternance et d'entretenir son réseau professionnel. Bien entendu, le petit déjeuner doit être pris en charge par les étudiants affectés au projet;3;true;false;5
-2;Gala;../fake-data/blob/hipster.png;image/png;Le projet Gala consiste à trouver un thème, des sponsors, un lieu, un traiteur... pour créer LA soirée dont les diplômés attendent depuis l'annonce de leur réussite à la MIAGE de Bordeaux;6;true;false;6
-3;Atos IT Challenge;null;;Voir https://www.atositchallenge.net, l'IA en aide pour les personnes âgées;4;false;true;7
-4;Développement d'un GANTT collaboratif web;../fake-data/blob/hipster.png;image/png;Développement d'un GANTT collaboratif web dans le cadre des projets TIC de la MIAGE;4;false;false;8
-5;Un webservice pour la détection de malwares;../fake-data/blob/hipster.png;image/png;Webservice pour la détection de mallwares;5;true;false;9
-6;Etude de cas: système d'information UB, cartographie et documentation;../fake-data/blob/hipster.png;image/png;;4;true;false;10
-7;Réfrigérateur intelligent;../fake-data/blob/hipster.png;image/png;Développement d'une application permettant de suggérer des recettes à partir du contenu du frigo et en fonction des dates de péremption;5;false;true;5
-8;Gestion pharmacopée avec QR Code v2;../fake-data/blob/hipster.png;image/png;Application permettant de gérer sa pharmacie personnelle;5;false;true;6
-9;Outil de suivi pour les stages MIAGE;../fake-data/blob/hipster.png;image/png;Développement Web pour le suivi des objectifs des stages / alternances;4;false;false;8
-10;POC avec IBM Watson;../fake-data/blob/hipster.png;image/png;Création d'un cas usage illustrant les capacités et limites du produit édité par IBM;4;false;false;5
-11;Développement d'un outil de gestion de centre de formation;../fake-data/blob/hipster.png;image/png;Audit de l'application et développement de modules complémentaires;4;false;false;6
-12;Evolution d'un applicatif de gestion de note de frais en symfony;../fake-data/blob/hipster.png;image/png;;4;false;false;9
+id;nom;description_pdf;description_pdf_content_type;description_texte;nb_etudiant;automatique;archive;user_extra_id;cursus
+1;Journée entreprises;../fake-data/blob/hipster.png;image/png;Ce projet a pour but d'organiser la journée entreprise de la MIAGE afin décrocher un stage, une alternance et d'entretenir son réseau professionnel. Bien entendu, le petit déjeuner doit être pris en charge par les étudiants affectés au projet;3;true;false;5;L3
+2;Gala;../fake-data/blob/hipster.png;image/png;Le projet Gala consiste à trouver un thème, des sponsors, un lieu, un traiteur... pour créer LA soirée dont les diplômés attendent depuis l'annonce de leur réussite à la MIAGE de Bordeaux;6;true;false;6;L3
+3;Atos IT Challenge;null;;Voir https://www.atositchallenge.net, l'IA en aide pour les personnes âgées;4;false;true;7;M2
+4;Développement d'un GANTT collaboratif web;../fake-data/blob/hipster.png;image/png;Développement d'un GANTT collaboratif web dans le cadre des projets TIC de la MIAGE;4;false;false;8;M2
+5;Un webservice pour la détection de malwares;../fake-data/blob/hipster.png;image/png;Webservice pour la détection de mallwares;5;true;false;9;M1
+6;Etude de cas: système d'information UB, cartographie et documentation;../fake-data/blob/hipster.png;image/png;;4;true;false;10;M1
+7;Réfrigérateur intelligent;../fake-data/blob/hipster.png;image/png;Développement d'une application permettant de suggérer des recettes à partir du contenu du frigo et en fonction des dates de péremption;5;false;true;5;M2
+8;Gestion pharmacopée avec QR Code v2;../fake-data/blob/hipster.png;image/png;Application permettant de gérer sa pharmacie personnelle;5;false;true;6;L3
+9;Outil de suivi pour les stages MIAGE;../fake-data/blob/hipster.png;image/png;Développement Web pour le suivi des objectifs des stages / alternances;4;false;false;8;M1
+10;POC avec IBM Watson;../fake-data/blob/hipster.png;image/png;Création d'un cas usage illustrant les capacités et limites du produit édité par IBM;4;false;false;5;M2
+11;Développement d'un outil de gestion de centre de formation;../fake-data/blob/hipster.png;image/png;Audit de l'application et développement de modules complémentaires;4;false;false;6;L3
+12;Evolution d'un applicatif de gestion de note de frais en symfony;../fake-data/blob/hipster.png;image/png;;4;false;false;9;M1

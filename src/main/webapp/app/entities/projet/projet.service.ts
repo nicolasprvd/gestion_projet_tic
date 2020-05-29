@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, Search } from 'app/shared/util/request-util';
 import { IProjet } from 'app/shared/model/projet.model';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 type EntityResponseType = HttpResponse<IProjet>;
 type EntityArrayResponseType = HttpResponse<IProjet[]>;
@@ -34,6 +35,10 @@ export class ProjetService {
 
   findByArchive(archive: boolean): Observable<EntityArrayResponseType> {
     return this.http.get<IProjet[]>(`${this.resourceUrl}/archive/${archive}`, { observe: 'response' });
+  }
+
+  findByArchiveAndCursus(archive: boolean, cursus: TypeCursus): Observable<EntityArrayResponseType> {
+    return this.http.get<IProjet[]>(`${this.resourceUrl}/cursus/${cursus}/${archive}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

@@ -1,0 +1,26 @@
+<form class="popin" name="exportEvaluation">
+    <div class="modal-header">
+        <h4 class="modal-title" jhiTranslate="projetticApp.evaluation.export.title"></h4>
+
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="cancel()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+        <p jhiTranslate="projetticApp.evaluation.export.warning"></p>
+        <p jhiTranslate="projetticApp.evaluation.export.tips"></p>
+        <p jhiTranslate="projetticApp.evaluation.export.question"></p>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+           <fa-icon icon="times"></fa-icon>
+            <span jhiTranslate="entity.action.cancel"></span>
+        </button>
+
+        <button type="submit" class="btn btn-success" (click)="onSaveSuccess()">
+            <fa-icon icon="file-download"></fa-icon>
+            <span jhiTranslate="projetticApp.evaluation.export.accept"></span>
+        </button>
+    </div>
+</form>

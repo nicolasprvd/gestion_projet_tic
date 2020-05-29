@@ -4,8 +4,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
 import { LoginService } from 'app/core/login/login.service';
-import { JhiEventManager } from 'ng-jhipster';
-import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 
 @Component({
@@ -25,14 +23,7 @@ export class LoginModalComponent implements AfterViewInit {
     rememberMe: [false]
   });
 
-  constructor(
-    private loginService: LoginService,
-    private router: Router,
-    public activeModal: NgbActiveModal,
-    private fb: FormBuilder,
-    private eventManager: JhiEventManager,
-    private accountService: AccountService
-  ) {}
+  constructor(private loginService: LoginService, private router: Router, public activeModal: NgbActiveModal, private fb: FormBuilder) {}
 
   ngAfterViewInit(): void {
     if (this.username) {
@@ -40,6 +31,9 @@ export class LoginModalComponent implements AfterViewInit {
     }
   }
 
+  /**
+   * Close the login popin
+   */
   cancel(): void {
     this.authenticationError = false;
     this.loginForm.patchValue({
@@ -49,6 +43,9 @@ export class LoginModalComponent implements AfterViewInit {
     this.activeModal.dismiss('cancel');
   }
 
+  /**
+   * Connect the user if the username match with the password
+   */
   login(): void {
     this.loginService
       .login({
@@ -63,22 +60,36 @@ export class LoginModalComponent implements AfterViewInit {
           if (
             this.router.url === '/account/register' ||
             this.router.url.startsWith('/account/activate') ||
-            this.router.url.startsWith('/account/reset/')
+            this.router.url.startsWith('/account/reset/') ||
+            this.router.url.startsWith('/account/login/')
           ) {
             this.router.navigate(['/']);
           }
         },
-        () => (this.authenticationError = true)
+        () => {
+          this.authenticationError = true;
+        }
       );
   }
 
+  /**
+   * Redirect to the register page
+   */
   register(): void {
     this.activeModal.dismiss('to state register');
     this.router.navigate(['/account/register']);
   }
 
+  /**
+   * Redirect to the reset password page
+   */
   requestResetPassword(): void {
     this.activeModal.dismiss('to state requestReset');
     this.router.navigate(['/account/reset', 'request']);
+  }
+
+  requestLogin(): void {
+    this.activeModal.dismiss('to state requestLogin');
+    this.router.navigate(['/account/login', 'request']);
   }
 }

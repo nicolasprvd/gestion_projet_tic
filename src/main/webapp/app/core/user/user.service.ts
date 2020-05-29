@@ -21,7 +21,7 @@ export class UserService {
   }
 
   find(login: string): Observable<IUser> {
-    return this.http.get<IUser>(`${this.resourceUrl}/${login}`);
+    return this.http.get<IUser>(`${this.resourceUrl}/login/${login}`);
   }
 
   findById(id: number): Observable<IUser> {
@@ -47,5 +47,9 @@ export class UserService {
 
   authorities(): Observable<string[]> {
     return this.http.get<string[]>(SERVER_API_URL + 'api/users/authorities');
+  }
+
+  findAllWithAuthorities(): Observable<IUser[]> {
+    return this.http.get<IUser[]>(`${this.resourceUrl}/authorities/all`);
   }
 }

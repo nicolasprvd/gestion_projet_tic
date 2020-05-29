@@ -1,72 +1,92 @@
 <div>
     <h2>
         <span id="user-management-page-heading" jhiTranslate="userManagement.home.title">Users</span>
-
-        <button class="btn btn-primary float-right jh-create-entity" [routerLink]="['./new']">
-            <fa-icon icon="plus"></fa-icon> <span jhiTranslate="userManagement.home.createLabel">Create a new User</span>
-        </button>
     </h2>
 
-    <jhi-alert-error></jhi-alert-error>
+    <div class="table-responsive" *ngIf="users?.length > 0">
+        <div class="filterButtons">
+            <button id="filtreAucun" type="submit"
+                    (click)="reinitFiltreGroupes()"
+                    class="btn btn-success btn-sm">
+                <span jhiTranslate="projetticApp.projet.filtre.tous"></span>
+            </button>
+            <button id="filtreClient" type="submit"
+                    (click)="filtrerGroupes(null)"
+                    class="btn btn-danger btn-sm">
+                <span jhiTranslate="projetticApp.projet.filtre.customer"></span>
+            </button>
+            <button id="filtreL3" type="submit"
+                    (click)="filtrerGroupes(L3)"
+                    class="btn btn-danger btn-sm">
+                <span>{{L3}}</span>
+            </button>
+            <button id="filtreM1" type="submit"
+                    (click)="filtrerGroupes(M1)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M1}}</span>
+            </button>
+            <button id="filtreM2" type="submit"
+                    (click)="filtrerGroupes(M2)"
+                    class="btn btn-danger btn-sm">
+                <span>{{M2}}</span>
+            </button>
+        </div>
+    </div>
 
-    <jhi-alert></jhi-alert>
-
-    <div class="table-responsive" *ngIf="users">
+    <div class="table-responsive" *ngIf="users?.length > 0">
         <table class="table table-striped" aria-describedby="user-management-page-heading">
             <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="transition.bind(this)">
-                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="login"><span jhiTranslate="userManagement.login">Login</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"></th>
-                    <th scope="col"  jhiSortBy="langKey"> <span jhiTranslate="userManagement.langKey">Lang Key</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"><span jhiTranslate="userManagement.profiles">Profiles</span></th>
-                    <th scope="col" jhiSortBy="createdDate"><span jhiTranslate="userManagement.createdDate">Created Date</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col" jhiSortBy="lastModifiedBy"><span jhiTranslate="userManagement.lastModifiedBy">Last Modified By</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col" jhiSortBy="lastModifiedDate"><span jhiTranslate="userManagement.lastModifiedDate">Last Modified Date</span> <fa-icon icon="sort"></fa-icon></th>
+                <tr>
+                    <th scope="col"><span jhiTranslate="userManagement.account">Account</span></th>
+                    <th scope="col"><span jhiTranslate="userManagement.lastName">Lastname</span></th>
+                    <th scope="col"><span jhiTranslate="userManagement.firstName">Firstname</span></th>
+                    <th scope="col"><span jhiTranslate="userManagement.email">Email</span></th>
+                    <th scope="col"><span jhiTranslate="userManagement.status">Role</span></th>
+                    <th scope="col"><span jhiTranslate="userManagement.cursus">Grade</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody *ngIf="users">
-                <tr *ngFor="let user of users; trackBy: trackIdentity">
-                    <td><a [routerLink]="['./', user.login, 'view']">{{ user.id }}</a></td>
-                    <td>{{ user.login }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>
+                <tr *ngFor="let user of usersFilter | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; trackBy: trackIdentity">
+                    <td class="usr-managt-compte">
                         <button class="btn btn-danger btn-sm" (click)="setActive(user, true)" *ngIf="!user.activated"
                                 jhiTranslate="userManagement.deactivated">Deactivated</button>
                         <button class="btn btn-success btn-sm" (click)="setActive(user, false)" *ngIf="user.activated"
                                 [disabled]="!currentAccount || currentAccount.login === user.login" jhiTranslate="userManagement.activated">Activated</button>
                     </td>
-                    <td>{{ user.langKey }}</td>
-                    <td>
-                        <div *ngFor="let authority of user.authorities">
-                            <span class="badge badge-info">{{ authority }}</span>
-                        </div>
+                    <td>{{ user.lastName }}</td>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td class="text-center">
+                        <span *ngIf="user.authorities.includes('ROLE_ADMIN')">
+                            <span class="badge badge-danger">ADMIN</span>
+                        </span>
+                        <span [ngClass]="user.authorities.includes('ROLE_ETUDIANT') ? 'badge-primary' : 'badge-info'" class="badge">{{ user.typeUtilisateur }}</span>
                     </td>
-                    <td>{{ user.createdDate | date:'dd/MM/yy HH:mm' }}</td>
-                    <td>{{ user.lastModifiedBy }}</td>
-                    <td>{{ user.lastModifiedDate | date:'dd/MM/yy HH:mm' }}</td>
-                    <td class="text-right">
+                    <td class="text-center">{{ user.cursus }}</td>
+
+                    <td class="usr-mangt-btn">
                         <div class="btn-group">
-                            <button type="submit"
-                                    [routerLink]="['./', user.login, 'view']"
+
+                            <button type="button" *ngIf="isMasterStudent(user)"
+                                    (click)="repeatYear(user)"
                                     class="btn btn-info btn-sm">
-                                <fa-icon icon="eye"></fa-icon>
-                                <span jhiTranslate="entity.action.view">View</span>
+                                <fa-icon icon="sync"></fa-icon>
+                                <span jhiTranslate="entity.action.redoubler"></span>
                             </button>
+
 
                             <button type="submit"
                                     [routerLink]="['./', user.login, 'edit']"
                                     queryParamsHandling="merge"
                                     class="btn btn-primary btn-sm">
-                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <fa-icon icon="edit"></fa-icon>
                                 <span jhiTranslate="entity.action.edit">Edit</span>
                             </button>
 
-                            <button type="button" (click)="deleteUser(user)"
+                            <button *ngIf="canDelete(user)" type="button" (click)="deleteUser(user)"
                                     class="btn btn-danger btn-sm" [disabled]="!currentAccount || currentAccount.login === user.login">
-                                <fa-icon icon="times"></fa-icon>
+                                <fa-icon icon="trash"></fa-icon>
                                 <span jhiTranslate="entity.action.delete">Delete</span>
                             </button>
                         </div>
@@ -76,13 +96,11 @@
         </table>
     </div>
 
-    <div *ngIf="users">
-        <div class="row">
-            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-        </div>
-
-        <div class="row">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
-        </div>
-    </div>
+    <ngb-pagination
+        [(page)]="page"
+        [pageSize]="pageSize"
+        [maxSize]="5"
+        [rotate]="true"
+        [collectionSize]="usersFilter.length"
+        [boundaryLinks]="true"></ngb-pagination>
 </div>

@@ -25,9 +25,19 @@
             <column name="note_rendu" type="double">
                 <constraints nullable="false" />
             </column>
+            <column name="coef_cdc" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="coef_soutenance" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="coef_rendu" type="double">
+                <constraints nullable="false" />
+            </column>
             <column name="note_finale" type="double">
                 <constraints nullable="false" />
             </column>
+            <column name="cursus" type="varchar(255)" />
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
     </changeSet>
@@ -54,7 +64,11 @@
             <column name="note_cdc" type="numeric"/>
             <column name="note_soutenance" type="numeric"/>
             <column name="note_rendu" type="numeric"/>
+            <column name="coef_cdc" type="numeric"/>
+            <column name="coef_soutenance" type="numeric"/>
+            <column name="coef_rendu" type="numeric"/>
             <column name="note_finale" type="numeric"/>
+            <column name="cursus" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

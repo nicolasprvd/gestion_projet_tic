@@ -1,4 +1,5 @@
 import { IUserExtra } from 'app/shared/model/user-extra.model';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 export interface IEvaluation {
   id?: number;
@@ -8,6 +9,10 @@ export interface IEvaluation {
   noteFinale?: number;
   userExtras?: IUserExtra[];
   actif?: boolean;
+  cursus?: TypeCursus;
+  coefCDC?: number;
+  coefSoutenance?: number;
+  coefRendu?: number;
 }
 
 export class Evaluation implements IEvaluation {
@@ -18,6 +23,10 @@ export class Evaluation implements IEvaluation {
     public noteRendu?: number,
     public noteFinale?: number,
     public userExtras?: IUserExtra[],
-    public actif?: boolean
+    public actif?: boolean,
+    public cursus?: TypeCursus,
+    public coefCDC?: number,
+    public coefSoutenance?: number,
+    public coefRendu?: number
   ) {}
 }

@@ -1,10 +1,12 @@
 package com.app.projettic.service.impl;
 
+import com.app.projettic.domain.Projet;
 import com.app.projettic.service.EvaluationService;
 import com.app.projettic.domain.Evaluation;
 import com.app.projettic.repository.EvaluationRepository;
 import com.app.projettic.repository.search.EvaluationSearchRepository;
 import com.app.projettic.service.dto.EvaluationDTO;
+import com.app.projettic.service.dto.ProjetDTO;
 import com.app.projettic.service.mapper.EvaluationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -124,5 +126,17 @@ public class EvaluationServiceImpl implements EvaluationService {
     public List<EvaluationDTO> findByActif(boolean actif) {
         log.debug("Request to get evaluation : {}", actif);
         return evaluationRepository.findByActif(actif).stream().map(evaluationMapper::toDto).collect(Collectors.toList());
+    }
+
+    /**
+     * Get evaluation by projet.
+     *
+     * @param projet the projet of the evaluation.
+     * @return the entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<EvaluationDTO> findByProjet(Long projet) {
+        return evaluationRepository.findByProjet(projet).map(evaluationMapper::toDto);
     }
 }

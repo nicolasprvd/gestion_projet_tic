@@ -111,7 +111,12 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
-            mailService.sendCreationEmail(newUser);
+            // mailService.sendCreationEmail(newUser);
+            if (!userDTO.isActivated()) {
+                String subject = "Compte client à valider";
+                String content = "Le client " + userDTO.getFirstName() + " " + userDTO.getLastName() + " a créé un compte sur le site de gestion des projets. Rendez-vous sur celui-ci pour valider le compte.";
+                mailService.sendEmail("audrey.balat028@gmail.com", subject, content, false, false);
+            }
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert(applicationName,  "userManagement.created", newUser.getLogin()))
                 .body(newUser);
@@ -139,7 +144,6 @@ public class UserResource {
             throw new LoginAlreadyUsedException();
         }
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
-
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert(applicationName, "userManagement.updated", userDTO.getLogin()));
     }
@@ -170,7 +174,7 @@ public class UserResource {
      * @param login the login of the user to find.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the "login" user, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
+    @GetMapping("/users/login/{login:" + Constants.LOGIN_REGEX + "}")
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
         return ResponseUtil.wrapOrNotFound(
@@ -226,5 +230,16 @@ public class UserResource {
     public List<UserDTO> findByActivated(@PathVariable boolean activated) {
         log.debug("REST request to get all User");
         return userService.findByActivated(activated);
+    }
+
+    /**
+     * {@code GET  /users/authorities/all} : get the authorities for all users
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the users in body.
+     */
+    @GetMapping("/users/authorities/all")
+    public List<UserDTO> findAllWithAuthorities() {
+        log.debug("REST request to get all users with authorities");
+        return userService.findAllWithAuthorities();
     }
 }

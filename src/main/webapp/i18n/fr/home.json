@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Bienvenue sur votre application de gestion de vos projets TIC",
+    "title": "Bienvenue sur votre application de gestion de vos projets MIAGE",
     "subtitle": "Ce site vous permettra, selon votre profil :",
     "admin": {
       "role": "Si vous êtes l'administrateur de l'application :",
@@ -11,7 +11,7 @@
     "student": {
       "role": "Si vous êtes un étudiant :",
       "one": "Visualiser les projets proposés par les différents clients",
-      "two": "Se positioner sur un ou plusieurs projet (et renseigner les membres du groupe)",
+      "two": "Se positioner sur des projets (et renseigner les membres du groupe)",
       "three": "Visualiser son projet une fois ce dernier attribué, ainsi que déposer les documents demandés"
     },
     "client": {
@@ -24,8 +24,10 @@
     },
     "newYear": {
       "titre": "Démarrer une nouvelle année universitaire",
-      "detail": "Attention, démarrer une nouvelle année universitaire va désactiver tous les groupes / évaluations / documents / étudiants actifs. Ceux-ci seront tout de même conservés.",
+      "detail": "Attention, démarrer une nouvelle année universitaire va désactiver tous les groupes / évaluations / documents / projets.",
+      "detailEtudiant": "Les étudiants vont être promus au niveau supérieur. Le compte des étudiants en Master 2 va être désactivé.",
       "question": "Êtes-vous sûr de vouloir démarrer une nouvelle année universitaire ?",
+      "retakingStudents": "En cas de redoublement, se rendre sur la page de gestion des utilisateurs et cliquer sur le bouton 'redoubler' pour les étudiants concernés.",
       "confirmation": "Démarrer"
     }
   }

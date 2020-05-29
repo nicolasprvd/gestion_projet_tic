@@ -1,7 +1,9 @@
 package com.app.projettic.web.rest;
 
+import com.app.projettic.domain.Authority;
 import com.app.projettic.domain.User;
 import com.app.projettic.repository.UserRepository;
+import com.app.projettic.security.AuthoritiesConstants;
 import com.app.projettic.security.SecurityUtils;
 import com.app.projettic.service.MailService;
 import com.app.projettic.service.UserService;
@@ -60,11 +62,24 @@ public class AccountResource {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.getTypeUtilisateur());
-        mailService.sendActivationEmail(user);
+
+        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), managedUserVM.getTypeUtilisateur(), managedUserVM.getCursus());
+        if (!user.getActivated()) {
+            List<User> list = this.userService.findAll();
+            for (User usr : list) {
+                for (Authority droit : usr.getAuthorities()) {
+                    if (droit.getName().equals(AuthoritiesConstants.ADMIN)) {
+                         String subject = "Compte client à valider";
+                         String content = "Le client " + user.getFirstName() + " " + user.getLastName() + " a créé un compte sur le site de gestion des projets MIAGE. Rendez-vous sur l'onglet Gestion des Utilisateurs afin de valider ou refuser le compte.";
+                         mailService.sendEmail(usr.getEmail(), subject, content, false, false);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -124,7 +139,7 @@ public class AccountResource {
         if (!user.isPresent()) {
             throw new AccountResourceException("User could not be found");
         }
-        userService.updateUser(userDTO.getId(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
+        userService.updateUser(userDTO.getId(), userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(), userDTO.getActivated(),
             userDTO.getLangKey(), userDTO.getImageUrl());
     }
 
@@ -184,4 +199,28 @@ public class AccountResource {
             password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
             password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH;
     }
+
+    /**
+     * {@code POST   /account/login-forgot} : Send an email to get user's login.
+     *
+     * @param mail the mail of the user.
+     */
+    @PostMapping(path = "/account/login-forgot")
+    public void loginForgot(@RequestBody String mail) {
+        Optional<User> user = userService.requestPasswordReset(mail);
+        if (user.isPresent()) {
+            mailService.sendEmail(
+                user.get().getEmail(),
+                "Récupération de votre login",
+                "Votre login est : " + user.get().getLogin(),
+                false,
+                false
+            );
+        } else {
+            log.warn("Login requested for non existing mail '{}'", mail);
+        }
+    }
+
+
+
 }

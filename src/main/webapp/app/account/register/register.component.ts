@@ -8,6 +8,12 @@ import { RegisterService } from './register.service';
 import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 import { LoginService } from 'app/core/login/login.service';
 import { Router } from '@angular/router';
+import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
+import { UserService } from 'app/core/user/user.service';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
+import { ProjetService } from 'app/entities/projet/projet.service';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   selector: 'jhi-register',
@@ -22,29 +28,49 @@ export class RegisterComponent implements AfterViewInit {
   errorEmailExists = false;
   errorUserExists = false;
   success = false;
-  typeUtilisateurs: string[];
-  typeUtilisateurDefault: TypeUtilisateur;
+  userType: string[];
+  userTypeDefault: TypeUtilisateur;
+  active = true;
+  grade: string[];
+  gradeDefault: TypeCursus;
 
   registerForm = this.fb.group({
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern('^[_.@A-Za-z0-9-]*$')]],
-    email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(254),
+        Validators.email,
+        Validators.pattern('^[A-Za-z0-9](\\.?[A-Za-z0-9]){2,}@etu\\.u-bordeaux\\.fr$')
+      ]
+    ],
     firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(254)]],
     lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(254)]],
     typeUtilisateur: [''],
+    cursus: [''],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]]
   });
 
   constructor(
     private languageService: JhiLanguageService,
+    protected projetService: ProjetService,
     private loginModalService: LoginModalService,
     private registerService: RegisterService,
     private fb: FormBuilder,
     private loginService: LoginService,
+    protected userService: UserService,
+    protected userExtraService: UserExtraService,
+    private toastrService: ToastrService,
+    private translateService: TranslateService,
     private router: Router
   ) {
-    this.typeUtilisateurs = [TypeUtilisateur.ETUDIANT, TypeUtilisateur.CLIENT];
-    this.typeUtilisateurDefault = TypeUtilisateur.ETUDIANT;
+    this.userType = [TypeUtilisateur.ETUDIANT, TypeUtilisateur.CLIENT];
+    this.userTypeDefault = TypeUtilisateur.ETUDIANT;
+    this.grade = [TypeCursus.L3, TypeCursus.M1, TypeCursus.M2];
+    this.gradeDefault = TypeCursus.L3;
   }
 
   ngAfterViewInit(): void {
@@ -67,33 +93,61 @@ export class RegisterComponent implements AfterViewInit {
       this.doNotMatch = true;
     } else {
       const login = this.registerForm.get(['login'])!.value;
-      const email = this.registerForm.get(['email'])!.value;
+      const email = this.registerForm
+        .get(['email'])!
+        .value.toString()
+        .toLowerCase();
       const firstName = this.registerForm.get(['firstName'])!.value;
       const lastName = this.registerForm.get(['lastName'])!.value;
       const typeUtilisateur = this.registerForm.get(['typeUtilisateur'])!.value;
+      if (typeUtilisateur === 'CLIENT') {
+        this.active = false;
+      }
+      const activated = this.active;
+      let cursus = this.registerForm.get(['cursus'])!.value;
+      if (typeUtilisateur === TypeUtilisateur.CLIENT) {
+        cursus = null;
+      }
       this.registerService
-        .save({ login, firstName, lastName, email, password, langKey: this.languageService.getCurrentLanguage(), typeUtilisateur })
+        .save({
+          login,
+          firstName,
+          lastName,
+          email,
+          password,
+          activated,
+          langKey: this.languageService.getCurrentLanguage(),
+          typeUtilisateur,
+          cursus
+        })
+
         .subscribe(
           () => {
             this.success = true;
-            this.loginService
-              .login({
-                username: login.toString(),
-                password: password.toString(),
-                rememberMe: false
-              })
-              .subscribe(
-                () => {
-                  if (
-                    this.router.url === '/account/register' ||
-                    this.router.url.startsWith('/account/activate') ||
-                    this.router.url.startsWith('/account/reset/')
-                  ) {
-                    this.router.navigate(['/']);
-                  }
-                },
-                () => (this.success = false)
-              );
+
+            if (typeUtilisateur === 'CLIENT') {
+              this.router.navigate(['/']);
+              this.toastrService.success(this.translateService.instant('global.toastr.register.message'));
+            } else {
+              this.loginService
+                .login({
+                  username: login.toString(),
+                  password: password.toString(),
+                  rememberMe: false
+                })
+                .subscribe(
+                  () => {
+                    if (
+                      this.router.url === '/account/register' ||
+                      this.router.url.startsWith('/account/activate') ||
+                      this.router.url.startsWith('/account/reset/')
+                    ) {
+                      this.router.navigate(['/']);
+                    }
+                  },
+                  () => (this.success = false)
+                );
+            }
           },
           response => this.processError(response)
         );
@@ -108,5 +162,39 @@ export class RegisterComponent implements AfterViewInit {
     } else {
       this.error = true;
     }
+  }
+
+  /**
+   * Display or not the grade based on the user type selected
+   */
+  displayGrade(): void {
+    const userType = this.registerForm.get(['typeUtilisateur'])!.value;
+    if (userType === TypeUtilisateur.CLIENT) {
+      document.getElementById('divCursus').style.display = 'none';
+      this.registerForm.controls['email'].setValidators([
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(254),
+        Validators.email,
+        Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
+      ]);
+    } else {
+      document.getElementById('divCursus').style.display = 'block';
+      this.registerForm.controls['email'].setValidators([
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(254),
+        Validators.email,
+        Validators.pattern('^[A-Za-z0-9](\\.?[A-Za-z0-9]){2,}@etu\\.u-bordeaux\\.fr$')
+      ]);
+    }
+    this.registerForm.controls['email'].updateValueAndValidity();
+  }
+
+  /**
+   * Return true if the form field 'user type' is a customer
+   */
+  isCustomer(): boolean {
+    return this.registerForm.get(['typeUtilisateur'])!.value === TypeUtilisateur.CLIENT;
   }
 }

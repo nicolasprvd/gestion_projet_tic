@@ -1,5 +1,6 @@
 package com.app.projettic.service;
 
+import com.app.projettic.domain.Groupe;
 import com.app.projettic.service.dto.GroupeDTO;
 
 import java.util.List;
@@ -40,6 +41,20 @@ public interface GroupeService {
      * @return the entity.
      */
     List<GroupeDTO> findByActif(boolean actif);
+
+    /**
+     * Find group by projet id
+     * @param projetId
+     * @return
+     */
+    Optional<GroupeDTO> findByProjetId(Long projetId);
+
+    /**
+     * Find groups by projet id
+     * @param projetId
+     * @return
+     */
+    List<GroupeDTO> findAllByProjetIdAndActifIsTrue(Long projetId);
 
     /**
      * Delete the "id" groupe.

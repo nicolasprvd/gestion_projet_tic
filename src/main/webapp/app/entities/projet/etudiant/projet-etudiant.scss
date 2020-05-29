@@ -1,0 +1,19 @@
+.colon:after {
+  content: ' : ';
+}
+
+.members {
+  display: flex;
+}
+
+.members div {
+  padding-left: 2px;
+}
+
+#infos-documents {
+  margin-top: 25px;
+}
+
+#infos-student {
+  margin-top: 15px;
+}

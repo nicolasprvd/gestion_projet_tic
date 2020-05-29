@@ -1,6 +1,8 @@
 package com.app.projettic.service;
 
+import com.app.projettic.domain.Projet;
 import com.app.projettic.service.dto.EvaluationDTO;
+import com.app.projettic.service.dto.ProjetDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +42,14 @@ public interface EvaluationService {
      * @return the entity.
      */
     List<EvaluationDTO> findByActif(boolean actif);
+
+    /**
+     * Get the "id" evaluation.
+     *
+     * @param projet the projet of the evaluation.
+     * @return the entity.
+     */
+    Optional<EvaluationDTO> findByProjet(Long projet);
 
     /**
      * Delete the "id" evaluation.

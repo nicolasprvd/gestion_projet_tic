@@ -1,9 +1,12 @@
 package com.app.projettic.service.impl;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
+import com.app.projettic.repository.UserRepository;
 import com.app.projettic.service.UserExtraService;
 import com.app.projettic.domain.UserExtra;
 import com.app.projettic.repository.UserExtraRepository;
 import com.app.projettic.repository.search.UserExtraSearchRepository;
+import com.app.projettic.service.UserService;
 import com.app.projettic.service.dto.UserExtraDTO;
 import com.app.projettic.service.mapper.UserExtraMapper;
 import org.slf4j.Logger;
@@ -11,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -128,6 +130,7 @@ public class UserExtraServiceImpl implements UserExtraService {
             .map(userExtraMapper::toDto)
             .collect(Collectors.toList());
     }
+
     /**
      * Get userExtra by actif.
      *
@@ -139,5 +142,19 @@ public class UserExtraServiceImpl implements UserExtraService {
     public List<UserExtraDTO> findByActif(boolean actif) {
         log.debug("Request to get userextras : {}", actif);
         return userExtraRepository.findByActif(actif).stream().map(userExtraMapper::toDto).collect(Collectors.toList());
+    }
+
+    /**
+     * Get userExtra by actif and cursus.
+     *
+     * @param actif the actif of the userExtra.
+     * @param cursus the cursus of the userExtra.
+     * @return the entity.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserExtraDTO> findByActifAndCursus(boolean actif, TypeCursus cursus) {
+        log.debug("Request to get userextras : {} {}", actif, cursus);
+        return userExtraRepository.findByActifAndCursus(actif, cursus).stream().map(userExtraMapper::toDto).collect(Collectors.toList());
     }
 }

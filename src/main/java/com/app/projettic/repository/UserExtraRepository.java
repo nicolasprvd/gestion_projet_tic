@@ -2,6 +2,7 @@ package com.app.projettic.repository;
 
 import com.app.projettic.domain.UserExtra;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,5 @@ public interface UserExtraRepository extends JpaRepository<UserExtra, Long> {
     List<UserExtra> findAll();
     List<UserExtra> findByGroupeId(Long groupeId);
     List<UserExtra> findByActif(boolean actif);
+    List<UserExtra> findByActifAndCursus(boolean actif, TypeCursus cursus);
 }

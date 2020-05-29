@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IProjet } from 'app/shared/model/projet.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
@@ -8,14 +8,14 @@ import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { GroupeService } from 'app/entities/groupe/groupe.service';
-import { Groupe } from 'app/shared/model/groupe.model';
+import { IGroupe } from 'app/shared/model/groupe.model';
 import { FormBuilder } from '@angular/forms';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { TypeDocument } from 'app/shared/model/enumerations/type-document.model';
 import { DocumentService } from 'app/entities/document/document.service';
 import { Document, IDocument } from 'app/shared/model/document.model';
-import {ToastrService} from "ngx-toastr";
-import {TranslateService} from "@ngx-translate/core";
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'jhi-projet-etudiant',
@@ -23,45 +23,26 @@ import {TranslateService} from "@ngx-translate/core";
   styleUrls: ['./projet-etudiant.scss']
 })
 export class ProjetEtudiantComponent implements OnInit {
-  projet: IProjet;
+  project: IProjet;
   account: Account;
-  groupeId: number;
-  client: IUser;
-  usersExtra: IUser[];
-  membres: IUser[];
-  users: IUser[];
-  groupe: Groupe;
+  customer: IUser;
+  usersExtra: IUser[] = [];
+  projectManager: IUser;
+  members: IUser[] = [];
+  users: IUser[] = [];
+  group: IGroupe;
   typeDocument: TypeDocument;
-  documentCDC: IDocument;
-  documentGANTT: IDocument;
-  documentRF: IDocument;
-  isSavingCDC: boolean;
-  isSavingGANTT: boolean;
-  isSavingRF: boolean;
-  isCreatedCDC: boolean;
-  isCreatedGANTT: boolean;
-  isCreatedRF: boolean;
+  documentZIP: IDocument;
+  isSaving: boolean;
+  isCreated: boolean;
+  filename: string;
+  membersList = '';
+  @ViewChild('file_documentZIP') file_documentZIP: any;
 
-  documentFormCDC = this.fb.group({
+  documentFormZIP = this.fb.group({
     id: [],
-    documentCDC: [],
-    documentCDCContentType: [],
-    typeDocument: [],
-    projetId: []
-  });
-
-  documentFormGANTT = this.fb.group({
-    id: [],
-    documentGANTT: [],
-    documentGANTTContentType: [],
-    typeDocument: [],
-    projetId: []
-  });
-
-  documentFormRF = this.fb.group({
-    id: [],
-    documentRF: [],
-    documentRFContentType: [],
+    documentZIP: [],
+    documentZIPContentType: [],
     typeDocument: [],
     projetId: []
   });
@@ -82,213 +63,170 @@ export class ProjetEtudiantComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.getAuthenticationState().subscribe(account => {
-      this.account = account;
-    });
-
-    this.isSavingCDC = false;
-    this.isSavingGANTT = false;
-    this.isSavingRF = false;
-    this.isCreatedCDC = false;
-    this.isCreatedGANTT = false;
-    this.isCreatedRF = false;
-
-    this.userExtraService.find(this.account.id).subscribe(etudiant => {
-      this.groupeId = etudiant.body.groupeId;
-      this.groupeService.find(this.groupeId).subscribe(groupe => {
-        this.groupe = groupe.body;
-      });
-      this.projetService.findByGroupeId(+this.groupeId).subscribe(projet => {
-        this.projet = projet.body;
-        this.documentService.findByProjetId(+this.projet.id).subscribe(documents => {
-          if (documents.body.length > 0) {
-            documents.body.forEach(document => {
-              if (document.typeDocument === TypeDocument.CDC) {
-                this.documentCDC = document;
-                this.updateFormCDC(this.documentCDC);
-              } else if (document.typeDocument === TypeDocument.GANTT) {
-                this.documentGANTT = document;
-                this.updateFormGANTT(this.documentGANTT);
-              } else {
-                this.documentRF = document;
-                this.updateFormRF(this.documentRF);
-              }
-            });
-          }
-        });
-        this.userService.findById(+this.projet.userExtraId).subscribe(client => {
-          this.client = client;
-          this.userExtraService.findByGroupeId(+this.groupeId).subscribe(membres => {
-            this.usersExtra = membres.body;
-            this.userService.findAll().subscribe(users => {
-              this.users = users;
-              this.membres = [];
-              this.usersExtra.forEach(ue => {
-                this.userService.findById(ue.id).subscribe(m => {
-                  this.membres.push(m);
+      if (account !== null) {
+        this.account = account;
+        this.userExtraService.find(this.account.id).subscribe(accountExtra => {
+          if (accountExtra) {
+            if (accountExtra.body.groupeId) {
+              this.projetService.findByGroupeId(accountExtra.body.groupeId).subscribe(project => {
+                this.project = project.body;
+                this.userService.findById(this.project.userExtraId).subscribe(customer => {
+                  if (customer !== null) {
+                    this.customer = customer;
+                  }
+                });
+                this.documentService.findByProjetId(this.project.id).subscribe(document => {
+                  if (document && document.body) {
+                    this.documentZIP = document.body;
+                    this.updateForm(this.documentZIP);
+                  }
+                });
+                this.groupeService.findByProjetId(this.project.id).subscribe(group => {
+                  if (group && group.body) {
+                    this.group = group.body;
+                  }
+                });
+                this.userExtraService.findByGroupeId(project.body.groupeId).subscribe(members => {
+                  if (members && members.body) {
+                    this.userService.findByActivated(true).subscribe(users => {
+                      if (users) {
+                        for (const member of members.body) {
+                          for (let user of users) {
+                            if (user.id === member.id) {
+                              user = this.formatFirstnameLastname(user);
+                              this.members.push(user);
+                              if (user.id === this.group.userExtraId) {
+                                this.projectManager = user;
+                              } else {
+                                this.membersList += user.firstName + ' ' + user.lastName + ', ';
+                              }
+                            }
+                          }
+                        }
+                        this.membersList = this.membersList.slice(0, this.membersList.length - 2);
+                      }
+                    });
+                  }
                 });
               });
-            });
-          });
+            }
+          }
         });
-      });
+      }
     });
   }
 
-  updateFormCDC(document: IDocument): void {
-    this.documentFormCDC.patchValue({
+  updateForm(document: IDocument): void {
+    this.documentFormZIP.patchValue({
       id: document.id,
-      documentCDC: document.doc,
-      documentCDCContentType: document.docContentType,
-      typeDocument: document.typeDocument,
-      projetId: document.projetId
-    });
-  }
-
-  updateFormGANTT(document: IDocument): void {
-    this.documentFormGANTT.patchValue({
-      id: document.id,
-      documentGANTT: document.doc,
-      documentGANTTContentType: document.docContentType,
-      typeDocument: document.typeDocument,
-      projetId: document.projetId
-    });
-  }
-
-  updateFormRF(document: IDocument): void {
-    this.documentFormRF.patchValue({
-      id: document.id,
-      documentRF: document.doc,
-      documentRFContentType: document.docContentType,
+      documentZIP: document.doc,
+      documentZIPContentType: document.docContentType,
       typeDocument: document.typeDocument,
       projetId: document.projetId
     });
   }
 
   openFile(contentType: string, base64String: string): void {
-    return this.dataUtils.openFile(contentType, base64String);
+    this.filename = this.project.cursus + '_';
+    this.members.forEach(member => {
+      this.filename += member.lastName.toUpperCase() + '_';
+    });
+    this.filename = this.filename.substring(0, this.filename.length - 1);
+    return this.dataUtils.downloadFile(contentType, base64String, this.filename);
   }
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
 
-  setFileData(event: Event, field: string, isImage: boolean, typeDocument: string): void {
-    if (typeDocument === 'CDC') {
-      this.isSavingCDC = true;
-      this.dataUtils.loadFileToForm(event, this.documentFormCDC, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-        this.eventManager.broadcast(
-          new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
-        );
-      });
-    } else if (typeDocument === 'GANTT') {
-      this.isSavingGANTT = true;
-      this.dataUtils.loadFileToForm(event, this.documentFormGANTT, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-        this.eventManager.broadcast(
-          new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
-        );
-      });
-    } else {
-      this.isSavingRF = true;
-      this.dataUtils.loadFileToForm(event, this.documentFormRF, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-        this.eventManager.broadcast(
-          new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
-        );
-      });
-    }
-  }
-
-  handleSubmitForm(): void {
-    this.saveDocumentCDC();
-    this.saveDocumentGANTT();
-    this.saveDocumentRF();
-
-    if(!this.isSavingCDC || !this.isSavingGANTT || !this.isSavingRF) {
-      this.toastrService.success(
-        this.translateService.instant('global.toastr.documents.depot.message'),
-        this.translateService.instant('global.toastr.documents.depot.title')
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.isSaving = true;
+    this.documentFormZIP.patchValue({ documentZIP: null });
+    this.dataUtils.loadFileToForm(event, this.documentFormZIP, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
+      this.eventManager.broadcast(
+        new JhiEventWithContent<AlertError>('projetticApp.error', { ...err, key: 'error.file.' + err.key })
       );
-    }
+    });
   }
 
-  saveDocumentCDC(): void {
-    if (this.isSavingCDC) {
-      if (this.documentFormCDC.get(['id']).value !== null || this.isCreatedCDC) {
-        const documentCDC = this.createFromForm(false, TypeDocument.CDC);
-        this.documentService.update(documentCDC).subscribe();
+  saveDocument(): void {
+    if (this.isSaving) {
+      if (this.documentFormZIP.get(['id']).value !== null || this.isCreated) {
+        const documentZIP = this.createFromForm(false);
+        if (documentZIP.doc) {
+          this.documentService.update(documentZIP).subscribe(updatedDoc => {
+            this.documentFormZIP.patchValue({ documentZIP: updatedDoc.body.doc });
+            this.toastrService.success(
+              this.translateService.instant('global.toastr.documents.depot.message'),
+              this.translateService.instant('global.toastr.documents.depot.title')
+            );
+            this.documentZIP = updatedDoc.body;
+          });
+        }
       } else {
-        if (!this.isCreatedCDC) {
-          const documentCDC = this.createFromForm(true, TypeDocument.CDC);
-          this.documentService.create(documentCDC).subscribe();
-          this.isCreatedCDC = true;
+        if (!this.isCreated) {
+          const documentZIP = this.createFromForm(true);
+          if (documentZIP.doc) {
+            this.documentService.create(documentZIP).subscribe(newDoc => {
+              this.documentFormZIP.patchValue({
+                id: newDoc.body.id,
+                documentZIPContentType: newDoc.body.docContentType,
+                documentZIP: newDoc.body.doc
+              });
+              this.toastrService.success(
+                this.translateService.instant('global.toastr.documents.depot.message'),
+                this.translateService.instant('global.toastr.documents.depot.title')
+              );
+              this.documentZIP = newDoc.body;
+            });
+            this.isCreated = true;
+          }
         }
       }
-      this.isSavingCDC = false;
+      this.isSaving = false;
     }
   }
 
-  saveDocumentRF(): void {
-    if (this.isSavingRF) {
-      if (this.documentFormRF.get(['id']).value !== null || this.isCreatedRF) {
-        const documentRF = this.createFromForm(false, TypeDocument.RF);
-        this.documentService.update(documentRF).subscribe();
-      } else {
-        if (!this.isCreatedRF) {
-          const documentRF = this.createFromForm(true, TypeDocument.RF);
-          this.documentService.create(documentRF).subscribe();
-          this.isCreatedRF = true;
-        }
-      }
-    }
-    this.isSavingRF = false;
+  createFromForm(create: boolean): IDocument {
+    return {
+      ...new Document(),
+      id: create ? undefined : this.documentFormZIP.get(['id']).value,
+      docContentType: this.documentFormZIP.get(['documentZIPContentType']).value,
+      doc: this.documentFormZIP.get(['documentZIP']).value,
+      typeDocument: TypeDocument.ZIP,
+      projetId: this.project.id,
+      actif: true
+    };
   }
 
-  saveDocumentGANTT(): void {
-    if (this.isSavingGANTT) {
-      if (this.documentFormGANTT.get(['id']).value !== null || this.isCreatedGANTT) {
-        const documentGANTT = this.createFromForm(false, TypeDocument.GANTT);
-        this.documentService.update(documentGANTT).subscribe();
-      } else {
-        if (!this.isCreatedGANTT) {
-          const documentGANTT = this.createFromForm(true, TypeDocument.GANTT);
-          this.documentService.create(documentGANTT).subscribe();
-          this.isCreatedGANTT = true;
-        }
-      }
-      this.isSavingGANTT = false;
+  deleteDoc(): void {
+    const doDelete = this.documentZIP && this.documentZIP.id;
+    if (doDelete) {
+      this.documentService.delete(this.documentZIP.id).subscribe(() => {
+        this.documentFormZIP.patchValue({ id: null });
+        this.toastrService.success(
+          this.translateService.instant('global.toastr.documents.delete.message'),
+          this.translateService.instant('global.toastr.documents.delete.title')
+        );
+      });
     }
+    this.documentFormZIP.patchValue({ documentZIP: null, documentZIPContentType: null });
+    this.isCreated = false;
+    this.documentZIP = null;
+    this.file_documentZIP.nativeElement.value = null;
   }
 
-  createFromForm(create: boolean, typeDocument: TypeDocument): IDocument {
-    if (typeDocument === TypeDocument.CDC) {
-      return {
-        ...new Document(),
-        id: create ? undefined : this.documentFormCDC.get(['id']).value,
-        docContentType: this.documentFormCDC.get(['documentCDCContentType']).value,
-        doc: this.documentFormCDC.get(['documentCDC']).value,
-        typeDocument: TypeDocument.CDC,
-        projetId: this.projet.id,
-        actif: true
-      };
-    } else if (typeDocument === TypeDocument.GANTT) {
-      return {
-        ...new Document(),
-        id: create ? undefined : this.documentFormGANTT.get(['id']).value,
-        docContentType: this.documentFormGANTT.get(['documentGANTTContentType']).value,
-        doc: this.documentFormGANTT.get(['documentGANTT']).value,
-        typeDocument: TypeDocument.GANTT,
-        projetId: this.projet.id,
-        actif: true
-      };
-    } else {
-      return {
-        ...new Document(),
-        id: create ? undefined : this.documentFormRF.get(['id']).value,
-        docContentType: this.documentFormRF.get(['documentRFContentType']).value,
-        doc: this.documentFormRF.get(['documentRF']).value,
-        typeDocument: TypeDocument.RF,
-        projetId: this.projet.id,
-        actif: true
-      };
-    }
+  /**
+   * Format the firstname and lastname of the user param
+   * entry : aaaaaaa
+   * return : Aaaaaaa
+   * @param user
+   */
+  formatFirstnameLastname(user: IUser): IUser {
+    user.firstName = user.firstName.toLowerCase();
+    user.firstName = user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1);
+    user.lastName = user.lastName.toLowerCase();
+    user.lastName = user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1);
+    return user;
   }
 }

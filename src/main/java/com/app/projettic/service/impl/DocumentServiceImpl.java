@@ -114,18 +114,16 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * Get documents by project id.
+     * Get document by project id.
      *
      * @param projetId the id of the project.
      * @return the entity.
      */
     @Override
     @Transactional(readOnly = true)
-    public List<DocumentDTO> findByProjetId(Long projetId) {
-        log.debug("Request to get Documents from projet id = " + projetId);
-        return documentRepository.findByProjetId(projetId)
-            .stream()
-            .map(documentMapper::toDto).collect(Collectors.toList());
+    public Optional<DocumentDTO> findByProjetId(Long projetId) {
+        log.debug("Request to get Document from projet id = " + projetId);
+        return documentRepository.findByProjetId(projetId).map(documentMapper::toDto);
     }
 
     /**

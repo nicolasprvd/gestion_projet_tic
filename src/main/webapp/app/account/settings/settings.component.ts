@@ -5,6 +5,8 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { LANGUAGES } from 'app/core/language/language.constants';
+import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
+import { TypeUtilisateur } from 'app/shared/model/enumerations/type-utilisateur.model';
 
 @Component({
   selector: 'jhi-settings',
@@ -21,7 +23,12 @@ export class SettingsComponent implements OnInit {
     authorities: [undefined]
   });
 
-  constructor(private accountService: AccountService, private fb: FormBuilder, private languageService: JhiLanguageService) {}
+  constructor(
+    private accountService: AccountService,
+    private fb: FormBuilder,
+    private languageService: JhiLanguageService,
+    private userExtraService: UserExtraService
+  ) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
@@ -32,13 +39,21 @@ export class SettingsComponent implements OnInit {
           email: account.email,
           authorities: account.authorities
         });
-
         this.account = account;
+        this.userExtraService.find(account.id).subscribe(extra => {
+          if (extra !== null && extra.body !== null) {
+            if (extra.body.typeUtilisateur === TypeUtilisateur.ETUDIANT) {
+              document.getElementById('email').setAttribute('disabled', 'disabled');
+            } else {
+              document.getElementById('email').removeAttribute('disabled');
+            }
+          }
+        });
       }
     });
   }
 
-  save(): void {
+  saveSettings(): void {
     this.success = false;
 
     this.account.firstName = this.settingsForm.get('firstName')!.value;

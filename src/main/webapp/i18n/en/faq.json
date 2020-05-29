@@ -5,7 +5,7 @@
       "role": "General",
       "one": {
         "question": "What is this website's purpose?",
-        "answer": "The site makes it easier to assign TIC projects to students."
+        "answer": "The site makes it easier to assign projects to students from MIAGE."
       },
       "two": {
         "question": "How do I get my credentials?",
@@ -53,6 +53,11 @@
         "question": "How to transfer the requested documents?",
         "answer": "Go to the page dedicated to your project, which will allow you to put all the required documents."
       }
+    },
+    "team": {
+      "role": "Autre",
+      "title": "Who created this website ?",
+      "message": "This website was created by BALAT Audrey, BUREAU Tiffany, KIRCH Florent, MONGE Maxime, PREVERAUD Nicolas, 2020 promotion."
     }
   }
 }

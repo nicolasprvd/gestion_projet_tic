@@ -17,8 +17,8 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./projet-attribuer.scss']
 })
 export class ProjetAttribuerComponent implements OnInit, OnDestroy {
-  projet?: IProjet;
-  groupes: Groupe[] = [];
+  project?: IProjet;
+  groups: Groupe[] = [];
   usersExtra: UserExtra[] = [];
   users: User[] = [];
   isSaving = false;
@@ -37,24 +37,24 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ projet }) => (this.projet = projet));
-    this.groupeService.findByActif(true).subscribe(groupes => {
-      if (groupes !== null && groupes.body !== null) {
-        for (const g of groupes.body) {
-          if (g.projetId === this.projet.id) {
-            this.groupes.push(g);
+    this.activatedRoute.data.subscribe(({ project }) => (this.project = project));
+    this.groupeService.findByActif(true).subscribe(groups => {
+      if (groups !== null && groups.body !== null) {
+        for (const g of groups.body) {
+          if (g.projetId === this.project.id) {
+            this.groups.push(g);
 
-            this.userExtraService.findByActif(true).subscribe(usersExtra => {
-              if (usersExtra !== null && usersExtra.body !== null) {
-                for (const ue of usersExtra.body) {
-                  if (ue.groupeId === g.id) {
-                    this.usersExtra.push(ue);
+            this.userExtraService.findByActif(true).subscribe(extras => {
+              if (extras !== null && extras.body !== null) {
+                for (const extra of extras.body) {
+                  if (extra.groupeId === g.id) {
+                    this.usersExtra.push(extra);
 
                     this.userService.findByActivated(true).subscribe(users => {
                       if (users !== null) {
-                        for (const u of users) {
-                          if (u.id === ue.userId) {
-                            this.users.push(u);
+                        for (const user of users) {
+                          if (user.id === extra.userId) {
+                            this.users.push(user);
                           }
                         }
                       }
@@ -79,16 +79,13 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
   /**
    * Send email at no apply group (all groups received the email)
    */
-  envoiMailNonChoisi(idUser: number): void {
+  sendNegativeAnswerEmail(userId: number): void {
     if (this.users !== null && this.users !== undefined) {
-      for (const u of this.users) {
-        if (u.id === idUser) {
-          this.subject = 'Réponse négative attribution du projet';
-          this.content =
-            'Le projet ' +
-            this.projet.nom +
-            " n'a pas été attribué à votre groupe. Veuillez vous rendre sur le site pour en choisir un autre.";
-          this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
+      for (const user of this.users) {
+        if (user.id === userId) {
+          this.subject = this.translateService.instant('global.email.assignProject.negative.subject');
+          this.content = this.translateService.instant('global.email.assignProject.negative.content', { nom: this.project.nom });
+          this.projetService.sendMail(user.email, this.subject, this.content).subscribe();
         }
       }
     }
@@ -97,13 +94,13 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
   /**
    * Send email at  apply group (all groups received the email)
    */
-  envoieMailChoisi(idUser: number): void {
+  sendPositiveAnswerEmail(userId: number): void {
     if (this.users !== null && this.users !== undefined) {
-      for (const u of this.users) {
-        if (u.id === idUser) {
-          this.subject = 'Réponse positive attribution du projet';
-          this.content = 'Le projet ' + this.projet.nom + ' a bien été attribué à votre groupe.';
-          this.projetService.sendMail(u.email, this.subject, this.content).subscribe();
+      for (const user of this.users) {
+        if (user.id === userId) {
+          this.subject = this.translateService.instant('global.email.assignProject.positive.subject');
+          this.content = this.translateService.instant('global.email.assignProject.positive.content', { nom: this.project.nom });
+          this.projetService.sendMail(user.email, this.subject, this.content).subscribe();
         }
       }
     }
@@ -116,45 +113,36 @@ export class ProjetAttribuerComponent implements OnInit, OnDestroy {
    * - modify tha attribute validate in the group table to the idGroupeChoisit
    * - modify the group id in the projet table with the idGroupeChoisit
    */
-  attribution(idGroupeChoisit: number): void {
-    // 1) modify the group id of each user (extra) to set it to null (for all groups not apply)
+  assign(selectedGroupId: number): void {
     if (this.usersExtra !== null && this.usersExtra !== undefined) {
       for (const ue of this.usersExtra) {
-        if (ue.groupeId !== idGroupeChoisit) {
-          this.envoiMailNonChoisi(ue.userId);
+        if (ue.groupeId !== selectedGroupId) {
+          this.sendNegativeAnswerEmail(ue.userId);
           ue.groupeId = null;
           this.userExtraService.update(ue).subscribe();
         } else {
-          this.envoieMailChoisi(ue.userId);
+          this.sendPositiveAnswerEmail(ue.userId);
         }
       }
     }
-
-    // 2) deletion of all groups not apply in the Group table
-    // 3) modify tha attribute validate in the group table to the idGroupeChoisit
-    if (this.groupes !== null && this.groupes !== undefined) {
-      for (const g of this.groupes) {
-        // 2) deletion
-        if (g.id !== idGroupeChoisit) {
+    if (this.groups !== null && this.groups !== undefined) {
+      for (const g of this.groups) {
+        if (g.id !== selectedGroupId) {
           this.groupeService.delete(g.id).subscribe();
-        }
-        // 3) update valide = true
-        else {
+        } else {
           g.valide = true;
           this.groupeService.update(g).subscribe();
         }
       }
     }
 
-    // 4) modify the group id in the projet table with the idGroupeChoisit
-    this.projet.groupeId = idGroupeChoisit;
-    this.projetService.update(this.projet).subscribe(
+    this.project.groupeId = selectedGroupId;
+    this.projetService.update(this.project).subscribe(
       () => {
         this.toastrService.success(
           this.translateService.instant('global.toastr.attribuer.projet.message'),
-          this.translateService.instant('global.toastr.attribuer.projet.title', { nom: this.projet.nom })
+          this.translateService.instant('global.toastr.attribuer.projet.title', { nom: this.project.nom })
         );
-        // Return project page
         this.router.navigate(['/projet']);
       },
       () => {

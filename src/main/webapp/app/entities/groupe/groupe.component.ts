@@ -3,10 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { IGroupe } from 'app/shared/model/groupe.model';
 import { GroupeService } from './groupe.service';
-import { GroupeDeleteDialogComponent } from './groupe-delete-dialog.component';
 import { ProjetService } from 'app/entities/projet/projet.service';
 import { IProjet } from 'app/shared/model/projet.model';
 import { UserService } from 'app/core/user/user.service';
@@ -14,6 +12,7 @@ import { IUser } from 'app/core/user/user.model';
 import { IUserExtra } from 'app/shared/model/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/user-extra.service';
 import { TranslateService } from '@ngx-translate/core';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   selector: 'jhi-groupe',
@@ -22,11 +21,17 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class GroupeComponent implements OnInit, OnDestroy {
   groupes?: IGroupe[];
+  filteredGroups: IGroupe[] = [];
+  validGroup = false;
   eventSubscriber?: Subscription;
   currentSearch: string;
-  projets: IProjet[] = [];
+  projects: IProjet[] = [];
   users: IUser[] = [];
   userExtras: IUserExtra[] = [];
+  L3: TypeCursus = TypeCursus.L3;
+  M1: TypeCursus = TypeCursus.M1;
+  M2: TypeCursus = TypeCursus.M2;
+  selectedGrade: TypeCursus;
 
   constructor(
     protected groupeService: GroupeService,
@@ -48,6 +53,8 @@ export class GroupeComponent implements OnInit, OnDestroy {
     this.groupeService.findByActif(true).subscribe(groupes => {
       if (groupes !== null && groupes.body !== null) {
         this.groupes = groupes.body;
+        this.filteredGroups = groupes.body;
+        this.validGroup = this.isValidGroup();
       }
     });
   }
@@ -62,7 +69,7 @@ export class GroupeComponent implements OnInit, OnDestroy {
     this.registerChangeInGroupes();
     this.projetService.findAll().subscribe(projets => {
       if (projets !== null) {
-        this.projets = projets;
+        this.projects = projets;
       }
     });
     this.userService.findByActivated(true).subscribe(users => {
@@ -87,57 +94,74 @@ export class GroupeComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('groupeListModification', () => this.loadAll());
   }
 
-  delete(groupe: IGroupe): void {
-    const modalRef = this.modalService.open(GroupeDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.groupe = groupe;
-  }
-
-  getNomProjet(projetId: number): string {
-    if (this.projets !== null && this.projets !== undefined) {
-      for (const projet of this.projets) {
-        if (projet.id === projetId) {
-          return projet.nom;
+  /**
+   * Return the project name
+   * @param projectId
+   */
+  getProjectName(projectId: number): string {
+    if (this.projects !== null && this.projects !== undefined) {
+      for (const project of this.projects) {
+        if (project.id === projectId) {
+          return project.nom;
         }
       }
     }
     return '';
   }
 
-  getChefProjet(user: number): string {
+  /**
+   * Return the name of the project manager
+   * @param user
+   */
+  getProjectChief(user: number): string {
     if (this.users !== null && this.users !== undefined) {
       for (const usr of this.users) {
         if (usr.id === user) {
-          return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+          return this.formatName(usr.firstName) + ' ' + usr.lastName.toUpperCase();
         }
       }
     }
     return '';
   }
 
-  formatNom(str: string): string {
+  /**
+   * Format the name
+   * entry : aaaaaaa
+   * return : Aaaaaaa
+   * @param str
+   */
+  formatName(str: string): string {
     str = str.toLowerCase();
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  getMembreProjet(extra: IUserExtra): string {
+  /**
+   * Return the name of the user
+   * @param extra
+   */
+  getuserName(extra: IUserExtra): string {
     if (this.users !== null && this.users !== undefined) {
       for (const usr of this.users) {
         if (usr.id === extra.id) {
-          return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+          return this.formatName(usr.firstName) + ' ' + usr.lastName.toUpperCase();
         }
       }
     }
     return '';
   }
 
-  getClient(projetId: number): string {
-    if (this.projets !== null && this.projets !== undefined) {
-      for (const projet of this.projets) {
-        if (projetId === projet.id) {
+  /**
+   * Return the name of the project's customer
+   * @param projectId
+   */
+  getCustomer(projectId: number): string {
+    if (this.projects !== null && this.projects !== undefined) {
+      for (const project of this.projects) {
+        if (projectId === project.id) {
           if (this.users !== null && this.users !== undefined) {
             for (const usr of this.users) {
-              if (usr.id === projet.userExtraId) {
-                return this.formatNom(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+              if (usr.id === project.userExtraId) {
+                return this.formatName(usr.firstName) + ' ' + usr.lastName.toUpperCase();
               }
             }
           }
@@ -147,58 +171,139 @@ export class GroupeComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  isMembreGroupe(extra: IUserExtra, groupe: IGroupe): boolean {
-    return groupe.id === extra?.groupeId;
+  /**
+   * Return true if the user is a team member
+   * @param extra
+   * @param group
+   */
+  isGroupMember(extra: IUserExtra, group: IGroupe): boolean {
+    return group.id === extra?.groupeId;
   }
 
-  isChef(extra: IUserExtra, groupe: IGroupe): boolean {
-    return groupe.userExtraId === extra.id;
+  /**
+   * Return true if the user is the team chief
+   * @param extra
+   * @param group
+   */
+  isChief(extra: IUserExtra, group: IGroupe): boolean {
+    return group.userExtraId === extra.id;
   }
 
-  exporter(): void {
+  /**
+   * Generate the csv file based on the html table
+   */
+  export(): void {
     const table = document.getElementById('data') as HTMLTableElement;
-    let donnees = '';
-    let nomFichier = '';
-    if (this.translate.currentLang === this.translate.getLangs()[0]) {
-      donnees = 'Projet;Client;Chef de projet;Membres';
-      nomFichier = 'groupes_projet_tic.csv';
+    let data = '';
+    let fileName = '';
+    let fileNameGrade;
+    if (this.selectedGrade === null || this.selectedGrade === undefined) {
+      fileNameGrade = this.L3 + '_' + this.M1 + '_' + this.M2;
     } else {
-      donnees = 'Project;Customer;Project manager;Members';
-      nomFichier = 'groups_tic_project.csv';
+      fileNameGrade = this.selectedGrade.toString();
     }
-    const rows = table.rows;
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i];
-      const membres = this.retraitEspaces(row.cells[3].textContent);
-      donnees =
-        donnees +
-        '\r\n' +
-        row.cells[0].textContent.trim() +
-        ';' +
-        row.cells[1].textContent.trim() +
-        ';' +
-        row.cells[2].textContent.trim() +
-        ';' +
-        membres;
+    if (this.translate.currentLang === this.translate.getLangs()[0]) {
+      data = 'Projet;Client;Chef de projet;Membres';
+      fileName = fileNameGrade + '_groupes_projet_miage.csv';
+    } else {
+      data = 'Project;Customer;Project manager;Members';
+      fileName = fileNameGrade + '_groups_miage_project.csv';
     }
-    const blob = new Blob([donnees], { type: 'type/txt' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = nomFichier;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+    if (table !== null) {
+      const rows = table.rows;
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const members = this.removeSpaces(row.cells[3].textContent);
+        data =
+          data +
+          '\r\n' +
+          row.cells[0].textContent.trim() +
+          ';' +
+          row.cells[1].textContent.trim() +
+          ';' +
+          row.cells[2].textContent.trim() +
+          ';' +
+          members;
+      }
+      const blob = new Blob([data], { type: 'type/txt' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
   }
 
-  retraitEspaces(str: string): string {
-    let retraitEspace = true;
+  /**
+   * Remove space before, after and into the string
+   * @param str
+   */
+  removeSpaces(str: string): string {
+    let hasSpace = true;
     str = str.trim();
-    while (retraitEspace) {
+    while (hasSpace) {
       str = str.replace(/[ \t]{2,}/, ' - ');
-      retraitEspace = str.includes('  ');
+      hasSpace = str.includes('  ');
     }
     return str;
+  }
+
+  /**
+   * Filter groups by grade
+   * @param grade
+   */
+  filterGroups(grade: TypeCursus): void {
+    this.selectedGrade = grade;
+    this.filteredGroups = [];
+    for (const group of this.groupes) {
+      if (group.cursus === grade) {
+        this.filteredGroups.push(group);
+      }
+    }
+    this.changeColorFilterButton(grade);
+  }
+
+  /**
+   * Remove all grade filter, display all groups
+   */
+  reinitGroupsFilter(): void {
+    this.selectedGrade = null;
+    this.filteredGroups = this.groupes;
+    this.changeColorFilterButton(null);
+  }
+
+  /**
+   * Reinit all button's color and change the pushed button color with a different
+   * @param grade
+   */
+  changeColorFilterButton(grade: TypeCursus): void {
+    document.getElementById('filtreAucun').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreL3').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreM1').setAttribute('class', 'btn btn-danger btn-sm');
+    document.getElementById('filtreM2').setAttribute('class', 'btn btn-danger btn-sm');
+    if (grade === null) {
+      document.getElementById('filtreAucun').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (grade === TypeCursus.L3) {
+      document.getElementById('filtreL3').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (grade === TypeCursus.M1) {
+      document.getElementById('filtreM1').setAttribute('class', 'btn btn-success btn-sm');
+    } else {
+      document.getElementById('filtreM2').setAttribute('class', 'btn btn-success btn-sm');
+    }
+  }
+
+  /**
+   * Return true if a group is valid
+   */
+  private isValidGroup(): boolean {
+    for (const group of this.groupes) {
+      if (group.valide === true) {
+        return true;
+      }
+    }
+    return false;
   }
 }

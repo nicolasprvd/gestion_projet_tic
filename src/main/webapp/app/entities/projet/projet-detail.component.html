@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12">
-        <div *ngIf="projet">
-            <h2>{{ projet.nom }}</h2>
+        <div *ngIf="project">
+            <h2>{{ project.nom }}</h2>
 
             <jhi-alert-error></jhi-alert-error>
             <hr>
@@ -11,43 +11,43 @@
                 </dt>
                 <dd>
                     <input type="text" class="form-control" id="client" name="client" disabled="disabled"
-                           value="{{ client?.firstName }} {{ client?.lastName }}">
+                           value="{{ customer?.firstName }} {{ customer?.lastName }}">
                 </dd>
                 <dt><label class="form-control-label" for="email" jhiTranslate="projetticApp.projet.email"></label></dt>
                 <dd>
                     <input type="text" class="form-control" id="email" name="email" disabled="disabled"
-                           value="{{ client?.email }}">
+                           value="{{ customer?.email }}">
                 </dd>
                 <dt><label class="form-control-label" for="nbetu" jhiTranslate="projetticApp.projet.nbEtudiant"></label>
                 </dt>
                 <dd>
                     <input type="text" class="form-control" id="nbetu" name="nbetu" disabled="disabled"
-                           value="{{ projet.nbEtudiant }}">
+                           value="{{ project.nbEtudiant }}">
                 </dd>
-                <dt *ngIf="projet.groupeId !== null"><label class="form-control-label"
-                                                            jhiTranslate="projetticApp.projet.groupe"></label></dt>
-                <ng-container *ngIf="projet.groupeId !== null">
+                <dt *ngIf="project.groupeId !== null && !project.archive"><label class="form-control-label"
+                                                             jhiTranslate="projetticApp.projet.groupe"></label></dt>
+                <ng-container *ngIf="project.groupeId !== null && !project.archive">
                     <dd *ngFor="let extra of userExtras">
-                        <div *ngIf="extra.groupeId === projet.groupeId">
-                            <span [textContent]="getNomPrenomUser(extra)"></span>
+                        <div *ngIf="extra.groupeId === project.groupeId">
+                            <span [textContent]="getFirstnameLastname(extra)"></span>
                         </div>
                     </dd>
                 </ng-container>
-                <dt id="description" *ngIf="isDescriptionTexte(projet)"><label class="form-control-label" for="desctxt"
+                <dt id="description" *ngIf="isTextDescription(project)"><label class="form-control-label" for="desctxt"
                                                                                jhiTranslate="projetticApp.projet.descriptionTexte"></label>
                 </dt>
-                <dd *ngIf="isDescriptionTexte(projet)">
+                <dd *ngIf="isTextDescription(project)">
                     <textarea class="form-control" id="desctxt" name="desctxt" disabled="disabled" cols="5"
-                              rows="5">{{ projet.descriptionTexte }}</textarea>
+                              rows="5">{{ project.descriptionTexte }}</textarea>
                 </dd>
-                <dt *ngIf="isDescriptionPDF(projet)"><label class="form-control-label"
-                                                            jhiTranslate="projetticApp.projet.descriptionPDF"></label>
+                <dt *ngIf="isPDFDescription(project)"><label class="form-control-label"
+                                                             jhiTranslate="projetticApp.projet.descriptionPDF"></label>
                 </dt>
-                <dd *ngIf="isDescriptionPDF(projet)">
-                    <div *ngIf="projet.descriptionPDF">
-                        <a id="ouvrirpdf" (click)="openFile(projet?.descriptionPDFContentType!, projet?.descriptionPDF)"
+                <dd *ngIf="isPDFDescription(project)">
+                    <div *ngIf="project.descriptionPDF">
+                        <a id="ouvrirpdf" (click)="openFile(project?.descriptionPDFContentType!, project?.descriptionPDF)"
                            jhiTranslate="entity.action.open">open</a>
-                        {{ byteSize(projet.descriptionPDF) }}
+                        {{ byteSize(project.descriptionPDF) }}
                     </div>
                 </dd>
             </dl>
@@ -56,39 +56,6 @@
                     (click)="previousState()"
                     class="btn btn-info">
                 <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-            </button>
-
-            <button *ngIf="isAutorise(projet) && projet.groupeId === null" type="button"
-                    [routerLink]="['/projet', projet.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-            </button>
-
-            <button *ngIf="isAutorise(projet) && projet.groupeId === null && isChoisi(projet.id)===true" type="button"
-                    [routerLink]="['/projet', projet.id, 'attribuer']"
-                    class="btn btn-success">
-                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span
-                jhiTranslate="entity.action.attribuate">Attribuer</span>
-            </button>
-
-            <button *ngIf="isAutorise(projet) && projet.groupeId != null  && !projet.archive" type="submit"
-                    [routerLink]="['/projet', projet.id, 'rate']"
-                    class="btn btn-success">
-                <fa-icon icon="pencil-alt"></fa-icon>
-                <span jhiTranslate="entity.action.rate">Rate</span>
-            </button>
-
-            <button *ngIf="!isClient() && !aDejaUnGroupe()" type="button"
-                    [routerLink]="['/projet', projet.id, 'postuler']"
-                    class="btn btn-primary">
-                <fa-icon icon="book"></fa-icon>&nbsp;<span
-                jhiTranslate="projetticApp.projet.bouton.choisir">Apply</span>
-            </button>
-
-            <button *ngIf="!isClient() && aDejaUnGroupe() && isMonProjetChoisi(projet)" type="button"
-                    (click)="retractation()"
-                    class="btn btn-danger">
-                <span jhiTranslate="projetticApp.projet.bouton.retractation"></span>
             </button>
         </div>
     </div>

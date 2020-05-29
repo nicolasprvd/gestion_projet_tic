@@ -1,6 +1,7 @@
 package com.app.projettic.service;
 
 import com.app.projettic.domain.Projet;
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.service.dto.ProjetDTO;
 
 import java.util.List;
@@ -41,6 +42,14 @@ public interface ProjetService {
      * @return the entity.
      */
     List<ProjetDTO> findByArchive(boolean archive);
+
+    /**
+     * Get the "id" projet.
+     *
+     * @param cursus the cursus of the projet.
+     * @return the entity.
+     */
+    List<ProjetDTO> findByArchiveAndCursus(boolean archive, TypeCursus cursus);
 
     /**
      * Delete the "id" projet.

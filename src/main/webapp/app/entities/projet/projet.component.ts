@@ -21,6 +21,7 @@ import { Groupe } from 'app/shared/model/groupe.model';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { IUser } from 'app/core/user/user.model';
+import { TypeCursus } from 'app/shared/model/enumerations/type-cursus.model';
 
 @Component({
   selector: 'jhi-projet',
@@ -29,22 +30,31 @@ import { IUser } from 'app/core/user/user.model';
 })
 export class ProjetComponent implements OnInit, OnDestroy {
   allProjets?: IProjet[];
-  datesArchive: number[];
+  archiveDates: number[];
   isReset: boolean;
   isSaving = false;
   account: Account | null;
-  typeUtilisateur: TypeUtilisateur;
-  projets: IProjet[];
+  userType: TypeUtilisateur;
   authorities: string[] | undefined;
-  groupeId: number;
-  projetChoisiId: number;
+  groupId: number;
+  selectedProjectId: number;
   eventSubscriber: Subscription;
   currentSearch: string;
   accountExtra: UserExtra;
-  groupes: Groupe[] = [];
-  isRetracte: boolean;
+  groups: Groupe[] = [];
+  isRetracted: boolean;
   extras: IUserExtra[] = [];
   users: IUser[] = [];
+  L3: TypeCursus = TypeCursus.L3;
+  M1: TypeCursus = TypeCursus.M1;
+  M2: TypeCursus = TypeCursus.M2;
+  projects: IProjet[];
+  displayedProjects: IProjet[] = [];
+  displayMyProjects = false;
+  gradeSelected: TypeCursus = null;
+  pageSize = 20;
+  page = 1;
+  isArchived: boolean;
 
   constructor(
     protected projetService: ProjetService,
@@ -66,51 +76,70 @@ export class ProjetComponent implements OnInit, OnDestroy {
         : '';
   }
 
+  /**
+   * Load all projects and setup archive variables
+   */
   loadAll(): void {
-    this.isRetracte = false;
+    this.isRetracted = false;
     this.isReset = false;
     if (this.currentSearch) {
       this.projetService
         .search({
           query: this.currentSearch
         })
-        .subscribe((res: HttpResponse<IProjet[]>) => (this.projets = res.body || []));
+        .subscribe((res: HttpResponse<IProjet[]>) => (this.projects = res.body || []));
       return;
     }
-
-    this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
-      this.datesArchive = [];
-      this.projets = [];
-      res.body.forEach(projet => {
-        const date = moment(projet.dateCreation);
-        const archive = projet.archive;
-        if (date.year() === moment().year() && !archive) {
-          this.projets.push(projet);
-        }
-        if (archive) {
-          this.datesArchive.push(date.year());
+    if (this.accountExtra.cursus !== null) {
+      this.projetService.findByArchiveAndCursus(false, this.accountExtra.cursus).subscribe(projects => {
+        if (projects !== null && projects.body !== null) {
+          this.projects = projects.body;
+          this.allProjets = projects.body;
+          for (const project of projects.body) {
+            if (project.groupeId === null) {
+              this.displayedProjects.push(project);
+            }
+          }
         }
       });
-
-      this.datesArchive = [...new Set(this.datesArchive)];
-      this.datesArchive = this.datesArchive.sort((a, b) => (a > b ? -1 : 1));
-    });
+    } else {
+      this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
+        this.archiveDates = [];
+        this.projects = [];
+        res.body.forEach(project => {
+          const date = moment(project.dateCreation);
+          const archive = project.archive;
+          if (date.year() === moment().year() && !archive) {
+            this.projects.push(project);
+          }
+          if (archive) {
+            this.archiveDates.push(date.year());
+          }
+        });
+        this.displayedProjects = this.projects;
+        this.archiveDates = [...new Set(this.archiveDates)];
+        this.archiveDates = this.archiveDates.sort((a, b) => (a > b ? -1 : 1));
+      });
+    }
   }
 
   /**
    * Load projects list from date
    * @param value
    */
-  changeProjets(value: number): void {
+  changeProjects(value: number): void {
+    this.isArchived = true;
     this.projetService.query().subscribe((res: HttpResponse<IProjet[]>) => {
-      this.projets = [];
+      this.projects = [];
+      this.displayedProjects = [];
       this.allProjets = res.body;
-      const annee: number = +value;
+      const year: number = +value;
       let date = 0;
-      this.allProjets.forEach(projet => {
-        date = +moment(projet.dateCreation).year();
-        if (date === annee && projet.archive) {
-          this.projets.push(projet);
+      this.allProjets.forEach(project => {
+        date = +moment(project.dateCreation).year();
+        if (date === year && project.archive) {
+          this.projects.push(project);
+          this.displayedProjects.push(project);
         }
       });
     });
@@ -121,6 +150,7 @@ export class ProjetComponent implements OnInit, OnDestroy {
    */
   reset(): void {
     this.isReset = true;
+    this.isArchived = false;
   }
 
   search(query: string): void {
@@ -129,8 +159,6 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadAll();
-
     this.registerChangeInProjets();
     this.accountService.getAuthenticationState().subscribe(account => {
       if (account !== null) {
@@ -140,21 +168,23 @@ export class ProjetComponent implements OnInit, OnDestroy {
     });
     this.userExtraService.find(this.account.id).subscribe(userExtra => {
       if (userExtra !== null) {
-        this.typeUtilisateur = userExtra.body.typeUtilisateur;
+        this.userType = userExtra.body.typeUtilisateur;
         this.accountExtra = userExtra.body;
-        this.groupeId = userExtra.body.groupeId;
-        if (this.groupeId != null) {
-          this.groupeService.find(this.groupeId).subscribe(groupe => {
-            if (groupe !== null) {
-              this.projetChoisiId = groupe.body.projetId;
+        this.groupId = userExtra.body.groupeId;
+        if (this.groupId != null) {
+          this.groupeService.find(this.groupId).subscribe(group => {
+            if (group !== null) {
+              this.selectedProjectId = group.body.projetId;
             }
           });
         }
+        this.isArchived = false;
+        this.loadAll();
       }
     });
-    this.groupeService.findByActif(true).subscribe(groupes => {
-      if (groupes !== null && groupes.body !== null) {
-        this.groupes = groupes.body;
+    this.groupeService.findByActif(true).subscribe(groups => {
+      if (groups !== null && groups.body !== null) {
+        this.groups = groups.body;
       }
     });
     this.userExtraService.findByActif(true).subscribe(extras => {
@@ -192,10 +222,14 @@ export class ProjetComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('projetListModification', () => this.loadAll());
   }
 
-  delete(projet: IProjet): void {
+  /**
+   * Open the popup project-delete.component.ts file in order to delete a project
+   * @param project
+   */
+  delete(project: IProjet): void {
     const modalRef = this.modalService.open(ProjetDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.projet = projet;
-    modalRef.componentInstance.groupes = this.groupes;
+    modalRef.componentInstance.project = project;
+    modalRef.componentInstance.groups = this.groups;
     modalRef.componentInstance.extras = this.extras;
     modalRef.componentInstance.users = this.users;
   }
@@ -203,17 +237,17 @@ export class ProjetComponent implements OnInit, OnDestroy {
   /**
    * Return true if the current user is a CLIENT
    */
-  isClient(): boolean {
-    return this.typeUtilisateur === TypeUtilisateur.CLIENT;
+  isCustomer(): boolean {
+    return this.userType === TypeUtilisateur.CLIENT;
   }
 
   /**
-   * Return true studients have apply to this project
+   * Return true if a group have apply to this project
    */
-  isChoisi(idProjet: number): boolean {
-    if (this.groupes !== null && this.groupes !== undefined) {
-      for (const g of this.groupes) {
-        if (g.projetId === idProjet) {
+  isChoosenByGroup(idProject: number): boolean {
+    if (this.groups !== null && this.groups !== undefined) {
+      for (const g of this.groups) {
+        if (g.projetId === idProject) {
           return true;
         }
       }
@@ -226,16 +260,12 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - the current user is an administrator
    * - the project was created by the current user
    */
-  isAutorise(projet: IProjet): boolean {
-    if (this.authorities !== null && this.authorities !== undefined) {
-      for (const droit of this.authorities) {
-        if (Authority.ADMIN === droit) {
-          return true;
-        }
-      }
+  isAllowed(project: IProjet, rated: boolean): boolean {
+    if (this.isAdmin() && rated) {
+      return true;
     }
-    if (this.isClient()) {
-      return projet.userExtraId === this.accountExtra.id;
+    if (this.isCustomer()) {
+      return project.userExtraId === this.accountExtra.id;
     }
     return false;
   }
@@ -245,8 +275,8 @@ export class ProjetComponent implements OnInit, OnDestroy {
    */
   isAdmin(): boolean {
     if (this.authorities !== null && this.authorities !== undefined) {
-      for (const droit of this.authorities) {
-        if (Authority.ADMIN === droit) {
+      for (const authority of this.authorities) {
+        if (Authority.ADMIN === authority) {
           return true;
         }
       }
@@ -255,18 +285,18 @@ export class ProjetComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Return true if the current user have a group
+   * Return true if the current user has a group
    */
-  aDejaUnGroupe(): boolean {
-    return this.groupeId !== null;
+  alreadyHasGroup(): boolean {
+    return this.groupId !== null;
   }
 
   /**
    * Return true if the param project is the current user's project
-   * @param projet
+   * @param project
    */
-  isMonProjetChoisi(projet: IProjet): boolean {
-    return projet.id === this.projetChoisiId;
+  isMySelectedProject(project: IProjet): boolean {
+    return project.id === this.selectedProjectId;
   }
 
   /**
@@ -274,24 +304,24 @@ export class ProjetComponent implements OnInit, OnDestroy {
    * - deletion of the group in the Group table
    * - modify the group id of each user (extra) to set it to null
    */
-  retractation(): void {
-    this.projetService.find(this.projetChoisiId).subscribe(projet => {
-      let compteur = projet.body.nbEtudiant;
-      const idMonGroupe: number = this.groupeId;
-      this.userExtraService.findByGroupeId(idMonGroupe).subscribe(
+  retract(): void {
+    this.projetService.find(this.selectedProjectId).subscribe(project => {
+      let counter = project.body.nbEtudiant;
+      const myGroupId: number = this.groupId;
+      this.userExtraService.findByGroupeId(myGroupId).subscribe(
         userextras => {
           if (userextras !== null && userextras.body !== null) {
             for (const userextra of userextras.body) {
               userextra.groupeId = null;
               this.userExtraService.update(userextra).subscribe(() => {
-                compteur--;
-                if (compteur === 0) {
-                  this.groupeService.delete(idMonGroupe).subscribe(() => {
-                    this.isRetracte = true;
+                counter--;
+                if (counter === 0) {
+                  this.groupeService.delete(myGroupId).subscribe(() => {
+                    this.isRetracted = true;
                     this.isSaving = false;
                     this.toastrService.success(
                       this.translateService.instant('global.toastr.retractation.projet.message'),
-                      this.translateService.instant('global.toastr.retractation.projet.title', { nom: projet.body.nom })
+                      this.translateService.instant('global.toastr.retractation.projet.title', { nom: project.body.nom })
                     );
                     this.router.navigate(['/projet']);
                   });
@@ -313,17 +343,17 @@ export class ProjetComponent implements OnInit, OnDestroy {
 
   /**
    * Take over archive project
-   * @param projet
+   * @param project
    */
-  reprise(projet: IProjet): void {
+  recovery(project: IProjet): void {
     this.reset();
-    projet.archive = false;
-    projet.dateCreation = moment();
-    this.projetService.update(projet).subscribe(
+    project.archive = false;
+    project.dateCreation = moment();
+    this.projetService.update(project).subscribe(
       () => {
         this.toastrService.success(
           this.translateService.instant('global.toastr.reprise.projet.message'),
-          this.translateService.instant('global.toastr.reprise.projet.title', { nom: projet.nom })
+          this.translateService.instant('global.toastr.reprise.projet.title', { nom: project.nom })
         );
         this.loadAll();
       },
@@ -337,24 +367,138 @@ export class ProjetComponent implements OnInit, OnDestroy {
     );
   }
 
-  previousState(): void {
-    window.location.reload();
-  }
-
   /**
    * Return true if :
    * - the current user is an administrator
    * - the current project is archived AND does not have a group
-   * @param projet
+   * @param project
    */
-  isAffiche(projet: IProjet): boolean {
-    if (this.isAdmin() || this.isClient()) {
+  isDisplayed(project: IProjet): boolean {
+    if (this.isAdmin() || this.isCustomer()) {
       return true;
     }
-    if (!projet.archive) {
-      return !projet.groupeId;
+    if (!project.archive) {
+      return !project.groupeId;
     }
 
     return false;
+  }
+
+  /**
+   * Format the name
+   * param : aaaaaaa
+   * return : Aaaaaaa
+   * @param str
+   */
+  formatName(str: string): string {
+    str = str.toLowerCase();
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  /**
+   * Return the name of the customer of the project
+   * @param projectId
+   */
+  getCustomer(projectId: number): string {
+    if (this.projects !== null && this.projects !== undefined) {
+      for (const project of this.projects) {
+        if (projectId === project.id) {
+          if (this.users !== null && this.users !== undefined) {
+            for (const usr of this.users) {
+              if (usr.id === project.userExtraId) {
+                return this.formatName(usr.firstName) + ' ' + usr.lastName.toUpperCase();
+              }
+            }
+          }
+        }
+      }
+    }
+    return '';
+  }
+
+  /**
+   * Add all projects of the grade param into displayedProjects variable
+   * @param grade
+   */
+  filterProjectsByGrade(grade: TypeCursus): void {
+    this.gradeSelected = grade;
+    this.displayedProjects = [];
+    if (this.displayMyProjects) {
+      for (const project of this.projects) {
+        if (project.userExtraId === this.accountExtra.id && project.cursus === grade) {
+          this.displayedProjects.push(project);
+        }
+      }
+    } else {
+      for (const project of this.projects) {
+        if (project.cursus === grade) {
+          this.displayedProjects.push(project);
+        }
+      }
+    }
+    this.changeColorsFilterButtons(grade);
+  }
+
+  /**
+   * Add all projects into displayedProjects variable
+   */
+  filterProjectsWithoutGrade(): void {
+    this.gradeSelected = null;
+    this.displayedProjects = [];
+    this.changeColorsFilterButtons(this.gradeSelected);
+    if (this.displayMyProjects) {
+      for (const project of this.projects) {
+        if (project.userExtraId === this.accountExtra.id) {
+          this.displayedProjects.push(project);
+        }
+      }
+    } else {
+      this.displayedProjects = this.projects;
+    }
+  }
+
+  /**
+   * Add all my projects or all projects into displayedProjects variable, based on displayMyProjects variable
+   * Change the displayMyProjects boolean value
+   */
+  filterMyProjects(): void {
+    this.displayMyProjects = !this.displayMyProjects;
+    this.changeColorMyProjectsButton();
+    if (this.gradeSelected === null) {
+      this.filterProjectsWithoutGrade();
+    } else {
+      this.filterProjectsByGrade(this.gradeSelected);
+    }
+  }
+
+  /**
+   * Change the color of My Project button if pushed or not
+   */
+  changeColorMyProjectsButton(): void {
+    if (this.displayMyProjects) {
+      document.getElementById('filtreMesProjets').setAttribute('class', 'btn btn-success btn-sm');
+    } else {
+      document.getElementById('filtreMesProjets').setAttribute('class', 'btn btn-secondary btn-sm');
+    }
+  }
+
+  /**
+   * Change the color of filter buttons if pushed or not
+   * @param grade
+   */
+  changeColorsFilterButtons(grade: TypeCursus): void {
+    document.getElementById('filtreAucun').setAttribute('class', 'btn btn-secondary btn-sm');
+    document.getElementById('filtreL3').setAttribute('class', 'btn btn-secondary btn-sm');
+    document.getElementById('filtreM1').setAttribute('class', 'btn btn-secondary btn-sm');
+    document.getElementById('filtreM2').setAttribute('class', 'btn btn-secondary btn-sm');
+    if (grade === null) {
+      document.getElementById('filtreAucun').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (grade === TypeCursus.L3) {
+      document.getElementById('filtreL3').setAttribute('class', 'btn btn-success btn-sm');
+    } else if (grade === TypeCursus.M1) {
+      document.getElementById('filtreM1').setAttribute('class', 'btn btn-success btn-sm');
+    } else {
+      document.getElementById('filtreM2').setAttribute('class', 'btn btn-success btn-sm');
+    }
   }
 }

@@ -1,5 +1,7 @@
 package com.app.projettic.service.dto;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -20,6 +22,8 @@ public class GroupeDTO implements Serializable {
     private Long projetId;
 
     private Boolean actif;
+
+    private TypeCursus cursus;
 
     public Long getId() {
         return id;
@@ -61,6 +65,14 @@ public class GroupeDTO implements Serializable {
         this.actif = actif;
     }
 
+    public TypeCursus getCursus() {
+        return cursus;
+    }
+
+    public void setCursus(TypeCursus cursus) {
+        this.cursus = cursus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -84,12 +96,14 @@ public class GroupeDTO implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "GroupeDTO{" +
             "id=" + getId() +
             ", valide='" + isValide() + "'" +
             ", actif=" + isActif() +
             ", userExtraId=" + getUserExtraId() +
             ", projetId=" + getProjetId() +
+            ", cursus=" + grade +
             "}";
     }
 }

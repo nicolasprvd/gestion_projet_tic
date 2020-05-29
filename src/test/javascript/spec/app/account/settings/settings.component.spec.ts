@@ -53,7 +53,7 @@ describe('Component Tests', () => {
 
       // WHEN
       comp.ngOnInit();
-      comp.save();
+      comp.saveSettings();
 
       // THEN
       expect(mockAuth.identitySpy).toHaveBeenCalled();
@@ -68,7 +68,7 @@ describe('Component Tests', () => {
 
       // WHEN
       comp.ngOnInit();
-      comp.save();
+      comp.saveSettings();
 
       // THEN
       expect(comp.success).toBe(true);
@@ -80,7 +80,7 @@ describe('Component Tests', () => {
 
       // WHEN
       comp.ngOnInit();
-      comp.save();
+      comp.saveSettings();
 
       // THEN
       expect(comp.success).toBe(false);

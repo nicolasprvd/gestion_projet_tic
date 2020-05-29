@@ -4,6 +4,7 @@ import com.app.projettic.config.Constants;
 import com.app.projettic.domain.Authority;
 import com.app.projettic.domain.User;
 import com.app.projettic.domain.UserExtra;
+import com.app.projettic.domain.enumeration.TypeCursus;
 import com.app.projettic.domain.enumeration.TypeUtilisateur;
 import com.app.projettic.repository.AuthorityRepository;
 import com.app.projettic.repository.UserExtraRepository;
@@ -12,7 +13,6 @@ import com.app.projettic.repository.search.UserSearchRepository;
 import com.app.projettic.security.AuthoritiesConstants;
 import com.app.projettic.security.SecurityUtils;
 import com.app.projettic.service.dto.UserDTO;
-
 import io.github.jhipster.security.RandomUtil;
 
 import org.slf4j.Logger;
@@ -98,7 +98,7 @@ public class UserService {
             });
     }
 
-    public User registerUser(UserDTO userDTO, String password, TypeUtilisateur typeUtilisateur) {
+    public User registerUser(UserDTO userDTO, String password, TypeUtilisateur typeUtilisateur, TypeCursus typeCursus) {
         userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).ifPresent(existingUser -> {
             boolean removed = removeNonActivatedUser(existingUser);
             if (!removed) {
@@ -123,11 +123,16 @@ public class UserService {
         }
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
-        newUser.setActivated(true);
+        newUser.setActivated(userDTO.getActivated());
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        if(typeUtilisateur.equals(TypeUtilisateur.CLIENT)) {
+            authorityRepository.findById(AuthoritiesConstants.CLIENT).ifPresent(authorities::add);
+        }else if(typeUtilisateur.equals(TypeUtilisateur.ETUDIANT)) {
+            authorityRepository.findById(AuthoritiesConstants.ETUDIANT).ifPresent(authorities::add);
+        }
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         userSearchRepository.save(newUser);
@@ -138,7 +143,8 @@ public class UserService {
         UserExtra newUserExtra = new UserExtra();
         newUserExtra.setUser(newUser);
         newUserExtra.setTypeUtilisateur(typeUtilisateur);
-        newUserExtra.setActif(true);
+        newUserExtra.setActif(userDTO.getActivated());
+        newUserExtra.setCursus(typeCursus);
         userExtraRepository.save(newUserExtra);
         log.debug("Created Information for UserExtra: {}", newUserExtra);
 
@@ -160,6 +166,7 @@ public class UserService {
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
+        user.setActivated(userDTO.getActivated());
         if (userDTO.getEmail() != null) {
             user.setEmail(userDTO.getEmail().toLowerCase());
         }
@@ -173,7 +180,7 @@ public class UserService {
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
-        user.setActivated(true);
+        user.setActivated(userDTO.getActivated());
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = userDTO.getAuthorities().stream()
                 .map(authorityRepository::findById)
@@ -195,10 +202,11 @@ public class UserService {
      * @param firstName first name of user.
      * @param lastName  last name of user.
      * @param email     email id of user.
+     * @param activated user is activated?
      * @param langKey   language key.
      * @param imageUrl  image URL of user.
      */
-    public void updateUser(Long id, String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public void updateUser(Long id, String firstName, String lastName, String email, Boolean activated, String langKey, String imageUrl) {
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
             .ifPresent(user -> {
@@ -208,6 +216,7 @@ public class UserService {
                 if (email != null) {
                     user.setEmail(email.toLowerCase());
                 }
+                user.setActivated(activated);
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
                 userSearchRepository.save(user);
@@ -239,12 +248,14 @@ public class UserService {
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
                 Set<Authority> managedAuthorities = user.getAuthorities();
-                managedAuthorities.clear();
-                userDTO.getAuthorities().stream()
-                    .map(authorityRepository::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .forEach(managedAuthorities::add);
+                if (userDTO.getAuthorities() != null) {
+                    Set<Authority> authorities = userDTO.getAuthorities().stream()
+                        .map(authorityRepository::findById)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .collect(Collectors.toSet());
+                    user.setAuthorities(authorities);
+                }
                 userSearchRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
@@ -334,4 +345,19 @@ public class UserService {
     public List<UserDTO> findByActivated(boolean activated) {
         return userRepository.findByActivated(activated);
     }
+
+    @Transactional(readOnly = true)
+    public List<UserDTO> findAllWithAuthorities() {
+        List<User> users = userRepository.findAll();
+
+        for(User user : users) {
+            user.setAuthorities(this.getUserWithAuthorities(user.getId()).get().getAuthorities());
+        }
+        return users.stream().map(UserDTO::new).collect(Collectors.toList());
+    }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
 }

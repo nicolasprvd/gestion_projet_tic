@@ -8,7 +8,7 @@
         }
       },
       "documents": {
-        "title": "Documents",
+        "title": "Document",
         "cdc": "Requirements specification",
         "gantt": "Gantt",
         "rendu": "Final result"
@@ -17,7 +17,8 @@
         "label": {
           "dateArchive": "Archives",
           "dateArchiveSelect": "Choose a date",
-          "chef": "Project manager"
+          "chef": "Project manager",
+          "memnbres": "Members : "
         },
         "button": {
           "reprise": "Take over"
@@ -66,26 +67,33 @@
         "cahierDesCharges": "Specification",
         "soutenance": "Defense",
         "rendu": "Report",
-        "moyenne": "Final mark",
+        "moyenne": "Final mark:",
         "noteCahierDesCharges": "Specification mark",
         "noteSoutenance": "Defense mark",
         "noteRendu": "Report mark",
+        "coefCahierDesCharges": "Specification coefficient",
+        "coefSoutenance": "Defense coefficient",
+        "coefRendu": "Report coefficient",
         "ouvrir": "Open",
         "noter": "Rate",
-        "manquant": "Missing document :",
-        "gantt": "Gantt"
+        "manquant": "Missing document",
+        "gantt": "Gantt",
+        "deliverable": "Deliverable"
       },
       "bouton": {
         "choisir": "Apply",
         "etatCandidature": "Applied",
         "retractation": "Retract"
       },
+      "filtre": {
+        "tous": "All levels",
+        "customer": "Customer",
+        "mesprojets": "My projects"
+      },
       "nom": "Project's name",
-      "nomObligatoire": "Project's name *",
       "descriptionPDF": "PDF description",
       "descriptionTexte": "Textual description",
       "nbEtudiant": "Team size",
-      "nbEtudiantObligatoire": "Team size *",
       "automatique": "Automatic allocation",
       "archive": "Archive",
       "groupe": "Group",

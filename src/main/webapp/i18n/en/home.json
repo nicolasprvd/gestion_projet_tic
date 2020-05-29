@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Welcome on your TIC's project application manager",
+    "title": "Welcome on your MIAGE project application manager",
     "subtitle": "This site will allow you to : ",
     "admin": {
       "role": "If you are the administrator :",
@@ -11,7 +11,7 @@
     "student": {
       "role": "If you are a student :",
       "one": "View the projects proposed by the different customers",
-      "two": "Take a position on one or more projects (and inform the members of the group)",
+      "two": "Take a position on projects (and inform the members of the group)",
       "three": "View your project once it has been assigned, and submit the required documents."
     },
     "client": {
@@ -24,8 +24,10 @@
     },
     "newYear": {
       "titre": "Start a new academic year",
-      "detail": "Be careful, starting a new academic year will disable all active groups / evaluations / documents / students. These will still be kept.",
+      "detail": "Be careful, starting a new academic year will disable all active groups / evaluations / documents / projects.",
+      "detailEtudiant": "Students will be promoted to the next level. M2 accounts will be deactivated.",
       "question": "Are you sure you want to start a new academic year?",
+      "retakingStudents": "If you have to manage some year repetition for students, go to the user-management page and click on the 'repeat a year' button for the student concerned by.",
       "confirmation": "Start"
     }
   }

@@ -1,5 +1,7 @@
 package com.app.projettic.service.dto;
 
+import com.app.projettic.domain.enumeration.TypeCursus;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -29,6 +31,8 @@ public class ProjetDTO implements Serializable {
     private Boolean archive;
 
     private Instant dateCreation;
+
+    private TypeCursus cursus;
 
     private Long groupeId;
 
@@ -122,6 +126,14 @@ public class ProjetDTO implements Serializable {
         this.dateCreation = dateCreation;
     }
 
+    public TypeCursus getCursus() {
+        return cursus;
+    }
+
+    public void setCursus(TypeCursus cursus) {
+        this.cursus = cursus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -145,6 +157,7 @@ public class ProjetDTO implements Serializable {
 
     @Override
     public String toString() {
+        String grade = ((getCursus() == null) ? "null" : getCursus().toString());
         return "ProjetDTO{" +
             "id=" + getId() +
             ", nom='" + getNom() + "'" +
@@ -156,6 +169,7 @@ public class ProjetDTO implements Serializable {
             ", dateCreation=" + getDateCreation() +
             ", groupeId=" + getGroupeId() +
             ", userExtraId=" + getUserExtraId() +
+            ", cursus=" + grade +
             "}";
     }
 }
