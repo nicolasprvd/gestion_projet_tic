@@ -55,24 +55,14 @@ spring:
       uris: http://localhost:9200
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
-    contexts: prod, faker
+    contexts: prod
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: gestion.projets.tic@gmail.com
-    password: gestionprojettic
-    protocol: smtp
-    tls: true
-    auth: true
-    from: gestion.projets.tic@gmail.com
-    properties.mail.smtp:
-      auth: true
-      starttls.enable: true
-      ssl.trust: smtp.gmail.com
-  messages:
-    cache-duration: PT1S # 1 second, see the ISO 8601 standard
+    host: localhost
+    port: 25
+    username:
+    password:
   thymeleaf:
-    cache: false
+    cache: true
 
 # ===================================================================
 # To enable TLS in production, generate a certificate using:

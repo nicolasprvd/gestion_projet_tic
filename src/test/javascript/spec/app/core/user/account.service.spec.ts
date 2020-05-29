@@ -15,7 +15,6 @@ import { MockStateStorageService } from '../../../helpers/mock-state-storage.ser
 
 function accountWithAuthorities(authorities: string[]): Account {
   return {
-    id: -1,
     activated: true,
     authorities,
     email: '',
